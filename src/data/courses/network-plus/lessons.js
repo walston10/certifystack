@@ -15,7 +15,14 @@ export const networkPlusLessons = [
     time: "25-30 min",
     completed: false,
     locked: false,
-    examObjective: "1.1"
+    examObjective: "1.1",
+    path: "/content/network-plus/lessons/lesson-01.md",
+    hasFlashcards: true,
+    hasQuiz: true,
+    hasLab: true,
+    labId: 1,
+    prerequisites: [],
+    nextLesson: 2
   },
   {
     id: 2,
@@ -24,7 +31,14 @@ export const networkPlusLessons = [
     time: "20-25 min",
     completed: false,
     locked: false,
-    examObjective: "1.2"
+    examObjective: "1.2",
+    path: "/content/network-plus/lessons/lesson-02.md",
+    hasFlashcards: true,
+    hasQuiz: true,
+    hasLab: true,
+    labId: 2,
+    prerequisites: [1],
+    nextLesson: 3
   },
   {
     id: 3,
@@ -33,7 +47,13 @@ export const networkPlusLessons = [
     time: "20-25 min",
     completed: false,
     locked: false,
-    examObjective: "1.4"
+    examObjective: "1.4",
+    path: "/content/network-plus/lessons/lesson-03.md",
+    hasFlashcards: true,
+    hasQuiz: true,
+    hasLab: false,
+    prerequisites: [2],
+    nextLesson: 4
   },
   {
     id: 4,
@@ -42,7 +62,13 @@ export const networkPlusLessons = [
     time: "20-25 min",
     completed: false,
     locked: false,
-    examObjective: "1.4"
+    examObjective: "1.4",
+    path: "/content/network-plus/lessons/lesson-04.md",
+    hasFlashcards: true,
+    hasQuiz: true,
+    hasLab: false,
+    prerequisites: [3],
+    nextLesson: 5
   },
   {
     id: 5,
@@ -51,7 +77,13 @@ export const networkPlusLessons = [
     time: "25-30 min",
     completed: false,
     locked: false,
-    examObjective: "1.4"
+    examObjective: "1.4",
+    path: "/content/network-plus/lessons/lesson-05.md",
+    hasFlashcards: true,
+    hasQuiz: true,
+    hasLab: false,
+    prerequisites: [4],
+    nextLesson: 6
   },
   {
     id: 6,
@@ -60,7 +92,14 @@ export const networkPlusLessons = [
     time: "25-30 min",
     completed: false,
     locked: false,
-    examObjective: "1.4"
+    examObjective: "1.4",
+    path: "/content/network-plus/lessons/lesson-06.md",
+    hasFlashcards: true,
+    hasQuiz: true,
+    hasLab: true,
+    labId: 6,
+    prerequisites: [3, 4, 5],
+    nextLesson: 7
   },
   {
     id: 7,
@@ -69,7 +108,13 @@ export const networkPlusLessons = [
     time: "25-30 min",
     completed: false,
     locked: false,
-    examObjective: "1.4"
+    examObjective: "1.4",
+    path: "/content/network-plus/lessons/lesson-07.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [6],
+    nextLesson: 8
   },
   {
     id: 8,
@@ -78,7 +123,13 @@ export const networkPlusLessons = [
     time: "25-30 min",
     completed: false,
     locked: false,
-    examObjective: "1.1, 1.6"
+    examObjective: "1.1, 1.6",
+    path: "/content/network-plus/lessons/lesson-08.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [7],
+    nextLesson: 9
   },
   {
     id: 9,
@@ -87,7 +138,13 @@ export const networkPlusLessons = [
     time: "20-25 min",
     completed: false,
     locked: false,
-    examObjective: "1.1, 1.5"
+    examObjective: "1.1, 1.5",
+    path: "/content/network-plus/lessons/lesson-09.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [8],
+    nextLesson: 10
   },
 
   // ==========================================
@@ -101,7 +158,13 @@ export const networkPlusLessons = [
     time: "25-30 min",
     completed: false,
     locked: false,
-    examObjective: "2.1, 2.2"
+    examObjective: "2.1, 2.2",
+    path: "/content/network-plus/lessons/lesson-10.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [9],
+    nextLesson: 11
   },
   {
     id: 11,
@@ -110,7 +173,14 @@ export const networkPlusLessons = [
     time: "30-35 min",
     completed: false,
     locked: false,
-    examObjective: "2.1, 2.3"
+    examObjective: "2.1, 2.3",
+    path: "/content/network-plus/lessons/lesson-11.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: true,
+    labId: 11,
+    prerequisites: [10],
+    nextLesson: 12
   },
   {
     id: 12,
@@ -119,7 +189,13 @@ export const networkPlusLessons = [
     time: "30-35 min",
     completed: false,
     locked: false,
-    examObjective: "2.1, 2.2"
+    examObjective: "2.1, 2.2",
+    path: "/content/network-plus/lessons/lesson-12.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [11],
+    nextLesson: 13
   },
   {
     id: 13,
@@ -128,7 +204,13 @@ export const networkPlusLessons = [
     time: "30-35 min",
     completed: false,
     locked: false,
-    examObjective: "2.4"
+    examObjective: "2.4",
+    path: "/content/network-plus/lessons/lesson-13.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [12],
+    nextLesson: 14
   },
   {
     id: 14,
@@ -137,7 +219,13 @@ export const networkPlusLessons = [
     time: "25-30 min",
     completed: false,
     locked: false,
-    examObjective: "2.1"
+    examObjective: "2.1",
+    path: "/content/network-plus/lessons/lesson-14.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [13],
+    nextLesson: 15
   },
   {
     id: 15,
@@ -146,7 +234,13 @@ export const networkPlusLessons = [
     time: "25-30 min",
     completed: false,
     locked: false,
-    examObjective: "1.2, 1.8"
+    examObjective: "1.2, 1.8",
+    path: "/content/network-plus/lessons/lesson-15.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [14],
+    nextLesson: 16
   },
 
   // ==========================================
@@ -160,7 +254,13 @@ export const networkPlusLessons = [
     time: "20-25 min",
     completed: false,
     locked: false,
-    examObjective: "3.1"
+    examObjective: "3.1",
+    path: "/content/network-plus/lessons/lesson-16.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [15],
+    nextLesson: 17
   },
   {
     id: 17,
@@ -169,7 +269,13 @@ export const networkPlusLessons = [
     time: "25-30 min",
     completed: false,
     locked: false,
-    examObjective: "3.1, 5.3"
+    examObjective: "3.1, 5.3",
+    path: "/content/network-plus/lessons/lesson-17.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [16],
+    nextLesson: 18
   },
   {
     id: 18,
@@ -178,7 +284,13 @@ export const networkPlusLessons = [
     time: "20-25 min",
     completed: false,
     locked: false,
-    examObjective: "3.2"
+    examObjective: "3.2",
+    path: "/content/network-plus/lessons/lesson-18.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [17],
+    nextLesson: 19
   },
   {
     id: 19,
@@ -187,7 +299,13 @@ export const networkPlusLessons = [
     time: "25-30 min",
     completed: false,
     locked: false,
-    examObjective: "3.2, 3.3"
+    examObjective: "3.2, 3.3",
+    path: "/content/network-plus/lessons/lesson-19.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [18],
+    nextLesson: 20
   },
   {
     id: 20,
@@ -196,7 +314,13 @@ export const networkPlusLessons = [
     time: "20-25 min",
     completed: false,
     locked: false,
-    examObjective: "4.1"
+    examObjective: "4.1",
+    path: "/content/network-plus/lessons/lesson-20.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [19],
+    nextLesson: 21
   },
 
   // ==========================================
@@ -210,7 +334,13 @@ export const networkPlusLessons = [
     time: "30-35 min",
     completed: false,
     locked: false,
-    examObjective: "4.1, 4.4"
+    examObjective: "4.1, 4.4",
+    path: "/content/network-plus/lessons/lesson-21.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [20],
+    nextLesson: 22
   },
   {
     id: 22,
@@ -219,7 +349,13 @@ export const networkPlusLessons = [
     time: "25-30 min",
     completed: false,
     locked: false,
-    examObjective: "4.1"
+    examObjective: "4.1",
+    path: "/content/network-plus/lessons/lesson-22.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [21],
+    nextLesson: 23
   },
   {
     id: 23,
@@ -228,7 +364,13 @@ export const networkPlusLessons = [
     time: "30-35 min",
     completed: false,
     locked: false,
-    examObjective: "4.4"
+    examObjective: "4.4",
+    path: "/content/network-plus/lessons/lesson-23.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [22],
+    nextLesson: 24
   },
   {
     id: 24,
@@ -237,7 +379,13 @@ export const networkPlusLessons = [
     time: "30-35 min",
     completed: false,
     locked: false,
-    examObjective: "4.1, 4.3"
+    examObjective: "4.1, 4.3",
+    path: "/content/network-plus/lessons/lesson-24.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [23],
+    nextLesson: 25
   },
   {
     id: 25,
@@ -246,7 +394,13 @@ export const networkPlusLessons = [
     time: "25-30 min",
     completed: false,
     locked: false,
-    examObjective: "4.1, 4.3"
+    examObjective: "4.1, 4.3",
+    path: "/content/network-plus/lessons/lesson-25.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [24],
+    nextLesson: 26
   },
   {
     id: 26,
@@ -255,7 +409,13 @@ export const networkPlusLessons = [
     time: "25-30 min",
     completed: false,
     locked: false,
-    examObjective: "4.4"
+    examObjective: "4.4",
+    path: "/content/network-plus/lessons/lesson-26.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [25],
+    nextLesson: 27
   },
 
   // ==========================================
@@ -269,7 +429,13 @@ export const networkPlusLessons = [
     time: "20-25 min",
     completed: false,
     locked: false,
-    examObjective: "5.1"
+    examObjective: "5.1",
+    path: "/content/network-plus/lessons/lesson-27.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [26],
+    nextLesson: 28
   },
   {
     id: 28,
@@ -278,7 +444,14 @@ export const networkPlusLessons = [
     time: "30-35 min",
     completed: false,
     locked: false,
-    examObjective: "5.3"
+    examObjective: "5.3",
+    path: "/content/network-plus/lessons/lesson-28.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: true,
+    labId: 28,
+    prerequisites: [27],
+    nextLesson: 29
   },
   {
     id: 29,
@@ -287,7 +460,13 @@ export const networkPlusLessons = [
     time: "25-30 min",
     completed: false,
     locked: false,
-    examObjective: "5.2, 5.3"
+    examObjective: "5.2, 5.3",
+    path: "/content/network-plus/lessons/lesson-29.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [28],
+    nextLesson: 30
   },
   {
     id: 30,
@@ -296,7 +475,13 @@ export const networkPlusLessons = [
     time: "30-35 min",
     completed: false,
     locked: false,
-    examObjective: "5.2, 5.4, 5.5"
+    examObjective: "5.2, 5.4, 5.5",
+    path: "/content/network-plus/lessons/lesson-30.md",
+    hasFlashcards: false,
+    hasQuiz: false,
+    hasLab: false,
+    prerequisites: [29],
+    nextLesson: null
   }
 ];
 

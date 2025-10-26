@@ -391,3 +391,149 @@ header {
   font-size: 1.1rem;
   line-height: 1.6;
 }
+
+/* Lab Callout Section */
+.lesson-lab-section {
+  margin-top: 40px;
+}
+
+.lab-callout {
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(138, 43, 226, 0.1));
+  border: 2px solid var(--accent-cyan);
+  border-radius: 16px;
+  padding: 30px;
+}
+
+.lab-callout h2 {
+  color: var(--text-primary);
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  border-bottom: 2px solid var(--accent-cyan);
+  padding-bottom: 12px;
+}
+
+.lab-info {
+  display: flex;
+  gap: 30px;
+  align-items: start;
+}
+
+.lab-details {
+  flex: 1;
+}
+
+.lab-details h3 {
+  color: var(--text-primary);
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+}
+
+.lab-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.lab-meta span {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.lab-meta .difficulty {
+  border: 1px solid;
+  font-weight: 600;
+}
+
+.lab-meta .difficulty-beginner {
+  background: rgba(46, 213, 115, 0.1);
+  border-color: #2ed573;
+  color: #2ed573;
+}
+
+.lab-meta .difficulty-intermediate {
+  background: rgba(255, 195, 18, 0.1);
+  border-color: #ffc312;
+  color: #ffc312;
+}
+
+.lab-meta .difficulty-advanced {
+  background: rgba(255, 71, 87, 0.1);
+  border-color: #ff4757;
+  color: #ff4757;
+}
+
+.lab-meta .time,
+.lab-meta .xp {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.lab-meta .xp {
+  color: var(--accent-purple);
+  font-weight: 600;
+}
+
+.lab-details p {
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.lab-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lab-details li {
+  padding: 8px 0;
+  padding-left: 25px;
+  position: relative;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.lab-details li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--accent-cyan);
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.start-lab-btn {
+  padding: 16px 32px;
+  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+  border: none;
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(0, 217, 255, 0.3);
+  white-space: nowrap;
+}
+
+.start-lab-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 217, 255, 0.5);
+}
+
+/* Responsive for lab callout */
+@media (max-width: 768px) {
+  .lab-info {
+    flex-direction: column;
+  }
+
+  .start-lab-btn {
+    width: 100%;
+  }
+}
