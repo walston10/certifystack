@@ -86,13 +86,13 @@ function SolutionViewer() {
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeRaw]}
             components={{
-              h1: ({node, ...props}) => <h1 {...props} />,
-              h2: ({node, ...props}) => <h2 {...props} />,
-              h3: ({node, ...props}) => <h3 {...props} />,
-              p: ({node, ...props}) => <p {...props} />,
-              code: ({node, inline, ...props}) =>
-                inline ? <code {...props} /> : <pre><code {...props} /></pre>,
-              a: ({node, ...props}) => <a target="_blank" rel="noopener noreferrer" {...props} />,
+              h1: ({node, children, ...props}) => <h1 {...props}>{children}</h1>,
+              h2: ({node, children, ...props}) => <h2 {...props}>{children}</h2>,
+              h3: ({node, children, ...props}) => <h3 {...props}>{children}</h3>,
+              p: ({node, children, ...props}) => <p {...props}>{children}</p>,
+              code: ({node, inline, children, ...props}) =>
+                inline ? <code {...props}>{children}</code> : <pre><code {...props}>{children}</code></pre>,
+              a: ({node, children, ...props}) => <a target="_blank" rel="noopener noreferrer" {...props}>{children}</a>,
               table: ({node, ...props}) => (
                 <div className="table-wrapper">
                   <table {...props} />
