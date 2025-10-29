@@ -133,17 +133,32 @@
   box-shadow: 0 6px 25px rgba(0, 255, 136, 0.5);
 }
 
+.btn-put-back {
+  background: var(--bg-secondary);
+  border: 2px solid var(--warning);
+  color: var(--warning);
+}
+
+.btn-put-back:hover:not(:disabled) {
+  background: var(--bg-tertiary);
+  box-shadow: 0 0 20px rgba(255, 170, 0, 0.3);
+}
+
 .complete-message {
-  background: linear-gradient(135deg, var(--accent-green), #00cc77);
-  color: var(--bg-primary);
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid var(--accent-green);
+  color: var(--text-primary);
   padding: 20px;
   border-radius: 12px;
   text-align: center;
-  font-size: 1.2rem;
-  font-weight: 600;
   margin-top: 30px;
   animation: slideIn 0.5s;
-  box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+}
+
+.complete-message p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 15px;
 }
 
 @keyframes slideIn {
@@ -157,65 +172,24 @@
   }
 }
 
-.btn-difficulty {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 0.95rem;
-  transition: all 0.3s;
-  font-family: 'Space Grotesk', sans-serif;
-}
-
-.btn-difficulty.dont-know {
-  background: var(--error);
-  color: var(--text-primary);
-}
-
-.btn-difficulty.dont-know:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
-}
-
-.btn-difficulty.hard {
-  background: var(--warning);
-  color: var(--bg-primary);
-}
-
-.btn-difficulty.hard:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 170, 0, 0.4);
-}
-
-.btn-difficulty.good {
-  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-  color: var(--text-primary);
-}
-
-.btn-difficulty.good:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0, 217, 255, 0.4);
-}
-
-.btn-difficulty.easy {
-  background: var(--accent-green);
-  color: var(--bg-primary);
-}
-
-.btn-difficulty.easy:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
-}
-
 .btn-restart {
-  margin-top: 20px;
-  padding: 14px 32px;
   background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
   color: var(--text-primary);
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: 'Space Grotesk', sans-serif;
+}
+
+.btn-master:disabled,
+.btn-put-back:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-master:disabled {
+  background: var(--accent-green);
+}
+
+.btn-put-back:disabled {
+  background: var(--bg-secondary);
+  border-color: var(--warning);
 }

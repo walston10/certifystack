@@ -1,0 +1,48 @@
+.practice-view-container {
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+.practice-view-header {
+  background: var(--bg-secondary);
+  padding: 20px 40px;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.no-cards-message {
+  max-width: 600px;
+  margin: 100px auto;
+  text-align: center;
+  padding: 60px 40px;
+  background: var(--bg-secondary);
+  border: 2px dashed var(--bg-tertiary);
+  border-radius: 16px;
+}
+
+.no-cards-message h2 {
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.no-cards-message p {
+  color: var(--text-muted);
+  margin-bottom: 30px;
+}
+
+.btn-back-to-dash {
+  padding: 14px 32px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  transition: all 0.3s;
+  background: var(--bg-secondary);
+  border: 2px solid var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.btn-back-to-dash:hover {
+  background: var(--bg-tertiary);
+  box-shadow: var(--glow-cyan);
+}

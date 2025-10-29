@@ -10,6 +10,7 @@ import { lesson3Flashcards } from './lesson-03-flashcards';
 import { lesson4Flashcards } from './lesson-04-flashcards';
 import { lesson5Flashcards } from './lesson-05-flashcards';
 import { lesson6Flashcards } from './lesson-06-flashcards';
+import { networkPlusLessons } from '../lessons';
 
 
 // ... import more as they are created
@@ -28,4 +29,18 @@ const allFlashcards = {
 // Helper function to get flashcards by lesson number
 export function getFlashcardsByLesson(lessonNumber) {
   return allFlashcards[lessonNumber] || [];
+}
+
+/**
+ * Get a list of all lessons that have flashcards
+ * @returns {Array<{id: number, title: string, cardCount: number}>}
+ */
+export function getLessonsWithFlashcards() {
+  return Object.keys(allFlashcards).map(id => {
+    const lessonId = parseInt(id);
+    const lesson = networkPlusLessons.find(l => l.id === lessonId);
+    const cards = allFlashcards[lessonId];
+    
+    return { id: lessonId, title: lesson?.title || `Lesson ${lessonId}`, cardCount: cards.length };
+  }).sort((a, b) => a.id - b.id);
 }

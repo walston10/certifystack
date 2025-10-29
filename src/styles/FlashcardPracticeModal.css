@@ -1,0 +1,113 @@
+.flashcard-modal {
+  max-width: 600px !important;
+  padding: 30px !important;
+}
+
+.flashcard-modal h2 {
+  margin-bottom: 10px;
+}
+
+.flashcard-modal p {
+  margin-bottom: 25px;
+  color: var(--text-muted);
+}
+
+.lesson-selection-list {
+  max-height: 40vh;
+  overflow-y: auto;
+  padding: 10px;
+  margin: 0 -10px 25px;
+  border-top: 1px solid var(--bg-tertiary);
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.lesson-item,
+.select-all-container {
+  display: flex;
+  align-items: center;
+  padding: 12px 10px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.lesson-item:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.lesson-item input[type="checkbox"],
+.select-all-container input[type="checkbox"] {
+  margin-right: 15px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-cyan);
+  cursor: pointer;
+}
+
+.lesson-item label,
+.select-all-container label {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.select-all-container {
+  border-bottom: 2px solid var(--bg-tertiary);
+  margin-bottom: 5px;
+}
+
+.select-all-container label {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.card-count {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Scrollbar styling */
+.lesson-selection-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.lesson-selection-list::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+.lesson-selection-list::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+.lesson-selection-list::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-purple);
+}
+
+/* Modal Actions */
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn-cancel,
+.btn-confirm {
+  flex: 1;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  transition: all 0.3s;
+  font-size: 1rem;
+}
+
+.btn-confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}

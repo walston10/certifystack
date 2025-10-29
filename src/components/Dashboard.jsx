@@ -1,14 +1,14 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { networkPlusLessons } from '../data/courses/network-plus/lessons';
-import { networkPlusLabs } from '../data/courses/network-plus/labs';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import FlashcardPracticeModal from './FlashcardPracticeModal';
 import '../styles/Dashboard.css';
 
 function Dashboard() {
   const [completedLessons] = useLocalStorage('completedLessons', []);
-  const [completedLabs] = useLocalStorage('completedLabs', []);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const completed = completedLessons.length;
-  const labsCompleted = completedLabs.length;
   const progress = (completed / networkPlusLessons.length) * 100;
   // Use 30 days total for the "Days to Go" calculation for simplicity
   const daysRemaining = Math.max(0, 30 - Math.floor(completed * (30 / networkPlusLessons.length))); 
@@ -45,7 +45,7 @@ function Dashboard() {
               <span className="stat-label">Total Lessons</span>
             </div>
             <div className="stat-item">
-              <span className="stat-value">{labsCompleted}/{networkPlusLabs.length}</span>
+              <span className="stat-value">{completed}</span>
               <span className="stat-label">Completed</span>
             </div>
             <div className="stat-item">
@@ -76,22 +76,18 @@ function Dashboard() {
             <span><strong>{networkPlusLessons.length - completed}</strong> remaining</span>
           </div>
         </div>
-        <div className="progress-card">
+        <div className="progress-card practice-card">
           <div className="progress-header">
-            <h2>Lab Progress</h2>
-            <span className="progress-percentage">{Math.round((labsCompleted / networkPlusLabs.length) * 100)}%</span>
+            <h2>Practice Center</h2>
           </div>
-          
-          <div className="progress-bar-container">
-            <div 
-              className="progress-bar-fill" 
-              style={{ width: `${(labsCompleted / networkPlusLabs.length) * 100}%` }}
-            />
-          </div>
-          
-          <div className="progress-details">
-            <span><strong>{labsCompleted}</strong> of <strong>{networkPlusLabs.length}</strong> labs completed</span>
-            <span><strong>{networkPlusLabs.length - labsCompleted}</strong> remaining</span>
+          <div className="practice-card-body">
+            <p>Ready to review? Create a custom flashcard session from multiple lessons to test your knowledge.</p>
+            <button 
+              className="btn-start-practice"
+              onClick={() => setIsModalOpen(true)}
+            >
+              🃏 Start Practice Session
+            </button>
           </div>
         </div>
       </section>
@@ -134,6 +130,8 @@ function Dashboard() {
           ))}
         </div>
       </section>
+
+      <FlashcardPracticeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 }
