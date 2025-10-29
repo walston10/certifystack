@@ -1,24 +1,10 @@
 import { useState } from 'react';
-import { lesson1Flashcards, lesson2Flashcards } from '../data/courses/network-plus/flashcards';
+import { getFlashcardsByLesson } from '../data/courses/network-plus/flashcards/index.js';
 import '../styles/FlashcardActivity.css';
 
 function FlashcardActivity({ lessonId }) {
-  // Get the correct flashcards based on lessonId
-  const getFlashcardsForLesson = (id) => {
-    switch(id) {
-      case 1:
-        return lesson1Flashcards;
-      case 2:
-        return lesson2Flashcards;
-      // Add more cases as you create more lessons
-      default:
-        return [];
-    }
-  };
-
-  // Shuffle cards on initial load
   const [cards] = useState(() => {
-    const lessonCards = getFlashcardsForLesson(lessonId);
+    const lessonCards = getFlashcardsByLesson(lessonId);
     const shuffled = [...lessonCards];
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));

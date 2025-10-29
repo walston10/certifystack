@@ -41,12 +41,66 @@ export const networkPlusLabs = [
     completed: false
   },
   {
+    id: 3,
+    lessonId: 3,
+    title: "IP Address Analysis",
+    difficulty: "Beginner",
+    estimatedTime: "20-30 min",
+    labPath: "/content/network-plus/labs/lab-03.md",
+    solutionPath: "/content/network-plus/solutions/lab-03.md",
+    objectives: [
+      "Identify IP address classes",
+      "Differentiate between public and private IP addresses",
+      "Analyze APIPA and loopback addresses"
+    ],
+    prerequisites: [2],
+    skillsGained: ["IP Address Identification", "Private vs. Public IPs", "Special Address Recognition"],
+    xpReward: 50,
+    completed: false
+  },
+  {
+    id: 4,
+    lessonId: 4,
+    title: "Subnet Mask and CIDR Practice",
+    difficulty: "Beginner",
+    estimatedTime: "25-35 min",
+    labPath: "/content/network-plus/labs/lab-04.md",
+    solutionPath: "/content/network-plus/solutions/lab-04-solution.md",
+    objectives: [
+      "Convert CIDR notation to dotted decimal",
+      "Calculate usable hosts for a given subnet mask",
+      "Identify network and broadcast addresses"
+    ],
+    prerequisites: [3],
+    skillsGained: ["CIDR Notation", "Subnet Mask Calculation", "Host Calculation"],
+    xpReward: 75,
+    completed: false
+  },
+  {
+    id: 5,
+    lessonId: 5,
+    title: "Subnetting a /24 Network",
+    difficulty: "Intermediate",
+    estimatedTime: "30-40 min",
+    labPath: "/content/network-plus/labs/lab-05.md",
+    solutionPath: "/content/network-plus/solutions/lab-05-solution.md",
+    objectives: [
+      "Divide a Class C network into smaller subnets",
+      "Determine the new subnet mask and magic number",
+      "Map out the range of each new subnet"
+    ],
+    prerequisites: [4],
+    skillsGained: ["Subnetting", "Address Planning", "Magic Number Method"],
+    xpReward: 100,
+    completed: false
+  },
+  {
     id: 6,
     lessonId: 6,
     title: "VLSM Network Design Challenge",
     difficulty: "Intermediate",
-    estimatedTime: "30-40 min",
-    labPath: "/content/network-plus/labs/lab-06-vlsm-design.md",
+    estimatedTime: "30-40 min", // Typo was here in your local file
+    labPath: "/content/network-plus/labs/lab-06.md",
     solutionPath: "/content/network-plus/solutions/lab-06-solution.md",
     objectives: [
       "Design efficient IP addressing schemes",

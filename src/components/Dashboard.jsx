@@ -1,26 +1,32 @@
 import { Link } from 'react-router-dom';
 import { networkPlusLessons } from '../data/courses/network-plus/lessons';
+import { networkPlusLabs } from '../data/courses/network-plus/labs';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 import '../styles/Dashboard.css';
 
 function Dashboard() {
-  const completed = networkPlusLessons.filter(l => l.completed).length;
+  const [completedLessons] = useLocalStorage('completedLessons', []);
+  const [completedLabs] = useLocalStorage('completedLabs', []);
+  const completed = completedLessons.length;
+  const labsCompleted = completedLabs.length;
   const progress = (completed / networkPlusLessons.length) * 100;
-  const daysRemaining = 30 - completed; // Rough estimate
+  // Use 30 days total for the "Days to Go" calculation for simplicity
+  const daysRemaining = Math.max(0, 30 - Math.floor(completed * (30 / networkPlusLessons.length))); 
 
   return (
     <div className="dashboard">
       {/* Header */}
       <header className="header">
         <div className="logo">
-          <span className="logo-icon">⚡</span>
+          <span className="logo-icon">🚀</span> {/* Updated to a Rocket icon */}
           <span>CertifyStack</span>
         </div>
         <nav>
           <button className="nav-btn">
-            📚 <span>Courses</span>
+            🎓 <span>Courses</span> {/* Updated Icon */}
           </button>
           <button className="nav-btn">
-            📊 <span>Progress</span>
+            📈 <span>Progress</span> {/* Updated Icon */}
           </button>
         </nav>
       </header>
@@ -39,12 +45,12 @@ function Dashboard() {
               <span className="stat-label">Total Lessons</span>
             </div>
             <div className="stat-item">
-              <span className="stat-value">{completed}</span>
+              <span className="stat-value">{labsCompleted}/{networkPlusLabs.length}</span>
               <span className="stat-label">Completed</span>
             </div>
             <div className="stat-item">
               <span className="stat-value">{daysRemaining}</span>
-              <span className="stat-label">Days to Go</span>
+              <span className="stat-label">Target Days Left</span> {/* Improved label */}
             </div>
           </div>
         </div>
@@ -66,8 +72,26 @@ function Dashboard() {
           </div>
           
           <div className="progress-details">
-            <span>{completed} of {networkPlusLessons.length} lessons completed</span>
-            <span>{networkPlusLessons.length - completed} remaining</span>
+            <span><strong>{completed}</strong> of <strong>{networkPlusLessons.length}</strong> lessons completed</span>
+            <span><strong>{networkPlusLessons.length - completed}</strong> remaining</span>
+          </div>
+        </div>
+        <div className="progress-card">
+          <div className="progress-header">
+            <h2>Lab Progress</h2>
+            <span className="progress-percentage">{Math.round((labsCompleted / networkPlusLabs.length) * 100)}%</span>
+          </div>
+          
+          <div className="progress-bar-container">
+            <div 
+              className="progress-bar-fill" 
+              style={{ width: `${(labsCompleted / networkPlusLabs.length) * 100}%` }}
+            />
+          </div>
+          
+          <div className="progress-details">
+            <span><strong>{labsCompleted}</strong> of <strong>{networkPlusLabs.length}</strong> labs completed</span>
+            <span><strong>{networkPlusLabs.length - labsCompleted}</strong> remaining</span>
           </div>
         </div>
       </section>
@@ -83,14 +107,17 @@ function Dashboard() {
         
         <div className="lessons-grid">
           {networkPlusLessons.map(lesson => (
-            <div key={lesson.id} className={`lesson-card ${lesson.locked ? 'locked' : ''}`}>
+            <div 
+              key={lesson.id} 
+              className={`lesson-card ${lesson.locked ? 'locked' : ''} ${completedLessons.includes(lesson.id) ? 'completed' : ''}`}
+            >
               <div className="lesson-header-card">
                 <span className="lesson-number">Lesson {lesson.id}</span>
                 <span className="lesson-time">⏱ {lesson.time}</span>
               </div>
               
               <h3>{lesson.title}</h3>
-              <p className="lesson-domain">📂 {lesson.domain}</p>
+              <p className="lesson-domain">⚙️ {lesson.domain}</p>
               
               {lesson.locked ? (
                 <button className="lesson-btn btn-locked" disabled>
@@ -99,7 +126,7 @@ function Dashboard() {
               ) : (
                 <Link to={`/lesson/${lesson.id}`}>
                   <button className="lesson-btn btn-start">
-                    ▶ Start Lesson
+                    {completedLessons.includes(lesson.id) ? 'Review Lesson' : '▶ Start Lesson'}
                   </button>
                 </Link>
               )}

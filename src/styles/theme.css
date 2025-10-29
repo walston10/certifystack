@@ -1,75 +1,51 @@
 :root {
   /* Backgrounds */
-  --bg-primary: #0a0e27;
-  --bg-secondary: #141b2d;
-  --bg-tertiary: #1e293b;
-  
+  --bg-primary: #0b0f1a;         /* page */
+  --bg-elev-1:  #111729;         /* cards */
+  --bg-elev-2:  #162036;         /* hovers/pressed */
+  --bg-glass:   rgba(15, 22, 40, 0.6);
+
   /* Accents */
-  --accent-cyan: #00d9ff;
-  --accent-purple: #667eea;
-  --accent-pink: #764ba2;
-  --accent-green: #00ff88;
-  
+  --accent-cyan:   #00d9ff;
+  --accent-blue:   #3b82f6;
+  --accent-violet: #7c3aed;
+  --accent-green:  #10b981;
+
   /* Text */
-  --text-primary: #ffffff;
-  --text-secondary: #e2e8f0;
-  --text-muted: #94a3b8;
-  --text-dark: #64748b;
-  
-  /* Semantic */
-  --success: #00ff88;
-  --error: #ff4444;
-  --warning: #ffaa00;
-  
-  /* Effects */
-  --glow-cyan: 0 0 20px rgba(0, 217, 255, 0.3);
-  --glow-purple: 0 0 20px rgba(102, 126, 234, 0.3);
+  --text-primary:   #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted:     #8aa0b7;
+
+  /* Lines/Effects */
+  --line: rgba(148, 163, 184, 0.12);
+  --line-strong: rgba(148, 163, 184, 0.24);
+  --glow-cyan: 0 0 24px rgba(0, 217, 255, 0.35);
+  --glow-blue: 0 0 24px rgba(59, 130, 246, 0.28);
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
 
 body {
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -200px, rgba(0,217,255,.08), transparent 70%),
+    radial-gradient(900px 500px at 110% 20%, rgba(124,58,237,.07), transparent 70%),
+    var(--bg-primary);
+  color: var(--text-secondary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--bg-primary);
-  color: var(--text-secondary);
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', sans-serif;
-  color: var(--text-primary);
-}
-
-code, pre {
-  font-family: 'Fira Code', monospace;
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--bg-tertiary);
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-purple);
-}
-
-/* Selection */
-::selection {
-  background: var(--accent-cyan);
-  color: var(--bg-primary);
+/* subtle grid */
+body::before{
+  content:"";
+  position:fixed; inset:0; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(60% 60% at 50% 20%, black, transparent 80%);
+  opacity:.35;
 }

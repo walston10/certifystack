@@ -1,0 +1,1361 @@
+# CompTIA Network+ (N10-009) Complete Curriculum Outline
+## 30-Day Certification Path
+
+---
+
+## **Module 1: Networking Concepts** (Domain 1.0 - 23% of exam)
+
+### **Lesson 1: OSI Model & TCP/IP** âœ… COMPLETE
+**Time:** 25-30 minutes  
+**Exam Objectives:** 1.1 - Compare and contrast the Open Systems Interconnection (OSI) model layers and encapsulation concepts
+
+**Topics Covered:**
+- All 7 OSI layers (Application, Presentation, Session, Transport, Network, Data Link, Physical)
+- Layer functions and protocols at each layer
+- TCP vs UDP (connection-oriented vs connectionless)
+- Data encapsulation and de-encapsulation
+- PDUs (segments, packets, frames, bits)
+- Devices at each layer (hubs, switches, routers)
+- TCP/IP model (4 layers) vs OSI model (7 layers)
+- Troubleshooting with the OSI model
+
+---
+
+### **Lesson 2: Network Topologies & Types** âœ… COMPLETE
+**Time:** 20-25 minutes  
+**Exam Objectives:** 1.2 - Explain the characteristics of network topologies and network types
+
+**Topics Covered:**
+- Physical topologies: Star, Mesh (full/partial), Bus, Ring, Hybrid, Point-to-point
+- Logical vs physical topology
+- Topology advantages and disadvantages
+- Connection formulas (mesh: n(n-1)/2)
+- When to use which topology
+- Real-world topology applications
+- WAN topologies and connections
+
+---
+
+### **Lesson 3: IP Addressing Fundamentals** ðŸ†• NEW
+**Time:** 20-25 minutes  
+**Exam Objectives:** 1.4 - Given a scenario, configure a subnet and use appropriate IP addressing schemes (Part 1)
+
+**Topics Covered:**
+- IPv4 address structure (32-bit, dotted decimal notation)
+- Binary fundamentals for networking
+- Decimal to binary conversion (and reverse)
+- Powers of 2 memorization (128, 64, 32, 16, 8, 4, 2, 1)
+- Octets and bit positions
+- IP address classes (A, B, C, D, E)
+  - Class A: 1.0.0.0 to 126.255.255.255 (/8)
+  - Class B: 128.0.0.0 to 191.255.255.255 (/16)
+  - Class C: 192.0.0.0 to 223.255.255.255 (/24)
+  - Class D: Multicast (224-239)
+  - Class E: Experimental (240-255)
+- Public vs Private IP addresses (RFC 1918)
+  - 10.0.0.0/8
+  - 172.16.0.0/12
+  - 192.168.0.0/16
+- Special IP addresses
+  - Loopback: 127.0.0.1
+  - APIPA: 169.254.0.0/16 (link-local)
+  - Default route: 0.0.0.0
+- Network portion vs host portion concept
+
+---
+
+### **Lesson 4: Subnet Masks and CIDR Notation** ðŸ†• NEW
+**Time:** 20-25 minutes  
+**Exam Objectives:** 1.4 - Given a scenario, configure a subnet and use appropriate IP addressing schemes (Part 2)
+
+**Topics Covered:**
+- What is a subnet mask
+- How subnet masks work (binary ANDing)
+- Dotted decimal subnet masks
+  - 255.0.0.0 (/8)
+  - 255.255.0.0 (/16)
+  - 255.255.255.0 (/24)
+  - And all common masks through /30
+- CIDR (Classless Inter-Domain Routing) notation
+- Slash notation (/24, /26, /28, /30)
+- Converting between CIDR and dotted decimal
+- Network bits vs host bits
+- Calculating usable hosts formula: 2^(host bits) - 2
+- Why we subtract 2 (network address + broadcast address)
+- Common CIDR blocks and their host counts
+  - /30 = 2 usable hosts
+  - /29 = 6 usable hosts
+  - /28 = 14 usable hosts
+  - /27 = 30 usable hosts
+  - /26 = 62 usable hosts
+  - /25 = 126 usable hosts
+  - /24 = 254 usable hosts
+- Network address identification
+- Broadcast address identification
+- First usable host and last usable host
+
+---
+
+### **Lesson 5: Subnetting Fundamentals** ðŸ†• NEW
+**Time:** 25-30 minutes  
+**Exam Objectives:** 1.4 - Given a scenario, configure a subnet and use appropriate IP addressing schemes (Part 3)
+
+**Topics Covered:**
+- Why we subnet networks
+  - Security and isolation
+  - Performance (reducing broadcast domains)
+  - Organization (departments, floors, buildings)
+  - Efficient IP address usage
+- Requirements gathering for subnetting
+- Borrowing bits from the host portion
+- Subnetting methodology: "Magic Number" method
+  - Formula: 256 - subnet mask octet = increment
+- Subnetting a /24 network into equal subnets
+  - Create 2 subnets (/25)
+  - Create 4 subnets (/26)
+  - Create 8 subnets (/27)
+- For each subnet, identify:
+  - Network address
+  - First usable host
+  - Last usable host
+  - Broadcast address
+  - Number of usable hosts
+- Subnet ranges and boundaries
+- Common mistakes and how to avoid them
+- Practice problems (instructor-guided)
+- Real-world scenario: Dividing office network
+
+---
+
+### **Lesson 6: Advanced Subnetting & VLSM** ðŸ†• NEW
+**Time:** 25-30 minutes  
+**Exam Objectives:** 1.4 - Given a scenario, configure a subnet and use appropriate IP addressing schemes (Part 4)
+
+**Topics Covered:**
+- Variable Length Subnet Masking (VLSM)
+- Why VLSM is necessary
+- VLSM methodology
+  - Always start with largest subnet first
+  - Work down to smallest
+  - Track available address space
+- Designing efficient IP schemes with VLSM
+- Real-world VLSM scenarios
+  - Large department: /25 (120 hosts)
+  - Medium department: /26 (50 hosts)
+  - Small department: /28 (10 hosts)
+  - Point-to-point WAN link: /30 (2 hosts)
+- Supernetting (route aggregation/summarization)
+  - Combining multiple networks into one route
+  - CIDR summarization
+  - Benefits for routing tables
+- Classless routing
+- IP addressing best practices
+- Designing scalable IP addressing schemes
+- Troubleshooting subnet issues
+  - Wrong subnet mask
+  - IP address conflicts
+  - Misconfigured default gateway
+  - APIPA addresses (169.254.x.x)
+
+---
+
+### **Lesson 7: IPv6 Addressing and Configuration**
+**Time:** 25-30 minutes  
+**Exam Objectives:** 1.4 - Given a scenario, configure a subnet and use appropriate IP addressing schemes (Part 5)
+
+**Topics Covered:**
+- Why IPv6 was created (IPv4 address exhaustion)
+- IPv6 address format (128-bit)
+- Hexadecimal notation
+- IPv6 address structure (eight 16-bit hextets)
+- IPv6 address types
+  - Unicast (global, link-local, unique local)
+  - Multicast
+  - Anycast
+- IPv6 address shortening rules
+  - Removing leading zeros
+  - Compressing consecutive zeros (::)
+- Common IPv6 addresses
+  - ::1 (loopback)
+  - fe80::/10 (link-local)
+  - ff00::/8 (multicast)
+  - 2001::/16 (global unicast)
+- IPv6 prefix notation
+- SLAAC (Stateless Address Autoconfiguration)
+- EUI-64 address generation
+- DHCPv6 (stateful and stateless)
+- IPv6 vs IPv4 comparison
+- Dual-stack networks (running both)
+- IPv6 transition mechanisms
+  - Dual stack
+  - Tunneling (6to4, Teredo)
+  - Translation (NAT64)
+- NDP (Neighbor Discovery Protocol)
+
+---
+
+### **Lesson 8: Network Protocols and Services**
+**Time:** 25-30 minutes  
+**Exam Objectives:** 1.1, 1.6 - Protocols and services
+
+**Topics Covered:**
+- DNS (Domain Name System)
+  - Purpose and function
+  - DNS hierarchy (root, TLD, authoritative)
+  - DNS record types (A, AAAA, CNAME, MX, PTR, TXT, NS, SOA)
+  - DNS queries (recursive vs iterative)
+  - DNS caching
+  - nslookup and dig commands
+- DHCP (Dynamic Host Configuration Protocol)
+  - Purpose: automatic IP addressing
+  - DORA process (Discover, Offer, Request, Acknowledge)
+  - DHCP scope and lease time
+  - DHCP reservations
+  - DHCP options (default gateway, DNS servers)
+  - IP helper/DHCP relay
+- NTP (Network Time Protocol)
+  - Importance of time synchronization
+  - NTP stratum levels
+  - NTP servers and clients
+- IPAM (IP Address Management)
+
+---
+
+### **Lesson 9: Port Numbers and Common Protocols**
+**Time:** 20-25 minutes  
+**Exam Objectives:** 1.1, 1.5 - Ports and protocols
+
+**Topics Covered:**
+- What are port numbers (0-65535)
+- Well-known ports (0-1023)
+- Registered ports (1024-49151)
+- Dynamic/private ports (49152-65535)
+- Common protocol port numbers (MUST MEMORIZE):
+  - **FTP:** 20 (data), 21 (control)
+  - **SSH:** 22
+  - **Telnet:** 23
+  - **SMTP:** 25
+  - **DNS:** 53
+  - **DHCP:** 67 (server), 68 (client)
+  - **TFTP:** 69
+  - **HTTP:** 80
+  - **POP3:** 110
+  - **NTP:** 123
+  - **NetBIOS:** 137-139
+  - **IMAP:** 143
+  - **SNMP:** 161, 162
+  - **HTTPS:** 443
+  - **SMB:** 445
+  - **LDAP:** 389
+  - **LDAPS:** 636
+  - **RDP:** 3389
+  - **SIP:** 5060, 5061
+- TCP vs UDP port usage
+- Protocol purposes and use cases
+- Secure vs insecure protocols
+  - HTTP â†’ HTTPS
+  - FTP â†’ SFTP/FTPS
+  - Telnet â†’ SSH
+  - SMTP â†’ SMTP with TLS
+- Application layer protocols
+
+---
+
+## **Module 2: Network Infrastructure** (Domain 2.0 - 20% of exam)
+
+### **Lesson 10: Ethernet Standards and Cabling**
+**Time:** 25-30 minutes  
+**Exam Objectives:** 2.1, 2.2 - Compare physical interface and cabling types
+
+**Topics Covered:**
+- Copper cabling
+  - Twisted pair cable types
+    - Cat 5e (1 Gbps, 100m)
+    - Cat 6 (1 Gbps, 10 Gbps at 55m)
+    - Cat 6a (10 Gbps, 100m)
+    - Cat 7 (10 Gbps, shielded)
+    - Cat 8 (40 Gbps, 30m)
+  - UTP vs STP (shielded)
+  - Coaxial cable (RG-6, RG-59)
+  - Cable termination standards
+    - T568A and T568B
+    - Straight-through vs crossover
+- Ethernet standards
+  - 10BASE-T (10 Mbps)
+  - 100BASE-TX (Fast Ethernet)
+  - 1000BASE-T (Gigabit)
+  - 10GBASE-T (10 Gigabit)
+- Fiber optic cabling
+  - Single-mode fiber (SMF) - long distance
+  - Multi-mode fiber (MMF) - short distance
+  - Fiber connectors (LC, SC, ST, MTRJ)
+  - Wavelengths (850nm, 1310nm, 1550nm)
+  - Ethernet over fiber
+    - 1000BASE-SX, 1000BASE-LX
+    - 10GBASE-SR, 10GBASE-LR
+- Transceivers and media converters
+- SFP, SFP+, QSFP modules
+- Cable distance limitations
+- Plenum vs non-plenum rated cable
+
+---
+
+### **Lesson 11: Switches, VLANs, and Trunking**
+**Time:** 30-35 minutes  
+**Exam Objectives:** 2.1, 2.3 - Network devices and VLANs
+
+**Topics Covered:**
+- Switch fundamentals
+  - How switches work (MAC address tables)
+  - Layer 2 switching
+  - Collision domains vs broadcast domains
+  - Switch forwarding methods
+- MAC address tables
+  - Learning
+  - Flooding
+  - Forwarding
+  - Filtering
+  - Aging
+- VLANs (Virtual LANs)
+  - Purpose of VLANs
+  - VLAN benefits (security, performance, organization)
+  - VLAN IDs (1-4094)
+  - Default VLAN (VLAN 1)
+  - Data VLANs
+  - Voice VLANs
+  - Native VLAN
+  - Management VLAN
+- Trunking
+  - 802.1Q tagging
+  - VLAN tagging
+  - Trunk ports vs access ports
+  - Allowed VLANs on trunks
+- Inter-VLAN routing
+  - Router on a stick (ROAS)
+  - Layer 3 switch (SVI)
+- Spanning Tree Protocol (STP)
+  - Purpose: prevent loops
+  - Root bridge election
+  - Port states (blocking, listening, learning, forwarding)
+  - RSTP (Rapid Spanning Tree)
+- Port security
+- Port mirroring (SPAN)
+
+---
+
+### **Lesson 12: Routing Fundamentals and Protocols**
+**Time:** 30-35 minutes  
+**Exam Objectives:** 2.1, 2.2 - Routing concepts and protocols
+
+**Topics Covered:**
+- Routing fundamentals
+  - What is routing
+  - Routing table
+  - Default gateway
+  - Static routes vs dynamic routes
+  - Administrative distance
+  - Routing metrics (hop count, bandwidth, delay)
+- Routing protocols
+  - Distance vector vs link state vs hybrid
+  - Interior vs Exterior Gateway Protocols
+- RIP (Routing Information Protocol)
+  - Distance vector
+  - Hop count metric (max 15)
+  - RIPv1 vs RIPv2
+  - Slow convergence
+- OSPF (Open Shortest Path First)
+  - Link state protocol
+  - Cost metric (based on bandwidth)
+  - Areas and Area 0 (backbone)
+  - DR and BDR (Designated Router)
+  - Fast convergence
+  - Scalable
+- EIGRP (Enhanced Interior Gateway Routing Protocol)
+  - Hybrid protocol (Cisco proprietary)
+  - Composite metric
+  - Fast convergence
+- BGP (Border Gateway Protocol)
+  - Exterior gateway protocol
+  - Path vector protocol
+  - Used on the internet between ISPs
+  - AS (Autonomous System) numbers
+- Route summarization/aggregation
+- Routing loops and prevention
+
+---
+
+### **Lesson 13: Wireless Networking (Wi-Fi 6/6E, 802.11)**
+**Time:** 30-35 minutes  
+**Exam Objectives:** 2.4 - Wireless standards and technologies
+
+**Topics Covered:**
+- Wireless standards (802.11)
+  - 802.11a (5 GHz, 54 Mbps)
+  - 802.11b (2.4 GHz, 11 Mbps)
+  - 802.11g (2.4 GHz, 54 Mbps)
+  - 802.11n (Wi-Fi 4) - dual band, 600 Mbps
+  - 802.11ac (Wi-Fi 5) - 5 GHz, multi-gigabit
+  - 802.11ax (Wi-Fi 6/6E) - 2.4/5/6 GHz, improved efficiency
+- Wireless frequencies
+  - 2.4 GHz band (channels 1, 6, 11 non-overlapping)
+  - 5 GHz band (more channels, less interference)
+  - 6 GHz band (Wi-Fi 6E only)
+- Wireless channels and channel bonding
+- MIMO (Multiple Input Multiple Output)
+- MU-MIMO (Multi-User MIMO)
+- Beamforming
+- SSID (Service Set Identifier)
+  - Broadcasting vs hidden
+- Wireless modes
+  - Infrastructure (AP-based)
+  - Ad-hoc (peer-to-peer)
+- Wireless encryption (covered in security module)
+- Wireless site surveys
+- Heat maps
+- Roaming and handoff
+- Wireless controllers
+- Wireless mesh networks
+
+---
+
+### **Lesson 14: Network Devices (Routers, Firewalls, Load Balancers)**
+**Time:** 25-30 minutes  
+**Exam Objectives:** 2.1 - Compare and contrast various devices
+
+**Topics Covered:**
+- Networking devices overview
+- **Layer 1 devices:**
+  - Hubs (obsolete)
+  - Repeaters
+  - Media converters
+- **Layer 2 devices:**
+  - Switches
+  - Bridges
+  - Wireless Access Points (WAPs)
+- **Layer 3 devices:**
+  - Routers
+  - Layer 3 switches (multilayer)
+- **Security devices:**
+  - Firewalls (stateful, stateless, next-gen)
+  - IDS (Intrusion Detection System)
+  - IPS (Intrusion Prevention System)
+  - Unified Threat Management (UTM)
+- **Optimization devices:**
+  - Load balancers (Layer 4 and Layer 7)
+  - Proxy servers (forward, reverse)
+  - Content filters
+  - VPN concentrators
+- **Other devices:**
+  - Modems
+  - VoIP devices (phones, gateways)
+  - Controllers (wireless, SDN)
+  - Network attached storage (NAS)
+  - Storage area network (SAN)
+- Device placement in network design
+
+---
+
+### **Lesson 15: Cloud Concepts and Virtualization**
+**Time:** 25-30 minutes  
+**Exam Objectives:** 1.2, 1.8 - Cloud and virtualization
+
+**Topics Covered:**
+- Cloud service models
+  - IaaS (Infrastructure as a Service) - AWS EC2, Azure VMs
+  - PaaS (Platform as a Service) - Heroku, Google App Engine
+  - SaaS (Software as a Service) - Office 365, Gmail, Salesforce
+- Cloud deployment models
+  - Public cloud
+  - Private cloud
+  - Hybrid cloud
+  - Community cloud
+- Cloud connectivity
+  - VPN connections
+  - Direct connections (AWS Direct Connect, Azure ExpressRoute)
+- Virtualization concepts
+  - Hypervisors (Type 1 vs Type 2)
+  - Virtual machines (VMs)
+  - Virtual switches
+  - Virtual routers
+  - Virtual firewalls
+  - Network Function Virtualization (NFV)
+- Containers
+  - Docker
+  - Kubernetes
+- Software-Defined Networking (SDN)
+  - Control plane vs data plane separation
+  - Centralized management
+  - OpenFlow
+- SD-WAN (Software-Defined WAN)
+- Elasticity and scalability
+- Multitenancy
+
+---
+
+## **Module 3: Network Operations** (Domain 3.0 - 20% of exam)
+
+### **Lesson 16: Network Documentation and Diagrams**
+**Time:** 20-25 minutes  
+**Exam Objectives:** 3.1 - Network documentation
+
+**Topics Covered:**
+- Importance of documentation
+- Network topology diagrams
+  - Physical topology diagrams
+  - Logical topology diagrams
+  - Rack diagrams
+  - Wiring diagrams
+- Documentation types
+  - Network policies and procedures
+  - Configuration documentation
+  - IP address management (IPAM) documentation
+  - Physical network diagrams
+  - Logical network diagrams
+  - Site survey reports
+- Change management documentation
+  - Change requests
+  - Approval process
+  - Rollback plans
+  - Documentation updates
+- Labeling and naming conventions
+- Asset management
+- Standard Operating Procedures (SOPs)
+- Disaster recovery documentation
+- Network baseline documentation
+
+---
+
+### **Lesson 17: Monitoring Tools and SNMP**
+**Time:** 25-30 minutes  
+**Exam Objectives:** 3.1, 5.3 - Monitoring and tools
+
+**Topics Covered:**
+- Network monitoring importance
+- SNMP (Simple Network Management Protocol)
+  - SNMPv1, v2c, v3
+  - SNMP components (manager, agent, MIB)
+  - SNMP traps
+  - SNMP polling
+  - Security concerns (SNMPv3 encryption)
+- Syslog
+  - Centralized logging
+  - Severity levels (0-7)
+  - Syslog servers
+- NetFlow/sFlow/IPFIX
+  - Traffic flow monitoring
+  - Bandwidth analysis
+- Performance monitoring
+  - Interface statistics
+  - CPU and memory utilization
+  - Bandwidth utilization
+  - Error rates
+  - Packet loss
+  - Latency and jitter
+- Availability monitoring
+  - Uptime monitoring
+  - SNMP availability checks
+- Environmental monitoring
+  - Temperature
+  - Humidity
+  - Power
+- Network monitoring tools
+  - PRTG
+  - SolarWinds
+  - Nagios
+  - Zabbix
+- Alerting and notifications
+
+---
+
+### **Lesson 18: Backup and Disaster Recovery**
+**Time:** 20-25 minutes  
+**Exam Objectives:** 3.2 - Business continuity
+
+**Topics Covered:**
+- Backup types
+  - Full backup
+  - Incremental backup
+  - Differential backup
+  - Snapshot
+- Backup strategies
+  - 3-2-1 rule (3 copies, 2 media types, 1 offsite)
+  - Grandfather-Father-Son (GFS)
+  - Backup frequency
+  - Retention policies
+- Backup locations
+  - On-site backup
+  - Off-site backup
+  - Cloud backup
+- Disaster recovery planning
+  - Business continuity plan (BCP)
+  - Disaster recovery plan (DRP)
+  - Recovery time objective (RTO)
+  - Recovery point objective (RPO)
+  - Mean time to repair (MTTR)
+  - Mean time between failures (MTBF)
+- Configuration backups
+  - Device configurations
+  - Startup-config vs running-config
+- Testing backups and DR plans
+- Cold site, warm site, hot site
+
+---
+
+### **Lesson 19: High Availability and Redundancy**
+**Time:** 25-30 minutes  
+**Exam Objectives:** 3.2, 3.3 - High availability concepts
+
+**Topics Covered:**
+- High availability concepts
+  - Uptime requirements (99.9%, 99.99%, 99.999%)
+  - Single points of failure (SPOFs)
+- Redundancy types
+  - Device redundancy
+  - Link redundancy
+  - Power redundancy
+  - Site redundancy
+- First Hop Redundancy Protocols (FHRP)
+  - HSRP (Hot Standby Router Protocol) - Cisco
+  - VRRP (Virtual Router Redundancy Protocol) - standard
+  - GLBP (Gateway Load Balancing Protocol)
+  - Virtual IP addressing
+- Load balancing
+  - Active-active vs active-passive
+  - Round-robin
+  - Least connections
+  - Layer 4 vs Layer 7 load balancing
+- Link aggregation
+  - LACP (Link Aggregation Control Protocol)
+  - EtherChannel (Cisco)
+  - Increased bandwidth and redundancy
+- Network Interface Card (NIC) teaming
+- Multipathing
+- Clustering
+- Geographic redundancy
+
+---
+
+### **Lesson 20: Physical and Environmental Security**
+**Time:** 20-25 minutes  
+**Exam Objectives:** 4.1 - Physical security
+
+**Topics Covered:**
+- Physical security controls
+  - Badge readers and access cards
+  - Biometrics (fingerprint, retina, facial)
+  - Key fobs and smart cards
+  - Security guards
+  - Video surveillance (CCTV)
+  - Motion detection
+- Physical barriers
+  - Locks (traditional, electronic)
+  - Mantraps
+  - Bollards
+  - Fencing
+  - Gates
+- Asset tracking
+  - RFID tags
+  - Asset management systems
+  - Tamper detection
+- Environmental controls
+  - HVAC (heating, ventilation, air conditioning)
+  - Temperature monitoring
+  - Humidity control
+  - Fire suppression systems
+  - Flood detection
+- Data center security
+  - Hot aisle/cold aisle
+  - Rack security
+  - Cable management and security
+- Wireless security (physical aspects)
+  - War driving
+  - Rogue access points
+  - Site surveys
+
+---
+
+## **Module 4: Network Security** (Domain 4.0 - 27% of exam)
+
+### **Lesson 21: Network Threats and Vulnerabilities**
+**Time:** 30-35 minutes  
+**Exam Objectives:** 4.1, 4.4 - Security concepts and attacks
+
+**Topics Covered:**
+- Common network attacks
+  - **DoS/DDoS** (Denial of Service)
+    - SYN flood
+    - UDP flood
+    - Ping flood
+    - Smurf attack
+    - Amplification attacks
+  - **On-path attacks** (Man-in-the-middle)
+  - **ARP poisoning/spoofing**
+  - **MAC flooding**
+  - **MAC spoofing**
+  - **IP spoofing**
+  - **DNS poisoning/spoofing**
+  - **VLAN hopping**
+  - **Rogue DHCP server**
+  - **Evil twin** (wireless)
+  - **Deauth attacks** (wireless)
+  - **Brute force attacks**
+  - **Dictionary attacks**
+- Social engineering
+  - Phishing
+  - Spear phishing
+  - Vishing (voice)
+  - Smishing (SMS)
+  - Tailgating/piggybacking
+- Malware types
+  - Virus
+  - Worm
+  - Trojan
+  - Ransomware
+  - Rootkit
+  - Botnet
+- Vulnerabilities
+  - Unpatched systems
+  - Zero-day vulnerabilities
+  - Misconfigurations
+  - Default credentials
+  - Open ports and services
+  - Weak passwords
+- Security principles
+  - Least privilege
+  - Defense in depth
+  - Zero trust model
+
+---
+
+### **Lesson 22: Authentication Methods**
+**Time:** 25-30 minutes  
+**Exam Objectives:** 4.1 - Authentication and authorization
+
+**Topics Covered:**
+- Authentication factors
+  - Something you know (password, PIN)
+  - Something you have (token, smart card)
+  - Something you are (biometrics)
+- Multi-factor authentication (MFA/2FA)
+- Single Sign-On (SSO)
+- Authentication protocols
+  - **RADIUS** (Remote Authentication Dial-In User Service)
+    - Centralized AAA (Authentication, Authorization, Accounting)
+    - UDP ports 1812, 1813
+    - Common for wireless and VPN
+  - **TACACS+** (Terminal Access Controller Access-Control System Plus)
+    - Cisco proprietary
+    - TCP port 49
+    - Separates AAA functions
+    - Full packet encryption
+  - **Kerberos**
+    - Ticket-based authentication
+    - KDC (Key Distribution Center)
+    - TGT (Ticket Granting Ticket)
+    - Mutual authentication
+    - Port 88
+  - **LDAP/LDAPS** (Lightweight Directory Access Protocol)
+    - Directory services (Active Directory)
+    - Port 389 (LDAP), 636 (LDAPS)
+  - **SAML** (Security Assertion Markup Language)
+    - XML-based SSO
+  - **OAuth and OpenID Connect**
+    - Delegated authorization
+- Local authentication vs centralized
+- 802.1X (port-based network access control)
+  - Supplicant, authenticator, authentication server
+  - EAP (Extensible Authentication Protocol)
+
+---
+
+### **Lesson 23: VPNs and Remote Access**
+**Time:** 30-35 minutes  
+**Exam Objectives:** 4.4 - Remote access methods
+
+**Topics Covered:**
+- VPN (Virtual Private Network) concepts
+  - Purpose: secure remote access and site-to-site connectivity
+  - Encryption and tunneling
+- VPN types
+  - **Site-to-site VPN**
+    - Connects two networks
+    - Always-on
+    - Router-to-router
+  - **Remote access VPN (client-to-site)**
+    - Individual users connecting remotely
+    - On-demand or always-on
+- VPN protocols
+  - **IPSec (Internet Protocol Security)**
+    - Suite of protocols
+    - AH (Authentication Header)
+    - ESP (Encapsulating Security Payload)
+    - IKE (Internet Key Exchange)
+    - Transport mode vs tunnel mode
+  - **SSL/TLS VPN**
+    - Browser-based or client-based
+    - Port 443 (looks like HTTPS)
+    - Easier to deploy (no client needed for clientless)
+  - **PPTP** (Point-to-Point Tunneling Protocol) - legacy, insecure
+  - **L2TP** (Layer 2 Tunneling Protocol)
+    - Usually combined with IPSec (L2TP/IPSec)
+  - **OpenVPN**
+    - Open source
+    - SSL/TLS-based
+  - **WireGuard**
+    - Modern, lightweight
+    - Fast performance
+- VPN concentrators
+- Split tunneling vs full tunneling
+- Remote desktop protocols
+  - **RDP** (Remote Desktop Protocol) - port 3389
+  - **VNC** (Virtual Network Computing)
+  - **SSH** (Secure Shell) - port 22
+- Remote access security
+  - VPN authentication
+  - VPN encryption (AES)
+  - Certificate-based authentication
+
+---
+
+### **Lesson 24: Firewalls and Access Control Lists**
+**Time:** 30-35 minutes  
+**Exam Objectives:** 4.1, 4.3 - Firewalls and ACLs
+
+**Topics Covered:**
+- Firewall fundamentals
+  - Purpose: filter traffic based on rules
+  - Inbound vs outbound rules
+  - Implicit deny (default deny all)
+- Firewall types
+  - **Stateless firewall (packet filtering)**
+    - Examines each packet independently
+    - Checks against ACL rules
+    - Fast but limited
+  - **Stateful firewall**
+    - Tracks connection state
+    - Allows return traffic for established connections
+    - More secure
+  - **Next-Generation Firewall (NGFW)**
+    - Application awareness
+    - Deep packet inspection (DPI)
+    - Integrated IPS
+    - User/identity awareness
+    - SSL inspection
+  - **Web Application Firewall (WAF)**
+    - Protects web applications
+    - Layer 7 filtering
+- Firewall deployment
+  - Network-based firewalls
+  - Host-based firewalls (software)
+  - Screened subnet (DMZ)
+- Access Control Lists (ACLs)
+  - Standard ACLs (source IP only)
+  - Extended ACLs (source, destination, protocol, port)
+  - ACL placement (as close to source as possible)
+  - Wildcard masks
+  - Permit and deny statements
+  - ACL processing (top to bottom)
+  - Implicit deny at end
+- DMZ (Demilitarized Zone)
+  - Screened subnet
+  - Public-facing servers (web, email, DNS)
+  - Two firewalls (front and back)
+- NAT (Network Address Translation) on firewalls
+  - Static NAT (one-to-one)
+  - Dynamic NAT (pool)
+  - PAT/NAT overload (many-to-one)
+- Port forwarding
+
+---
+
+### **Lesson 25: Network Segmentation and Zero Trust**
+**Time:** 25-30 minutes  
+**Exam Objectives:** 4.1, 4.3 - Segmentation and security
+
+**Topics Covered:**
+- Network segmentation concepts
+  - Dividing networks into smaller segments
+  - Benefits: security, performance, compliance
+- Segmentation methods
+  - VLANs (logical segmentation)
+  - Subnets (IP-based segmentation)
+  - Physical segmentation
+- Screened subnets (DMZ)
+  - Placing public servers in isolated network
+  - Dual firewall architecture
+- Internal segmentation
+  - Separating departments
+  - Guest networks
+  - IoT network isolation
+  - Management network (out-of-band)
+- Microsegmentation
+  - Application-level segmentation
+  - East-west traffic filtering
+- Zero Trust security model
+  - "Never trust, always verify"
+  - Principles:
+    - Verify explicitly
+    - Least privilege access
+    - Assume breach
+  - Implementation:
+    - Continuous authentication
+    - Device compliance checks
+    - Microsegmentation
+    - Encryption everywhere
+- Network Access Control (NAC)
+  - 802.1X authentication
+  - Posture assessment
+  - Quarantine VLANs
+  - Guest access
+- Security zones
+  - Trusted zone (internal network)
+  - Untrusted zone (internet)
+  - DMZ (semi-trusted)
+
+---
+
+### **Lesson 26: Wireless Security (WPA3, EAP)**
+**Time:** 25-30 minutes  
+**Exam Objectives:** 4.4 - Wireless security
+
+**Topics Covered:**
+- Wireless security protocols
+  - **WEP (Wired Equivalent Privacy)**
+    - Deprecated, insecure (crackable in minutes)
+    - 64-bit or 128-bit keys
+    - Never use
+  - **WPA (Wi-Fi Protected Access)**
+    - TKIP encryption
+    - Better than WEP but still vulnerable
+    - Deprecated
+  - **WPA2 (802.11i)**
+    - AES encryption (CCMP)
+    - Personal (PSK - Pre-Shared Key)
+    - Enterprise (802.1X authentication)
+    - Industry standard until WPA3
+  - **WPA3**
+    - Latest standard (2018)
+    - SAE (Simultaneous Authentication of Equals)
+    - Forward secrecy
+    - Protection against offline dictionary attacks
+    - Enhanced Open (for public networks)
+    - 192-bit encryption in Enterprise mode
+- WPA2/WPA3 modes
+  - **Personal (PSK)**
+    - Single password for all users
+    - Home networks, small offices
+  - **Enterprise (802.1X)**
+    - Individual user credentials
+    - RADIUS authentication
+    - Certificate-based or username/password
+- EAP (Extensible Authentication Protocol) methods
+  - **EAP-TLS** (Transport Layer Security)
+    - Certificate-based (most secure)
+    - Requires PKI
+    - Mutual authentication
+  - **EAP-TTLS** (Tunneled TLS)
+    - Server-side certificate only
+    - Tunnel for other auth methods
+  - **PEAP** (Protected EAP)
+    - Similar to EAP-TTLS
+    - MSCHAPv2 commonly used inside tunnel
+  - **EAP-FAST** (Flexible Authentication via Secure Tunneling)
+    - Cisco proprietary
+    - PAC (Protected Access Credential)
+- Wireless security best practices
+  - Strong encryption (WPA2/WPA3)
+  - Disable WPS (Wi-Fi Protected Setup)
+  - Change default SSID
+  - Disable SSID broadcast (security through obscurity - limited benefit)
+  - MAC filtering (limited security, can be spoofed)
+  - Strong Wi-Fi passwords (minimum 12+ characters)
+  - Guest network isolation
+  - Regular firmware updates
+- Wireless authentication methods
+  - Open (no authentication)
+  - PSK (Pre-Shared Key)
+  - 802.1X (Enterprise)
+  - Captive portal
+
+---
+
+## **Module 5: Network Troubleshooting** (Domain 5.0 - 22% of exam)
+
+### **Lesson 27: Troubleshooting Methodology**
+**Time:** 20-25 minutes  
+**Exam Objectives:** 5.1 - Network troubleshooting methodology
+
+**Topics Covered:**
+- CompTIA troubleshooting methodology (7 steps)
+  1. **Identify the problem**
+     - Gather information
+     - Question users
+     - Identify symptoms
+     - Determine recent changes
+     - Duplicate the problem if possible
+  2. **Establish a theory of probable cause**
+     - Question the obvious
+     - Consider multiple approaches (OSI model)
+     - Top-to-bottom vs bottom-to-top
+  3. **Test the theory to determine the cause**
+     - If theory confirmed, move to next step
+     - If theory not confirmed, establish new theory
+  4. **Establish a plan of action**
+     - Determine steps to resolve
+     - Consider impact on users/business
+  5. **Implement the solution or escalate**
+     - Make one change at a time
+     - Document changes
+     - Escalate if beyond scope
+  6. **Verify full system functionality**
+     - Test solution
+     - Verify with user
+     - Implement preventive measures if possible
+  7. **Document findings, actions, and outcomes**
+     - Update documentation
+     - Lessons learned
+     - Knowledge base articles
+- Troubleshooting best practices
+  - Always check the simple things first
+  - Don't assume
+  - Use the OSI model
+  - Establish baselines
+  - Consider recent changes
+  - Have backups and rollback plan
+
+---
+
+### **Lesson 28: Command-Line Tools**
+**Time:** 30-35 minutes  
+**Exam Objectives:** 5.3 - Network troubleshooting tools
+
+**Topics Covered:**
+- Essential command-line tools
+  - **ping**
+    - Tests connectivity (ICMP echo request/reply)
+    - Verifies IP connectivity
+    - Shows latency (round-trip time)
+    - Usage: `ping 8.8.8.8` or `ping google.com`
+    - Options: -t (continuous), -n (count), -l (packet size)
+  - **tracert / traceroute**
+    - Shows path packets take (all hops)
+    - Identifies where connectivity fails
+    - Uses ICMP (Windows) or UDP (Linux/Mac)
+    - TTL incrementation
+    - Usage: `tracert google.com`
+  - **ipconfig / ifconfig / ip**
+    - Displays IP configuration
+    - `ipconfig` (Windows)
+    - `ifconfig` (Mac/Linux - deprecated)
+    - `ip addr` (Linux - modern)
+    - `ipconfig /all` - detailed info
+    - `ipconfig /release` - release DHCP
+    - `ipconfig /renew` - renew DHCP
+    - `ipconfig /flushdns` - clear DNS cache
+  - **nslookup / dig**
+    - DNS lookup tools
+    - Queries DNS records
+    - `nslookup google.com`
+    - `nslookup google.com 8.8.8.8` (query specific DNS server)
+    - `dig google.com` (more detailed, Linux/Mac)
+  - **netstat**
+    - Network statistics
+    - Shows active connections
+    - `netstat -a` (all connections and listening ports)
+    - `netstat -n` (numerical addresses)
+    - `netstat -r` (routing table)
+    - `netstat -ano` (with PIDs)
+  - **arp**
+    - ARP table (IP to MAC address mappings)
+    - `arp -a` (view ARP cache)
+    - `arp -d` (clear ARP cache)
+  - **route**
+    - View and modify routing table
+    - `route print` (Windows)
+    - `route add` (add static route)
+    - `route delete` (remove route)
+  - **hostname**
+    - Displays computer's hostname
+  - **nbtstat** (Windows)
+    - NetBIOS over TCP/IP statistics
+    - `nbtstat -a` (remote machine's NetBIOS names)
+    - `nbtstat -n` (local NetBIOS names)
+  - **pathping** (Windows)
+    - Combines ping and tracert
+    - Shows packet loss per hop
+  - **mtr** (Linux/Mac)
+    - Continuous traceroute with statistics
+- Advanced tools
+  - **tcpdump / Wireshark**
+    - Packet capture and analysis
+    - Deep packet inspection
+  - **curl / wget**
+    - HTTP requests from command line
+  - **ssh**
+    - Secure remote shell access
+  - **telnet**
+    - Test port connectivity
+    - `telnet google.com 80`
+
+---
+
+### **Lesson 29: Cable Testing and Physical Layer Issues**
+**Time:** 25-30 minutes  
+**Exam Objectives:** 5.2, 5.3 - Hardware tools and physical issues
+
+**Topics Covered:**
+- Physical layer problems
+  - Bad cables
+  - Incorrect cable type
+  - Wrong pinout (T568A vs T568B mismatch)
+  - Cable distance too long
+  - Interference (EMI/RFI)
+  - Damaged connectors
+  - Bad ports/transceivers
+- Cable testing tools
+  - **Cable tester**
+    - Tests continuity
+    - Wire mapping
+    - Identifies opens, shorts, miswires
+  - **Tone generator and probe (toner)**
+    - Traces cables
+    - Identifies which cable is which
+  - **Loopback adapter**
+    - Tests network interface
+    - Physical and virtual loopbacks
+  - **TDR (Time Domain Reflectometer)**
+    - Measures cable length
+    - Locates breaks in copper cables
+  - **OTDR (Optical TDR)**
+    - Tests fiber optic cables
+    - Measures attenuation
+    - Locates breaks/bends
+  - **Light meter (optical power meter)**
+    - Tests fiber signal strength
+  - **Multimeter**
+    - Tests voltage, continuity, resistance
+  - **Cable certifier**
+    - Certifies cable meets standards (Cat5e, Cat6, etc.)
+    - Tests performance at rated speeds
+  - **Spectrum analyzer**
+    - Analyzes wireless frequencies
+    - Identifies interference
+  - **Wi-Fi analyzer**
+    - Shows nearby wireless networks
+    - Channel usage
+    - Signal strength
+- Common cable issues
+  - **Attenuation** - signal loss over distance
+  - **Crosstalk** - interference between wire pairs
+    - NEXT (Near-End Crosstalk)
+    - FEXT (Far-End Crosstalk)
+  - **EMI/RFI** - electromagnetic/radio frequency interference
+  - **Incorrect termination**
+  - **Bent/broken cables**
+  - **Dirty/scratched fiber connectors**
+- Link lights and LEDs
+  - Solid green = good link
+  - Blinking = activity
+  - Amber/orange = issues (speed mismatch, etc.)
+  - No light = no connection
+
+---
+
+### **Lesson 30: Common Network Issues and Solutions**
+**Time:** 30-35 minutes  
+**Exam Objectives:** 5.2, 5.4, 5.5 - Common issues and troubleshooting
+
+**Topics Covered:**
+- Connectivity issues
+  - **No connectivity**
+    - Check Layer 1 (cables, lights)
+    - Check IP configuration
+    - Check default gateway
+    - Ping gateway, ping internet
+  - **Intermittent connectivity**
+    - Loose cables
+    - Interference (wireless)
+    - Failing hardware
+    - High utilization/congestion
+  - **Limited connectivity (APIPA 169.254.x.x)**
+    - DHCP server down or unreachable
+    - No more DHCP addresses available
+    - DHCP not configured
+  - **Can ping IP but not hostname**
+    - DNS issue
+    - Check DNS server configuration
+    - Flush DNS cache
+  - **Can reach local network but not internet**
+    - Default gateway issue
+    - DNS issue
+    - Router/firewall problem
+  - **Slow network performance**
+    - Bandwidth saturation
+    - Duplex mismatch (half/full)
+    - Latency/jitter issues
+    - QoS misconfiguration
+- IP addressing issues
+  - **DHCP issues**
+    - DHCP scope exhausted
+    - Rogue DHCP server
+    - DHCP relay not configured
+  - **IP address conflicts**
+    - Duplicate static IPs
+    - Short DHCP lease times
+  - **Incorrect subnet mask**
+    - Can't reach certain hosts
+  - **Incorrect gateway**
+    - Can't reach outside local network
+- Name resolution issues
+  - **DNS problems**
+    - Cannot resolve names
+    - Incorrect DNS server
+    - DNS cache poisoning
+- Wireless issues
+  - **Poor signal strength/coverage**
+    - Insufficient APs
+    - Interference
+    - Channel overlap
+    - Physical obstructions
+  - **Channel overlap/interference**
+    - Use non-overlapping channels (1, 6, 11)
+    - Switch to 5 GHz
+  - **Incorrect SSID/password**
+  - **Security type mismatch**
+  - **Insufficient wireless bandwidth**
+  - **Rogue access point**
+- Switching/VLAN issues
+  - **VLAN mismatch**
+    - Access port on wrong VLAN
+    - Native VLAN mismatch on trunk
+  - **Spanning tree issues**
+    - Root bridge election problems
+    - Topology changes causing reconvergence
+    - Port blocking when shouldn't
+  - **Broadcast storms**
+    - Layer 2 loops
+    - STP disabled or misconfigured
+- Routing issues
+  - **Missing routes**
+    - Static route not configured
+    - Routing protocol not advertising
+  - **Routing loops**
+    - Split horizon disabled
+    - Improper summarization
+  - **Asymmetric routing**
+- Performance issues
+  - **High latency**
+    - Long distance
+    - Congestion
+    - Routing inefficiency
+  - **Jitter** (variable latency)
+    - Congestion
+    - Affects VoIP/video
+  - **Packet loss**
+    - Congestion
+    - Faulty cables/hardware
+    - Errors on interface
+  - **Throughput issues**
+    - Bandwidth saturation
+    - Duplex mismatch
+    - QoS misconfiguration
+- Hardware issues
+  - **Port flapping** (up/down/up/down)
+    - Bad cable
+    - Faulty port/transceiver
+    - Auto-negotiation issues
+  - **CRC errors** (Cyclic Redundancy Check)
+    - Bad cable
+    - EMI/interference
+    - Duplex mismatch
+  - **Collisions** (should be 0 on switched networks)
+    - Duplex mismatch
+    - Hub still in use
+  - **Giants/Runts**
+    - Oversized/undersized frames
+    - Usually indicates hardware problem
+
+---
+
+## **Final Exam Preparation** (Days 29-30)
+
+### **Day 29: Practice Exams and Review**
+- Full-length practice exam (90 questions, 90 minutes)
+- Review weak areas
+- Flashcard review (all 30 lessons)
+- Port number memorization final drill
+- Subnetting speed drills
+
+### **Day 30: Final Review and Exam Day Prep**
+- Light review (don't cram!)
+- Review exam objectives checklist
+- Memorization final check:
+  - OSI layers
+  - Port numbers
+  - Subnet masks
+  - Private IP ranges
+  - Cable types and speeds
+- Mental preparation
+- Schedule exam or take exam
+
+---
+
+## **Key Exam Domains Breakdown**
+
+| Domain | Weight | Lessons Covered |
+|--------|--------|-----------------|
+| 1.0 Networking Concepts | 23% | Lessons 1-9 |
+| 2.0 Network Infrastructure | 20% | Lessons 10-15 |
+| 3.0 Network Operations | 20% | Lessons 16-20 |
+| 4.0 Network Security | 27% | Lessons 21-26 |
+| 5.0 Network Troubleshooting | 22% | Lessons 27-30 |
+
+**Total: 112% due to overlap**
+
+---
+
+## **Study Tips for Success**
+
+1. **Consistency:** Study daily, even if just 30 minutes
+2. **Hands-on:** Do ALL labs and activities (critical!)
+3. **Flashcards:** Review daily, especially port numbers
+4. **Subnetting:** Practice subnetting every single day
+5. **Videos:** Watch Professor Messer's entire course (free on YouTube)
+6. **Practice exams:** Take at least 3 full practice exams
+7. **Document:** Create your own study notes
+8. **Teach:** Explain concepts to others (best way to learn)
+9. **Focus on weak areas:** Spend extra time on topics you struggle with
+10. **Rest:** Don't cram the night beforeâ€”rest and confidence matter!
+
+---
+
+## **Must Memorize Lists**
+
+### **Port Numbers (Critical!)**
+FTP 20/21, SSH 22, Telnet 23, SMTP 25, DNS 53, DHCP 67/68, TFTP 69, HTTP 80, POP3 110, NTP 123, NetBIOS 137-139, IMAP 143, SNMP 161/162, HTTPS 443, SMB 445, LDAP 389, LDAPS 636, RDP 3389, SIP 5060/5061
+
+### **Subnet Masks**
+/24=255.255.255.0 (254 hosts), /25=.128 (126), /26=.192 (62), /27=.224 (30), /28=.240 (14), /29=.248 (6), /30=.252 (2)
+
+### **Private IP Ranges**
+10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16
+
+### **Cable Types**
+Cat5e (1 Gbps, 100m), Cat6 (1 Gbps, 10 Gbps@55m), Cat6a (10 Gbps, 100m)
+
+### **OSI Layers**
+Application, Presentation, Session, Transport, Network, Data Link, Physical
+
+---
+
+## **Time Commitment**
+
+- **Average:** 45-60 minutes per lesson (reading + videos + activities)
+- **Labs:** 20-30 minutes each (separate from lesson time)
+- **Flashcards:** 10-15 minutes daily review
+- **Total daily:** 60-90 minutes
+- **Total course:** 30-45 hours over 30 days
+
+---
+
+**Good luck on your Network+ journey! You've got this! ðŸš€**

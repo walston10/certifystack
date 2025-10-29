@@ -6,6 +6,11 @@
 // Import quiz modules (needed for helper functions)
 import { lesson1Quiz } from './lesson-01-quiz';
 import { lesson2Quiz } from './lesson-02-quiz';
+import { lesson3Quiz } from './lesson-03-quiz';
+import { lesson4Quiz } from './lesson-04-quiz';
+import { lesson5Quiz } from './lesson-05-quiz';
+import { lesson6Quiz } from './lesson-06-quiz';
+
 
 // Re-export quizzes for direct imports
 export { lesson1Quiz } from './lesson-01-quiz';
@@ -21,9 +26,10 @@ export { lesson2Quiz } from './lesson-02-quiz';
 const allQuizzes = {
   1: lesson1Quiz,
   2: lesson2Quiz,
-  // 3: lesson3Quiz,
-  // 4: lesson4Quiz,
-  // ... add more as you create them
+  3: lesson3Quiz,
+  4: lesson4Quiz,
+  5: lesson5Quiz,
+  6: lesson6Quiz,
 };
 
 // ============================================

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { networkPlusLessons } from '../data/courses/network-plus/lessons';
-import { networkPlusLabs } from '../data/courses/network-plus/labs';
+import { getLabByLessonId } from '../data/courses/network-plus/labs';
+import { getQuizByLesson } from '../data/courses/network-plus/quizzes';
 import FlashcardActivity from './FlashcardActivity';
 import QuizActivity from './QuizActivity';
 import OSIActivity from './OSIActivity';
@@ -15,17 +17,34 @@ function LessonViewer() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [content, setContent] = useState('');
+  const [labContent, setLabContent] = useState('');
   const [activeTab, setActiveTab] = useState('content');
+  const [showSolutionWarning, setShowSolutionWarning] = useState(false);
+  const [completedLabs, setCompletedLabs] = useLocalStorage('completedLabs', []);
   const lesson = networkPlusLessons.find(l => l.id === parseInt(id));
-  const labInfo = networkPlusLabs.find(lab => lab.lessonId === parseInt(id));
+  const labInfo = getLabByLessonId(parseInt(id));
+  const quizInfo = getQuizByLesson(parseInt(id));
+  const isLabCompleted = labInfo && completedLabs.includes(labInfo.id);
+  const hasActivity = [1, 2].includes(parseInt(id));
 
   useEffect(() => {
     // Load main lesson content from new lessons/ subdirectory
     fetch(`/content/network-plus/lessons/lesson-${id.padStart(2, '0')}.md`)
-      .then(res => res.text())
+      .then(res => res.ok ? res.text() : Promise.reject('Lesson content not found'))
       .then(text => setContent(text))
       .catch(err => console.error('Error loading lesson:', err));
-  }, [id]);
+
+    // If a lab exists for this lesson, pre-fetch its content
+    if (labInfo && labInfo.labPath) {
+      fetch(labInfo.labPath)
+        .then(res => res.ok ? res.text() : Promise.reject('Lab content not found'))
+        .then(text => setLabContent(text))
+        .catch(err => {
+          console.error('Error loading lab content:', err);
+          setLabContent('# Lab Content Not Found\n\nThis lab has not been created or linked correctly yet.');
+        });
+    }
+  }, [id, labInfo]);
 
   // Determine which activity component to show based on lesson ID
   const renderActivity = () => {
@@ -51,6 +70,17 @@ function LessonViewer() {
     }
   };
 
+  const handleViewSolution = () => {
+    navigate(`/solution/${labInfo.id}`);
+  };
+
+  const handleMarkLabComplete = () => {
+    if (labInfo && !isLabCompleted) {
+      const newCompleted = [...completedLabs, labInfo.id];
+      setCompletedLabs(newCompleted);
+    }
+  };
+
   return (
     <div className="lesson-viewer">
       <header>
@@ -70,12 +100,23 @@ function LessonViewer() {
           📖 Content
         </button>
 
-        <button
-          className={activeTab === 'activity' ? 'active' : ''}
-          onClick={() => setActiveTab('activity')}
-        >
-          🎮 Activity
-        </button>
+        {labInfo && (
+          <button
+            className={activeTab === 'lab' ? 'active' : ''}
+            onClick={() => setActiveTab('lab')}
+          >
+            🧪 Lab
+          </button>
+        )}
+
+        {hasActivity && (
+          <button
+            className={activeTab === 'activity' ? 'active' : ''}
+            onClick={() => setActiveTab('activity')}
+          >
+            🎮 Activity
+          </button>
+        )}
 
         <button
           className={activeTab === 'flashcards' ? 'active' : ''}
@@ -83,13 +124,15 @@ function LessonViewer() {
         >
           🃏 Flashcards
         </button>
-
-        <button
-          className={activeTab === 'quiz' ? 'active' : ''}
-          onClick={() => setActiveTab('quiz')}
-        >
-          ✅ Quiz
-        </button>
+        
+        {quizInfo && (
+          <button
+            className={activeTab === 'quiz' ? 'active' : ''}
+            onClick={() => setActiveTab('quiz')}
+          >
+            ✅ Quiz
+          </button>
+        )}
       </div>
 
       <div className="lesson-content">
@@ -117,40 +160,38 @@ function LessonViewer() {
                 {content}
               </ReactMarkdown>
             </div>
-
-            {/* Lab Callout Section */}
-            {labInfo && (
-              <div className="lesson-lab-section">
-                <div className="lab-callout">
-                  <h2>🧪 Hands-On Lab Available</h2>
-                  <div className="lab-info">
-                    <div className="lab-details">
-                      <h3>{labInfo.title}</h3>
-                      <div className="lab-meta">
-                        <span className={`difficulty difficulty-${labInfo.difficulty.toLowerCase()}`}>
-                          {labInfo.difficulty}
-                        </span>
-                        <span className="time">⏱️ {labInfo.estimatedTime}</span>
-                        <span className="xp">⭐ {labInfo.xpReward} XP</span>
-                      </div>
-                      <p><strong>You'll Practice:</strong></p>
-                      <ul>
-                        {labInfo.objectives.map((obj, idx) => (
-                          <li key={idx}>{obj}</li>
-                        ))}
-                      </ul>
-                    </div>
-                    <button
-                      className="start-lab-btn"
-                      onClick={() => navigate(`/lab/${labInfo.id}`)}
-                    >
-                      Start Lab →
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
           </>
+        )}
+
+        {activeTab === 'lab' && labInfo && (
+          <div className="lab-content-wrapper">
+            <div className="lab-header">
+              <h2>{labInfo.title}</h2>
+              <div className="lab-meta">
+                <span className={`difficulty difficulty-${labInfo.difficulty.toLowerCase()}`}>
+                  {labInfo.difficulty}
+                </span>
+                <span className="time">⏱️ {labInfo.estimatedTime}</span>
+                <span className="xp">⭐ {labInfo.xpReward} XP</span>
+              </div>
+              <button className="btn-solution" onClick={() => setShowSolutionWarning(true)}>
+                📝 View Solution
+              </button>
+            </div>
+            <div className="markdown-content">
+              <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                {labContent}
+              </ReactMarkdown>
+              <div className="lab-footer">
+                <button
+                  className={`btn-complete ${isLabCompleted ? 'completed' : ''}`}
+                  onClick={handleMarkLabComplete}
+                  disabled={isLabCompleted}>
+                  {isLabCompleted ? '✓ Lab Complete' : '✓ Mark Lab as Complete'}
+                </button>
+              </div>
+            </div>
+          </div>
         )}
 
         {activeTab === 'activity' && renderActivity()}
@@ -168,6 +209,36 @@ function LessonViewer() {
           </Link>
         )}
       </div>
+
+      {showSolutionWarning && (
+        <div className="modal-overlay" onClick={() => setShowSolutionWarning(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2>⚠️ Before You Continue...</h2>
+            <p>
+              Viewing the solution before attempting the lab yourself will significantly
+              reduce the learning value. The best way to learn is by struggling through
+              problems and making mistakes.
+            </p>
+            <p>
+              <strong>Have you genuinely attempted this lab?</strong>
+            </p>
+            <div className="modal-actions">
+              <button
+                className="btn-cancel"
+                onClick={() => setShowSolutionWarning(false)}
+              >
+                No, Let Me Try First
+              </button>
+              <button
+                className="btn-confirm"
+                onClick={handleViewSolution}
+              >
+                Yes, Show Solution
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

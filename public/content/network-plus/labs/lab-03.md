@@ -75,7 +75,7 @@ Now classify each of the following IP addresses from TechCorp's network:
 ### Instructions for Part 1:
 
 For each IP address, determine:
-1. **Class:** A, B, C, D, or E (or N/A for special addresses)
+1. **Class:** A, B, C, (or N/A for special addresses)
 2. **Public or Private:** Use RFC 1918 ranges
 3. **Valid for host use?** Some addresses have special purposes
 4. **Notes:** Add observations (e.g., "APIPA address - DHCP issue")
