@@ -311,113 +311,151 @@ nav {
 
 .daily-tiles-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
     padding: 20px 0;
 }
 
 /* --- Daily Tile Card Style --- */
 .daily-tile {
-    background: #1e1e2d; /* Darker background */
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    border: 1px solid #333;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--bg-tertiary);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    min-height: 250px;
-    cursor: pointer;
+    gap: 16px;
+    min-height: 280px;
+    position: relative;
+    overflow: hidden;
 }
 
 .daily-tile:hover:not(.locked) {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.2);
-    border-color: #007bff;
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 32px var(--domain-glow);
+    border-color: var(--domain-color);
 }
 
 .daily-tile.completed {
-    border: 1px solid #28a745; /* Green border for completed */
+    border-color: var(--accent-green);
+    animation: completionPulse 0.6s ease-out;
+}
+
+.daily-tile.completed::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
 }
 
 .daily-tile.locked {
     opacity: 0.5;
     cursor: not-allowed;
-    border-color: #30363d;
+    border-color: var(--bg-tertiary);
 }
 
-/* --- Header Bar with Checkbox --- */
-.tile-header-bar {
+/* --- Icon Section --- */
+.tile-icon-section {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
+}
+
+.lesson-icon {
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    display: flex;
     align-items: center;
-    margin-bottom: 15px;
+    justify-content: center;
+    transition: transform 0.3s ease;
 }
 
-.lesson-number {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--accent-purple);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+.daily-tile:hover:not(.locked) .lesson-icon {
+    transform: scale(1.1) rotate(5deg);
 }
 
+/* --- Lesson Number Badge --- */
+.lesson-number-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* --- Checkbox Styling --- */
 .completion-checkbox {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     cursor: pointer;
-    /* This makes the custom styling work */
-    appearance: none; 
-    border: 2px solid #555;
-    border-radius: 4px;
+    appearance: none;
+    border: 2px solid var(--bg-tertiary);
+    border-radius: 6px;
     background-color: transparent;
-    transition: background-color 0.2s, border-color 0.2s;
+    transition: all 0.3s ease;
+    position: relative;
 }
 
-.daily-tile.completed .completion-checkbox,
+.completion-checkbox:hover:not(:disabled) {
+    border-color: var(--accent-green);
+    transform: scale(1.1);
+}
+
 .completion-checkbox:checked {
-    background-color: #28a745;
-    border-color: #28a745;
+    background-color: var(--accent-green);
+    border-color: var(--accent-green);
 }
 
 .completion-checkbox:checked::after {
-    /* The visible tick mark */
-    content: '✓'; 
-    display: block;
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     color: white;
-    font-size: 14px;
-    text-align: center;
-    line-height: 16px;
+    font-size: 16px;
     font-weight: bold;
 }
 
 .completion-checkbox:disabled {
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: 0.4;
 }
 
-/* --- Content and Actions --- */
+/* --- Content --- */
 .tile-content {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    gap: 8px;
 }
 
 .day-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    color: #fff;
-    margin: 10px 0 5px 0;
+    color: var(--text-primary);
+    font-family: 'Space Grotesk', sans-serif;
+    line-height: 1.3;
+    margin: 0;
 }
 
 .lesson-description {
-    color: #999;
-    font-size: 1rem;
-    margin-bottom: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0;
+    opacity: 0.9;
 }
 
+/* --- Actions --- */
 .tile-actions {
     margin-top: auto;
 }
@@ -428,33 +466,69 @@ nav {
 }
 
 .tile-btn {
-    padding: 10px 15px;
+    padding: 14px 20px;
     border: none;
-    border-radius: 8px;
-    font-weight: bold;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Space Grotesk', sans-serif;
 }
 
-/* Styling the primary 'Start Day' button */
 .btn-start {
-    background-color: #007bff;
-    color: white;
-    font-size: 1.1rem;
+    color: var(--text-primary);
 }
 
 .btn-start:hover {
-    background-color: #0056b3;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--domain-glow) !important;
+}
+
+.btn-start svg {
+    transition: transform 0.3s ease;
+}
+
+.btn-start:hover svg {
+    transform: translateX(3px);
 }
 
 .btn-locked {
-    background-color: #30363d;
-    color: #8b949e;
+    background-color: var(--bg-tertiary);
+    color: var(--text-muted);
     cursor: not-allowed;
     box-shadow: none;
+}
+
+/* --- Completion Animation --- */
+@keyframes completionPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.03);
+        box-shadow: 0 0 30px var(--accent-green);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* --- Confetti Effect (Optional) --- */
+@keyframes confetti {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) rotate(720deg);
+        opacity: 0;
+    }
 }
 /* ============================================
    RESPONSIVE DESIGN

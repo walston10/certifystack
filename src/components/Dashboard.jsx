@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { PlayCircle } from 'lucide-react';
 import { networkPlusLessons } from '../data/courses/network-plus/lessons';
+import { getDomainConfig, getLessonIcon } from '../data/courses/network-plus/domainConfig';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import FlashcardPracticeModal from './FlashcardPracticeModal';
 import FlashcardStatsWidget from './FlashcardStatsWidget';
@@ -111,9 +113,11 @@ function Dashboard() {
           {networkPlusLessons.map(lesson => {
             const isCompleted = completedLessons.includes(lesson.id);
             const isLocked = lesson.locked;
+            const domainConfig = getDomainConfig(lesson.domain);
+            const IconComponent = getLessonIcon(lesson.id);
 
             const handleToggleComplete = (e) => {
-              e.stopPropagation(); // Prevent navigating to the lesson
+              e.stopPropagation();
               const newCompleted = new Set(completedLessons);
               if (newCompleted.has(lesson.id)) {
                 newCompleted.delete(lesson.id);
@@ -124,31 +128,45 @@ function Dashboard() {
             };
 
             return (
-                <div 
-                    key={lesson.id} 
-                    // Applying 'completed' class for styling the border/checkbox
+                <div
+                    key={lesson.id}
                     className={`daily-tile ${isLocked ? 'locked' : ''} ${isCompleted ? 'completed' : ''}`}
+                    style={{
+                      '--domain-color': domainConfig.primary,
+                      '--domain-glow': domainConfig.glow
+                    }}
                 >
-                    {/* --- 1. HEADER: Day Number and CHECKBOX --- */}
-                    <div className="tile-header-bar">
-                        <span className="lesson-number">Lesson {lesson.id}</span>
-                        <input 
+                    {/* Icon Header */}
+                    <div className="tile-icon-section">
+                        <div className="lesson-icon" style={{ color: domainConfig.primary }}>
+                            <IconComponent size={32} strokeWidth={2} />
+                        </div>
+                        <input
                             type="checkbox"
                             className="completion-checkbox"
                             checked={isCompleted}
-                            // Toggle completion state on click
                             onChange={handleToggleComplete}
                             disabled={isLocked}
                         />
                     </div>
-                    
-                    {/* --- 2. CONTENT --- */}
+
+                    {/* Lesson Number Badge */}
+                    <div className="lesson-number-badge" style={{
+                      backgroundColor: `${domainConfig.primary}15`,
+                      color: domainConfig.primary
+                    }}>
+                        Lesson {lesson.id}
+                    </div>
+
+                    {/* Content */}
                     <div className="tile-content">
                         <h3 className="day-title">{lesson.title}</h3>
-                        <p className="lesson-description">{lesson.domain}</p>
+                        <p className="lesson-description" style={{ color: domainConfig.primary }}>
+                            {lesson.domain}
+                        </p>
                     </div>
-            
-                    {/* --- 3. ACTIONS: Single Button (Simplified) --- */}
+
+                    {/* Actions */}
                     <div className="tile-actions">
                         {isLocked ? (
                             <button className="tile-btn btn-locked" disabled>
@@ -156,8 +174,15 @@ function Dashboard() {
                             </button>
                         ) : (
                             <Link to={`/lesson/${lesson.id}`} className="tile-btn-link">
-                                <button className="tile-btn btn-start">
-                                    {isCompleted ? 'Review Content' : '💻 Start Lesson'}
+                                <button
+                                    className="tile-btn btn-start"
+                                    style={{
+                                      background: `linear-gradient(135deg, ${domainConfig.primary}, ${domainConfig.secondary})`,
+                                      boxShadow: `0 4px 15px ${domainConfig.glow}`
+                                    }}
+                                >
+                                    <PlayCircle size={18} strokeWidth={2.5} />
+                                    <span>{isCompleted ? 'Review Lesson' : 'Start Lesson'}</span>
                                 </button>
                             </Link>
                         )}
