@@ -112,9 +112,12 @@ export function getLessonIcon(lessonId) {
   return lessonIcons[lessonId] || Network;
 }
 
-export default {
+// Named default export to satisfy ESLint
+const domainConfiguration = {
   domainColors,
   lessonIcons,
   getDomainConfig,
   getLessonIcon
 };
+
+export default domainConfiguration;

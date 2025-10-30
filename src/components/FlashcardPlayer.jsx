@@ -14,7 +14,6 @@ import '../styles/FlashcardActivity.css';
 function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lessonId = null }) {
   // Session setup state
   const [sessionStarted, setSessionStarted] = useState(false);
-  const [sessionSize, setSessionSize] = useState(null);
 
   // Study session state
   const [cards, setCards] = useState([]);
@@ -51,7 +50,6 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
     }
 
     setCards(selectedCards);
-    setSessionSize(size);
     setSessionStarted(true);
     setCurrentIndex(0);
     setFlipped(false);
@@ -106,7 +104,6 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
 
   const handleRestart = () => {
     setSessionStarted(false);
-    setSessionSize(null);
     setCards([]);
     setCurrentIndex(0);
     setFlipped(false);
