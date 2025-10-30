@@ -6,7 +6,11 @@ function FlashcardActivity({ lessonId }) {
   const lessonCards = useMemo(() => getFlashcardsByLesson(lessonId), [lessonId]);
 
   return (
-    <FlashcardPlayer initialCards={lessonCards} sessionTitle={`Lesson ${lessonId} Flashcards`} />
+    <FlashcardPlayer
+      initialCards={lessonCards}
+      sessionTitle={`Lesson ${lessonId} Flashcards`}
+      lessonId={lessonId}
+    />
   );
 }
 

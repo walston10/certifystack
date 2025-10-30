@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { networkPlusLessons } from '../data/courses/network-plus/lessons';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import FlashcardPracticeModal from './FlashcardPracticeModal';
+import FlashcardStatsWidget from './FlashcardStatsWidget';
 import '../styles/Dashboard.css';
 
 function Dashboard() {
@@ -90,6 +91,11 @@ function Dashboard() {
             </button>
           </div>
         </div>
+      </section>
+
+      {/* Flashcard Stats Widget */}
+      <section className="flashcard-stats-section">
+        <FlashcardStatsWidget />
       </section>
 
       {/* Lessons Grid */}

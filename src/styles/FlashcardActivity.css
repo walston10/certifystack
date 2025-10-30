@@ -193,3 +193,435 @@
   background: var(--bg-secondary);
   border-color: var(--warning);
 }
+
+/* ============================================
+   ANKI-STYLE SESSION SELECTOR
+   ============================================ */
+
+.session-subtitle {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.session-stats-preview {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 30px 0;
+}
+
+.stat-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--bg-tertiary);
+  min-width: 120px;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.session-size-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin: 40px 0;
+}
+
+.session-option {
+  background: var(--bg-secondary);
+  border: 2px solid var(--bg-tertiary);
+  border-radius: 16px;
+  padding: 30px 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.session-option:hover:not(:disabled) {
+  transform: translateY(-4px);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 8px 24px rgba(0, 217, 255, 0.2);
+}
+
+.session-option:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.session-option.quick-sprint:hover:not(:disabled) {
+  border-color: var(--accent-green);
+  box-shadow: 0 8px 24px rgba(0, 255, 136, 0.2);
+}
+
+.session-option.standard-session:hover:not(:disabled) {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 8px 24px rgba(0, 217, 255, 0.2);
+}
+
+.session-option.deep-practice:hover:not(:disabled) {
+  border-color: var(--accent-purple);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+}
+
+.session-option.clear-all:hover:not(:disabled) {
+  border-color: var(--warning);
+  box-shadow: 0 8px 24px rgba(255, 170, 0, 0.2);
+}
+
+.option-icon {
+  font-size: 3rem;
+}
+
+.option-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.option-details {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.no-cards-message {
+  text-align: center;
+  padding: 40px;
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid var(--accent-green);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+}
+
+/* ============================================
+   RATING BUTTONS (ANKI-STYLE)
+   ============================================ */
+
+.rating-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rating-btn {
+  flex: 1;
+  max-width: 200px;
+  padding: 20px 24px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.rating-btn .rating-label {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.rating-btn .rating-detail {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.rating-btn.hard {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.rating-btn.hard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 25px rgba(255, 107, 107, 0.5);
+}
+
+.rating-btn.good {
+  background: linear-gradient(135deg, var(--accent-cyan), #00a3cc);
+  color: var(--bg-primary);
+  box-shadow: 0 4px 15px rgba(0, 217, 255, 0.3);
+}
+
+.rating-btn.good:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 25px rgba(0, 217, 255, 0.5);
+}
+
+.rating-btn.easy {
+  background: linear-gradient(135deg, var(--accent-green), #00cc77);
+  color: var(--bg-primary);
+  box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+}
+
+.rating-btn.easy:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 25px rgba(0, 255, 136, 0.5);
+}
+
+.flip-hint {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-top: 20px;
+  font-style: italic;
+}
+
+/* ============================================
+   PROGRESS BAR (ANKI MODE)
+   ============================================ */
+
+.progress-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress-text {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.progress-bar {
+  width: 300px;
+  height: 8px;
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+  transition: width 0.3s ease;
+  border-radius: 10px;
+}
+
+/* ============================================
+   SESSION COMPLETE SCREEN
+   ============================================ */
+
+.session-complete {
+  text-align: center;
+  padding: 40px 20px;
+  animation: slideIn 0.5s;
+}
+
+.session-complete h2 {
+  font-size: 2.5rem;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.complete-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+}
+
+.session-results {
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.session-results h3 {
+  color: var(--text-primary);
+  font-family: 'Space Grotesk', sans-serif;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.result-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 20px;
+  background: var(--bg-primary);
+  border-radius: 10px;
+  border-left: 4px solid;
+}
+
+.result-item.easy {
+  border-left-color: var(--accent-green);
+}
+
+.result-item.good {
+  border-left-color: var(--accent-cyan);
+}
+
+.result-item.hard {
+  border-left-color: #ff6b6b;
+}
+
+.result-count {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+  min-width: 60px;
+}
+
+.result-item.easy .result-count {
+  color: var(--accent-green);
+}
+
+.result-item.good .result-count {
+  color: var(--accent-cyan);
+}
+
+.result-item.hard .result-count {
+  color: #ff6b6b;
+}
+
+.result-label {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.streak-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 170, 0, 0.2));
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.streak-icon {
+  font-size: 2rem;
+}
+
+.streak-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.next-review-info {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-bottom: 30px;
+}
+
+.complete-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.btn-back,
+.btn-study-more {
+  padding: 14px 32px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.btn-back {
+  background: var(--bg-secondary);
+  border: 2px solid var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.btn-back:hover {
+  background: var(--bg-tertiary);
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+}
+
+.btn-study-more {
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  color: var(--text-primary);
+  box-shadow: 0 4px 15px rgba(0, 217, 255, 0.3);
+}
+
+.btn-study-more:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 217, 255, 0.5);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+  .session-size-selector {
+    grid-template-columns: 1fr;
+  }
+
+  .rating-buttons {
+    flex-direction: column;
+  }
+
+  .rating-btn {
+    max-width: 100%;
+  }
+
+  .session-stats-preview {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .flashcard {
+    height: 350px;
+  }
+
+  .card-content {
+    font-size: 1.2rem;
+  }
+
+  .progress-bar {
+    width: 200px;
+  }
+}

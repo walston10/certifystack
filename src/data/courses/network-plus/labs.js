@@ -10,8 +10,8 @@ export const networkPlusLabs = [
     title: "OSI Model Layer Identification",
     difficulty: "Beginner",
     estimatedTime: "20-30 min",
-    labPath: "/content/network-plus/labs/lab-01-osi-layers.md",
-    solutionPath: "/content/network-plus/solutions/lab-01-solution.md",
+    labPath: "/content/network-plus/labs/lab-01.md",
+    solutionPath: "/content/network-plus/labs/lab-01-solution.md",
     objectives: [
       "Identify which OSI layer handles specific protocols",
       "Trace data flow through all 7 layers",
@@ -28,8 +28,8 @@ export const networkPlusLabs = [
     title: "Network Topology Design Challenge",
     difficulty: "Beginner",
     estimatedTime: "25-35 min",
-    labPath: "/content/network-plus/labs/lab-02-topology-design.md",
-    solutionPath: "/content/network-plus/solutions/lab-02-solution.md",
+    labPath: "/content/network-plus/labs/lab-02.md",
+    solutionPath: "/content/network-plus/labs/lab-02-solution.md",
     objectives: [
       "Design appropriate network topologies for different scenarios",
       "Identify advantages and disadvantages of each topology type",
@@ -47,7 +47,7 @@ export const networkPlusLabs = [
     difficulty: "Beginner",
     estimatedTime: "20-30 min",
     labPath: "/content/network-plus/labs/lab-03.md",
-    solutionPath: "/content/network-plus/solutions/lab-03.md",
+    solutionPath: "/content/network-plus/labs/lab-03-solution.md",
     objectives: [
       "Identify IP address classes",
       "Differentiate between public and private IP addresses",
@@ -65,7 +65,7 @@ export const networkPlusLabs = [
     difficulty: "Beginner",
     estimatedTime: "25-35 min",
     labPath: "/content/network-plus/labs/lab-04.md",
-    solutionPath: "/content/network-plus/solutions/lab-04-solution.md",
+    solutionPath: "/content/network-plus/labs/lab-04-solution.md",
     objectives: [
       "Convert CIDR notation to dotted decimal",
       "Calculate usable hosts for a given subnet mask",
@@ -83,7 +83,7 @@ export const networkPlusLabs = [
     difficulty: "Intermediate",
     estimatedTime: "30-40 min",
     labPath: "/content/network-plus/labs/lab-05.md",
-    solutionPath: "/content/network-plus/solutions/lab-05-solution.md",
+    solutionPath: "/content/network-plus/labs/lab-05-solution.md",
     objectives: [
       "Divide a Class C network into smaller subnets",
       "Determine the new subnet mask and magic number",
@@ -101,7 +101,7 @@ export const networkPlusLabs = [
     difficulty: "Intermediate",
     estimatedTime: "30-40 min", // Typo was here in your local file
     labPath: "/content/network-plus/labs/lab-06.md",
-    solutionPath: "/content/network-plus/solutions/lab-06-solution.md",
+    solutionPath: "/content/network-plus/labs/lab-06-solution.md",
     objectives: [
       "Design efficient IP addressing schemes",
       "Allocate subnets using VLSM methodology",
@@ -119,8 +119,8 @@ export const networkPlusLabs = [
     title: "VLAN Configuration and Trunking",
     difficulty: "Intermediate",
     estimatedTime: "35-45 min",
-    labPath: "/content/network-plus/labs/lab-11-vlan-config.md",
-    solutionPath: "/content/network-plus/solutions/lab-11-solution.md",
+    labPath: "/content/network-plus/labs/lab-11.md",
+    solutionPath: "/content/network-plus/labs/lab-11-solution.md",
     objectives: [
       "Configure VLANs on network switches",
       "Set up trunk links between switches",
@@ -138,8 +138,8 @@ export const networkPlusLabs = [
     title: "Network Troubleshooting Tools Lab",
     difficulty: "Advanced",
     estimatedTime: "40-50 min",
-    labPath: "/content/network-plus/labs/lab-28-troubleshooting.md",
-    solutionPath: "/content/network-plus/solutions/lab-28-solution.md",
+    labPath: "/content/network-plus/labs/lab-28.md",
+    solutionPath: "/content/network-plus/labs/lab-28-solution.md",
     objectives: [
       "Use ping, traceroute, and pathping to diagnose connectivity",
       "Analyze network traffic with packet captures",
