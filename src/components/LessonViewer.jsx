@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -15,10 +15,13 @@ import '../styles/LessonViewer.css';
 
 function LessonViewer() {
   const { id } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const [content, setContent] = useState('');
   const [labContent, setLabContent] = useState('');
-  const [activeTab, setActiveTab] = useState('content');
+  
+  const queryParams = new URLSearchParams(location.search);
+  const [activeTab, setActiveTab] = useState(queryParams.get('tab') || 'content');
   const [showSolutionWarning, setShowSolutionWarning] = useState(false);
   const [completedLabs, setCompletedLabs] = useLocalStorage('completedLabs', []);
   const lesson = networkPlusLessons.find(l => l.id === parseInt(id));
@@ -44,7 +47,13 @@ function LessonViewer() {
           setLabContent('# Lab Content Not Found\n\nThis lab has not been created or linked correctly yet.');
         });
     }
-  }, [id, labInfo]);
+
+    // Update active tab if URL changes
+    const tabFromQuery = queryParams.get('tab');
+    if (tabFromQuery) {
+      setActiveTab(tabFromQuery);
+    }
+  }, [id, labInfo, location.search]);
 
   // Determine which activity component to show based on lesson ID
   const renderActivity = () => {
@@ -72,13 +81,6 @@ function LessonViewer() {
 
   const handleViewSolution = () => {
     navigate(`/solution/${labInfo.id}`);
-  };
-
-  const handleMarkLabComplete = () => {
-    if (labInfo && !isLabCompleted) {
-      const newCompleted = [...completedLabs, labInfo.id];
-      setCompletedLabs(newCompleted);
-    }
   };
 
   return (
@@ -182,14 +184,6 @@ function LessonViewer() {
               <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
                 {labContent}
               </ReactMarkdown>
-              <div className="lab-footer">
-                <button
-                  className={`btn-complete ${isLabCompleted ? 'completed' : ''}`}
-                  onClick={handleMarkLabComplete}
-                  disabled={isLabCompleted}>
-                  {isLabCompleted ? '✓ Lab Complete' : '✓ Mark Lab as Complete'}
-                </button>
-              </div>
             </div>
           </div>
         )}
@@ -202,7 +196,6 @@ function LessonViewer() {
       </div>
 
       <div className="footer">
-        <button className="btn-complete">✓ Mark Complete</button>
         {parseInt(id) < networkPlusLessons.length && (
           <Link to={`/lesson/${parseInt(id) + 1}`}>
             <button className="btn-next">Next Lesson →</button>

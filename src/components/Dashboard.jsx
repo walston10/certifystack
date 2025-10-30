@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { networkPlusLessons } from '../data/courses/network-plus/lessons';
+import { getLabByLessonId } from '../data/courses/network-plus/labs';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import FlashcardPracticeModal from './FlashcardPracticeModal';
 import '../styles/Dashboard.css';
 
 function Dashboard() {
-  const [completedLessons] = useLocalStorage('completedLessons', []);
+  const [completedLessons, setCompletedLessons] = useLocalStorage('completedLessons', []);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const completed = completedLessons.length;
   const progress = (completed / networkPlusLessons.length) * 100;
@@ -101,33 +102,64 @@ function Dashboard() {
           </p>
         </div>
         
-        <div className="lessons-grid">
-          {networkPlusLessons.map(lesson => (
-            <div 
-              key={lesson.id} 
-              className={`lesson-card ${lesson.locked ? 'locked' : ''} ${completedLessons.includes(lesson.id) ? 'completed' : ''}`}
-            >
-              <div className="lesson-header-card">
-                <span className="lesson-number">Lesson {lesson.id}</span>
-                <span className="lesson-time">⏱ {lesson.time}</span>
-              </div>
-              
-              <h3>{lesson.title}</h3>
-              <p className="lesson-domain">⚙️ {lesson.domain}</p>
-              
-              {lesson.locked ? (
-                <button className="lesson-btn btn-locked" disabled>
-                  🔒 Locked
-                </button>
-              ) : (
-                <Link to={`/lesson/${lesson.id}`}>
-                  <button className="lesson-btn btn-start">
-                    {completedLessons.includes(lesson.id) ? 'Review Lesson' : '▶ Start Lesson'}
-                  </button>
-                </Link>
-              )}
-            </div>
-          ))}
+        <div className="daily-tiles-grid">
+          {networkPlusLessons.map(lesson => {
+            const isCompleted = completedLessons.includes(lesson.id);
+            const isLocked = lesson.locked;
+
+            const handleToggleComplete = (e) => {
+              e.stopPropagation(); // Prevent navigating to the lesson
+              const newCompleted = new Set(completedLessons);
+              if (newCompleted.has(lesson.id)) {
+                newCompleted.delete(lesson.id);
+              } else {
+                newCompleted.add(lesson.id);
+              }
+              setCompletedLessons(Array.from(newCompleted));
+            };
+
+            return (
+                <div 
+                    key={lesson.id} 
+                    // Applying 'completed' class for styling the border/checkbox
+                    className={`daily-tile ${isLocked ? 'locked' : ''} ${isCompleted ? 'completed' : ''}`}
+                >
+                    {/* --- 1. HEADER: Day Number and CHECKBOX --- */}
+                    <div className="tile-header-bar">
+                        <span className="lesson-number">Lesson {lesson.id}</span>
+                        <input 
+                            type="checkbox"
+                            className="completion-checkbox"
+                            checked={isCompleted}
+                            // Toggle completion state on click
+                            onChange={handleToggleComplete}
+                            disabled={isLocked}
+                        />
+                    </div>
+                    
+                    {/* --- 2. CONTENT --- */}
+                    <div className="tile-content">
+                        <h3 className="day-title">{lesson.title}</h3>
+                        <p className="lesson-description">{lesson.domain}</p>
+                    </div>
+            
+                    {/* --- 3. ACTIONS: Single Button (Simplified) --- */}
+                    <div className="tile-actions">
+                        {isLocked ? (
+                            <button className="tile-btn btn-locked" disabled>
+                                🔒 Locked
+                            </button>
+                        ) : (
+                            <Link to={`/lesson/${lesson.id}`} className="tile-btn-link">
+                                <button className="tile-btn btn-start">
+                                    {isCompleted ? 'Review Content' : '💻 Start Lesson'}
+                                </button>
+                            </Link>
+                        )}
+                    </div>
+                </div>
+            );
+          })}
         </div>
       </section>
 
