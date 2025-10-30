@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
-import { useLocalStorage } from '../hooks/useLocalStorage';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
@@ -20,14 +19,14 @@ function LessonViewer() {
   const [content, setContent] = useState('');
   const [labContent, setLabContent] = useState('');
   
-  const queryParams = new URLSearchParams(location.search);
-  const [activeTab, setActiveTab] = useState(queryParams.get('tab') || 'content');
+  const [activeTab, setActiveTab] = useState(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get('tab') || 'content';
+  });
   const [showSolutionWarning, setShowSolutionWarning] = useState(false);
-  const [completedLabs, setCompletedLabs] = useLocalStorage('completedLabs', []);
   const lesson = networkPlusLessons.find(l => l.id === parseInt(id));
   const labInfo = getLabByLessonId(parseInt(id));
   const quizInfo = getQuizByLesson(parseInt(id));
-  const isLabCompleted = labInfo && completedLabs.includes(labInfo.id);
   const hasActivity = [1, 2].includes(parseInt(id));
 
   useEffect(() => {
@@ -49,6 +48,7 @@ function LessonViewer() {
     }
 
     // Update active tab if URL changes
+    const queryParams = new URLSearchParams(location.search);
     const tabFromQuery = queryParams.get('tab');
     if (tabFromQuery) {
       setActiveTab(tabFromQuery);

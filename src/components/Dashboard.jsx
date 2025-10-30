@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { networkPlusLessons } from '../data/courses/network-plus/lessons';
-import { getLabByLessonId } from '../data/courses/network-plus/labs';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import FlashcardPracticeModal from './FlashcardPracticeModal';
 import '../styles/Dashboard.css';
