@@ -11,9 +11,8 @@ import '../styles/Dashboard.css';
 
 function Dashboard() {
   const { user, signOut } = useAuth();
-  const { progress, stats, loading, completeLesson } = useUserStats();
+  const { progress, completeLesson } = useUserStats();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
 
   const completedLessons = progress.completedLessons || [];
   const completed = completedLessons.length;

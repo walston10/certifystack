@@ -119,12 +119,13 @@ export async function getTotalDueCards(allLessonsCards) {
     const cards = allLessonsCards[lessonId];
     const cardStates = await getLessonCardStates(parseInt(lessonId));
 
-    cards.forEach(card => {
+    // Count due cards for this lesson
+    for (const card of cards) {
       const state = cardStates[card.id];
       if (!state || state.dueDate <= today) {
         totalDue++;
       }
-    });
+    }
   }
 
   return totalDue;

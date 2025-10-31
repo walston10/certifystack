@@ -5,7 +5,6 @@ import {
   getUserStats,
   markLessonComplete,
   saveQuizScore,
-  getCompletedLessons,
 } from '../services/progressService';
 
 /**
