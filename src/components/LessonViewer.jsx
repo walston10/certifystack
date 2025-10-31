@@ -8,8 +8,7 @@ import { getLabByLessonId } from '../data/courses/network-plus/labs';
 import { getQuizByLesson } from '../data/courses/network-plus/quizzes';
 import FlashcardActivity from './FlashcardActivity';
 import QuizActivity from './QuizActivity';
-import OSIActivity from './OSIActivity';
-import TopologyActivity from './TopologyActivity';
+import ActivityLoader from './activities/ActivityLoader';
 import '../styles/LessonViewer.css';
 
 function LessonViewer() {
@@ -55,29 +54,8 @@ function LessonViewer() {
     }
   }, [id, labInfo, location.search]);
 
-  // Determine which activity component to show based on lesson ID
-  const renderActivity = () => {
-    const lessonId = parseInt(id);
-    
-    switch(lessonId) {
-      case 1:
-        return <OSIActivity />;
-      case 2:
-        return <TopologyActivity />;
-      // Add more cases as you create more lessons
-      // case 3:
-      //   return <RouterActivity />;
-      // case 4:
-      //   return <CablingActivity />;
-      default:
-        return (
-          <div className="no-activity">
-            <h2>🎮 Activity Coming Soon!</h2>
-            <p>An interactive activity for this lesson is under development.</p>
-          </div>
-        );
-    }
-  };
+  // Activities are now dynamically loaded via ActivityLoader
+  // No need for manual switch statement anymore!
 
   const handleViewSolution = () => {
     navigate(`/solution/${labInfo.id}`);
@@ -188,7 +166,9 @@ function LessonViewer() {
           </div>
         )}
 
-        {activeTab === 'activity' && renderActivity()}
+        {activeTab === 'activity' && (
+          <ActivityLoader courseId="network-plus" lessonId={parseInt(id)} />
+        )}
 
         {activeTab === 'flashcards' && <FlashcardActivity lessonId={parseInt(id)} />}
 
