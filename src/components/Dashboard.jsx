@@ -1,19 +1,23 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PlayCircle } from 'lucide-react';
+import { PlayCircle, LogOut, User } from 'lucide-react';
 import { networkPlusLessons } from '../data/courses/network-plus/lessons';
 import { getDomainConfig, getLessonIcon } from '../data/courses/network-plus/domainConfig';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useAuth } from '../context/AuthContext';
+import { useUserStats } from '../hooks/useUserStats';
 import FlashcardPracticeModal from './FlashcardPracticeModal';
 import FlashcardStatsWidget from './FlashcardStatsWidget';
 import '../styles/Dashboard.css';
 
 function Dashboard() {
-  const [completedLessons, setCompletedLessons] = useLocalStorage('completedLessons', []);
+  const { user, signOut } = useAuth();
+  const { progress, stats, loading, completeLesson } = useUserStats();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+
+  const completedLessons = progress.completedLessons || [];
   const completed = completedLessons.length;
-  const progress = (completed / networkPlusLessons.length) * 100;
-  // Use 30 days total for the "Days to Go" calculation for simplicity
+  const progressPercent = (completed / networkPlusLessons.length) * 100;
   const daysRemaining = Math.max(0, 30 - Math.floor(completed * (30 / networkPlusLessons.length))); 
 
   return (
@@ -21,15 +25,17 @@ function Dashboard() {
       {/* Header */}
       <header className="header">
         <div className="logo">
-          <span className="logo-icon">🚀</span> {/* Updated to a Rocket icon */}
+          <span className="logo-icon">🚀</span>
           <span>CertifyStack</span>
         </div>
         <nav>
-          <button className="nav-btn">
-            🎓 <span>Courses</span> {/* Updated Icon */}
-          </button>
-          <button className="nav-btn">
-            📈 <span>Progress</span> {/* Updated Icon */}
+          <div className="user-info">
+            <User size={18} />
+            <span>{user?.email}</span>
+          </div>
+          <button className="nav-btn" onClick={signOut}>
+            <LogOut size={18} />
+            <span>Sign Out</span>
           </button>
         </nav>
       </header>
@@ -64,13 +70,13 @@ function Dashboard() {
         <div className="progress-card">
           <div className="progress-header">
             <h2>Your Progress</h2>
-            <span className="progress-percentage">{Math.round(progress)}%</span>
+            <span className="progress-percentage">{Math.round(progressPercent)}%</span>
           </div>
-          
+
           <div className="progress-bar-container">
-            <div 
-              className="progress-bar-fill" 
-              style={{ width: `${progress}%` }}
+            <div
+              className="progress-bar-fill"
+              style={{ width: `${progressPercent}%` }}
             />
           </div>
           
@@ -116,15 +122,17 @@ function Dashboard() {
             const domainConfig = getDomainConfig(lesson.domain);
             const IconComponent = getLessonIcon(lesson.id);
 
-            const handleToggleComplete = (e) => {
+            const handleToggleComplete = async (e) => {
               e.stopPropagation();
-              const newCompleted = new Set(completedLessons);
-              if (newCompleted.has(lesson.id)) {
-                newCompleted.delete(lesson.id);
-              } else {
-                newCompleted.add(lesson.id);
+              if (isCompleted) {
+                // Don't allow un-completing lessons for now
+                return;
               }
-              setCompletedLessons(Array.from(newCompleted));
+              try {
+                await completeLesson(lesson.id);
+              } catch (error) {
+                console.error('Failed to complete lesson:', error);
+              }
             };
 
             return (

@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import {
   getLessonCardStates,
   updateCardState,
-  updateStreak,
-  incrementTotalReviews,
+  updateStreakData,
+  incrementReviews,
   getDueCardsCount,
   getNewCardsCount,
   getGlobalStats
-} from '../utils/flashcardStorage';
+} from '../services/flashcardService';
 import { updateCard as updateCardAlgorithm, selectCardsForSession, calculateSessionStats } from '../utils/flashcardAlgorithm';
 import '../styles/FlashcardActivity.css';
 
@@ -29,12 +29,15 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
 
   // Load card statistics when component mounts
   useEffect(() => {
-    if (lessonId && initialCards.length > 0) {
-      const due = getDueCardsCount(lessonId, initialCards);
-      const newC = getNewCardsCount(lessonId, initialCards);
-      setDueCount(due);
-      setNewCount(newC);
+    async function loadStats() {
+      if (lessonId && initialCards.length > 0) {
+        const due = await getDueCardsCount(lessonId, initialCards);
+        const newC = await getNewCardsCount(lessonId, initialCards);
+        setDueCount(due);
+        setNewCount(newC);
+      }
     }
+    loadStats();
   }, [lessonId, initialCards]);
 
   // Start a session with selected size
@@ -85,7 +88,7 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
     setSessionRatings(prev => [...prev, rating]);
 
     // Increment total reviews
-    incrementTotalReviews();
+    incrementReviews();
 
     // Move to next card or complete session
     if (currentIndex < cards.length - 1) {
@@ -94,7 +97,7 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
     } else {
       // Session complete
       setSessionComplete(true);
-      updateStreak();
+      updateStreakData();
     }
   };
 

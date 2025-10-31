@@ -2,7 +2,7 @@
 
 **Estimated Time:** 25-30 minutes  
 **Domain:** Networking Concepts  
-**Exam Objectives Covered:** 1.4 - Given a scenario, configure a subnet and use appropriate IP addressing schemes (Part 2)
+**Exam Objectives Covered:** 1.7: Using appropriate IPv4 network addressing
 
 ---
 
