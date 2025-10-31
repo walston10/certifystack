@@ -131,29 +131,32 @@ export async function getFlashcardProgress(lessonId) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return {};
 
+  // card_id format is "lessonId-cardIndex", so filter by cards that start with "lessonId-"
   const { data, error } = await supabase
     .from('flashcard_progress')
     .select('*')
     .eq('user_id', user.id)
-    .eq('lesson_id', lessonId);
+    .like('card_id', `${lessonId}-%`);
 
   if (error) throw error;
 
   // Convert to object with card_id as key
   const progressMap = {};
-  data.forEach(item => {
-    progressMap[item.card_id] = {
-      state: item.state,
-      ease: item.ease,
-      interval: item.interval,
-      dueDate: item.due_date,
-      lastReviewed: item.last_reviewed,
-      repetitions: item.repetitions,
-      timesHard: item.times_hard,
-      timesGood: item.times_good,
-      timesEasy: item.times_easy,
-    };
-  });
+  if (data) {
+    data.forEach(item => {
+      progressMap[item.card_id] = {
+        state: item.state,
+        ease: item.ease,
+        interval: item.interval,
+        dueDate: item.due_date,
+        lastReviewed: item.last_reviewed,
+        repetitions: item.repetitions,
+        timesHard: item.times_hard,
+        timesGood: item.times_good,
+        timesEasy: item.times_easy,
+      };
+    });
+  }
 
   return progressMap;
 }
