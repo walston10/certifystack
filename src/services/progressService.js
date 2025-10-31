@@ -104,7 +104,6 @@ export async function updateFlashcardProgress(lessonId, cardId, cardState) {
     .from('flashcard_progress')
     .upsert({
       user_id: user.id,
-      lesson_id: lessonId,
       card_id: cardId,
       state: cardState.state,
       ease: cardState.ease,
@@ -116,7 +115,7 @@ export async function updateFlashcardProgress(lessonId, cardId, cardState) {
       times_good: cardState.timesGood,
       times_easy: cardState.timesEasy,
     }, {
-      onConflict: 'user_id,lesson_id,card_id'
+      onConflict: 'user_id,card_id'
     })
     .select();
 
