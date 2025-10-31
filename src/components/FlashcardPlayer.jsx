@@ -117,7 +117,8 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
 
   // Session size selector screen
   if (!sessionStarted) {
-    const totalAvailable = dueCount + newCount;
+    // Always allow practice if there are cards, regardless of due date
+    const totalAvailable = initialCards.length;
 
     return (
       <div className="flashcard-activity">
@@ -181,7 +182,18 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
 
         {totalAvailable === 0 && (
           <div className="no-cards-message">
-            <p>🎉 Great work! All cards are up to date. Check back later for reviews.</p>
+            <p>No flashcards available for this lesson yet.</p>
+          </div>
+        )}
+
+        {totalAvailable > 0 && dueCount === 0 && newCount === 0 && (
+          <div className="info-message" style={{
+            textAlign: 'center',
+            padding: '1rem',
+            color: 'var(--text-secondary)',
+            fontSize: '0.9rem'
+          }}>
+            <p>✨ All cards reviewed! You can still practice anytime.</p>
           </div>
         )}
       </div>
