@@ -3,8 +3,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
-import { networkPlusLabs } from '../data/courses/network-plus/labs';
-import { networkPlusLessons } from '../data/courses/network-plus/lessons';
+import { networkPlusLabs } from '../courses/network-plus/data/labs';
+import { networkPlusLessons } from '../courses/network-plus/data/lessons';
 import './LabViewer.css';
 
 function LabViewer() {

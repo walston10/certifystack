@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getQuizByLesson, hasQuiz } from '../data/courses/network-plus/quizzes';
+import { getQuizByLesson, hasQuiz } from '../courses/network-plus/quizzes';
 import '../styles/QuizActivity.css';
 
 function QuizActivity({ lessonId }) {

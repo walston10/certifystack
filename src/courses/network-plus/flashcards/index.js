@@ -10,7 +10,7 @@ import { lesson3Flashcards } from './lesson-03-flashcards';
 import { lesson4Flashcards } from './lesson-04-flashcards';
 import { lesson5Flashcards } from './lesson-05-flashcards';
 import { lesson6Flashcards } from './lesson-06-flashcards';
-import { networkPlusLessons } from '../lessons';
+import { networkPlusLessons } from '../data/lessons';
 
 
 // ... import more as they are created

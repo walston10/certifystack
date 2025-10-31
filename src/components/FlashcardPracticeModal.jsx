@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getLessonsWithFlashcards, getFlashcardsByLesson } from '../data/courses/network-plus/flashcards';
+import { getLessonsWithFlashcards, getFlashcardsByLesson } from '../courses/network-plus/flashcards';
 import '../styles/FlashcardPracticeModal.css';
 
 function FlashcardPracticeModal({ isOpen, onClose }) {

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { getFlashcardsByLesson } from '../data/courses/network-plus/flashcards/index.js';
+import { getFlashcardsByLesson } from '../courses/network-plus/flashcards/index.js';
 import FlashcardPlayer from './FlashcardPlayer';
 
 function FlashcardActivity({ lessonId }) {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getGlobalStats, getDueCardsCount } from '../services/flashcardService';
-import { getLessonsWithFlashcards } from '../data/courses/network-plus/flashcards/index';
+import { getLessonsWithFlashcards } from '../courses/network-plus/flashcards/index';
 import '../styles/FlashcardStatsWidget.css';
 
 function FlashcardStatsWidget() {
@@ -25,7 +25,7 @@ function FlashcardStatsWidget() {
 
         // Calculate total due cards across all lessons
         const lessonsWithFlashcards = getLessonsWithFlashcards();
-        const { getFlashcardsByLesson } = require('../data/courses/network-plus/flashcards/index');
+        const { getFlashcardsByLesson } = require('../courses/network-plus/flashcards/index');
 
         let totalDue = 0;
         for (const lesson of lessonsWithFlashcards) {

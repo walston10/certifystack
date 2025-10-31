@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PlayCircle, LogOut, User } from 'lucide-react';
-import { networkPlusLessons } from '../data/courses/network-plus/lessons';
-import { getDomainConfig, getLessonIcon } from '../data/courses/network-plus/domainConfig';
+import { networkPlusLessons } from '../courses/network-plus/data/lessons';
+import { getDomainConfig, getLessonIcon } from '../courses/network-plus/data/domainConfig';
 import { useAuth } from '../context/AuthContext';
 import { useUserStats } from '../hooks/useUserStats';
 import FlashcardPracticeModal from './FlashcardPracticeModal';
