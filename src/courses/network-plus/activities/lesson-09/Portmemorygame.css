@@ -1,0 +1,344 @@
+.port-memory-game {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.port-memory-game h2 {
+  text-align: center;
+  color: #00d4ff;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.port-memory-game > p {
+  text-align: center;
+  color: #a0aec0;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.game-stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: rgba(26, 32, 53, 0.6);
+  border-radius: 8px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stat-label {
+  color: #a0aec0;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stat-value {
+  color: #00d4ff;
+  font-size: 1.8rem;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+}
+
+.completion-banner {
+  background: linear-gradient(135deg, #1e5f3a 0%, #2d8a5a 100%);
+  border: 3px solid #48bb78;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  animation: slideDown 0.5s ease-out;
+}
+
+.trophy-animation {
+  font-size: 4rem;
+  animation: bounce 0.6s ease-in-out infinite;
+  margin-bottom: 1rem;
+}
+
+.completion-banner h3 {
+  color: #fff;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.completion-banner p {
+  color: #c6f6d5;
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+}
+
+.completion-message {
+  font-size: 1.3rem !important;
+  font-weight: bold;
+  margin-top: 1rem !important;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-15px) scale(1.1);
+  }
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+  perspective: 1000px;
+}
+
+@media (max-width: 1024px) {
+  .game-board {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .game-board {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+
+  .game-stats {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.memory-card {
+  aspect-ratio: 1;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s;
+}
+
+.memory-card:hover:not(.matched) {
+  transform: scale(1.05);
+}
+
+.memory-card:active {
+  transform: scale(0.95);
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.memory-card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-back,
+.card-front {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.card-back {
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+  border: 2px solid #4a5568;
+}
+
+.card-icon {
+  font-size: 2.5rem;
+}
+
+.card-front {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8a 100%);
+  border: 2px solid #00d4ff;
+  transform: rotateY(180deg);
+}
+
+.memory-card.matched .card-front {
+  background: linear-gradient(135deg, #1e5f3a 0%, #2d8a5a 100%);
+  border-color: #48bb78;
+  animation: matchPulse 0.6s ease-out;
+}
+
+@keyframes matchPulse {
+  0% {
+    transform: rotateY(180deg) scale(1);
+  }
+  50% {
+    transform: rotateY(180deg) scale(1.1);
+    box-shadow: 0 0 20px rgba(72, 187, 120, 0.6);
+  }
+  100% {
+    transform: rotateY(180deg) scale(1);
+  }
+}
+
+.card-content {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  word-break: break-word;
+  margin-bottom: 0.5rem;
+}
+
+.card-content.protocol {
+  color: #00d4ff;
+  font-size: 1.1rem;
+}
+
+.card-content.port {
+  color: #48bb78;
+  font-size: 1.3rem;
+  font-family: 'Courier New', monospace;
+}
+
+.card-label {
+  font-size: 0.75rem;
+  color: #a0aec0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.game-controls {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.shuffle-btn {
+  background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+  color: #0f0f1e;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+}
+
+.shuffle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+}
+
+.shuffle-btn:active {
+  transform: translateY(0);
+}
+
+.game-hints {
+  background: rgba(26, 32, 53, 0.6);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #00d4ff;
+  margin-bottom: 1.5rem;
+}
+
+.game-hints h4 {
+  color: #00d4ff;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.hints-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.hint {
+  background: rgba(0, 212, 255, 0.05);
+  padding: 0.75rem;
+  border-radius: 6px;
+  border-left: 3px solid #00d4ff;
+  font-size: 0.9rem;
+  color: #cbd5e0;
+}
+
+.hint strong {
+  color: #00d4ff;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.study-tip {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8a 100%);
+  border: 2px solid #00d4ff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.study-tip p {
+  color: #e2e8f0;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.study-tip strong {
+  color: #00d4ff;
+}
+
+/* Accessibility improvements */
+.memory-card:focus {
+  outline: 3px solid #00d4ff;
+  outline-offset: 2px;
+}
+
+.memory-card.matched {
+  pointer-events: none;
+}
+
+/* Smooth animations */
+* {
+  box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .memory-card,
+  .card-inner,
+  .shuffle-btn,
+  .completion-banner,
+  .trophy-animation {
+    animation: none !important;
+    transition: none !important;
+  }
+}
