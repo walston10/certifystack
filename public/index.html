@@ -1,234 +1,46 @@
-<body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a0e27" />
+    <meta
+  name="description"
+  content="Master Network+ certification in 30 days with AI-powered learning"
+/>
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>CertifyStack - Network+ Certification</title>
+  </head>
+  <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
 
-    <div class="focus-bar"></div> 
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
 
-    <div class="dashboard">
-      <header class="header">
-        <div class="logo">
-          <span class="logo-icon">🤖</span>
-          CertifyStack
-        </div>
-        <nav>
-          <div class="user-info">User Name</div>
-          <button class="nav-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg>
-            Account
-          </button>
-        </nav>
-      </header>
-
-      <section class="hero">
-        <div class="hero-content">
-          <h1>Network+ Certification</h1>
-          <p class="hero-subtitle">Master networking fundamentals and pass N10-009 in 30 days</p>
-
-          <div class="hero-stats">
-            <div class="stat-item">
-              <span class="stat-value" data-target="30">0</span> 
-              <span class="stat-label">TOTAL LESSONS</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-value" data-target="2">0</span> 
-              <span class="stat-label">COMPLETED</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-value" data-target="28">0</span> 
-              <span class="stat-label">TARGET DAYS LEFT</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="progress-section">
-        
-        <div class="progress-card">
-          <div class="progress-header">
-            <h2>Your Progress</h2>
-            <div class="circular-progress-container" data-progress="7">
-              <svg class="progress-ring" width="100" height="100">
-                <circle class="ring-bg" cx="50" cy="50" r="45"></circle>
-                <circle class="ring-fill" cx="50" cy="50" r="45"></circle>
-              </svg>
-              <span class="progress-percentage-arc">7%</span> 
-            </div>
-          </div>
-          
-          <div class="progress-bar-container">
-            <div class="progress-bar-fill" style="width: 7%;"></div> 
-          </div>
-          <div class="progress-details">
-            <span>2 of 30 lessons completed</span>
-            <span>28 remaining</span>
-          </div>
-        </div>
-
-        <div class="progress-card practice-card-body">
-          <h2>Practice Center</h2>
-          <p>Ready to review? Create a custom flashcard session from multiple lessons to test your knowledge.</p>
-          <button class="btn-start-practice">Start Practice Session</button>
-        </div>
-        
-      </section>
-
-      <section class="lessons-section">
-          <div class="section-header">
-              <h2 class="section-title">Daily Study Plan</h2>
-              <p class="section-subtitle">Jump into your daily module to keep on track.</p>
-          </div>
-          
-          <div class="daily-tiles-grid">
-              <div class="daily-tile completed" style="--domain-color: var(--accent-green); --domain-glow: 0 0 20px rgba(0, 255, 136, 0.4);">
-                  <div class="tile-icon-section">
-                      <span class="lesson-number-badge" style="background: var(--accent-green);">Day 1</span>
-                      <input type="checkbox" class="completion-checkbox" checked>
-                  </div>
-                  <div class="tile-content">
-                      <h3 class="day-title">Network Topologies</h3>
-                      <p class="lesson-description">Review bus, star, mesh, and ring configurations.</p>
-                  </div>
-                  <div class="tile-actions">
-                      <a href="#" class="tile-btn-link">
-                          <button class="tile-btn btn-start" style="background: linear-gradient(135deg, var(--accent-green), #00cc77);">
-                              Review
-                              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                          </button>
-                      </a>
-                  </div>
-              </div>
-              
-              <div class="daily-tile" style="--domain-color: var(--accent-cyan); --domain-glow: 0 0 20px rgba(0, 217, 255, 0.4);">
-                  <div class="tile-icon-section">
-                      <span class="lesson-number-badge" style="background: var(--accent-cyan);">Day 2</span>
-                      <input type="checkbox" class="completion-checkbox">
-                  </div>
-                  <div class="tile-content">
-                      <h3 class="day-title">OSI Model Deep Dive</h3>
-                      <p class="lesson-description">Focus on Layers 1-4: Physical, Data Link, Network, and Transport.</p>
-                  </div>
-                  <div class="tile-actions">
-                      <a href="#" class="tile-btn-link">
-                          <button class="tile-btn btn-start" style="background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));">
-                              Start Lesson
-                              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                          </button>
-                      </a>
-                  </div>
-              </div>
-
-              <div class="daily-tile locked" style="--domain-color: var(--text-muted); --domain-glow: 0 0 10px rgba(255, 255, 255, 0.1);">
-                  <div class="tile-icon-section">
-                      <span class="lesson-number-badge" style="background: var(--bg-tertiary);">Day 3</span>
-                      <input type="checkbox" class="completion-checkbox" disabled>
-                  </div>
-                  <div class="tile-content">
-                      <h3 class="day-title" style="opacity: 0.6;">Cabling and Connectors</h3>
-                      <p class="lesson-description" style="opacity: 0.6;">Requires completion of Day 2.</p>
-                  </div>
-                  <div class="tile-actions">
-                      <button class="tile-btn btn-locked">
-                          Locked
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                      </button>
-                  </div>
-              </div>
-              
-          </div>
-      </section>
-    </div>
-    <svg width="0" height="0" style="position: absolute;">
-      <defs>
-          <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style="stop-color:var(--accent-cyan);stop-opacity:1" />
-              <stop offset="100%" style="stop-color:var(--accent-purple);stop-opacity:1" />
-          </linearGradient>
-      </defs>
-    </svg>
-
-    <script>
-      /* ============================================
-         JS FOR PREMIUM ANIMATIONS
-         - Number Counter Roll-Up (Hero Stats)
-         - Circular Progress Arc Fill
-         ============================================ */
-
-      document.addEventListener('DOMContentLoaded', () => {
-        // --- 1. Number Roll-Up Animation ---
-        const counterAnimationDuration = 1000; // 1 second
-
-        function animateCounter(element) {
-          const target = parseInt(element.getAttribute('data-target'));
-          const start = 0;
-          const duration = counterAnimationDuration;
-          let startTime = null;
-
-          function step(timestamp) {
-            if (!startTime) startTime = timestamp;
-            const progress = timestamp - startTime;
-            const percentage = Math.min(progress / duration, 1);
-            // Use Math.round for better appearance, but Math.floor is okay too
-            const currentValue = Math.round(percentage * (target - start) + start); 
-
-            element.textContent = currentValue;
-
-            if (percentage < 1) {
-              window.requestAnimationFrame(step);
-            } else {
-              // Ensure it ends exactly on the target value
-              element.textContent = target; 
-            }
-          }
-
-          window.requestAnimationFrame(step);
-        }
-
-        // Find all stat values and start the animation
-        document.querySelectorAll('.stat-value').forEach(animateCounter);
-
-        // --- 2. Circular Progress Arc Fill ---
-        const progressContainer = document.querySelector('.circular-progress-container');
-        if (progressContainer) {
-          const progressPercent = parseInt(progressContainer.getAttribute('data-progress'));
-          const radius = 45; // Matches the 'r' attribute in HTML
-          const circumference = 2 * Math.PI * radius;
-          // Calculate the offset (how much of the line should REMAIN hidden)
-          const offset = circumference - (progressPercent / 100) * circumference; 
-          
-          const ringFill = progressContainer.querySelector('.ring-fill');
-          const percentageText = progressContainer.querySelector('.progress-percentage-arc');
-
-          // Set the SVG arc fill amount using stroke-dashoffset (initial state for transition)
-          ringFill.style.strokeDasharray = circumference;
-          ringFill.style.strokeDashoffset = circumference; 
-
-          // Trigger the CSS transition with a slight delay
-          setTimeout(() => {
-              ringFill.style.strokeDashoffset = offset;
-          }, 100);
-          
-          // Animate the percentage text roll-up inside the circle
-          let startValue = 0;
-          const duration = 1500;
-          let startTime = null;
-
-          function stepText(timestamp) {
-            if (!startTime) startTime = timestamp;
-            const progress = timestamp - startTime;
-            const percentage = Math.min(progress / duration, 1);
-            const currentValue = Math.floor(percentage * progressPercent);
-
-            percentageText.textContent = currentValue + '%';
-
-            if (percentage < 1) {
-              window.requestAnimationFrame(stepText);
-            } else {
-              percentageText.textContent = progressPercent + '%';
-            }
-          }
-
-          window.requestAnimationFrame(stepText);
-        }
-      });
-    </script>
-    
-    </body>
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
+</html>
