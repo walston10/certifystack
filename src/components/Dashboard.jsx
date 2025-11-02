@@ -224,20 +224,16 @@ function Dashboard() {
                     </div>
                     
                     <div className="daily-tiles-grid">
-                        {networkPlusLessons.map((lesson, index) => {
+                        {networkPlusLessons.map((lesson) => {
                             const isCompleted = completedLessons.includes(lesson.id);
-                            // LOGIC CHANGE: Lock if the *previous* lesson hasn't been completed.
-                            // If index is 0 (first lesson), it is never locked.
-                            const previousLessonId = index > 0 ? networkPlusLessons[index - 1].id : null;
-                            const isPreviousCompleted = previousLessonId ? completedLessons.includes(previousLessonId) : true;
-                            const isLocked = !isPreviousCompleted && index > 0;
-                            
+                            const isLocked = false; // All lessons are always unlocked for self-paced study
+
                             const domainConfig = getDomainConfig(lesson.domain);
                             const IconComponent = getLessonIcon(lesson.id);
 
                             const handleToggleComplete = async (e) => {
                                 e.stopPropagation();
-                                if (isCompleted || isLocked) { 
+                                if (isCompleted) {
                                     return;
                                 }
                                 try {
@@ -267,7 +263,7 @@ function Dashboard() {
                                             className="completion-checkbox"
                                             checked={isCompleted}
                                             onChange={handleToggleComplete}
-                                            disabled={isLocked || isCompleted} // Prevent toggling if locked OR already completed
+                                            disabled={isCompleted} // Prevent un-completing lessons
                                         />
                                     </div>
 
