@@ -106,7 +106,7 @@ function Dashboard() {
                 flatBar.style.width = `${progressPercent}%`;
             }
         }
-    }, [completed, daysRemaining, progressPercentRounded]);
+    }, [completed, daysRemaining, progressPercentRounded, progressPercent]);
     // ----------------------------------------------------------------
 
     return (
