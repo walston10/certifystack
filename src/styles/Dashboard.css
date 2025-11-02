@@ -2,10 +2,20 @@
    CERTIFYSTACK DASHBOARD - PREMIUM DARK THEME
    Modern, sleek, tech-forward design
    ============================================ */
-/* Variables now imported from theme.css */
 
-/* Remove variables section if using theme.css to avoid duplication */
-/* Only keep the structural CSS below */
+/* Variables now imported from theme.css (assumed to be available) */
+
+/* NEW: Focus Bar Style */
+.focus-bar {
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--accent-cyan) 0%, var(--accent-purple) 50%, var(--accent-cyan) 100%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 101; /* Ensure it's above the header */
+  box-shadow: 0 0 10px rgba(0, 217, 255, 0.5); /* Soft, subtle glow */
+}
 
 * {
   margin: 0;
@@ -28,12 +38,13 @@ body {
 }
 
 /* ============================================
-   HEADER - Sleek & Minimal
+   HEADER - Sleek & Minimal (Enhanced)
    ============================================ */
 .header {
-  background: rgba(18, 27, 45, 0.95); /* Adjusted to bg-secondary */
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--bg-tertiary);
+  background: rgba(18, 27, 45, 0.85); /* Slightly more transparent */
+  backdrop-filter: blur(15px); /* Stronger blur */
+  border-bottom: none; /* Rely on shadow for separation */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); /* Added shadow for float effect */
   padding: 1rem 2rem;
   position: sticky;
   top: 0;
@@ -97,6 +108,7 @@ nav {
   border-color: var(--accent-cyan);
   color: var(--text-primary);
   transform: translateY(-1px);
+  box-shadow: 0 0 15px rgba(0, 217, 255, 0.4); /* Enhanced Hover Glow */
 }
 
 /* ============================================
@@ -183,7 +195,7 @@ nav {
 }
 
 /* ============================================
-   PROGRESS SECTION - Modern & Elegant
+   PROGRESS SECTION - Modern & Elegant (Enhanced)
    ============================================ */
 .progress-section {
   max-width: 1000px; /* Wider progress card */
@@ -199,7 +211,12 @@ nav {
   border: 1px solid var(--bg-tertiary);
   border-radius: 16px;
   padding: 2.5rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  
+  /* NEW: Inner Glow + Multi-Layer Shadow */
+  box-shadow: 
+      inset 0 0 8px rgba(0, 217, 255, 0.05), /* Subtle inner glow */
+      0 10px 30px rgba(0, 0, 0, 0.6); /* Existing outer shadow */
+      
   position: relative;
 }
 
@@ -252,14 +269,54 @@ nav {
   font-family: 'Space Grotesk', sans-serif;
 }
 
-.progress-percentage {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--accent-cyan);
-  letter-spacing: -1px;
-  font-family: 'Space Grotesk', sans-serif;
+/* NEW: Circular Progress Arc Styles */
+.circular-progress-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.progress-ring {
+    transform: rotate(-90deg); /* Start the circle at the top */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.ring-bg {
+    stroke-dasharray: 283; /* 2 * PI * r (approx) */
+    stroke-dashoffset: 0;
+    stroke: var(--bg-tertiary);
+    stroke-width: 5;
+    fill: transparent;
+}
+
+.ring-fill {
+    stroke-dasharray: 283;
+    stroke-dashoffset: 283; /* Start fully hidden */
+    /* Cyan to Purple Gradient as the stroke color (requires JS to set the width/gradient) */
+    stroke: url(#progressGradient); 
+    stroke-width: 5;
+    fill: transparent;
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    stroke-linecap: round; /* Rounded ends on the arc */
+    filter: drop-shadow(0 0 5px rgba(0, 217, 255, 0.7));
+}
+
+.progress-percentage-arc {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    font-family: 'Space Grotesk', sans-serif;
+    position: relative;
+    z-index: 5;
+}
+
+
+/* Flat Progress Bar (Existing, for secondary display) */
 .progress-bar-container {
   position: relative;
   height: 16px; /* Thicker bar */
@@ -280,8 +337,6 @@ nav {
   position: relative;
 }
 
-/* Removed shimmer for cleaner look, you can re-add if desired */
-
 .progress-details {
   display: flex;
   justify-content: space-between;
@@ -291,7 +346,7 @@ nav {
 }
 
 /* ============================================
-   LESSONS GRID - Clean & Professional
+   LESSONS GRID - Clean & Professional (Enhanced)
    ============================================ */
 .lessons-section {
   max-width: 1200px;
@@ -322,248 +377,259 @@ nav {
 /* ------------------------------------------------------------------ */
 
 .daily-tiles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
-    padding: 20px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 20px 0;
 }
 
-/* --- Daily Tile Card Style --- */
+/* --- Daily Tile Card Style (With Inner Glow and Tilt Effect) --- */
 .daily-tile {
-    background: var(--bg-secondary);
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-    border: 2px solid var(--bg-tertiary);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    min-height: 280px;
-    position: relative;
-    overflow: hidden;
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 24px;
+  
+  /* NEW: Inner Glow + Multi-Layer Shadow */
+  box-shadow: 
+      inset 0 0 8px rgba(0, 217, 255, 0.05), /* Subtle inner glow */
+      0 4px 16px rgba(0, 0, 0, 0.3); 
+      
+  border: 2px solid var(--bg-tertiary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 280px;
+  position: relative;
+  overflow: hidden;
 }
 
 .daily-tile:hover:not(.locked) {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 12px 32px var(--domain-glow);
-    border-color: var(--domain-color);
+  /* NEW: Added subtle 3D tilt */
+  transform: 
+      translateY(-4px) 
+      scale(1.01) 
+      perspective(1000px) 
+      rotateX(0.5deg) 
+      rotateY(0.5deg); 
+  box-shadow: 0 12px 32px var(--domain-glow);
+  border-color: var(--domain-color);
 }
 
 .daily-tile.completed {
-    border-color: var(--accent-green);
-    animation: completionPulse 0.6s ease-out;
+  border-color: var(--accent-green);
+  animation: completionPulse 0.6s ease-out;
 }
 
 .daily-tile.completed::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
 }
 
 .daily-tile.locked {
-    opacity: 0.5;
-    cursor: not-allowed;
-    border-color: var(--bg-tertiary);
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--bg-tertiary);
 }
 
 /* --- Icon Section --- */
 .tile-icon-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .lesson-icon {
-    padding: 12px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
 }
 
 .daily-tile:hover:not(.locked) .lesson-icon {
-    transform: scale(1.1) rotate(5deg);
+  transform: scale(1.1) rotate(5deg);
 }
 
 /* --- Lesson Number Badge --- */
 .lesson-number-badge {
-    display: inline-block;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-family: 'Space Grotesk', sans-serif;
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 /* --- Checkbox Styling --- */
 .completion-checkbox {
-    width: 28px;
-    height: 28px;
-    cursor: pointer;
-    appearance: none;
-    border: 2.5px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    background-color: rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-    position: relative;
-    box-shadow: 0 0 0 0 rgba(0, 255, 136, 0);
-    flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  appearance: none;
+  border: 2.5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  box-shadow: 0 0 0 0 rgba(0, 255, 136, 0);
+  flex-shrink: 0;
 }
 
 .completion-checkbox:hover:not(:disabled) {
-    border-color: var(--accent-green);
-    background-color: rgba(0, 255, 136, 0.1);
-    transform: scale(1.15);
-    box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
+  border-color: var(--accent-green);
+  background-color: rgba(0, 255, 136, 0.1);
+  transform: scale(1.15);
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
 }
 
 .completion-checkbox:checked {
-    background: linear-gradient(135deg, var(--accent-green), #00cc77);
-    border-color: var(--accent-green);
-    box-shadow: 0 0 16px rgba(0, 255, 136, 0.6);
-    animation: checkboxPulse 0.4s ease-out;
+  background: linear-gradient(135deg, var(--accent-green), #00cc77);
+  border-color: var(--accent-green);
+  box-shadow: 0 0 16px rgba(0, 255, 136, 0.6);
+  animation: checkboxPulse 0.4s ease-out;
 }
 
 .completion-checkbox:checked::after {
-    content: '✓';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .completion-checkbox:disabled {
-    cursor: not-allowed;
-    opacity: 0.4;
+  cursor: not-allowed;
+  opacity: 0.4;
 }
 
 /* --- Checkbox Animation --- */
 @keyframes checkboxPulse {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.6);
-    }
-    50% {
-        transform: scale(1.2);
-        box-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
-    }
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 16px rgba(0, 255, 136, 0.6);
-    }
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.6);
+  }
+  50% {
+    transform: scale(1.2);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 16px rgba(0, 255, 136, 0.6);
+  }
 }
 
 /* --- Content --- */
 .tile-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .day-title {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    font-family: 'Space Grotesk', sans-serif;
-    line-height: 1.3;
-    margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: 'Space Grotesk', sans-serif;
+  line-height: 1.3;
+  margin: 0;
 }
 
 .lesson-description {
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin: 0;
-    opacity: 0.9;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0;
+  opacity: 0.9;
 }
 
 /* --- Actions --- */
 .tile-actions {
-    margin-top: auto;
+  margin-top: auto;
 }
 
 .tile-btn-link {
-    text-decoration: none;
-    display: block;
+  text-decoration: none;
+  display: block;
 }
 
 .tile-btn {
-    padding: 14px 20px;
-    border: none;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-family: 'Space Grotesk', sans-serif;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 .btn-start {
-    color: var(--text-primary);
+  color: var(--text-primary);
 }
 
 .btn-start:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px var(--domain-glow) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--domain-glow) !important;
 }
 
 .btn-start svg {
-    transition: transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .btn-start:hover svg {
-    transform: translateX(3px);
+  transform: translateX(3px);
 }
 
 .btn-locked {
-    background-color: var(--bg-tertiary);
-    color: var(--text-muted);
-    cursor: not-allowed;
-    box-shadow: none;
+  background-color: var(--bg-tertiary);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 /* --- Completion Animation --- */
 @keyframes completionPulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.03);
-        box-shadow: 0 0 30px var(--accent-green);
-    }
-    100% {
-        transform: scale(1);
-    }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0 0 30px var(--accent-green);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* --- Confetti Effect (Optional) --- */
 @keyframes confetti {
-    0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(-100px) rotate(720deg);
-        opacity: 0;
-    }
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) rotate(720deg);
+    opacity: 0;
+  }
 }
 /* ============================================
    RESPONSIVE DESIGN
@@ -615,6 +681,10 @@ nav {
     padding-right: 1rem;
   }
 
+  .progress-section {
+    grid-template-columns: 1fr; /* Stack cards on mobile */
+  }
+
   .progress-card {
     padding: 1.5rem;
   }
@@ -623,7 +693,7 @@ nav {
     font-size: 1.2rem;
   }
   
-  .progress-percentage {
-    font-size: 2rem;
+  .progress-percentage-arc {
+    font-size: 1.2rem;
   }
 }
