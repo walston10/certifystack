@@ -12,16 +12,8 @@ function OSIActivity() {
     { id: 1, name: 'Physical', description: 'Cables, signals, and physical hardware' },
   ]);
 
-  const [shuffled] = useState(() => {
-    const copy = [...layers];
-    for (let i = copy.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [copy[i], copy[j]] = [copy[j], copy[i]];
-    }
-    return copy;
-  });
-
   const [draggedItem, setDraggedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null); // For mobile click-to-select
   const [placed, setPlaced] = useState({});
   const [showResults, setShowResults] = useState(false);
 
@@ -31,10 +23,51 @@ function OSIActivity() {
 
   const handleDrop = (position) => {
     if (draggedItem) {
-      const newPlaced = { ...placed, [position]: draggedItem };
+      const newPlaced = { ...placed };
+      
+      // If position already has an item, return it to bay
+      if (newPlaced[position]) {
+        // Item automatically returns to available items when removed from placed
+      }
+      
+      newPlaced[position] = draggedItem;
       setPlaced(newPlaced);
       setDraggedItem(null);
+      setShowResults(false); // Hide results if they make changes after checking
     }
+  };
+
+  const handleItemClick = (layer) => {
+    // Toggle selection for mobile mode
+    if (selectedItem && selectedItem.id === layer.id) {
+      setSelectedItem(null); // Deselect if clicking same item
+    } else {
+      setSelectedItem(layer);
+    }
+  };
+
+  const handleZoneClick = (position) => {
+    // If there's a selected item (mobile mode), place it
+    if (selectedItem) {
+      const newPlaced = { ...placed };
+      
+      // If position already has an item, it returns to bay automatically
+      newPlaced[position] = selectedItem;
+      setPlaced(newPlaced);
+      setSelectedItem(null); // Deselect after placing
+      setShowResults(false); // Hide results if they make changes
+    } 
+    // If clicking a filled zone (to remove), remove the item
+    else if (placed[position]) {
+      handleRemove(position);
+    }
+  };
+
+  const handleRemove = (position) => {
+    const newPlaced = { ...placed };
+    delete newPlaced[position];
+    setPlaced(newPlaced);
+    setShowResults(false); // Hide results if they make changes
   };
 
   const handleCheck = () => {
@@ -46,6 +79,7 @@ function OSIActivity() {
   const handleReset = () => {
     setPlaced({});
     setShowResults(false);
+    setSelectedItem(null);
   };
 
   const isCorrect = (position) => {
@@ -81,6 +115,8 @@ function OSIActivity() {
               }`}
               onDragOver={(e) => e.preventDefault()}
               onDrop={() => handleDrop(pos)}
+              onClick={() => handleZoneClick(pos)}
+              style={{ cursor: placed[pos] || selectedItem ? 'pointer' : 'default' }}
             >
               {placed[pos] ? (
                 showResults ? (
@@ -97,13 +133,17 @@ function OSIActivity() {
                     )}
                   </>
                 ) : (
-                  // BEFORE checking - just show description
-                  <span className="item-description">{placed[pos].description}</span>
+                  // BEFORE checking - show only the name they placed
+                  <>
+                    <strong className="placed-name">{placed[pos].name}</strong>
+                    <span className="remove-hint">Click to remove</span>
+                  </>
                 )
               ) : (
                 <div className="placeholder">
                   <span className="layer-num">Layer {pos}</span>
-                  <span className="hint">Drop here</span>
+                  <span className="hint">{selectedItem ? 'Click to place' : 'Drop here'}</span>
+                  <span className="description-hint">{layers.find(l => l.id === pos).description}</span>
                 </div>
               )}
             </div>
@@ -112,20 +152,32 @@ function OSIActivity() {
 
         <div className="drag-items">
           <h3>Available Layers</h3>
+          <p className="instruction-text">
+            {selectedItem 
+              ? '👆 Click a layer slot to place the selected item' 
+              : 'Drag or click an item to select it'}
+          </p>
           <div className="items-grid">
-            {shuffled
+            {layers
               .filter(layer => !Object.values(placed).includes(layer))
               .map(layer => (
                 <div
                   key={layer.id}
-                  className="drag-item"
+                  className={`drag-item ${selectedItem && selectedItem.id === layer.id ? 'selected' : ''}`}
                   draggable
                   onDragStart={() => handleDragStart(layer)}
+                  onClick={() => handleItemClick(layer)}
                 >
-                  <span className="item-description">{layer.description}</span>
+                  <span className="layer-name-display">{layer.name}</span>
                 </div>
               ))}
           </div>
+          
+          {layers.filter(layer => !Object.values(placed).includes(layer)).length === 0 && !showResults && (
+            <p className="all-placed-message">
+              ✓ All layers placed! Click "Check My Answer" when ready.
+            </p>
+          )}
           
           {Object.keys(placed).length === 7 && !showResults && (
             <button className="check-btn" onClick={handleCheck}>
@@ -136,6 +188,12 @@ function OSIActivity() {
           {showResults && (
             <button className="reset-btn" onClick={handleReset}>
               🔄 Try Again
+            </button>
+          )}
+          
+          {Object.keys(placed).length > 0 && !showResults && (
+            <button className="clear-btn" onClick={handleReset}>
+              Clear All
             </button>
           )}
         </div>

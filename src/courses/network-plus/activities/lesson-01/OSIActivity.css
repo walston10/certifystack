@@ -68,18 +68,35 @@
   flex-direction: column;
   justify-content: center;
   transition: all 0.3s;
+  position: relative;
 }
 
 .drop-zone.filled {
   background: var(--bg-tertiary);
   border: 3px solid var(--accent-cyan);
   border-style: solid;
+  cursor: pointer;
+}
+
+.drop-zone.filled:hover {
+  border-color: var(--error);
+  transform: scale(0.98);
+}
+
+.drop-zone.filled:hover .remove-hint {
+  opacity: 1;
 }
 
 .drop-zone.correct {
   border-color: var(--accent-green);
   background: rgba(0, 255, 136, 0.1);
   box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+  cursor: default;
+}
+
+.drop-zone.correct:hover {
+  transform: none;
+  border-color: var(--accent-green);
 }
 
 .drop-zone.incorrect {
@@ -87,6 +104,12 @@
   background: rgba(255, 68, 68, 0.1);
   box-shadow: 0 0 20px rgba(255, 68, 68, 0.3);
   animation: shake 0.5s;
+  cursor: default;
+}
+
+.drop-zone.incorrect:hover {
+  transform: none;
+  border-color: var(--error);
 }
 
 @keyframes shake {
@@ -112,6 +135,7 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  pointer-events: none;
 }
 
 .layer-num {
@@ -122,9 +146,47 @@
 }
 
 .hint {
-  color: var(--text-dark);
+  color: var(--text-muted);
   font-style: italic;
   font-size: 0.9rem;
+}
+
+.description-hint {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.placed-name {
+  font-size: 1.3rem;
+  color: var(--accent-cyan);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  display: block;
+  text-align: center;
+}
+
+.remove-hint {
+  display: block;
+  color: var(--error);
+  font-size: 0.85rem;
+  margin-top: 8px;
+  font-style: italic;
+  opacity: 0;
+  transition: opacity 0.3s;
+  text-align: center;
+}
+
+.instruction-text {
+  text-align: center;
+  color: var(--accent-cyan);
+  font-size: 0.95rem;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: rgba(0, 217, 255, 0.1);
+  border-radius: 8px;
+  font-weight: 500;
 }
 
 .items-grid {
@@ -141,6 +203,7 @@
   padding: 20px;
   cursor: grab;
   transition: all 0.3s;
+  text-align: center;
 }
 
 .drag-item:hover {
@@ -154,11 +217,31 @@
   transform: scale(0.98);
 }
 
-.item-description {
+.drag-item.selected {
+  border-color: var(--accent-cyan);
+  border-width: 3px;
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.15), rgba(102, 126, 234, 0.15));
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+  transform: scale(1.02);
+}
+
+.layer-name-display {
   display: block;
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.all-placed-message {
+  text-align: center;
+  color: var(--accent-green);
   font-size: 1rem;
-  line-height: 1.5;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: rgba(0, 255, 136, 0.1);
+  border-radius: 8px;
+  font-weight: 500;
 }
 
 .reset-btn {
@@ -180,9 +263,37 @@
   box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
 }
 
+.clear-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 2px solid var(--bg-tertiary);
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  transition: all 0.3s;
+  margin-top: 8px;
+}
+
+.clear-btn:hover {
+  border-color: var(--error);
+  color: var(--error);
+  transform: translateY(-2px);
+}
+
 @media (max-width: 968px) {
   .activity-container {
     grid-template-columns: 1fr;
+  }
+  
+  .drag-item {
+    cursor: pointer;
+  }
+  
+  .drag-item:active {
+    cursor: pointer;
   }
 }
 
@@ -212,4 +323,29 @@
 .check-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(0, 217, 255, 0.5);
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .drag-item {
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .drop-zone {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .drag-item:hover {
+    /* Disable hover effects on touch devices */
+    transform: none;
+  }
+  
+  .drag-item:active {
+    transform: scale(0.95);
+  }
 }
