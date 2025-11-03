@@ -10,14 +10,23 @@ import { lesson3Quiz } from './lesson-03-quiz';
 import { lesson4Quiz } from './lesson-04-quiz';
 import { lesson5Quiz } from './lesson-05-quiz';
 import { lesson6Quiz } from './lesson-06-quiz';
+import { lesson7Quiz } from './lesson-07-quiz';
+import { lesson8Quiz } from './lesson-08-quiz';
+import { lesson9Quiz } from './lesson-09-quiz';
+import { lesson10Quiz } from './lesson-10-quiz';
 
 
 // Re-export quizzes for direct imports
 export { lesson1Quiz } from './lesson-01-quiz';
 export { lesson2Quiz } from './lesson-02-quiz';
-// export { lesson3Quiz } from './lesson-03-quiz';
-// export { lesson4Quiz } from './lesson-04-quiz';
-// ... add more as you create them
+export { lesson3Quiz } from './lesson-03-quiz';
+export { lesson4Quiz } from './lesson-04-quiz';
+export { lesson5Quiz } from './lesson-05-quiz';
+export { lesson6Quiz } from './lesson-06-quiz';
+export { lesson7Quiz } from './lesson-07-quiz';
+export { lesson8Quiz } from './lesson-08-quiz';
+export { lesson9Quiz } from './lesson-09-quiz';
+export { lesson10Quiz } from './lesson-10-quiz';
 
 // ============================================
 // QUIZ REGISTRY (for dynamic loading by lesson number)
@@ -30,6 +39,10 @@ const allQuizzes = {
   4: lesson4Quiz,
   5: lesson5Quiz,
   6: lesson6Quiz,
+  7: lesson7Quiz,
+  8: lesson8Quiz,
+  9: lesson9Quiz,
+  10: lesson10Quiz,
 };
 
 // ============================================

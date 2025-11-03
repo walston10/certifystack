@@ -10,10 +10,11 @@ import { lesson3Flashcards } from './lesson-03-flashcards';
 import { lesson4Flashcards } from './lesson-04-flashcards';
 import { lesson5Flashcards } from './lesson-05-flashcards';
 import { lesson6Flashcards } from './lesson-06-flashcards';
+import { lesson7Flashcards } from './lesson-07-flashcards';
+import { lesson8Flashcards } from './lesson-08-flashcards';
+import { lesson9Flashcards } from './lesson-09-flashcards';
+import { lesson10Flashcards } from './lesson-10-flashcards';
 import { networkPlusLessons } from '../data/lessons';
-
-
-// ... import more as they are created
 
 // Registry of all flashcards
 const allFlashcards = {
@@ -22,8 +23,11 @@ const allFlashcards = {
   3: lesson3Flashcards,
   4: lesson4Flashcards,
   5: lesson5Flashcards,
-  6: lesson6Flashcards
-  // 3: lesson3Flashcards, // Example for next lesson
+  6: lesson6Flashcards,
+  7: lesson7Flashcards,
+  8: lesson8Flashcards,
+  9: lesson9Flashcards,
+  10: lesson10Flashcards,
 };
 
 // Helper function to get flashcards by lesson number
