@@ -56,7 +56,7 @@ By the end of this lesson, you will be able to:
 
 **The goal for today:** Understand *what* subnet masks are and *why* they exist. If you grasp the concept that subnet masks divide IP addresses into network and host portions, you're 80% of the way there.
 
-**Ready? Let's dive in!** 🚀
+**Ready? Let's dive in!** 
 
 ---
 
@@ -139,7 +139,7 @@ Before we dive deep into binary, let's familiarize ourselves with the most commo
 | 255.255.255.248 | 11111111.11111111.11111111.11111000 | 29 | 3 | /29 |
 | 255.255.255.252 | 11111111.11111111.11111111.11111100 | 30 | 2 | /30 |
 
-🎯 **Exam Tip:** You should recognize these masks on sight. They appear constantly on the Network+ exam!
+**Exam Tip:** You should recognize these masks on sight. They appear constantly on the Network+ exam!
 
 **Notice the pattern?** The subnet mask values you see (255, 128, 192, 224, 240, 248, 252) are all related to the powers of 2 we learned in Lesson 3!
 
@@ -268,7 +268,7 @@ Convert each octet to decimal:
 | /29  | 255.255.255.248 | 11111000 | 6 |
 | /30  | 255.255.255.252 | 11111100 | 2 |
 
-🎯 **Exam Tip:** Memorize /24, /26, /28, and /30 at minimum. These are the most common on the exam!
+**Exam Tip:** Memorize /24, /26, /28, and /30 at minimum. These are the most common on the exam!
 
 **Special mention: /30 networks**
 - Used for point-to-point links (connecting two routers)
@@ -380,7 +380,7 @@ Calculation:
 | 7         | 128            | 126          | /25 |
 | 8         | 256            | 254          | /24 |
 
-🎯 **Exam Tip:** You can calculate these on the fly during the exam using the formula, but memorizing the common ones (/24, /26, /28, /30) saves valuable time!
+**Exam Tip:** You can calculate these on the fly during the exam using the formula, but memorizing the common ones (/24, /26, /28, /30) saves valuable time!
 
 ---
 
@@ -620,7 +620,7 @@ Router B: 10.0.0.1/31
 
 No wasted addresses for network or broadcast!
 
-🎯 **Exam Tip:** /31 is relatively new and specifically for point-to-point links. Most of the time, you'll see /30 used for point-to-point connections (which has 2 usable hosts).
+**Exam Tip:** /31 is relatively new and specifically for point-to-point links. Most of the time, you'll see /30 used for point-to-point connections (which has 2 usable hosts).
 
 ---
 
@@ -775,29 +775,29 @@ Subnetting helps organize networks logically:
 
 ## Key Exam Tips
 
-🎯 **Memorize these subnet masks immediately:**
+**Memorize these subnet masks immediately:**
 - **/24** = 255.255.255.0 (254 hosts)
 - **/26** = 255.255.255.192 (62 hosts)
 - **/28** = 255.255.255.240 (14 hosts)
 - **/30** = 255.255.255.252 (2 hosts) - point-to-point links
 
-🎯 **Remember the formula:** Usable hosts = 2^(host bits) - 2
+**Remember the formula:** Usable hosts = 2^(host bits) - 2
 
-🎯 **Know the "why subtract 2":** Network address and broadcast address can't be assigned to devices
+**Know the "why subtract 2":** Network address and broadcast address can't be assigned to devices
 
-🎯 **CIDR is just counting 1s:** /24 means 24 ones in the subnet mask
+**CIDR is just counting 1s:** /24 means 24 ones in the subnet mask
 
-🎯 **Pattern recognition:** Each bit borrowed cuts hosts in half and doubles networks
+**Pattern recognition:** Each bit borrowed cuts hosts in half and doubles networks
 
-🎯 **Common exam question types:**
+**Common exam question types:**
 - "How many usable hosts in a /27 network?" (Answer: 30)
 - "What's the broadcast address for 192.168.1.0/26?" (Answer: 192.168.1.63)
 - "Are these two devices on the same network?"
 - "Convert /28 to dotted decimal" (Answer: 255.255.255.240)
 
-🎯 **Don't panic about binary:** You can often eliminate wrong answers without perfect binary calculations
+**Don't panic about binary:** You can often eliminate wrong answers without perfect binary calculations
 
-🎯 **Powers of 2 are your friend:** 2, 4, 8, 16, 32, 64, 128, 256 - know these cold!
+**Powers of 2 are your friend:** 2, 4, 8, 16, 32, 64, 128, 256 - know these cold!
 
 ---
 
@@ -854,7 +854,7 @@ If your head is spinning right now, **that's completely normal**. Subnet masks a
 - Some questions give you the subnet information
 - Focus on understanding patterns and relationships
 
-**Keep moving forward!** 🚀
+**Keep moving forward!**
 
 ---
 
@@ -1026,8 +1026,7 @@ Lesson 4 taught you the language of subnetting (subnet masks and CIDR). Lesson 5
 - ✅ How to determine if devices are on the same network
 - ✅ The relationship between network bits and host bits
 
-**You're now 13.3% of the way to Network+ certification!** (4 of 30 lessons complete)
 
-**And remember: It's okay if this felt hard. Subnetting is THE hardest part of Network+, and you're doing great by working through it!** 🚀
+**And remember: It's okay if this felt hard. Subnetting is THE hardest part of Network+, and you're doing great by working through it!** 
 
 **Next up: Putting these concepts into practice with actual subnetting!**

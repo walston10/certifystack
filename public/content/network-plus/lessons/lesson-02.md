@@ -338,17 +338,6 @@ Star topology with a single switch. It's cheap, simple to set up, easy to troubl
 
 ---
 
-## Hands-On Lab: Network Design Challenge
-
-**Time:** 30-45 minutes  
-**Tools needed:** Paper and pencil, OR [draw.io](https://draw.io) (free online tool)
-
-### Lab Overview
-
-You're going to design actual networks for real scenarios. This isn't busywork—this is what network engineers do every day. You'll make decisions about cost vs. reliability, justify your choices, and create network diagrams that you could actually show to a client or boss.
-
----
-
 ## Coming Up in Lesson 3: IP Addressing Fundamentals
 
 You now understand:
@@ -378,6 +367,5 @@ Think of it this way: topology is the road system, IP addressing is the house nu
 - Real-world network design
 - How to identify and fix topology problems
 
-**Progress:** 2 of 30 lessons complete (6.7%)
 
 You're building a solid foundation. Keep going.

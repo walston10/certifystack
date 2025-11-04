@@ -151,10 +151,10 @@ export const lesson6Quiz = [
     options: [
       "Increase the DHCP lease time to reduce renewals",
       "Use a larger subnet mask to provide more IP addresses",
-      "Disable DHCP and configure all devices with static IPs",
-      "Configure DHCP reservations for all static IP devices and exclude those IPs from the DHCP scope"
+      "Configure DHCP reservations for all static IP devices and exclude those IPs from the DHCP scope",
+      "Disable DHCP and configure all devices with static IPs"
     ],
-    correct: 3,
+    correct: 2,
     explanation: "IP conflicts typically occur when a static IP address is within the DHCP scope range, causing DHCP to assign that IP to another device. The best solution: (1) Identify all devices needing static IPs (servers, printers, network devices), (2) Create DHCP reservations for them (maps MAC address to specific IP), (3) Exclude those IPs from the DHCP scope, or (4) Use separate ranges (DHCP: .100-.250, Static: .1-.99). Option A doesn't prevent conflicts. Option C eliminates DHCP benefits and increases management overhead. Option D doesn't solve the problem - conflicts occur regardless of subnet size."
   },
   {

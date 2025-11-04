@@ -16,11 +16,11 @@ export const lesson1Quiz = [
     question: "Which protocol is connectionless and does NOT guarantee delivery?",
     options: [
       "TCP",
-      "IP",
+      "UDP",
       "ICMP",
-      "UDP"
+      "IP"
     ],
-    correct: 3,
+    correct: 1,
     explanation: "UDP (User Datagram Protocol) is connectionless and doesn't guarantee delivery. TCP is connection-oriented and reliable, while IP and ICMP serve different purposes at Layer 3."
   },
   {
@@ -89,10 +89,10 @@ export const lesson1Quiz = [
     options: [
       "Application",
       "Transport",
-      "Network",
-      "Presentation"
+      "Presentation",
+      "Network"
     ],
-    correct: 3,
+    correct: 2,
     explanation: "Layer 6 (Presentation Layer) handles encryption/decryption, compression, and data formatting. SSL/TLS encryption happens at this layer."
   },
   {
@@ -113,10 +113,10 @@ export const lesson1Quiz = [
     options: [
       "UDP",
       "ICMP",
-      "ARP",
-      "TCP"
+      "TCP",
+      "ARP"
     ],
-    correct: 3,
+    correct: 2,
     explanation: "TCP (Transmission Control Protocol) is connection-oriented and guarantees reliable delivery with error checking, sequencing, and acknowledgments. UDP is connectionless and doesn't guarantee delivery."
   },
   {
@@ -137,8 +137,8 @@ export const lesson1Quiz = [
     options: [
       "Network",
       "Transport",
-      "Presentation",
-      "Session"
+      "Session",
+      "Presentation"
     ],
     correct: 3,
     explanation: "Layer 5 (Session Layer) manages communication sessions between applications. It establishes connections, maintains them during communication, and terminates them when done."

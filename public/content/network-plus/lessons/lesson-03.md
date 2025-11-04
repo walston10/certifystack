@@ -43,7 +43,7 @@ Here's the truth: **Many students fail the Network+ exam because of weak IP addr
 
 This lesson is the first of four dedicated to IP addressing mastery. Today, we're building the foundation by understanding how IP addresses work, how binary relates to networking, and the different types of IP addresses you'll encounter. In Lessons 4-6, we'll build on this foundation with subnet masks, CIDR notation, and actual subnetting.
 
-**The good news?** IP addressing follows logical rules and patterns. Once you understand the fundamentals, everything else clicks into place. Let's get started! 🚀
+**The good news?** IP addressing follows logical rules and patterns. Once you understand the fundamentals, everything else clicks into place. Let's get started!
 
 ---
 
@@ -118,7 +118,7 @@ Binary place values (right to left):
 
 **This is THE most important thing to memorize for IP addressing!**
 
-🎯 **Exam Tip:** Memorize this sequence forwards and backwards: **128, 64, 32, 16, 8, 4, 2, 1**. Write it down at the start of the exam. You'll use it constantly for subnetting questions.
+**Exam Tip:** Memorize this sequence forwards and backwards: **128, 64, 32, 16, 8, 4, 2, 1**. Write it down at the start of the exam. You'll use it constantly for subnetting questions.
 
 ### How Binary Works
 
@@ -221,7 +221,7 @@ Result: 11111111
 
 Verify: 128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = 255 ✅
 
-✅ **Key Concept:** The maximum value for an 8-bit octet is **255**, which is when all bits are set to 1 (11111111). The minimum is **0**, which is when all bits are 0 (00000000). This is why each octet in an IP address ranges from 0 to 255!
+**Key Concept:** The maximum value for an 8-bit octet is **255**, which is when all bits are set to 1 (11111111). The minimum is **0**, which is when all bits are 0 (00000000). This is why each octet in an IP address ranges from 0 to 255!
 
 ---
 
@@ -286,7 +286,7 @@ Let's break down each octet:
 | 254     | 11111110 | All except the 1 bit |
 | 255     | 11111111 | All bits on |
 
-🎯 **Exam Tip:** These specific values (192, 224, 240, 248, 252, 254, 255) are subnet mask octets you'll see constantly! Start recognizing them on sight.
+**Exam Tip:** These specific values (192, 224, 240, 248, 252, 254, 255) are subnet mask octets you'll see constantly! Start recognizing them on sight.
 
 ---
 
@@ -472,7 +472,7 @@ Multicast allows one sender to transmit data to multiple receivers simultaneousl
 - **224.0.0.9** - All RIPv2 routers
 - **239.255.255.250** - UPnP (Universal Plug and Play)
 
-🎯 **Exam Tip:** Know that Class D = Multicast. You won't subnet Class D, but you should recognize these addresses on the exam.
+**Exam Tip:** Know that Class D = Multicast. You won't subnet Class D, but you should recognize these addresses on the exam.
 
 ---
 
@@ -487,7 +487,7 @@ Multicast allows one sender to transmit data to multiple receivers simultaneousl
 **Why does Class E exist?**  
 Reserved for research and future use. In practice, these addresses are never used in production networks.
 
-🎯 **Exam Tip:** Just know that Class E is experimental/reserved. If you see an IP starting with 240+, it's Class E and shouldn't be used.
+**Exam Tip:** Just know that Class E is experimental/reserved. If you see an IP starting with 240+, it's Class E and shouldn't be used.
 
 ---
 
@@ -567,7 +567,7 @@ Your laptop shows IP address **169.254.47.200**. This is a red flag! Your comput
 5. Restart the DHCP server if you have access
 6. Manually configure a static IP if DHCP isn't available
 
-🎯 **Exam Tip:** If you see **169.254.x.x** on the exam, it means **DHCP failed**. This is a common troubleshooting scenario!
+**Exam Tip:** If you see **169.254.x.x** on the exam, it means **DHCP failed**. This is a common troubleshooting scenario!
 
 ---
 
@@ -590,7 +590,7 @@ Before a device receives an IP address via DHCP, it temporarily uses 0.0.0.0 as 
 **3. Server Binding**  
 When a server binds to 0.0.0.0, it means "listen on all network interfaces."
 
-🎯 **Exam Tip:** 0.0.0.0 = "default route" or "any address" - context matters!
+**Exam Tip:** 0.0.0.0 = "default route" or "any address" - context matters!
 
 ---
 
@@ -615,7 +615,7 @@ These ranges are reserved for **private networks** and are **never routed on the
 | B     | 172.16.0.0 - 172.31.255.255 | 172.16.0.0/12 | 1,048,576 |
 | C     | 192.168.0.0 - 192.168.255.255 | 192.168.0.0/16 | 65,536 |
 
-🎯 **Exam Tip:** **MEMORIZE THESE RANGES!** The exam will test whether you can identify private vs public IPs.
+**Exam Tip:** **MEMORIZE THESE RANGES!** The exam will test whether you can identify private vs public IPs.
 
 **Memory trick:**  
 - **10.x.x.x** - "Ten is for everyone" (most common in large organizations)
@@ -646,7 +646,7 @@ These ranges are reserved for **private networks** and are **never routed on the
 
 **Result:** Hundreds of millions of homes can all use 192.168.1.x addresses without conflict because they're isolated in private networks!
 
-✅ **Key Concept:** Private IPs are for internal networks only. NAT (Network Address Translation) allows private IPs to access the internet through a public IP. We'll cover NAT in detail in a later lesson.
+**Key Concept:** Private IPs are for internal networks only. NAT (Network Address Translation) allows private IPs to access the internet through a public IP. We'll cover NAT in detail in a later lesson.
 
 ---
 
@@ -668,7 +668,7 @@ These ranges are reserved for **private networks** and are **never routed on the
 - ❌ 10.50.100.25 - PRIVATE
 - ❌ 172.16.0.1 - PRIVATE
 
-🎯 **Exam Tip:** On the exam, you may need to identify whether an IP is public or private. Check if it falls within the RFC 1918 ranges. If it doesn't, it's public!
+**Exam Tip:** On the exam, you may need to identify whether an IP is public or private. Check if it falls within the RFC 1918 ranges. If it doesn't, it's public!
 
 ---
 
@@ -811,7 +811,7 @@ Let's analyze some IP addresses using what we've learned:
 
 ## Key Exam Tips
 
-🎯 **Memorize these cold:**
+**Memorize these cold:**
 - **Powers of 2:** 128, 64, 32, 16, 8, 4, 2, 1
 - **Class A:** 1-126, /8, 255.0.0.0, N.H.H.H
 - **Class B:** 128-191, /16, 255.255.0.0, N.N.H.H
@@ -820,49 +820,21 @@ Let's analyze some IP addresses using what we've learned:
 - **Private ranges:** 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16
 - **Special addresses:** 127.0.0.1 (loopback), 169.254.x.x (APIPA), 0.0.0.0 (default route)
 
-🎯 **Binary conversion:**
+**Binary conversion:**
 - Practice converting common subnet values (192, 224, 240, 248, 252, 254, 255)
 - Know the place values: 128-64-32-16-8-4-2-1
 - On the exam, write down the place values immediately!
 
-🎯 **Quick identification:**
+**Quick identification:**
 - Look at first octet to determine class
 - Check if it's in RFC 1918 ranges to determine public vs private
 - Remember: 169.254.x.x = DHCP failure (APIPA)
 
-🎯 **Common mistakes to avoid:**
+**Common mistakes to avoid:**
 - Confusing 172.16.0.0/12 with 172.16.0.0/16 (the private range is /12, not /16!)
 - Forgetting that 127.x.x.x is ALL loopback (not just 127.0.0.1)
 - Thinking 172.15.x.x is private (it's not! Only 172.16-31.x.x is private)
 - Assuming all 10.x.x.x addresses are Class A (they are, but in context of subnetting, they can be subnetted into any size)
-
----
-
-## Real-World Application
-
-**Scenario:** You're setting up a new office network with 50 computers and need to choose an IP addressing scheme.
-
-**Option 1:** Use public IPs for everything
-- ❌ Expensive (would need to buy 50+ public IPs from ISP)
-- ❌ Security risk (all devices directly exposed to internet)
-- ❌ Wastes public IP addresses
-
-**Option 2:** Use private IPs with NAT (CORRECT!)
-- ✅ Free (RFC 1918 ranges are free to use internally)
-- ✅ Secure (devices hidden behind NAT)
-- ✅ Only need 1 public IP (for the router)
-- ✅ Scalable (can add more devices easily)
-
-**Best choice:** Use **192.168.1.0/24** (Class C private network)
-- Provides 254 usable host addresses (plenty for 50 computers with room to grow)
-- Easy to manage and understand
-- Standard for small networks
-
-**IP addressing plan:**
-- Router/Gateway: 192.168.1.1
-- DHCP range: 192.168.1.50 - 192.168.1.200 (for workstations)
-- Static IPs: 192.168.1.10 - 192.168.1.49 (for servers, printers)
-- Reserved: 192.168.1.201 - 192.168.1.254 (future expansion)
 
 ---
 

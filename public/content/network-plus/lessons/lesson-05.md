@@ -900,6 +900,5 @@ Lesson 5 taught you the mechanics of subnetting. Lesson 6 teaches you the art of
 - Real-world network design with subnetting
 - Troubleshooting connectivity using subnet knowledge
 
-**You're now 16.7% of the way to Network+ certification!** (5 of 30 lessons complete)
 
 **The hardest conceptual material is behind you. From here, it's practice and application!**

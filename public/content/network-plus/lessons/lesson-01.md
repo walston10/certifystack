@@ -20,7 +20,7 @@ By the end of this lesson, you will be able to:
 
 ## Video Resources
 
-📹 **Watch:** [OSI Model Explained - Professor Messer](https://www.youtube.com/watch?v=G7aVKgGUe9c)
+📹 **Watch:** [OSI Model Explained - Professor Messer](https://www.youtube.com/watch?v=G7aVKgGUe9c) 
 📹 **Deep Dive:** [OSI vs TCP/IP - Network Chuck](https://www.youtube.com/watch?v=CRdL1PcherM)  
 📹 **Visual Guide:** [7 Layers Animated - TechTerms](https://www.youtube.com/watch?v=vv4y_uOneC0)  
 📹 **Real-World Examples:** [OSI Model in Action - Drunk Engineer](https://www.youtube.com/watch?v=3b_TAYtzuho)  
@@ -29,15 +29,15 @@ By the end of this lesson, you will be able to:
 
 ## Introduction
 
-Imagine you're trying to send a letter to a friend across the country. You don't just throw the letter in the air and hope it arrives, right? You put it in an envelope, write an address, add a stamp, drop it in a mailbox, and trust that the postal system will handle the rest. The letter goes through multiple hands—local post office, sorting facilities, delivery trucks—before reaching your friend.
+Imagine you're trying to send a letter to a friend across the country. You don't just throw the letter in the air and hope it arrives, right? You put it in an envelope, write an address, add a stamp, drop it in a mailbox, and trust that the postal system will handle the rest. The letter goes through multiple hands (local post office, sorting facilities, delivery trucks) before reaching your friend.
 
 **Networking works the same way.** When you send a message, load a website, or stream a video, your data goes through multiple "layers" of processing before reaching its destination. Each layer has a specific job, and they all work together seamlessly.
 
-The **OSI Model** is the universal framework that describes these layers. Think of it as the "postal system" of networking—a standardized way to understand how data travels from your computer to anywhere in the world.
+The **OSI Model** is the universal framework that describes these layers. Think of it as the "postal system" of networking: a standardized way to understand how data travels from your computer to anywhere in the world.
 
 Why does this matter for the Network+ exam? Because the OSI model is the foundation for everything else you'll learn. Troubleshooting? You'll use the OSI model. Understanding protocols? OSI model. Configuring devices? OSI model. It's the skeleton key that unlocks networking knowledge.
 
-Let's dive in! 🚀
+Let's dive in!
 
 ---
 
@@ -49,7 +49,7 @@ Think of it like a universal translator. Before the OSI model, different compani
 
 **The OSI model has 7 layers**, each with a specific function. Data starts at Layer 7 (the top) when you, the user, do something (like click a link), and travels down through all 7 layers. When it reaches the destination computer, it travels back up through the layers.
 
-**Key Concept:** Think of the OSI model like a **stack of pancakes** 🥞. Each layer adds something to the data (like adding toppings to a pancake), and at the destination, each layer removes what it added (eating the pancake layer by layer). This process is called **encapsulation** (adding layers) and **de-encapsulation** (removing layers).
+**Key Concept:** Think of the OSI model like a **stack of pancakes**. Each layer adds something to the data (like adding toppings to a pancake), and at the destination, each layer removes what it added (eating the pancake layer by layer). This process is called **encapsulation** (adding layers) and **de-encapsulation** (removing layers).
 
 ---
 
@@ -506,57 +506,33 @@ See how the OSI model guided you to the exact problem?
 
 ---
 
-## Common OSI Model Interview Questions
-
-Here are questions you'll encounter in job interviews or on the exam:
-
-**Q: "What are the 7 layers of the OSI model?"**
-A: Application, Presentation, Session, Transport, Network, Data Link, Physical (Remember: All People Seem To Need Data Processing)
-
-**Q: "What's the difference between TCP and UDP?"**
-A: TCP is reliable, connection-oriented, and slower (used for web/email/files). UDP is unreliable, connectionless, and faster (used for streaming/gaming/voice).
-
-**Q: "At which layer do routers operate?"**
-A: Layer 3 (Network Layer) - they use IP addresses to route packets
-
-**Q: "At which layer do switches operate?"**
-A: Layer 2 (Data Link Layer) - they use MAC addresses to forward frames
-
-**Q: "What's the difference between a MAC address and an IP address?"**
-A: MAC address is physical (Layer 2), burned into hardware, used on local networks. IP address is logical (Layer 3), assigned by software/DHCP, used to route between networks.
-
-**Q: "What's encapsulation?"**
-A: The process of each layer adding its own header to data as it travels down the OSI stack (Application → Physical). The reverse process is de-encapsulation.
-
----
-
 ## Key Exam Tips
 
-🎯 **Memorize the 7 layers in order** - Use a mnemonic (All People Seem To Need Data Processing)
+**Memorize the 7 layers in order** - Use a mnemonic (All People Seem To Need Data Processing)
 
-🎯 **Know which devices operate at which layer**:
+**Know which devices operate at which layer**:
 - Layer 1: Hubs, cables, repeaters
 - Layer 2: Switches
 - Layer 3: Routers
 - Layer 4+: Firewalls, load balancers
 
-🎯 **Understand TCP vs UDP** - This is heavily tested!
+**Understand TCP vs UDP** - This is heavily tested!
 - TCP: Reliable, connection-oriented, web/email/files
 - UDP: Fast, connectionless, streaming/gaming/voice
 
-🎯 **Know common protocols and their layers**:
+**Know common protocols and their layers**:
 - Layer 7: HTTP, FTP, SMTP, DNS, DHCP
 - Layer 4: TCP, UDP
 - Layer 3: IP, ICMP
 - Layer 2: Ethernet, PPP
 
-🎯 **MAC addresses vs IP addresses**:
+**MAC addresses vs IP addresses**:
 - MAC = Layer 2, physical, local network
 - IP = Layer 3, logical, routes between networks
 
-🎯 **Use the OSI model for troubleshooting** - Start at Layer 1 and work up!
+**Use the OSI model for troubleshooting** - Start at Layer 1 and work up!
 
-⚠️ **Common Mistakes:**
+**Common Mistakes:**
 - Confusing Layer 2 (switches, MAC) with Layer 3 (routers, IP)
 - Thinking the Application Layer IS the applications (it's the protocols!)
 - Not knowing TCP vs UDP differences
@@ -636,7 +612,7 @@ A: The process of each layer adding its own header to data as it travels down th
 
 ---
 
-## 🎊 Congratulations - You've Mastered the OSI Model!
+## Congratulations - You've Mastered the OSI Model!
 
 You now understand the foundation of all networking! Everything you learn from here builds on the OSI model:
 
@@ -652,11 +628,11 @@ You now understand the foundation of all networking! Everything you learn from h
 4. Are the correct ports open? (Layer 4)
 5. Is the application configured correctly? (Layer 5-7)
 
-**You're thinking like a network engineer now!** 🎓
+**You're thinking like a network engineer now!**
 
 ---
 
-## 📚 Before Moving to Lesson 2
+## Before Moving to Lesson 2
 
 Make sure you can confidently:
 
@@ -686,11 +662,11 @@ Make sure you can confidently:
 - Every time you use the internet, think: "What's happening at each OSI layer right now?"
 - When troubleshooting (in real life or practice), consciously use the OSI model approach
 
-💡 **Pro Tip:** The OSI model will show up throughout the entire Network+ exam. Master it now, and every future lesson becomes easier!
+**Pro Tip:** The OSI model will show up throughout the entire Network+ exam. Master it now, and every future lesson becomes easier!
 
 ---
 
-## 🚀 Coming Up in Lesson 2: Network Topologies & Architectures
+## Coming Up in Lesson 2: Network Topologies & Architectures
 
 You've learned **HOW** data flows (through the OSI layers). 
 
@@ -706,7 +682,7 @@ You've learned **HOW** data flows (through the OSI layers).
 
 Now that you understand the OSI model, you'll see how networks are physically and logically organized. You'll learn why switches are at the access layer (Layer 2) and routers are at the core/distribution layers (Layer 3). The OSI model is the foundation; topologies and architectures are how we build on it!
 
-**See you in Lesson 2!** 🎉
+**See you in Lesson 2!**
 
 ---
 
@@ -731,4 +707,4 @@ Now that you understand the OSI model, you'll see how networks are physically an
 
 **You're now 3.3% of the way to Network+ certification!** (1 of 30 lessons complete)
 
-Keep this momentum going! 🚀
+Keep this momentum going!
