@@ -36,7 +36,13 @@ function FlashcardPracticeModal({ isOpen, onClose }) {
   const handleStartSession = () => {
     let bulkCards = [];
     selectedLessons.forEach(lessonId => {
-      bulkCards = [...bulkCards, ...getFlashcardsByLesson(lessonId)];
+      // Get cards for this lesson and attach the lessonId to each card
+      const lessonCards = getFlashcardsByLesson(lessonId);
+      const cardsWithLesson = lessonCards.map(card => ({
+        ...card,
+        lessonId: lessonId  // Attach lessonId so we can save progress later
+      }));
+      bulkCards = [...bulkCards, ...cardsWithLesson];
     });
 
     // Shuffle the combined deck
@@ -46,8 +52,6 @@ function FlashcardPracticeModal({ isOpen, onClose }) {
     }
 
     onClose();
-    // We'll create the /practice/flashcards route and view in the next step
-    // For now, this will navigate to a page that needs to be created.
     navigate('/practice/flashcards', { state: { cards: bulkCards } });
   };
 

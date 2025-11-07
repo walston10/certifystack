@@ -73,8 +73,11 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
 
     const currentCard = cards[currentIndex];
 
-    // Only save progress if we have a lessonId (single-lesson mode)
-    if (lessonId) {
+    // Determine which lessonId to use: card's own lessonId (practice mode) or prop lessonId (single-lesson mode)
+    const cardLessonId = currentCard.lessonId || lessonId;
+
+    // Save progress if we have a lessonId (either from card or prop)
+    if (cardLessonId) {
       const cardState = currentCard.cardState || {
         state: 'new',
         ease: 2.5,
@@ -90,11 +93,11 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
       // Update card using SM-2 algorithm
       const updatedState = updateCardAlgorithm(cardState, rating);
 
-      // Save to database/localStorage
-      updateCardState(lessonId, currentCard.id, updatedState);
+      // Save to Supabase (works for both single-lesson and multi-lesson practice)
+      updateCardState(cardLessonId, currentCard.id, updatedState);
     }
 
-    // Track rating for session stats (always, even in practice mode)
+    // Track rating for session stats (always)
     setSessionRatings(prev => [...prev, rating]);
 
     // Increment total reviews
@@ -107,9 +110,8 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
     } else {
       // Session complete
       setSessionComplete(true);
-      if (lessonId) {
-        updateStreakData();
-      }
+      // Update streak (always, since we're saving progress now)
+      updateStreakData();
     }
   };
 
