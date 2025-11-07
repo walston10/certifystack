@@ -39,7 +39,10 @@ export async function getCardState(lessonId, cardId) {
  * Update card state after rating
  */
 export async function updateCardState(lessonId, cardId, newState) {
-  return await updateFlashcardProgress(lessonId, cardId, newState);
+  // Convert cardId to proper format: "lessonId-cardIndex"
+  // cardId from flashcard files is just a number (1, 2, 3...), convert to "1-0", "1-1", etc.
+  const properCardId = `${lessonId}-${cardId - 1}`; // Subtract 1 because cards start at id:1 but index should start at 0
+  return await updateFlashcardProgress(lessonId, properCardId, newState);
 }
 
 /**
@@ -80,7 +83,9 @@ export async function getDueCardsCount(lessonId, allCards) {
   let dueCount = 0;
 
   allCards.forEach(card => {
-    const state = cardStates[card.id];
+    // Convert card.id to proper format: "lessonId-cardIndex"
+    const properCardId = `${lessonId}-${card.id - 1}`;
+    const state = cardStates[properCardId];
     if (!state || state.dueDate <= today) {
       dueCount++;
     }
@@ -98,7 +103,9 @@ export async function getNewCardsCount(lessonId, allCards) {
   let newCount = 0;
 
   allCards.forEach(card => {
-    const state = cardStates[card.id];
+    // Convert card.id to proper format: "lessonId-cardIndex"
+    const properCardId = `${lessonId}-${card.id - 1}`;
+    const state = cardStates[properCardId];
     if (!state || state.state === 'new') {
       newCount++;
     }
@@ -121,7 +128,9 @@ export async function getTotalDueCards(allLessonsCards) {
 
     // Count due cards for this lesson
     for (const card of cards) {
-      const state = cardStates[card.id];
+      // Convert card.id to proper format: "lessonId-cardIndex"
+      const properCardId = `${lessonId}-${card.id - 1}`;
+      const state = cardStates[properCardId];
       if (!state || state.dueDate <= today) {
         totalDue++;
       }
