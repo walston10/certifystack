@@ -42,10 +42,16 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
 
   // Start a session with selected size
   const startSession = (size) => {
-    if (!lessonId) return;
+    let selectedCards;
 
-    const cardStates = getLessonCardStates(lessonId);
-    const selectedCards = selectCardsForSession(initialCards, cardStates, size);
+    if (lessonId) {
+      // Single lesson mode: use spaced repetition algorithm
+      const cardStates = getLessonCardStates(lessonId);
+      selectedCards = selectCardsForSession(initialCards, cardStates, size);
+    } else {
+      // Multi-lesson practice mode: just take first N cards (already shuffled by modal)
+      selectedCards = initialCards.slice(0, Math.min(size, initialCards.length));
+    }
 
     if (selectedCards.length === 0) {
       alert('No cards available for study!');
@@ -63,28 +69,32 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
 
   // Handle card rating
   const handleRating = (rating) => {
-    if (!lessonId || currentIndex >= cards.length) return;
+    if (currentIndex >= cards.length) return;
 
     const currentCard = cards[currentIndex];
-    const cardState = currentCard.cardState || {
-      state: 'new',
-      ease: 2.5,
-      interval: 0,
-      dueDate: new Date().toISOString().split('T')[0],
-      lastReviewed: null,
-      repetitions: 0,
-      timesHard: 0,
-      timesGood: 0,
-      timesEasy: 0
-    };
 
-    // Update card using SM-2 algorithm
-    const updatedState = updateCardAlgorithm(cardState, rating);
+    // Only save progress if we have a lessonId (single-lesson mode)
+    if (lessonId) {
+      const cardState = currentCard.cardState || {
+        state: 'new',
+        ease: 2.5,
+        interval: 0,
+        dueDate: new Date().toISOString().split('T')[0],
+        lastReviewed: null,
+        repetitions: 0,
+        timesHard: 0,
+        timesGood: 0,
+        timesEasy: 0
+      };
 
-    // Save to localStorage
-    updateCardState(lessonId, currentCard.id, updatedState);
+      // Update card using SM-2 algorithm
+      const updatedState = updateCardAlgorithm(cardState, rating);
 
-    // Track rating for session stats
+      // Save to database/localStorage
+      updateCardState(lessonId, currentCard.id, updatedState);
+    }
+
+    // Track rating for session stats (always, even in practice mode)
     setSessionRatings(prev => [...prev, rating]);
 
     // Increment total reviews
@@ -97,7 +107,9 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
     } else {
       // Session complete
       setSessionComplete(true);
-      updateStreakData();
+      if (lessonId) {
+        updateStreakData();
+      }
     }
   };
 
