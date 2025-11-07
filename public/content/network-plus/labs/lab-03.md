@@ -1,528 +1,239 @@
-# Lab 3: IP Address Classification Challenge
+# Lesson 3 Lab: IP Addressing Fundamentals
 
-**Duration:** 30-40 minutes  
-**Difficulty:** Beginner  
-**Prerequisites:** Complete Lesson 3: IP Addressing Fundamentals
-
----
-
-## 🎯 Lab Objectives
-
-By completing this lab, you will:
-- Practice identifying IP address classes by first octet
-- Distinguish between public and private IP addresses
-- Recognize special-purpose addresses (loopback, APIPA)
-- Convert between decimal and binary notation
-- Apply IP addressing concepts to real-world scenarios
+**Estimated Time:** 25-30 minutes  
+**Topics:** Binary conversion, IP address classes, Public vs Private IPs, Special addresses
 
 ---
 
-## 🛠️ Tools Required
+## Section 1: Concept Check (5 min)
 
-**Option 1 (Recommended):** Spreadsheet software
-- Google Sheets (free, online)
-- Microsoft Excel
-- LibreOffice Calc
+Answer these questions to verify you understand IP addressing basics:
 
-**Option 2:** Paper and pencil (old school but effective!)
+1. **How many bits are in an IPv4 address?**
+   - a) 8 bits
+   - b) 16 bits
+   - c) 32 bits
+   - d) 64 bits
 
-**Option 3:** Command-line tools (advanced)
-- Windows Command Prompt (ipconfig, ping)
-- Linux/Mac Terminal (ifconfig, ip addr, ping)
+2. **Which IP address is a private (RFC 1918) address?**
+   - a) 8.8.8.8
+   - b) 192.168.1.1
+   - c) 74.125.224.72
+   - d) 127.0.0.1
 
----
+3. **What is the loopback address used for testing?**
+   - a) 0.0.0.0
+   - b) 127.0.0.1
+   - c) 255.255.255.255
+   - d) 169.254.1.1
 
-## 📋 Lab Scenario
+4. **An IP address starting with 10.x.x.x is Class:**
+   - a) Class A
+   - b) Class B
+   - c) Class C
+   - d) Class D
 
-You're a junior network administrator at TechCorp, a mid-sized company with multiple offices. Your manager has asked you to audit the company's IP addressing scheme and identify any issues. You've been given a list of IP addresses currently in use across various departments and need to classify them, identify potential problems, and make recommendations.
-
-**Your mission:**
-1. Classify each IP address (Class A/B/C, public/private)
-2. Identify special addresses (loopback, APIPA, etc.)
-3. Flag any addressing issues
-4. Make recommendations for improvement
-
----
-
-## 🏋️ Part 1: IP Address Classification Matrix
-
-Create a spreadsheet (or table) with the following columns:
-
-| IP Address | Class | Public/Private | Valid? | Notes |
-|------------|-------|----------------|--------|-------|
-| | | | | |
-
-Now classify each of the following IP addresses from TechCorp's network:
-
-### Device List
-
-1. **Executive Floor Router:** 172.16.5.1
-2. **Marketing Department Laptop:** 192.168.10.55
-3. **Server Room Mail Server:** 10.20.30.40
-4. **CEO's Desktop:** 11.50.100.200
-5. **Conference Room Printer:** 169.254.45.100
-6. **Research Lab Workstation:** 172.32.10.5
-7. **Guest WiFi Gateway:** 192.168.200.1
-8. **IT Department Test Server:** 127.0.0.1
-9. **HR Database Server:** 172.20.15.50
-10. **Sales Department Laptop:** 10.150.75.200
-11. **DNS Test Server:** 8.8.8.8
-12. **Finance Department Desktop:** 192.168.1.150
-13. **Engineering Workstation:** 172.31.255.254
-14. **Warehouse Scanner:** 169.254.1.1
-15. **Public Web Server:** 203.0.113.50
-
-### Instructions for Part 1:
-
-For each IP address, determine:
-1. **Class:** A, B, C, (or N/A for special addresses)
-2. **Public or Private:** Use RFC 1918 ranges
-3. **Valid for host use?** Some addresses have special purposes
-4. **Notes:** Add observations (e.g., "APIPA address - DHCP issue")
-
-**Hint:** Remember the ranges:
-- Class A: 1-126 (Private: 10.0.0.0/8)
-- Class B: 128-191 (Private: 172.16.0.0/12)
-- Class C: 192-223 (Private: 192.168.0.0/16)
-- Special: 127.x.x.x (loopback), 169.254.x.x (APIPA)
+5. **If your computer shows an IP of 169.254.x.x, what does this mean?**
+   - a) You have a valid DHCP address
+   - b) Your DNS is not working
+   - c) DHCP failed and Windows assigned APIPA
+   - d) You're connected to the internet
 
 ---
 
-## 🧮 Part 2: Binary Conversion Practice
+## Section 2: Hands-On Activity (20-25 min)
 
-Your manager wants to ensure you understand binary addressing for upcoming subnetting tasks. Convert these IP addresses to binary notation.
+### Activity A: Binary Conversion Practice
 
-### Convert to Binary:
+**Master the powers of 2 (you MUST memorize these for subnetting!):**
 
-1. **192.168.1.1**
-   - Octet 1 (192): ____________
-   - Octet 2 (168): ____________
-   - Octet 3 (1): ____________
-   - Octet 4 (1): ____________
+| Position | 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
+|----------|-----|----|----|-------|---|---|---|---|
+| Bit Value | 2⁷ | 2⁶ | 2⁵ | 2⁴ | 2³ | 2² | 2¹ | 2⁰ |
 
-2. **10.0.0.1**
-   - Octet 1 (10): ____________
-   - Octet 2 (0): ____________
-   - Octet 3 (0): ____________
-   - Octet 4 (1): ____________
+#### Exercise 1: Convert Decimal to Binary
 
-3. **172.16.254.1**
-   - Octet 1 (172): ____________
-   - Octet 2 (16): ____________
-   - Octet 3 (254): ____________
-   - Octet 4 (1): ____________
+**Method:** Start from left, ask "Is this number >= this position value?"
 
-**Powers of 2 Reference:**
-```
-128  64  32  16  8  4  2  1
-```
+**Example: Convert 192 to binary**
+- 192 >= 128? YES → Put 1, subtract: 192-128 = 64
+- 64 >= 64? YES → Put 1, subtract: 64-64 = 0
+- 0 >= 32? NO → Put 0
+- 0 >= 16? NO → Put 0
+- 0 >= 8? NO → Put 0
+- 0 >= 4? NO → Put 0
+- 0 >= 2? NO → Put 0
+- 0 >= 1? NO → Put 0
 
-### Convert to Decimal:
+**Answer: 11000000**
 
-4. **11000000.10101000.00000001.00000001**
-   - Decimal: __________.__________.__________.__________
+**Your turn - Convert these:**
 
-5. **00001010.00000000.00000000.00000001**
-   - Decimal: __________.__________.__________.__________
+1. **168** = _______________
+2. **255** = _______________
+3. **10** = _______________
+4. **172** = _______________
 
-**Hint:** Add up the values where you see a 1!
+#### Exercise 2: Convert Binary to Decimal
 
----
+**Method:** Add up the positions where there's a 1
 
-## 🚨 Part 3: Troubleshooting Scenario
+**Example: 10101100**
+- 128 + 0 + 32 + 0 + 8 + 4 + 0 + 0 = **172**
 
-You receive trouble tickets from users reporting network connectivity issues. Use your IP addressing knowledge to diagnose the problems.
+**Your turn - Convert these:**
 
-### Ticket #1: Marketing Manager's Laptop
-**Complaint:** "I can't access the internet, but I could yesterday!"  
-**IP Address observed:** 169.254.50.100  
-**Subnet Mask:** 255.255.0.0
-
-**Questions:**
-1. What type of address is this?
-2. What does this indicate about the network?
-3. What should you check first?
-4. Is the user's computer able to communicate with other devices on the same subnet?
+1. **11000000** = _______________
+2. **10101000** = _______________
+3. **11111111** = _______________
+4. **00001010** = _______________
 
 ---
 
-### Ticket #2: New Server Configuration
-**Scenario:** IT team configured a new web server with IP address 172.32.15.10  
-**Problem:** The server can't communicate with the internal private network (172.16.0.0/12)
+### Activity B: Identify Your Network Information
 
-**Questions:**
-1. Is 172.32.15.10 in the private Class B range?
-2. Why can't this server communicate with 172.16.x.x devices?
-3. What IP range should the server use instead?
+**Let's analyze YOUR IP address:**
 
----
+1. **Open Command Prompt (Windows) or Terminal (Mac)**
 
-### Ticket #3: Guest WiFi Network
-**Scenario:** You're setting up a guest WiFi network that should be completely isolated from the corporate network.  
-**Corporate Network:** Uses 10.0.0.0/8  
-**Proposed Guest Network:** 10.50.0.0/24
+2. **Type:** `ipconfig` (Windows) or `ifconfig` (Mac)
 
-**Questions:**
-1. Is this a good choice for guest WiFi? Why or why not?
-2. What alternative private range would provide better isolation?
-3. Suggest two IP ranges that would work well for guest networks.
+3. **Find your IPv4 Address and write it here:**
+   - IP Address: _____._____._____._____ 
 
----
+4. **Answer these questions about YOUR IP:**
 
-### Ticket #4: Workstation Can't Access Local Resources
-**Complaint:** "I can ping 127.0.0.1, but I can't access any network resources!"  
-**IP Address:** 192.168.1.50  
-**Default Gateway:** 192.168.1.1  
-**DNS Server:** 192.168.1.1
+**Question 1:** Is your IP address public or private?
+- Check if it starts with:
+  - 10.x.x.x → Private (Class A)
+  - 172.16.x.x through 172.31.x.x → Private (Class B)
+  - 192.168.x.x → Private (Class C)
+  - Anything else → Probably public
 
-**Questions:**
-1. What does successfully pinging 127.0.0.1 tell you?
-2. What does it mean if the user can't reach the gateway (192.168.1.1)?
-3. What should you test next? (Provide three troubleshooting steps)
+**Your answer:** _____________
 
----
+**Question 2:** What class is your IP address?
+- Class A: 1.x.x.x to 126.x.x.x (first octet)
+- Class B: 128.x.x.x to 191.x.x.x
+- Class C: 192.x.x.x to 223.x.x.x
 
-## 🎨 Part 4: Design Challenge - Multi-Office IP Scheme
+**Your answer:** _____________
 
-TechCorp is expanding and needs an IP addressing plan for three new offices:
+**Question 3:** Convert the first octet of your IP to binary
 
-**Requirements:**
-- **Headquarters:** Needs 500 device addresses (servers, desktops, printers, phones)
-- **Branch Office 1:** Needs 100 device addresses
-- **Branch Office 2:** Needs 50 device addresses
-- All three offices should use private addressing
-- Each office should have a separate IP range (not overlapping)
+Example: If your IP is 192.168.1.105
+- First octet = 192
+- Binary = 11000000
 
-**Your Task:**
-Design an IP addressing scheme for all three offices using private IP addresses.
-
-**Deliverable:** Create a table like this:
-
-| Office | IP Network Range | Private Range Used | Rationale |
-|--------|------------------|-------------------|-----------|
-| HQ | | (Class A/B/C?) | |
-| Branch 1 | | (Class A/B/C?) | |
-| Branch 2 | | (Class A/B/C?) | |
-
-**Considerations:**
-- Should you use the same private range class for all offices, or mix them?
-- How do you ensure no overlap?
-- What about future growth?
-- Which private range (10.x.x.x, 172.16.x.x, or 192.168.x.x) is best for each?
-
-**Bonus Challenge:** Explain how these three offices could communicate with each other if they're connected via VPN tunnels.
+**Your first octet:** _______________
+**In binary:** _______________
 
 ---
 
-## 🧪 Part 5: Hands-On Command Line Practice
+### Activity C: Test Special IP Addresses
 
-**Note:** This section requires access to a computer with network connectivity.
+**Let's test different special IP addresses to see what they do:**
 
-### Windows Users:
+#### Test 1: Loopback (127.0.0.1)
 
-Open Command Prompt and run these commands:
+1. **Open Command Prompt/Terminal**
+2. **Type:** `ping 127.0.0.1`
+3. **What happened?** 
 
-1. **Display your current IP configuration:**
-```bash
-ipconfig
-```
-**Record your findings:**
-- Your IP address: ____________
-- Class: ____________
-- Public or Private? ____________
+**Expected:** You should get replies instantly (less than 1ms)
 
-2. **Display detailed IP information:**
-```bash
-ipconfig /all
-```
-**Find and record:**
-- Default Gateway: ____________
-- DNS Servers: ____________
-- DHCP Server: ____________
+**What this proves:** 
+- This IP ALWAYS points to your own computer
+- Used for testing if your network stack is working
+- Never leaves your computer
 
-3. **Test loopback:**
-```bash
-ping 127.0.0.1
-```
-**Result:** Did it work? ____________
+#### Test 2: Try to ping a private IP that doesn't exist
 
-4. **Test your default gateway:**
-```bash
-ping [your gateway IP]
-```
-**Result:** ____________
+1. **Type:** `ping 10.255.255.254`
+2. **What happened?**
 
-### Mac/Linux Users:
+**Expected:** Request timed out (unless you're actually on a 10.x.x.x network)
 
-Open Terminal and run these commands:
+**Why?** Private IPs only work on local networks. This IP isn't on your network.
 
-1. **Display your IP configuration:**
-```bash
-ifconfig
-# or on newer systems:
-ip addr show
-```
+#### Test 3: Your Default Gateway
 
-2. **Test loopback:**
-```bash
-ping -c 4 127.0.0.1
-```
+1. **From your ipconfig output, find your Default Gateway**
+2. **Type:** `ping [your gateway IP]`
+3. **Response time:** _____ ms
 
-3. **View routing table:**
-```bash
-netstat -rn
-# or:
-ip route show
-```
+**What this proves:** You can reach your router (gateway to the internet)
 
-### Analysis Questions:
+#### Test 4: Public DNS Server
 
-1. Is your computer using a private or public IP address?
-2. If private, which RFC 1918 range is it using?
-3. Can you identify your network's default gateway?
-4. Based on your IP and gateway, are you on a Class A, B, or C network?
+1. **Type:** `ping 8.8.8.8` (Google's public DNS)
+2. **Response time:** _____ ms
+
+**Compare:** Gateway ping vs Google ping - which was faster and why?
 
 ---
 
-## 📊 Part 6: IP Address Pattern Recognition
+### Activity D: Identify IP Address Types
 
-Identify the patterns in these IP address groups and determine what they have in common:
+**For each IP address, identify:**
+- Public or Private?
+- What Class? (A, B, C, D, or E)
+- Special address? (if applicable)
 
-### Group 1:
-- 10.5.100.20
-- 10.50.200.30
-- 10.200.50.100
-
-**Pattern:** ____________  
-**Common characteristic:** ____________
-
----
-
-### Group 2:
-- 169.254.1.1
-- 169.254.50.100
-- 169.254.200.250
-
-**Pattern:** ____________  
-**Common characteristic:** ____________  
-**What network issue do these indicate?** ____________
+| IP Address | Public/Private | Class | Special? |
+|------------|----------------|-------|----------|
+| 192.168.1.1 | | | |
+| 8.8.8.8 | | | |
+| 10.0.0.1 | | | |
+| 127.0.0.1 | | | |
+| 172.16.0.1 | | | |
+| 169.254.10.5 | | | |
+| 224.0.0.1 | | | |
+| 74.125.224.72 | | | |
 
 ---
 
-### Group 3:
-- 172.16.0.1
-- 172.20.5.10
-- 172.31.255.254
+### Activity E: Binary IP Address Challenge (Optional)
 
-**Pattern:** ____________  
-**Common characteristic:** ____________  
-**Are all of these private addresses?** ____________
+**Convert this full IP address to binary:**
 
----
+IP: **192.168.1.1**
 
-### Group 4:
-- 8.8.8.8
-- 1.1.1.1
-- 44.200.50.20
+| Octet | Decimal | Binary |
+|-------|---------|--------|
+| 1st | 192 | ________ |
+| 2nd | 168 | ________ |
+| 3rd | 1 | ________ |
+| 4th | 1 | ________ |
 
-**Pattern:** ____________  
-**Common characteristic:** ____________  
-**Would you expect to see these inside a corporate network?** ____________
+**Full binary IP:** ________.________.________.________
+
+**Why this matters:** Subnetting requires binary! This is foundation work.
 
 ---
 
-## ✅ Answer Key & Grading Rubric
+## Section 3: Reflection (5 min)
 
-<details>
-<summary>Part 1: Classification Matrix - Expand to Check Answers</summary>
+**Real-World Scenario:**
 
-| IP Address | Class | Public/Private | Valid? | Notes |
-|------------|-------|----------------|--------|-------|
-| 172.16.5.1 | B | Private | Yes | Private Class B (RFC 1918) |
-| 192.168.10.55 | C | Private | Yes | Private Class C (RFC 1918) |
-| 10.20.30.40 | A | Private | Yes | Private Class A (RFC 1918) |
-| 11.50.100.200 | A | Public | Yes | Public Class A |
-| 169.254.45.100 | N/A | Special | No | APIPA - DHCP failed |
-| 172.32.10.5 | B | Public | Yes | Public Class B (172.32 > 172.31) |
-| 192.168.200.1 | C | Private | Yes | Private Class C |
-| 127.0.0.1 | N/A | Special | No | Loopback address |
-| 172.20.15.50 | B | Private | Yes | Private Class B |
-| 10.150.75.200 | A | Private | Yes | Private Class A |
-| 8.8.8.8 | A | Public | Yes | Google DNS (public) |
-| 192.168.1.150 | C | Private | Yes | Private Class C |
-| 172.31.255.254 | B | Private | Yes | Private Class B (172.16-31) |
-| 169.254.1.1 | N/A | Special | No | APIPA - DHCP failed |
-| 203.0.113.50 | C | Public | Yes | Public Class C |
+You're setting up a home network for a friend. They ask: "Why does my computer have IP 192.168.1.5, but when I check online it shows a different IP?"
 
-**Issues Found:**
-- Printer and scanner have APIPA addresses (169.254.x.x) - DHCP problem
-- Test server using loopback (127.0.0.1) - not suitable for network access
-- Research lab has public IP (172.32.10.5) when it should be private
+**Explain in your own words:**
+- What's happening with private vs public IPs?
+- What device is doing the translation?
+- Why do we use private IPs at all?
 
-</details>
-
-<details>
-<summary>Part 2: Binary Conversions - Expand to Check Answers</summary>
-
-### Decimal to Binary:
-
-1. **192.168.1.1**
-   - 192 = 11000000
-   - 168 = 10101000
-   - 1 = 00000001
-   - 1 = 00000001
-
-2. **10.0.0.1**
-   - 10 = 00001010
-   - 0 = 00000000
-   - 0 = 00000000
-   - 1 = 00000001
-
-3. **172.16.254.1**
-   - 172 = 10101100
-   - 16 = 00010000
-   - 254 = 11111110
-   - 1 = 00000001
-
-### Binary to Decimal:
-
-4. **11000000.10101000.00000001.00000001**
-   - 192.168.1.1
-
-5. **00001010.00000000.00000000.00000001**
-   - 10.0.0.1
-
-</details>
-
-<details>
-<summary>Part 3: Troubleshooting Answers - Expand to Check</summary>
-
-**Ticket #1:**
-1. APIPA (Automatic Private IP Addressing) - 169.254.x.x range
-2. The computer cannot reach the DHCP server
-3. Check: Is DHCP server running? Is network cable connected? Is there connectivity to DHCP server?
-4. Yes, the user can communicate with other devices that also have APIPA addresses on the same physical segment
-
-**Ticket #2:**
-1. No! Private Class B is only 172.16.0.0 through 172.31.255.255
-2. 172.32.x.x is a public address, not in the private range
-3. Use an IP in the 172.16.0.0 to 172.31.255.255 range (e.g., 172.16.15.10)
-
-**Ticket #3:**
-1. No - guests would be on the same network as corporate users
-2. Use a different private range: 192.168.x.x or 172.16.x.x
-3. Examples: 192.168.200.0/24, 192.168.guest.0/24, or 172.16.100.0/24
-
-**Ticket #4:**
-1. TCP/IP stack is working (software is fine)
-2. Physical network connectivity issue or gateway is down
-3. Next steps: Ping default gateway (192.168.1.1), check cable connection, verify network adapter has link light, try pinging another local device
-
-</details>
-
-<details>
-<summary>Part 4: Design Challenge - Sample Solution</summary>
-
-**Recommended Solution:**
-
-| Office | IP Network Range | Private Range | Rationale |
-|--------|------------------|---------------|-----------|
-| HQ | 10.0.0.0 - 10.0.1.255 | Class A Private | Needs 500 addresses; using 10.0.0.0/23 gives 510 usable hosts with room for growth |
-| Branch 1 | 192.168.1.0 - 192.168.1.255 | Class C Private | Needs 100 addresses; 192.168.1.0/24 gives 254 hosts |
-| Branch 2 | 192.168.2.0 - 192.168.2.255 | Class C Private | Needs 50 addresses; 192.168.2.0/24 gives 254 hosts with room for growth |
-
-**Why this design:**
-- No overlap between offices
-- Each range has room for growth
-- Uses different private ranges for easier management
-- HQ uses Class A for scalability
-- Branches use Class C for simplicity
-
-**VPN Communication:** All three offices can communicate via site-to-site VPN tunnels. The router at each location connects to the other offices' routers, creating a private "intranet."
-
-</details>
-
-<details>
-<summary>Part 6: Pattern Recognition - Answers</summary>
-
-**Group 1:**
-- Pattern: All start with 10
-- Common: All private Class A addresses
-- All RFC 1918 compliant
-
-**Group 2:**
-- Pattern: All start with 169.254
-- Common: All APIPA addresses
-- Indicates: DHCP failure - computers couldn't reach DHCP server
-
-**Group 3:**
-- Pattern: All start with 172, second octet between 16-31
-- Common: All private Class B addresses (172.16.0.0/12 range)
-- Yes, all private!
-
-**Group 4:**
-- Pattern: Various first octets (8, 1, 44)
-- Common: All public IP addresses (commonly seen DNS servers)
-- Typically used for internet services, not internal networks
-
-</details>
+**Think about:** If every device needed its own public IP address, and each home has 20+ devices, what would happen to available IPv4 addresses?
 
 ---
 
-## 📚 Submission Checklist
+## What You Learned Today
 
-Before completing this lab, ensure you've:
+- ✅ You can convert decimal to binary and back (critical for subnetting!)
+- ✅ You memorized powers of 2 (128, 64, 32, 16, 8, 4, 2, 1)
+- ✅ You identified your own IP as private or public
+- ✅ You know IP address classes (A, B, C)
+- ✅ You tested special addresses (loopback, private ranges)
+- ✅ You understand why private IPs exist (IPv4 address conservation)
 
-- [ ] Classified all 15 IP addresses in Part 1
-- [ ] Completed all binary conversions in Part 2
-- [ ] Answered all troubleshooting scenarios in Part 3
-- [ ] Designed the multi-office IP scheme in Part 4
-- [ ] Performed hands-on command-line tests in Part 5
-- [ ] Identified patterns in Part 6
-- [ ] Checked your answers against the answer key
-
----
-
-## 🎓 Lab Reflection
-
-Answer these questions to consolidate your learning:
-
-1. **What was the most challenging part of this lab?**
-
-2. **Which IP addressing concept do you feel most confident about now?**
-
-3. **What would you like more practice with?**
-
-4. **How would you explain the difference between public and private IP addresses to a non-technical person?**
-
----
-
-## 🚀 Extra Credit Challenges
-
-If you want to go deeper:
-
-1. **Research Assignment:** Look up your ISP's public IP range using WHOIS lookup tools. Is it Class A, B, or C?
-
-2. **Network Discovery:** Use `arp -a` (Windows) or `ip neigh` (Linux) to see what other devices are on your local network. Classify their IPs.
-
-3. **Subnetting Preview:** If HQ has the range 10.0.0.0/23 (510 hosts), how would you divide this into four equal departments? (This previews Lesson 5!)
-
-4. **Historical Research:** Why did engineers choose 10.x.x.x, 172.16.x.x, and 192.168.x.x as the private ranges? What made these ranges special?
-
-
-## 🎯 What You've Accomplished
-
-By completing this lab, you've:
-
-✅ Applied IP classification skills to real-world scenarios  
-✅ Practiced binary conversions for networking  
-✅ Diagnosed common IP addressing issues  
-✅ Designed a multi-site IP addressing scheme  
-✅ Used command-line tools for network discovery  
-✅ Developed pattern recognition for IP troubleshooting
-
-**You're now ready for Lesson 4: Subnet Masks and CIDR Notation!**
-
-This lab gave you hands-on experience with the foundation of IP addressing. In the next lesson, we'll learn how to divide these networks into smaller, more manageable pieces using subnetting.
-
-**Great work! 🎉**
+**Next Lesson:** Subnet Masks and CIDR Notation - How to divide networks

@@ -1,573 +1,419 @@
-# Lab 8: DNS Scavenger Hunt
+# Lesson 8 Lab: Network Protocols and Services
 
-**Objective:** Use command-line tools to investigate real DNS records, understand how DNS resolution works, and practice troubleshooting techniques.
-
-**Time Required:** 30-40 minutes  
-**Tools Needed:** Command Prompt (Windows) or Terminal (Mac/Linux)  
-**Prerequisites:** Access to internet, basic command-line familiarity
+**Estimated Time:** 30-35 minutes  
+**Topics:** DNS, DHCP, NTP, Testing network services
 
 ---
 
-## Introduction
+## Section 1: Concept Check (5 min)
 
-Most network engineers never actually see DNS working - it's invisible. But when DNS breaks, everything stops working. Understanding how to investigate DNS records is a critical troubleshooting skill.
+Answer these questions to verify you understand network services:
 
-This lab transforms you into a network detective. Instead of memorizing theory, you'll use `nslookup` and DNS queries to discover real information about actual websites.
+1. **What does DNS do?**
+   - a) Assigns IP addresses to devices
+   - b) Translates domain names to IP addresses
+   - c) Encrypts network traffic
+   - d) Routes packets between networks
 
-**What makes this different:**
-- You're investigating REAL domains, not fake examples
-- Every answer you find is currently active on the internet
-- These are the same commands network engineers use daily
-- You'll discover things about familiar websites you never knew
+2. **What are the 4 steps of the DHCP process?**
+   - a) Discover, Offer, Request, Acknowledge
+   - b) Request, Response, Confirm, Complete
+   - c) Hello, Sync, Data, Finish
+   - d) Connect, Assign, Validate, Disconnect
 
-Let's hunt! 🔍
+3. **Which DNS record type maps a domain name to an IPv4 address?**
+   - a) AAAA
+   - b) CNAME
+   - c) MX
+   - d) A
+
+4. **Why is NTP (Network Time Protocol) important?**
+   - a) To speed up networks
+   - b) To synchronize time across devices for logging and security
+   - c) To encrypt timestamps
+   - d) To measure network latency
+
+5. **What port does DNS use?**
+   - a) Port 22
+   - b) Port 53
+   - c) Port 80
+   - d) Port 443
 
 ---
 
-## Challenge 1: Find the Mail Servers
+## Section 2: Hands-On Activity (25-30 min)
 
-Email doesn't go directly from sender to recipient - it routes through mail exchange (MX) servers. Your mission: discover which servers handle email for major companies.
+### Activity A: Test DNS with nslookup
 
-### Your Task:
+**DNS translates names (like google.com) to IP addresses. Let's see it in action!**
 
-Use `nslookup` to find MX records for these domains:
+1. **Open Command Prompt (Windows) or Terminal (Mac)**
 
-1. **google.com**
-2. **microsoft.com**
-3. **github.com**
-4. **netflix.com**
-5. **nasa.gov**
+2. **Type:** `nslookup google.com`
 
-### Commands:
-
+**What you'll see:**
 ```
-nslookup -type=MX google.com
-nslookup -type=MX microsoft.com
-nslookup -type=MX github.com
-nslookup -type=MX netflix.com
-nslookup -type=MX nasa.gov
+Server:  [Your DNS server name/IP]
+Address: [Your DNS server IP]
+
+Non-authoritative answer:
+Name:    google.com
+Address: 142.250.185.46
 ```
 
-### Questions to Answer:
-
-1. Which domain has the MOST mail servers (most MX records)?
-2. Which has the FEWEST?
-3. What do the priority numbers mean? (Hint: lower = higher priority)
-4. Why would a company have multiple MX records instead of just one?
-5. Do any companies use third-party email services? (Look at the mail server names)
-
-### What You'll Discover:
-
-Most companies don't run their own mail servers anymore - they use Google Workspace (aspmx.l.google.com) or Microsoft 365 (*.mail.protection.outlook.com). The MX records reveal the actual infrastructure behind "professional" email addresses.
+**Write down:**
+- DNS server you're using: _________________________________
+- IP address returned for google.com: _________________________________
 
 ---
 
-## Challenge 2: IPv4 vs IPv6 - The Dual Stack
+3. **Test a different site:** `nslookup amazon.com`
 
-Modern websites support both IPv4 (A records) and IPv6 (AAAA records). Some are IPv4-only. Let's investigate who's keeping up with the times.
+**IP address for amazon.com:** _________________________________
 
-### Your Task:
+4. **Look up your own domain (if you have one), or try:**
+   - `nslookup facebook.com`
+   - `nslookup netflix.com`
+   - `nslookup reddit.com`
 
-Check if these domains have IPv6 support:
+**Notice:** DNS returns different IPs for different sites!
 
-1. **google.com**
-2. **facebook.com**
-3. **cloudflare.com**
-4. **example.com**
-5. **whitehouse.gov**
+---
 
-### Commands:
+### Activity B: DNS Record Types
 
+**Let's explore different types of DNS records:**
+
+#### Test 1: A Record (IPv4 address)
 ```
 nslookup google.com
+```
+
+**Result:** Returns IPv4 address (like 142.250.185.46)
+
+#### Test 2: AAAA Record (IPv6 address)
+```
 nslookup -type=AAAA google.com
 ```
 
-Run both commands for each domain. The first shows IPv4 (A records), the second shows IPv6 (AAAA records).
+**Result:** Returns IPv6 address (like 2607:f8b0:4004:c07::71)
 
-### Questions to Answer:
+**Your result:** _________________________________
 
-1. Which domains support BOTH IPv4 and IPv6?
-2. Which are IPv4-only?
-3. Compare the number of IPv4 addresses vs IPv6 addresses returned
-4. Why would a website have multiple IP addresses?
-5. What happens if you try to visit an IPv6 address directly in your browser?
-
-### What You'll Learn:
-
-Major tech companies (Google, Facebook, Cloudflare) are fully IPv6-enabled. Government and older sites often lag behind. Multiple IPs indicate load balancing - traffic is distributed across several servers.
+**Did it return an IPv6?** If yes, that means Google supports IPv6!
 
 ---
 
-## Challenge 3: Reverse Lookup - Unmask the IPs
-
-You know domain names resolve to IPs. But can you go backward? Given an IP, can you find the domain? This is called **reverse DNS lookup** using PTR records.
-
-### Your Task:
-
-Perform reverse lookups on these famous IPs:
-
-1. **8.8.8.8** (Hint: This is Google's public DNS)
-2. **1.1.1.1** (Hint: Cloudflare's public DNS)
-3. **208.67.222.222** (Hint: OpenDNS)
-4. **142.250.185.46** (One of Google's web servers)
-
-### Commands:
-
+#### Test 3: MX Record (Mail server)
 ```
-nslookup 8.8.8.8
-nslookup 1.1.1.1
-nslookup 208.67.222.222
-nslookup 142.250.185.46
+nslookup -type=MX google.com
 ```
 
-### Questions to Answer:
+**What you'll see:**
+```
+google.com      MX preference = 10, mail exchanger = smtp.google.com
+```
 
-1. What hostname does 8.8.8.8 resolve to?
-2. What about 1.1.1.1?
-3. Did all IPs have PTR records? (Did they all resolve to names?)
-4. Why might an IP address NOT have a PTR record?
-5. Why do mail servers care about reverse DNS?
+**What this means:** Emails to @google.com go to smtp.google.com
 
-### What You'll Learn:
-
-Not all IPs have reverse DNS configured. But responsible servers (especially mail servers) should have PTR records. Many spam filters reject email from servers without valid reverse DNS because it's a sign of a sketchy setup.
+**Your result - what's the mail server?** _________________________________
 
 ---
 
-## Challenge 4: DNS Cache Investigation
-
-Your computer caches DNS responses to speed up browsing. Let's see what's in there.
-
-### Your Task (Windows):
-
-**Step 1: View your DNS cache**
+#### Test 4: NS Record (Name servers)
 ```
-ipconfig /displaydns
+nslookup -type=NS google.com
 ```
 
-This will dump a LONG list of cached DNS entries. Scroll through it.
+**Result:** Shows DNS servers that are authoritative for google.com
 
-**Step 2: Visit some websites**
+**Write down one name server:** _________________________________
 
-Open a browser and visit 3-5 websites you've never visited before. Then run `ipconfig /displaydns` again.
+---
 
-**Step 3: Flush the cache**
+### Activity C: Test Your DNS Server Speed
+
+**Let's see how fast your DNS resolves names:**
+
+1. **First lookup (not cached):**
+```
+nslookup wikipedia.org
+```
+
+**Notice the response time** (if shown)
+
+2. **Second lookup (should be cached):**
+```
+nslookup wikipedia.org
+```
+
+**Was it faster?** _________________________________
+
+**Why?** DNS servers cache results. Second lookup is instant because it's cached!
+
+---
+
+3. **Flush your DNS cache:**
+
+**Windows:**
 ```
 ipconfig /flushdns
 ```
 
-**Step 4: Check again**
-```
-ipconfig /displaydns
-```
-
-### Your Task (Mac/Linux):
-
-Mac:
-```
-sudo dscacheutil -flushcache
-sudo killall -HUP mDNSResponder
-```
-
-Linux:
-```
-sudo systemd-resolve --flush-caches
-sudo systemd-resolve --statistics
-```
-
-### Questions to Answer:
-
-1. How many entries were in your DNS cache before flushing?
-2. What was the oldest TTL you saw?
-3. What was the shortest TTL?
-4. After flushing the cache, did browsing feel slower?
-5. When would you need to flush DNS cache in real life?
-
-### What You'll Learn:
-
-DNS caching is everywhere - your OS caches, your browser caches, your router caches. TTL (Time to Live) controls how long entries stay cached. Short TTLs (like 60 seconds) are used for services that change frequently. Long TTLs (like 86400 = 24 hours) are used for stable services.
-
-**Real-world troubleshooting:** If a website recently changed servers but you're still reaching the old one, flushing DNS cache often fixes it.
-
----
-
-## Challenge 5: TXT Records - The Hidden Messages
-
-TXT records store arbitrary text. They're used for domain verification, email security (SPF, DKIM, DMARC), and even fun easter eggs.
-
-### Your Task:
-
-Look up TXT records for these domains:
-
-1. **google.com**
-2. **github.com**
-3. **stripe.com**
-4. **your-own-domain.com** (if you own one)
-
-### Commands:
-
-```
-nslookup -type=TXT google.com
-nslookup -type=TXT github.com
-nslookup -type=TXT stripe.com
-```
-
-### Questions to Answer:
-
-1. What do you see in Google's TXT records?
-2. Can you identify SPF records? (They start with "v=spf1")
-3. What do SPF records do? (Hint: email security)
-4. Why would a company have multiple TXT records?
-5. Can you find any easter eggs or interesting messages?
-
-### What You'll Learn:
-
-TXT records are crucial for email security. SPF (Sender Policy Framework) records list which mail servers are allowed to send email for a domain. This helps prevent email spoofing. DKIM and DMARC records (also TXT) provide additional email authentication.
-
-**Fun fact:** Some companies hide jokes, challenges, or recruitment messages in TXT records. Tech companies sometimes use them for easter eggs.
-
----
-
-## Challenge 6: CNAME Alias Hunt
-
-CNAMEs create aliases - one name that points to another. They're commonly used for www subdomains, CDN services, and service redirection.
-
-### Your Task:
-
-Check if these domains use CNAMEs:
-
-1. **www.github.com**
-2. **www.reddit.com**
-3. **www.stripe.com**
-4. **docs.python.org**
-
-### Commands:
-
-```
-nslookup www.github.com
-nslookup www.reddit.com
-nslookup www.stripe.com
-nslookup docs.python.org
-```
-
-Look for lines that say "canonical name" or just show another domain name before the final IP.
-
-### Questions to Answer:
-
-1. Which domains use CNAME aliases?
-2. What do they point to? (CDN? Different domain?)
-3. Why use a CNAME instead of an A record?
-4. Can you chain CNAMEs? (CNAME → CNAME → A record)
-5. What happens if you query the canonical name directly?
-
-### What You'll Learn:
-
-Many websites use CNAMEs to point to CDN (Content Delivery Network) providers like Cloudflare, Fastly, or AWS CloudFront. This allows them to change hosting providers without updating DNS everywhere. You'll also see patterns like `www.example.com` being a CNAME to `example.com`.
-
----
-
-## Challenge 7: DHCP Discovery
-
-Now let's investigate your OWN network's DHCP setup.
-
-### Your Task:
-
-**Windows:**
-```
-ipconfig /all
-```
-
 **Mac:**
 ```
-ipconfig getpacket en0
+sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
 ```
 
 **Linux:**
 ```
-ip addr show
-nmcli device show
+sudo systemd-resolve --flush-caches
 ```
 
-### Questions to Answer:
+4. **Now lookup again:**
+```
+nslookup wikipedia.org
+```
 
-1. **Is DHCP enabled on your network adapter?**
-2. **What is your DHCP server's IP address?**
-3. **When did you obtain your current lease?**
-4. **When does your lease expire?**
-5. **What is your default gateway?** (DHCP Option 3)
-6. **What are your DNS servers?** (DHCP Option 6)
-7. **What is your subnet mask?**
+**Was it slower again?** Cache was cleared, had to query DNS server again!
 
-### Bonus Challenge:
+---
 
-**Release and renew your IP:**
+### Activity D: Identify Your DHCP Configuration
 
-Windows:
+**DHCP automatically gives your computer an IP address. Let's see what it gave you:**
+
+1. **Run:** `ipconfig /all` (Windows) or `ifconfig` (Mac)
+
+2. **Find and write down:**
+   - Your IP Address: _________________________________
+   - Subnet Mask: _________________________________
+   - Default Gateway: _________________________________
+   - DHCP Server: _________________________________
+   - DNS Servers: _________________________________
+   - DHCP Lease Obtained: _________________________________
+   - DHCP Lease Expires: _________________________________
+
+**How long is your lease?** (Expires - Obtained) = ___________ hours
+
+---
+
+### Activity E: Release and Renew DHCP (The DORA Process)
+
+**Let's trigger the DHCP process manually!**
+
+**⚠️ WARNING: This will briefly disconnect you from the network!**
+
+1. **Release your IP address:**
 ```
 ipconfig /release
+```
+
+**What happened?** Your computer gave up its IP address
+
+2. **Check your IP now:**
+```
+ipconfig
+```
+
+**Your IP address:** Should show 0.0.0.0 or disappear! ❌
+
+3. **Renew your IP address:**
+```
 ipconfig /renew
 ```
 
-Mac/Linux:
+**What you just triggered:** The DORA process!
+- **D**iscover: "Any DHCP servers out there?"
+- **O**ffer: "Here's an IP address for you"
+- **R**equest: "I'd like that IP please"
+- **A**cknowledge: "Confirmed, it's yours"
+
+4. **Check your IP again:**
 ```
-sudo dhclient -r
-sudo dhclient
+ipconfig
 ```
 
-What happened? Did you get the same IP or a different one?
+**New IP address:** _________________________________
 
-### What You'll Learn:
+**Did you get the same IP or different?** _________________________________
 
-Most home routers are the DHCP server (their IP will be something like 192.168.1.1 or 192.168.0.1). The lease time is often 24 hours. When you release/renew, you're manually triggering the DORA process. If you get the same IP, it's probably because the DHCP server "remembers" you from the previous lease.
+**Why?** DHCP might give you the same IP (if available) or a different one from the pool
 
 ---
 
-## Challenge 8: DNS Query Speed Test
+### Activity F: Test NTP (Network Time Protocol)
 
-Not all DNS servers are created equal. Some are fast, some are slow. Let's compare.
+**NTP keeps your computer's clock accurate. Let's check it:**
 
-### Your Task:
-
-Query the SAME domain using different DNS servers and compare response times.
-
-**Test these DNS servers:**
-- Your ISP's default (just use `nslookup domain.com` with no server specified)
-- Google: 8.8.8.8
-- Cloudflare: 1.1.1.1
-- Quad9: 9.9.9.9
-
-### Commands:
-
+#### Windows:
 ```
-nslookup google.com
-nslookup google.com 8.8.8.8
-nslookup google.com 1.1.1.1
-nslookup google.com 9.9.9.9
+w32tm /query /status
 ```
 
-Look at the response time (usually shown in milliseconds).
-
-### Questions to Answer:
-
-1. Which DNS server was fastest?
-2. Which was slowest?
-3. Did the results differ if you queried multiple times? (Caching!)
-4. Why would response time matter?
-5. Should you change your DNS servers based on this test?
-
-### What You'll Learn:
-
-DNS speed affects your browsing experience. A slow DNS server adds latency to every website you visit. Public DNS servers (Google, Cloudflare, Quad9) are often faster than ISP defaults. Cloudflare's 1.1.1.1 is specifically optimized for speed and privacy.
-
-**Optimization tip:** Many people switch to 1.1.1.1 or 8.8.8.8 for better performance.
+**Look for:**
+- Stratum: ___ (Lower is better, 0-15 scale)
+- Last Successful Sync Time: _________________________________
 
 ---
 
-## Challenge 9: Find the Name Servers
-
-Every domain is managed by authoritative name servers. These are the servers that have the final say on what records exist for a domain.
-
-### Your Task:
-
-Find the authoritative name servers (NS records) for:
-
-1. **google.com**
-2. **amazon.com**
-3. **github.com**
-4. **cloudflare.com**
-
-### Commands:
-
+#### Mac/Linux:
 ```
-nslookup -type=NS google.com
-nslookup -type=NS amazon.com
-nslookup -type=NS github.com
-nslookup -type=NS cloudflare.com
+sntp -s
 ```
 
-### Questions to Answer:
-
-1. How many name servers does each domain have?
-2. Why would a domain have multiple name servers?
-3. Do any domains use third-party DNS providers?
-4. What happens if all name servers go down?
-
-### What You'll Learn:
-
-Having multiple name servers provides redundancy. If one fails, the others keep the domain online. Many companies use managed DNS providers (like AWS Route53, Cloudflare DNS, or Dyn) instead of running their own name servers. This is like using Gmail instead of running your own mail server - less work, more reliability.
+OR check System Preferences > Date & Time > "Set date and time automatically"
 
 ---
 
-## Challenge 10: Trace the Full DNS Path
+**What is Stratum?**
+- Stratum 0: Atomic clock (GPS, radio clock)
+- Stratum 1: Servers directly connected to Stratum 0
+- Stratum 2: Syncs from Stratum 1
+- And so on... (lower is more accurate)
 
-Ever wonder what the full DNS resolution process looks like? Let's see it in action.
+**Your computer's stratum:** Probably 3 or 4
 
-### Your Task (Mac/Linux only - requires dig):
+---
 
+### Activity G: Test DNS with Different DNS Servers
+
+**You can use different DNS servers. Let's try Google's DNS:**
+
+1. **Test with your default DNS:**
 ```
-dig google.com +trace
-```
-
-This shows the ENTIRE path from root servers → TLD servers → authoritative servers.
-
-### Your Task (Windows alternative):
-
-```
-nslookup -debug google.com
+nslookup example.com
 ```
 
-Not as detailed as `dig +trace`, but shows some of the query process.
+**DNS server used:** _________________________________
+**Time it took:** (observe if fast or slow)
 
-### Questions to Answer:
+2. **Test with Google's DNS (8.8.8.8):**
+```
+nslookup example.com 8.8.8.8
+```
 
-1. What root server did the query start with?
-2. Which .com TLD servers were queried?
-3. What were Google's authoritative name servers?
-4. How many total queries were made?
-5. How long did the entire process take?
+**DNS server used:** 8.8.8.8
+**Time it took:** (compare to step 1)
 
-### What You'll Learn:
+3. **Test with Cloudflare's DNS (1.1.1.1):**
+```
+nslookup example.com 1.1.1.1
+```
 
-This reveals the DNS hierarchy in action. You'll see that even though it seems instant, DNS resolution involves multiple queries across different servers. Fortunately, caching makes this happen only once per TTL period.
+**Which was fastest?** _________________________________
 
----
-
-## Bonus Challenge: Design Your DHCP Reservations
-
-Think about your home or school network.
-
-### Your Task:
-
-**Step 1:** List 5 devices that should have DHCP reservations (always get the same IP).
-
-Examples:
-- Network printer
-- Gaming console
-- Smart TV
-- Raspberry Pi running services
-- Network storage device
-
-**Step 2:** For each device, explain:
-1. Why does this device need a consistent IP?
-2. What would break if its IP changed?
-3. How would you find its MAC address?
-4. What IP would you assign it? (Should be outside the DHCP scope)
-
-**Step 3:** Document your plan
-
-Create a table:
-
-| Device | MAC Address | Assigned IP | Reason for Reservation |
-|--------|-------------|-------------|------------------------|
-| Printer | XX:XX:XX:XX:XX:XX | 192.168.1.10 | Port forwarding config |
-| ... | ... | ... | ... |
-
-### What You'll Learn:
-
-DHCP reservations are the sweet spot between static IPs (manual configuration) and dynamic DHCP (convenience). You get automatic configuration with predictable addresses. This is how most businesses handle servers, printers, and infrastructure.
+**Why does it matter?** Faster DNS = faster web browsing!
 
 ---
 
-## Lab Submission
+### Activity H: Troubleshooting DNS Issues
 
-To prove you completed this lab, screenshot the following:
+**Let's simulate and fix DNS problems:**
 
-**Required Screenshots:**
+#### Scenario 1: Can you ping IP but not domain name?
 
-1. **MX records for google.com** (Challenge 1)
-2. **AAAA record for cloudflare.com** (Challenge 2)
-3. **Reverse lookup of 8.8.8.8** (Challenge 3)
-4. **Your ipconfig /all output** showing DHCP info (Challenge 7)
-5. **NS records for github.com** (Challenge 9)
+1. **Try this:**
+```
+ping 8.8.8.8
+```
 
-**Written Answers:**
+**Result:** Should work ✅
 
-Answer these questions in a document:
+2. **Now try:**
+```
+ping google.com
+```
 
-1. What's the difference between A and AAAA records?
-2. What is the purpose of MX record priority numbers?
-3. Why do mail servers need PTR records?
-4. Explain the DHCP DORA process in your own words.
-5. What would happen if your DNS cache never expired? (TTL = infinite)
-6. Why would you use a CNAME instead of multiple A records?
-7. What is the difference between recursive and iterative DNS queries?
+**If step 1 works but step 2 fails:** DNS problem!
 
----
+**Your result - did both work?** _________________________________
 
-## Real-World Application
-
-These aren't just academic exercises. Here's when you'd use these skills in actual IT work:
-
-**DNS Troubleshooting:**
-- User reports "website won't load" → Check if DNS resolves correctly
-- Email isn't sending → Verify MX records
-- Website moved to new server → Confirm A records updated and flush cache
-- Spam filter blocking emails → Check PTR records exist
-
-**DHCP Troubleshooting:**
-- Device shows 169.254.x.x → DHCP server not reachable
-- "IP address conflict" error → DHCP scope overlaps with static IPs
-- Device can't reach internet → Check gateway and DNS options
-- Lease expired too quickly → Adjust lease time
-
-**Network Documentation:**
-- Map all DHCP scopes → Use ipconfig on devices to identify servers
-- Document DNS infrastructure → Query NS records
-- Plan IP address changes → Check current DNS/DHCP configuration
+**If pinging IP works but domain doesn't:**
+- Your network connection is fine (Layer 1-3)
+- Your DNS is broken (Layer 7)
+- Solution: Check DNS server settings, try 8.8.8.8
 
 ---
 
-## What You Learned
+#### Scenario 2: Check if DNS is responding
 
-✅ **How to query DNS records** using nslookup and dig
+```
+nslookup test-site-that-doesnt-exist-12345.com
+```
 
-✅ **The purpose of each DNS record type** (A, AAAA, CNAME, MX, PTR, TXT, NS)
+**Expected result:** "Can't find... Non-existent domain"
 
-✅ **How DNS caching works** and when to flush it
-
-✅ **How to investigate DHCP configuration** on your own network
-
-✅ **The difference between recursive and iterative queries**
-
-✅ **Why reverse DNS matters** for mail servers
-
-✅ **How to troubleshoot DNS resolution failures**
-
-✅ **Real-world DNS infrastructure** (CDNs, hosted email, managed DNS)
+**What this proves:** DNS server is working, just can't find that fake domain
 
 ---
 
-## Going Further
+### Activity I: Real-World DNS Investigation
 
-Want to dive deeper? Try these:
+**Pick your favorite website and investigate its infrastructure:**
 
-**Advanced DNS:**
-- Set up your own DNS server using BIND or dnsmasq
-- Configure split-horizon DNS (different answers for internal vs external queries)
-- Implement DNS-based load balancing
+**Website:** _________________________________
 
-**DHCP Deep Dive:**
-- Configure DHCP server on a Raspberry Pi
-- Set up DHCP relay across VLANs
-- Implement DHCP snooping for security
+1. **Find its IPv4:**
+```
+nslookup [your-website].com
+```
 
-**Monitoring:**
-- Set up DNS monitoring to alert on resolution failures
-- Track DHCP lease utilization
-- Monitor NTP drift on network devices
+**IPv4:** _________________________________
 
-**Capture the packets:**
-- Use Wireshark to capture the DORA process
-- Watch DNS queries in real-time
-- See the difference between cached and non-cached responses
+2. **Find its mail server:**
+```
+nslookup -type=MX [your-website].com
+```
+
+**Mail server:** _________________________________
+
+3. **Find its name servers:**
+```
+nslookup -type=NS [your-website].com
+```
+
+**Name servers:** _________________________________
+
+**What you learned:** Behind every website is a complex DNS infrastructure!
 
 ---
 
-**Great work, detective!** 🔍
+## Section 3: Reflection (5 min)
 
-You just investigated real-world DNS infrastructure using the same tools network engineers use daily. These command-line skills will serve you well on the Network+ exam and in actual IT troubleshooting scenarios.
+**Think about these questions:**
 
-**Add this lab to your portfolio.** Being able to say "I can investigate DNS records, troubleshoot DHCP, and optimize network services using command-line tools" is a valuable skill in job interviews.
+1. **What would happen if DNS stopped working worldwide?**
+   - Could you still browse the web?
+   - What would you have to do instead?
+   - Why is DNS called "the phone book of the internet"?
 
-**Next up:** Keep these commands handy as we continue through the course. You'll use nslookup, dig, and ipconfig constantly in network troubleshooting!
+2. **Your DHCP lease expires in X hours/days:**
+   - What happens when it expires?
+   - Do you have to do anything?
+   - What if DHCP server is down when renewal time comes?
+
+3. **Why does accurate time matter?**
+   - What breaks if your computer's clock is wrong?
+   - Think about: HTTPS certificates, logging, security tokens
+
+4. **You're a network admin. DHCP server crashes:**
+   - How quickly do users notice?
+   - What happens to existing connections?
+   - What happens to new devices?
+
+---
+
+## What You Learned Today
+
+- ✅ You tested DNS with nslookup
+- ✅ You explored DNS record types (A, AAAA, MX, NS)
+- ✅ You saw DNS caching in action
+- ✅ You identified your DHCP configuration
+- ✅ You manually triggered the DORA process (release/renew)
+- ✅ You checked NTP time synchronization
+- ✅ You compared different DNS servers (8.8.8.8, 1.1.1.1)
+- ✅ You learned to troubleshoot DNS issues
+- ✅ You investigated real-world DNS infrastructure
+
+**Next Lesson:** Port Numbers and Common Protocols - Memorization time!

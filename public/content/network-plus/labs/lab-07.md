@@ -1,469 +1,426 @@
-# Lab 7: IPv6 Network Design Challenge
+# Lesson 7 Lab: IPv6 Addressing and Configuration
 
-**Lab Time:** 30-40 minutes  
-**Difficulty:** Intermediate  
-**Skills:** IPv6 addressing, SLAAC configuration, dual-stack design
-
----
-
-## Lab Objective
-
-Design a complete dual-stack (IPv4 + IPv6) network for CloudTech Solutions, a mid-sized software company moving to a new office. You'll allocate IPv6 subnets, configure SLAAC, plan DHCPv6, and document transition mechanisms.
+**Estimated Time:** 30-35 minutes  
+**Topics:** IPv6 format, Address shortening, IPv6 types, SLAAC, Dual-stack networks
 
 ---
 
-## Scenario
+## Section 1: Concept Check (5 min)
 
-**Company:** CloudTech Solutions - Cloud Services & Software Development  
-**Location:** New 4-floor office building  
-**IPv4 Network:** 10.100.0.0/22 (already designed in previous lessons)  
-**IPv6 Allocation:** 2001:db8:cafe::/48 (from your ISP)
+Answer these questions to verify you understand IPv6 basics:
 
-**Your boss wants:**
-- Parallel IPv6 addressing that mirrors IPv4 structure
-- SLAAC configuration with DHCPv6 for DNS
-- Link-local addresses documented for all routers
-- Transition plan for legacy IPv4-only devices
-- Professional documentation for the network team
+1. **How many bits are in an IPv6 address?**
+   - a) 32 bits
+   - b) 64 bits
+   - c) 128 bits
+   - d) 256 bits
 
----
+2. **What is the IPv6 loopback address?**
+   - a) 127.0.0.1
+   - b) ::1
+   - c) fe80::1
+   - d) 2001::1
 
-## Network Requirements
+3. **Which IPv6 address type is used for local network communication only?**
+   - a) Global unicast
+   - b) Unique local
+   - c) Link-local
+   - d) Multicast
 
-### Floor 1 - Customer Operations
-- **Sales Department:** 100 workstations
-  - IPv4: 10.100.0.0/25 (already allocated)
-  - IPv6: Need /64 subnet
-- **Support Center:** 50 workstations + VoIP phones
-  - IPv4: 10.100.0.128/26
-  - IPv6: Need /64 subnet
-- **Conference Rooms:** 20 devices
-  - IPv4: 10.100.0.192/27
-  - IPv6: Need /64 subnet
+4. **What does SLAAC stand for?**
+   - a) Stateful Local Address Autoconfiguration
+   - b) Stateless Address Autoconfiguration
+   - c) Secure Link Address Assignment Control
+   - d) Simple Local Area Access Configuration
 
-### Floor 2 - Development
-- **Backend Team:** 60 developers
-  - IPv4: 10.100.1.0/26
-  - IPv6: Need /64 subnet
-- **Frontend Team:** 40 developers
-  - IPv4: 10.100.1.64/26
-  - IPv6: Need /64 subnet
-- **DevOps Lab:** 30 build servers
-  - IPv4: 10.100.1.128/27
-  - IPv6: Need /64 subnet
-
-### Floor 3 - Management & IT
-- **Executive Offices:** 15 users
-  - IPv4: 10.100.2.0/28
-  - IPv6: Need /64 subnet
-- **IT Operations:** 10 admin stations
-  - IPv4: 10.100.2.16/28
-  - IPv6: Need /64 subnet
-- **Guest Wi-Fi:** 100 visitors
-  - IPv4: 10.100.2.32/25
-  - IPv6: Need /64 subnet
-
-### Infrastructure
-- **Data Center:** 50 servers
-  - IPv4: 10.100.2.160/26
-  - IPv6: Need /64 subnet
-- **Network Management:** 20 switches/APs
-  - IPv4: 10.100.2.224/27
-  - IPv6: Need /64 subnet
-- **Security Devices:** 10 firewalls/IPS
-  - IPv4: 10.100.3.0/28
-  - IPv6: Need /64 subnet
-
-### WAN Links
-- **Link to ISP:** Point-to-point
-  - IPv4: 10.100.3.16/30
-  - IPv6: Need /127 subnet (point-to-point)
-- **Link to Backup Datacenter:** Point-to-point
-  - IPv4: 10.100.3.20/30
-  - IPv6: Need /127 subnet
-- **Link to Branch Office:** Point-to-point
-  - IPv4: 10.100.3.24/30
-  - IPv6: Need /127 subnet
+5. **An IPv6 address starting with fe80:: is:**
+   - a) A global unicast address
+   - b) A link-local address
+   - c) A multicast address
+   - d) A loopback address
 
 ---
 
-## Your Tasks
+## Section 2: Hands-On Activity (25-30 min)
 
-### Part 1: IPv6 Subnet Allocation (10-15 min)
+### Activity A: Check Your Computer's IPv6 Address
 
-Design an IPv6 addressing scheme that **mirrors your IPv4 structure** for easy troubleshooting.
+**Let's see if your computer has IPv6 enabled:**
 
-**Strategy:**  
-Use the subnet ID portion (16 bits between /48 and /64) to match your IPv4 third octet:
+1. **Open Command Prompt (Windows) or Terminal (Mac)**
 
+2. **Type:** `ipconfig` (Windows) or `ifconfig` (Mac)
+
+3. **Look for IPv6 addresses. What do you see?**
+
+**Most likely result:**
 ```
-IPv4: 10.100.X.Y/mask  →  IPv6: 2001:db8:cafe:X::/64
-
-Examples:
-10.100.0.0/25     →  2001:db8:cafe:0::/64    (Sales)
-10.100.1.0/26     →  2001:db8:cafe:100::/64  (Backend - use hex)
-10.100.2.32/25    →  2001:db8:cafe:220::/64  (Guest - use hex)
+IPv6 Address: NOT FOUND
+Link-local IPv6 Address: fe80::1234:5678:90ab:cdef%12
 ```
 
-**Create a table:**
+**What you probably found:**
+- ❌ NO Global IPv6 address (2001::... format)
+- ✅ Link-local IPv6 only (fe80::... format)
 
-| Department | IPv4 Subnet | IPv6 Subnet | Notes |
-|------------|-------------|-------------|-------|
-| Sales | 10.100.0.0/25 | 2001:db8:cafe:___::/64 | Floor 1 |
-| Support | 10.100.0.128/26 | 2001:db8:cafe:___::/64 | Floor 1, VoIP |
-| ... | ... | ... | ... |
+**Why?**
+- Your ISP probably doesn't support IPv6 yet
+- Only ~40% of US internet users have IPv6 in 2024
+- This is NORMAL and expected!
 
-**For WAN links:** Use /127 instead of /64 (RFC 6164 - point-to-point links)
-- Example: 2001:db8:cafe:fff0::/127
-
----
-
-### Part 2: SLAAC Configuration Plan (10 min)
-
-For each subnet, document how SLAAC will work:
-
-**Router Advertisement Settings:**
-
-| Subnet | Prefix | M Flag | O Flag | Configuration Method |
-|--------|--------|--------|--------|---------------------|
-| Sales | 2001:db8:cafe:0::/64 | 0 | 1 | SLAAC + Stateless DHCPv6 |
-| ... | ... | ... | ... | ... |
-
-**M Flag = 0, O Flag = 1:** Most common (SLAAC for address, DHCPv6 for DNS)  
-**M Flag = 1:** Only for subnets requiring centralized control (maybe servers)
-
-**For each subnet, document:**
-1. **Router's Link-Local Address:** fe80::1 (standardize on ::1 for consistency)
-2. **Global Unicast Address:** 2001:db8:cafe:X::1/64 (router interface)
-3. **RA Prefix:** 2001:db8:cafe:X::/64
-4. **Default Gateway:** fe80::1 (link-local address)
-5. **DNS via DHCPv6:** 2001:db8:cafe:200::53, 2001:db8:cafe:200::54
-
----
-
-### Part 3: EUI-64 Examples (5 min)
-
-Calculate EUI-64 addresses for key devices:
-
-**Example Device:** Sales Department PC
-- MAC Address: 00:50:56:ab:cd:ef
-- IPv6 Prefix: 2001:db8:cafe:0::/64
-- **Calculate EUI-64 address:**
-  1. Split MAC: 00:50:56 | ab:cd:ef
-  2. Insert ff:fe: 00:50:56:ff:fe:ab:cd:ef
-  3. Flip 7th bit: 02:50:56:ff:fe:ab:cd:ef
-  4. Format: 0250:56ff:feab:cdef
-  5. **Full Address:** 2001:db8:cafe:0:250:56ff:feab:cdef/64
-
-**Practice with these MACs:**
-- Router interface: 00:0c:29:1a:2b:3c → Calculate IPv6
-- Server NIC: 00:1a:4d:5e:6f:7a → Calculate IPv6
-- Switch management: 00:23:45:67:89:ab → Calculate IPv6
-
----
-
-### Part 4: Dual-Stack Configuration (10 min)
-
-**Document how devices will run both protocols:**
-
-**Example: Sales Department Workstation**
-
+4. **Test if IPv6 stack is installed (even without internet IPv6):**
 ```
-Interface: eth0
-
-IPv4 Configuration:
-  Address: 10.100.0.50/25 (via DHCP)
-  Gateway: 10.100.0.1
-  DNS: 10.100.2.161, 10.100.2.162
-
-IPv6 Configuration:
-  Link-Local: fe80::250:56ff:feab:cdef/64 (auto-generated)
-  Global Unicast: 2001:db8:cafe:0:250:56ff:feab:cdef/64 (via SLAAC)
-  Gateway: fe80::1
-  DNS: 2001:db8:cafe:200::53 (via stateless DHCPv6)
-
-Method: Dual-Stack
-  - OS prefers IPv6 when available (Happy Eyeballs)
-  - Falls back to IPv4 if IPv6 unreachable
+ping ::1
 ```
 
-**Create dual-stack docs for:**
-- Typical workstation
-- Data center server
-- Router interface
-- WAN link endpoint
+**What happened?** _________________________________
+
+**Expected result:** You should get replies! This proves IPv6 is installed on your computer, even though your ISP doesn't provide it yet.
+
+**What ::1 means:** IPv6 loopback (like 127.0.0.1 in IPv4) - always works locally
 
 ---
 
-### Part 5: Transition Planning (5-10 min)
+### Activity B: IPv6 Address Shortening Rules
 
-**Scenario:** You have 5 legacy printers that only support IPv4.
+**IPv6 addresses can be LONG. Let's learn to shorten them!**
 
-**Options:**
-
-**1. Dual-Stack (Recommended)**
-- Keep IPv4 for printers
-- Add IPv6 for everything else
-- Printers work via IPv4, modern devices use IPv6
-- **Pro:** Simple, no translation needed
-- **Con:** Must maintain both protocols
-
-**2. NAT64 / DNS64**
-- IPv6-only workstations
-- NAT64 gateway translates to IPv4 printers
-- DNS64 synthesizes IPv6 addresses for printers
-- **Pro:** Can go IPv6-only on client side
-- **Con:** Requires NAT64/DNS64 infrastructure
-
-**3. Application Layer Gateway (ALG)**
-- Print server with both IPv4 and IPv6
-- IPv6 clients connect to print server
-- Print server proxies to IPv4 printers
-- **Pro:** Centralized solution
-- **Con:** Single point of failure
-
-**Your Decision:** [Choose and justify]
+**Two rules:**
+1. **Remove leading zeros** in each hextet (group of 4 hex digits)
+2. **Replace consecutive all-zero hextets** with :: (only once per address)
 
 ---
 
-### Part 6: Documentation Creation (10 min)
-
-Create professional IPv6 addressing documentation:
-
+**Practice Problem 1:**
 ```
-═══════════════════════════════════════════════════════════════════
-                    CLOUDTECH SOLUTIONS
-            DUAL-STACK NETWORK DESIGN (IPv4 + IPv6)
-═══════════════════════════════════════════════════════════════════
+Full:  2001:0db8:0000:0000:0000:ff00:0042:8329
+```
 
-IPv4 Allocation: 10.100.0.0/22 (1024 addresses)
-IPv6 Allocation: 2001:db8:cafe::/48 (65,536 /64 subnets)
-Design Date: [Today]
-Designer: [Your Name]
+**Step 1: Remove leading zeros**
+- 0db8 → db8
+- 0000 → 0
+- ff00 → ff00 (no leading zeros)
+- 0042 → 42
 
-═══════════════════════════════════════════════════════════════════
-                    FLOOR 1 - CUSTOMER OPERATIONS
-═══════════════════════════════════════════════════════════════════
+Result: 2001:db8:0:0:0:ff00:42:8329
 
-Department    | IPv4 Subnet     | IPv6 Subnet            | VLAN | Gateway (IPv6)
-------------- | --------------- | ---------------------- | ---- | --------------
-Sales         | 10.100.0.0/25   | 2001:db8:cafe:0::/64   | 10   | fe80::1
-Support       | 10.100.0.128/26 | 2001:db8:cafe:80::/64  | 11   | fe80::1
-Conf Rooms    | 10.100.0.192/27 | 2001:db8:cafe:c0::/64  | 12   | fe80::1
+**Step 2: Replace consecutive zeros with ::**
+- Three consecutive 0s → ::
 
-═══════════════════════════════════════════════════════════════════
-                    SLAAC CONFIGURATION
-═══════════════════════════════════════════════════════════════════
+**Shortened: 2001:db8::ff00:42:8329**
 
-All subnets configured with:
-  - M flag: 0 (use SLAAC for address)
-  - O flag: 1 (use DHCPv6 for DNS/options)
-  - Router advertisements every 200 seconds
-  - Prefix lifetime: 86400 seconds (1 day)
-  - Default route: fe80::1
+---
 
-═══════════════════════════════════════════════════════════════════
-                    DHCPV6 SERVERS (STATELESS)
-═══════════════════════════════════════════════════════════════════
+**Your turn - Shorten these addresses:**
 
-Primary DHCPv6:   2001:db8:cafe:200::53
-Secondary DHCPv6: 2001:db8:cafe:200::54
+**Problem 1:**
+```
+Full: 2001:0db8:0000:0042:0000:0000:0000:0001
+Step 1 (remove leading 0s): _________________________________
+Step 2 (use ::): _________________________________
+```
 
-Options Provided:
-  - DNS Servers: 2001:db8:cafe:200::53, 2001:db8:cafe:200::54
-  - Domain: cloudtech.local
-  - NTP Servers: 2001:db8:cafe:200::123
+**Problem 2:**
+```
+Full: fe80:0000:0000:0000:0202:b3ff:fe1e:8329
+Step 1 (remove leading 0s): _________________________________
+Step 2 (use ::): _________________________________
+```
 
-═══════════════════════════════════════════════════════════════════
-                    ROUTER INTERFACES
-═══════════════════════════════════════════════════════════════════
+**Problem 3:**
+```
+Full: 2001:0000:0000:0000:0000:0000:0000:0001
+Step 1 (remove leading 0s): _________________________________
+Step 2 (use ::): _________________________________
+```
 
-Interface | VLAN | IPv4 Address    | IPv6 Address           | Link-Local
---------- | ---- | --------------- | ---------------------- | -----------
-GigE 0/0  | 10   | 10.100.0.1/25   | 2001:db8:cafe:0::1/64  | fe80::1
-GigE 0/1  | 11   | 10.100.0.129/26 | 2001:db8:cafe:80::1/64 | fe80::1
-... (continue)
-
-═══════════════════════════════════════════════════════════════════
-                    WAN LINKS (POINT-TO-POINT)
-═══════════════════════════════════════════════════════════════════
-
-Link      | IPv4             | IPv6                          | Notes
---------- | ---------------- | ----------------------------- | -----
-To ISP    | 10.100.3.17/30   | 2001:db8:cafe:fff0::1/127     | /127
-Backup DC | 10.100.3.21/30   | 2001:db8:cafe:fff1::1/127     | /127
-Branch    | 10.100.3.25/30   | 2001:db8:cafe:fff2::1/127     | /127
-
-Note: Using /127 for IPv6 point-to-point links (RFC 6164)
-
-═══════════════════════════════════════════════════════════════════
-                    TRANSITION STRATEGY
-═══════════════════════════════════════════════════════════════════
-
-Primary Method: DUAL-STACK
-  - All devices run both IPv4 and IPv6
-  - Modern devices prefer IPv6 (Happy Eyeballs)
-  - Legacy devices continue using IPv4
-  - No translation or tunneling required
-
-Legacy Device Handling:
-  - 5 IPv4-only printers: Connected via IPv4
-  - Plan: Replace with IPv6-capable models in Q2 2026
-  - Interim: Maintain IPv4 until replacement
-
-═══════════════════════════════════════════════════════════════════
-                    ADDRESS SPACE UTILIZATION
-═══════════════════════════════════════════════════════════════════
-
-IPv6 Subnets Allocated: 15 of 65,536 available
-Utilization: 0.02%
-Future Capacity: 65,521 /64 subnets remaining
-
-Reserved Subnets:
-  - 2001:db8:cafe:1000::/52 - Future expansion (East wing)
-  - 2001:db8:cafe:2000::/52 - Future expansion (North building)
-  - 2001:db8:cafe:fff0::/60 - WAN links
-
-═══════════════════════════════════════════════════════════════════
+**Problem 4:**
+```
+Full: ff02:0000:0000:0000:0000:0000:0000:0001
+Step 1 (remove leading 0s): _________________________________
+Step 2 (use ::): _________________________________
 ```
 
 ---
 
-## Deliverables
+### Activity C: Expand Shortened IPv6 Addresses
 
-Submit the following:
+**Now let's work backwards - expand shortened addresses to full format:**
 
-1. **IPv6 Allocation Table** - All subnets with /64 prefixes
-2. **SLAAC Configuration Plan** - M/O flags for each subnet
-3. **EUI-64 Calculations** - At least 3 examples
-4. **Dual-Stack Configuration Examples** - 3 device types
-5. **Transition Strategy** - How you'll handle legacy devices
-6. **Complete IPAM Documentation** - Professional format
+**Example:**
+```
+Shortened: 2001:db8::1
+```
 
----
+**Steps:**
+1. :: represents missing hextets
+2. IPv6 = 8 hextets total
+3. Count existing hextets: 2001, db8, 1 = 3
+4. Missing: 8 - 3 = 5 hextets of all zeros
+5. Add leading zeros to each hextet
 
-## Bonus Challenges
-
-### Challenge 1: Privacy Extensions
-Research RFC 4941 (Privacy Extensions for SLAAC). Why would you enable this? How does it differ from EUI-64? Recommend subnets where privacy extensions should be enabled.
-
-### Challenge 2: Route Summarization
-If you need to advertise your entire network to the ISP, what single route would you use? If you later get 2001:db8:caff::/48, can you summarize both allocations into one route?
-
-### Challenge 3: DHCPv6 Prefix Delegation
-Research DHCPv6-PD (Prefix Delegation). How would you use it if CloudTech gets a /48 and needs to delegate /56s to each floor? Design the delegation scheme.
+**Full: 2001:0db8:0000:0000:0000:0000:0000:0001**
 
 ---
 
-## Grading Rubric
+**Your turn:**
 
-| Category | Points | Criteria |
-|----------|--------|----------|
-| IPv6 Allocation | 25 | Logical subnetting, proper /64 use, mirrors IPv4 |
-| SLAAC Config | 20 | Correct M/O flags, RA settings documented |
-| EUI-64 Calculations | 15 | Accurate MAC to IPv6 conversion |
-| Dual-Stack Design | 20 | Both protocols configured, clear documentation |
-| Transition Strategy | 10 | Practical approach to legacy devices |
-| Documentation | 10 | Professional, complete, well-organized |
-| **Total** | **100** | |
+**Problem 1:**
+```
+Shortened: ::1
+Hextets present: ___ (how many?)
+Missing hextets: ___ 
+Full address: _________________________________
+```
 
----
+**Problem 2:**
+```
+Shortened: fe80::1
+Hextets present: ___
+Missing hextets: ___
+Full address: _________________________________
+```
 
-## Common Mistakes to Avoid
-
-❌ Using subnet sizes other than /64 for normal subnets (breaks SLAAC)  
-❌ Forgetting link-local addresses (they're critical for routing!)  
-❌ Using M=1 everywhere (stateful when you don't need it)  
-❌ Not documenting both protocols in dual-stack  
-❌ Forgetting that WAN links can use /127 (not /64)  
-❌ Not aligning IPv6 subnets with IPv4 for easier management  
-
----
-
-## Tools You Can Use
-
-**IPv6 Calculators:**
-- ipv6calc.net
-- SolarWinds IPv6 Subnet Calculator
-- UltraTools IPv6 Compression Tool
-
-**Network Diagram:**
-- draw.io
-- Lucidchart
-- Microsoft Visio
-- Or pencil and paper!
-
-**EUI-64 Calculator:**
-- Check your work at ipv6-literal.com
+**Problem 3:**
+```
+Shortened: 2001:db8:85a3::8a2e:370:7334
+Hextets present: ___
+Missing hextets: ___
+Full address: _________________________________
+```
 
 ---
 
-## Real-World Context
+### Activity D: Identify IPv6 Address Types
 
-This lab represents actual IPv6 deployment planning:
+**For each IPv6 address, identify its type:**
 
-**What companies do:**
-1. Get /48 or /56 from ISP
-2. Divide into /64 subnets (one per VLAN)
-3. Configure SLAAC with stateless DHCPv6 for DNS
-4. Run dual-stack during transition (years)
-5. Document everything for operations team
+| Address | Type | Purpose |
+|---------|------|---------|
+| ::1 | ________ | ________ |
+| fe80::1234:5678 | ________ | ________ |
+| 2001:db8::1 | ________ | ________ |
+| ff02::1 | ________ | ________ |
+| fc00::1 | ________ | ________ |
+| 2001:4860:4860::8888 | ________ | ________ |
 
-**Common deployment mistakes:**
-- Using DHCPv6 stateful when SLAAC would work
-- Not standardizing link-local addresses (makes troubleshooting hard)
-- Poor documentation (nightmare for future engineers)
-- Enabling IPv6 without proper firewall rules (security risk)
-
-**Your design could be used in a real company!**
-
----
-
-## Testing Your Design
-
-**Validation Questions:**
-
-1. ✅ Does every subnet use /64 (except WAN links)?
-2. ✅ Are all link-local addresses consistent (fe80::1)?
-3. ✅ Do M/O flags match your configuration method?
-4. ✅ Can you expand/shorten all IPv6 addresses correctly?
-5. ✅ Is your dual-stack configuration complete for both protocols?
-6. ✅ Does your transition plan address legacy devices?
-7. ✅ Is documentation clear enough for another engineer?
+**Reference guide:**
+- **::1** - Loopback (like 127.0.0.1 in IPv4)
+- **fe80::/10** - Link-local (like 169.254.x.x in IPv4)
+- **2001::/16** - Global unicast (public internet addresses)
+- **ff00::/8** - Multicast (like 224.x.x.x in IPv4)
+- **fc00::/7** - Unique local (like 192.168.x.x/10.x.x.x in IPv4)
 
 ---
 
-## After Completion
+### Activity E: Test IPv6 Connectivity (Probably Won't Work - And That's OK!)
 
-**Reflect:**
-1. How does IPv6 subnetting differ from IPv4 VLSM?
-2. Why is SLAAC better/worse than DHCPv4?
-3. What challenges would you face deploying this in production?
-4. How would you test IPv6 before going live?
+**Let's test if you can reach IPv6 sites:**
 
-**Next Steps:**
-- Practice IPv6 address compression daily
-- Set up IPv6 on your home network (most routers support it)
-- Use ping6 and traceroute6 to explore IPv6 connectivity
-- Capture IPv6 traffic in Wireshark
-- Move on to Lesson 8: Network Protocols
+#### Test 1: Try Google's IPv6 DNS
+```
+ping 2001:4860:4860::8888
+```
+
+**Expected result:** Request timed out ❌
+
+**Why?** Your ISP probably doesn't support IPv6. This is normal - most don't!
 
 ---
 
-## Lab Complete! 🎉
+#### Test 2: Try to visit an IPv6 test site
 
-Great work designing a dual-stack network! This is a real-world skill that's increasingly important as IPv6 deployment grows.
+1. **Open your web browser**
+2. **Go to:** https://test-ipv6.com
+3. **What does it say?**
 
-**Skills Practiced:**
-✅ IPv6 subnet allocation  
-✅ SLAAC configuration planning  
-✅ EUI-64 address generation  
-✅ Dual-stack network design  
-✅ Transition strategy development  
-✅ Professional IPv6 documentation  
+**Most likely:** "IPv6 connectivity: Not detected" or similar
 
-Keep this in your certification portfolio - it demonstrates you can design modern networks!
+**Your IPv6 connectivity score:** Probably 0/10 or "IPv4 only"
+
+**This is expected!** Only ~40% of internet users have IPv6 in 2024.
 
 ---
 
-*Ready for the next challenge? Head back to the lesson dashboard!*
+#### Test 3: Understanding Why IPv6 Isn't Available
+
+**The chain that needs to work:**
+1. ✅ Your computer supports IPv6 (it does - you saw fe80::)
+2. ❌ Your router supports IPv6 (maybe not)
+3. ❌ Your ISP provides IPv6 (probably not)
+4. ❌ The website has IPv6 (some do)
+
+**All 4 must be "yes" for IPv6 to work!**
+
+**Why ISPs don't offer IPv6:**
+- Costs money to upgrade equipment
+- IPv4 + NAT "works well enough"
+- No immediate business pressure to change
+- Chicken-and-egg problem (few sites need it)
+
+**The reality:** You're learning IPv6 for the FUTURE, not today!
+
+---
+
+### Activity F: IPv6 Prefix Notation
+
+**IPv6 uses prefixes like IPv4 CIDR notation:**
+
+**Example:** 2001:db8:abcd:0012::/64
+- **Prefix:** 2001:db8:abcd:0012 (first 64 bits = network)
+- **/64:** Standard subnet size for IPv6
+- **Host portion:** Last 64 bits
+
+---
+
+**Practice: Identify the network prefix:**
+
+**Problem 1:**
+```
+Address: 2001:db8:85a3:1234:5678:90ab:cdef:1234/64
+Network prefix: _________________________________
+Host portion: _________________________________
+```
+
+**Problem 2:**
+```
+Address: fe80::1234:5678:90ab:cdef/64
+Network prefix: _________________________________
+Host portion: _________________________________
+```
+
+**Problem 3:**
+```
+Address: 2001:db8::/32
+How many /64 subnets can you create? _______________
+```
+
+**Hint:** /32 to /64 = 32 bits for subnets = 2^32 subnets!
+
+---
+
+### Activity G: Compare IPv4 vs IPv6
+
+**Fill in the comparison table:**
+
+| Feature | IPv4 | IPv6 |
+|---------|------|------|
+| Address size | 32 bits | ___ bits |
+| Address format | Dotted decimal | ___________ |
+| Number of addresses | 4.3 billion | ___________ |
+| Address example | 192.168.1.1 | ___________ |
+| Loopback | 127.0.0.1 | ___________ |
+| Private addresses | 10.x.x.x, 192.168.x.x | ___________ |
+| Broadcast | Yes (255.255.255.255) | ___________ |
+| Configuration | DHCP or static | SLAAC or ___ |
+| Header complexity | Simple | ___________ |
+
+---
+
+### Activity H: Understanding SLAAC (Stateless Address Autoconfiguration)
+
+**SLAAC lets devices auto-configure IPv6 without DHCP!**
+
+**How it works (in theory):**
+1. Device gets link-local address (fe80::...)
+2. Device asks router: "What's the network prefix?" (Router Solicitation)
+3. Router responds: "Use 2001:db8::/64" (Router Advertisement)
+4. Device creates its own IPv6: 2001:db8::xxxx:xxxx:xxxx:xxxx
+5. No DHCP server needed!
+
+**Try to check if your router advertises IPv6:**
+
+**Windows:**
+```
+netsh interface ipv6 show route
+```
+
+**Mac/Linux:**
+```
+ip -6 route
+```
+
+**What you'll probably see:**
+- Link-local routes (fe80::) only
+- Maybe "No IPv6 connectivity" or similar
+- No default route (::/0)
+
+**This means:** Your router isn't advertising IPv6 (expected!)
+
+**If you DO see a default route:** Congratulations! You're in the lucky 40% with IPv6!
+
+**Why this matters:** When IPv6 becomes common, your devices will auto-configure without any setup. It's "plug and play" networking!
+
+---
+
+### Activity I: Understanding Dual-Stack (Even Without IPv6)
+
+**Most networks are SUPPOSED to run BOTH IPv4 and IPv6 (dual-stack), but most homes are IPv4-only.**
+
+**Check your computer's stack:**
+
+1. **Run ipconfig/ifconfig again**
+2. **What do you have?**
+   - IPv4 address: Yes ✅ (you definitely have this)
+   - IPv6 global address: Probably No ❌
+   - IPv6 link-local: Yes ✅ (fe80::)
+
+**This means:** You have a "partial" dual-stack setup. IPv6 is installed but not usable for internet.
+
+3. **Test with ping:**
+```
+ping google.com
+```
+
+**What happened?** Worked fine, used IPv4
+
+**Now try to force IPv6:**
+```
+ping -6 google.com
+```
+
+**Expected result:** "Ping request could not find host" or "Unable to contact"
+
+**Why?** Your computer tries to use IPv6, fails, but can't fall back because you forced it with -6.
+
+**What this teaches:** Modern systems use "dual-stack" and automatically pick whichever works (usually IPv4 for now). By 2030, IPv6 might be the primary!
+
+**Real-world:** When you browse websites, your computer tries IPv6 first (if available), then falls back to IPv4 within milliseconds. You never notice!
+
+---
+
+## Section 3: Reflection (5 min)
+
+**Think about these questions:**
+
+1. **Why haven't we fully switched to IPv6 yet?**
+   - It's been available since 1998...
+   - What challenges prevent adoption?
+
+2. **Do you think IPv6 will completely replace IPv4?**
+   - Or will they coexist forever?
+   - What's your prediction?
+
+3. **IPv6 has 340 undecillion addresses** (340,282,366,920,938,463,463,374,607,431,768,211,456)
+   - That's 340 trillion trillion trillion
+   - That's 79 octillion addresses per person on Earth
+   - **Will we ever run out?**
+
+4. **NAT (Network Address Translation) is barely needed with IPv6**
+   - Every device can have a public IP
+   - Is this good or bad for security?
+
+---
+
+## What You Learned Today
+
+- ✅ You understand why IPv6 exists (IPv4 exhaustion)
+- ✅ You can shorten and expand IPv6 addresses
+- ✅ You know IPv6 address types (loopback, link-local, global unicast, multicast)
+- ✅ You checked your computer's IPv6 connectivity
+- ✅ You understand IPv6 prefix notation (/64, /48, /32)
+- ✅ You know how SLAAC works (auto-configuration)
+- ✅ You understand dual-stack networks
+- ✅ You can compare IPv4 vs IPv6 features
+
+**Next Lesson:** Network Protocols and Services - DNS, DHCP, NTP, and more!

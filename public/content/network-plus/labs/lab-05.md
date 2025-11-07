@@ -1,675 +1,328 @@
-# Lab 5: Subnetting Practice Workshop
+# Lesson 5 Lab: Subnetting Fundamentals
 
-**Duration:** 40-50 minutes  
-**Difficulty:** Intermediate  
-**Prerequisites:** Complete Lessons 3, 4, and 5
-
----
-
-## 🎯 Lab Objectives
-
-By completing this lab, you will:
-- Apply the Magic Number method to real subnetting problems
-- Divide networks into equal-sized subnets confidently
-- Calculate all subnet boundaries (network, broadcast, usable range)
-- Design multi-subnet network architectures
-- Identify and fix common subnetting errors
-- Build speed and accuracy for the Network+ exam
+**Estimated Time:** 30-35 minutes  
+**Topics:** Magic Number method, Dividing networks into subnets, Subnet ranges and boundaries
 
 ---
 
-## 🛠️ Tools Required
+## Section 1: Concept Check (5 min)
 
-**Option 1:** Spreadsheet software (recommended)
-- Google Sheets, Excel, or LibreOffice Calc
-- Use for creating organized subnet tables
+Answer these questions to verify you understand subnetting basics:
 
-**Option 2:** Subnet calculator (for VERIFICATION ONLY)
-- ipcalc, subnet-calculator.com
-- **Rule:** Solve manually first, then verify
+1. **Why do we subnet networks?**
+   - a) To make networks faster
+   - b) To divide networks for security, performance, and organization
+   - c) To increase the number of IP addresses
+   - d) To reduce the cost of routers
 
-**Option 3:** Paper and pencil
-- Best for exam practice and speed building
+2. **If you subnet a /24 network into 4 equal subnets, what is the new subnet mask?**
+   - a) /25
+   - b) /26
+   - c) /27
+   - d) /28
 
----
+3. **What is the "magic number" for a /26 subnet mask?**
+   - a) 32
+   - b) 64
+   - c) 128
+   - d) 256
 
-## 📋 Lab Scenario
+4. **How many subnets can you create by borrowing 3 bits?**
+   - a) 3
+   - b) 6
+   - c) 8
+   - d) 16
 
-Welcome back to GlobalTech Solutions! After your excellent work on the IP addressing audit (Lab 3) and subnet mask analysis (Lab 4), you've been promoted to **Network Design Specialist**.
-
-The company is expanding rapidly and needs you to design subnet schemes for:
-- New headquarters building (4 floors)
-- Three branch offices
-- Data center segmentation
-- Guest and IoT networks
-
-Your designs must be efficient, organized, and scalable. Let's get to work!
-
----
-
-## 🏋️ Part 1: Magic Number Speed Drills
-
-Before diving into complex problems, warm up with magic number calculations.
-
-### Calculate the Magic Number:
-
-| Subnet Mask      | Interesting Octet | Magic Number | Verification (256 - X) |
-|------------------|-------------------|--------------|------------------------|
-| 255.255.255.128  |                   |              |                        |
-| 255.255.255.192  |                   |              |                        |
-| 255.255.255.224  |                   |              |                        |
-| 255.255.255.240  |                   |              |                        |
-| 255.255.255.248  |                   |              |                        |
-| 255.255.255.252  |                   |              |                        |
-| 255.255.240.0    |                   |              |                        |
-| 255.255.192.0    |                   |              |                        |
-
-**Goal:** Complete this table in under 2 minutes. This speed is critical for the exam!
+5. **If you divide 192.168.1.0/24 into /26 subnets, what is the third subnet's network address?**
+   - a) 192.168.1.64
+   - b) 192.168.1.96
+   - c) 192.168.1.128
+   - d) 192.168.1.192
 
 ---
 
-## 📐 Part 2: Classic Subnetting Problems
+## Section 2: Hands-On Activity (25-30 min)
 
-Apply the full subnetting methodology to these scenarios.
+### Activity A: The Magic Number Method
 
-### Problem 1: Divide into 2 Subnets
-
-**Given Network:** 10.10.20.0/24  
-**Requirement:** Create 2 equal subnets
-
-**Your Solution:**
-
+**The Magic Number Formula:**
 ```
-Step 1: Bits to borrow: _____ bits (2^? = 2)
-Step 2: New CIDR: /24 + _____ = /_____
-Step 3: New subnet mask: _____._____._____._____
-Step 4: Magic number: 256 - _____ = _____
+256 - (last octet of subnet mask) = Magic Number
 ```
 
-**Complete Subnet Table:**
+The magic number tells you the INCREMENT between subnets.
 
-| Subnet | Network Address | First Usable | Last Usable | Broadcast | Usable Hosts |
-|--------|----------------|--------------|-------------|-----------|--------------|
-| 1      |                |              |             |           |              |
-| 2      |                |              |             |           |              |
-
----
-
-### Problem 2: Divide into 4 Subnets
-
-**Given Network:** 192.168.50.0/24  
-**Requirement:** Create 4 equal subnets
-
-**Your Solution:**
-
-```
-Step 1: Bits to borrow: _____ bits (2^? = 4)
-Step 2: New CIDR: /24 + _____ = /_____
-Step 3: New subnet mask: _____._____._____._____
-Step 4: Magic number: 256 - _____ = _____
-```
-
-**Complete Subnet Table:**
-
-| Subnet | Network Address | First Usable | Last Usable | Broadcast | Usable Hosts |
-|--------|----------------|--------------|-------------|-----------|--------------|
-| 1      |                |              |             |           |              |
-| 2      |                |              |             |           |              |
-| 3      |                |              |             |           |              |
-| 4      |                |              |             |           |              |
+**Example: /26 subnet**
+- Subnet mask: 255.255.255.192
+- Magic number: 256 - 192 = **64**
+- Subnets start at: 0, 64, 128, 192
 
 ---
 
-### Problem 3: Divide into 8 Subnets
+**Practice: Find the magic number for each:**
 
-**Given Network:** 172.16.100.0/24  
-**Requirement:** Create 8 equal subnets
-
-**Your Solution:**
-
-```
-Step 1: Bits to borrow: _____ bits (2^? = 8)
-Step 2: New CIDR: /24 + _____ = /_____
-Step 3: New subnet mask: _____._____._____._____
-Step 4: Magic number: 256 - _____ = _____
-```
-
-**Complete Subnet Table:**
-
-| Subnet | Network Address | First Usable | Last Usable | Broadcast | Usable Hosts |
-|--------|----------------|--------------|-------------|-----------|--------------|
-| 1      |                |              |             |           |              |
-| 2      |                |              |             |           |              |
-| 3      |                |              |             |           |              |
-| 4      |                |              |             |           |              |
-| 5      |                |              |             |           |              |
-| 6      |                |              |             |           |              |
-| 7      |                |              |             |           |              |
-| 8      |                |              |             |           |              |
+| CIDR | Subnet Mask | Last Octet | Magic Number | Subnets Start At |
+|------|-------------|------------|--------------|------------------|
+| /25 | 255.255.255.128 | 128 | 256-128 = ____ | 0, ___, ___ |
+| /26 | 255.255.255.192 | 192 | 256-192 = ____ | 0, ___, ___, ___ |
+| /27 | 255.255.255.224 | 224 | 256-224 = ____ | 0, ___, ___, ___, ___, ___, ___, ___ |
+| /28 | 255.255.255.240 | 240 | 256-240 = ____ | 0, ___, ___, ___ (continue pattern) |
+| /29 | 255.255.255.248 | 248 | 256-248 = ____ | 0, ___, ___, ___ (continue pattern) |
+| /30 | 255.255.255.252 | 252 | 256-252 = ____ | 0, ___, ___, ___ (continue pattern) |
 
 ---
 
-### Problem 4: Challenge - Divide into 16 Subnets
+### Activity B: Subnet a /24 Network
 
-**Given Network:** 10.200.50.0/24  
-**Requirement:** Create 16 equal subnets
+**Scenario:** You have 192.168.10.0/24 and need to create 4 equal subnets.
 
-**Your Solution:**
+#### Step 1: Determine the new subnet mask
 
-```
-Step 1: Bits to borrow: _____ bits (2^? = 16)
-Step 2: New CIDR: /24 + _____ = /_____
-Step 3: New subnet mask: _____._____._____._____
-Step 4: Magic number: 256 - _____ = _____
-```
+**Formula:** 2^n = number of subnets
+- Need 4 subnets
+- 2^2 = 4
+- Borrow 2 bits
+- Original: /24
+- New: /24 + 2 = **/26**
 
-**List first 4 and last 4 network addresses only:**
+#### Step 2: Find the magic number
+- /26 = 255.255.255.192
+- Magic number: 256 - 192 = **64**
 
-First 4:
-1. __________________
-2. __________________
-3. __________________
-4. __________________
+#### Step 3: List all subnets (increment by magic number)
 
-Last 4:
-13. __________________
-14. __________________
-15. __________________
-16. __________________
+**Complete this table:**
 
-**Usable hosts per subnet:** _______
+| Subnet # | Network Address | First Usable | Last Usable | Broadcast | Usable Hosts |
+|----------|-----------------|--------------|-------------|-----------|--------------|
+| 1 | 192.168.10.0 | 192.168.10.1 | 192.168.10.62 | 192.168.10.63 | 62 |
+| 2 | 192.168.10.64 | _____________ | _____________ | _____________ | ____ |
+| 3 | 192.168.10.128 | _____________ | _____________ | _____________ | ____ |
+| 4 | 192.168.10.192 | _____________ | _____________ | _____________ | ____ |
 
----
-
-## 🎯 Part 3: IP Address to Subnet Mapping
-
-Identify which subnet each IP address belongs to.
-
-### Scenario A: Network 192.168.1.0/24 divided into 4 subnets (/26)
-
-**Magic number:** 64  
-**Subnets:** .0, .64, .128, .192
-
-Which subnet does each IP belong to?
-
-| IP Address | Belongs to Subnet | Range | Reasoning |
-|------------|-------------------|-------|-----------|
-| 192.168.1.10  |                |       |           |
-| 192.168.1.75  |                |       |           |
-| 192.168.1.100 |                |       |           |
-| 192.168.1.150 |                |       |           |
-| 192.168.1.200 |                |       |           |
-| 192.168.1.250 |                |       |           |
+**Rules to remember:**
+- Network address: First address in range (all host bits = 0)
+- First usable: Network address + 1
+- Last usable: Broadcast address - 1
+- Broadcast: Last address in range (all host bits = 1)
+- Usable hosts: 2^(host bits) - 2
 
 ---
 
-### Scenario B: Network 10.50.100.0/24 divided into 8 subnets (/27)
+### Activity C: Divide 192.168.1.0/24 into 8 Subnets
 
-**Magic number:** 32  
-**Subnets:** .0, .32, .64, .96, .128, .160, .192, .224
+**Your turn from scratch!**
 
-Which subnet does each IP belong to?
+#### Step 1: Calculate new subnet mask
+- Need 8 subnets
+- 2^? = 8
+- 2^___ = 8 (What power?)
+- Borrow ___ bits
+- New subnet mask: /24 + ___ = /**___**
 
-| IP Address | Belongs to Subnet | Range | Reasoning |
-|------------|-------------------|-------|-----------|
-| 10.50.100.5   |                |       |           |
-| 10.50.100.50  |                |       |           |
-| 10.50.100.100 |                |       |           |
-| 10.50.100.150 |                |       |           |
-| 10.50.100.200 |                |       |           |
-| 10.50.100.240 |                |       |           |
+#### Step 2: Find the magic number
+- /___ = 255.255.255.___
+- Magic number: 256 - ___ = **___**
 
----
+#### Step 3: List all 8 subnets
 
-## 🏢 Part 4: Headquarters Floor Design
-
-**Scenario:** GlobalTech's new 4-story headquarters needs one subnet per floor.
-
-**Given Network:** 192.168.10.0/24  
-**Requirements:**
-- **Floor 1 (Executive):** 50 devices
-- **Floor 2 (Engineering):** 50 devices
-- **Floor 3 (Sales & Marketing):** 40 devices
-- **Floor 4 (Operations & IT):** 45 devices
-
-**Design Decision:**
-You'll create **4 equal subnets** (even though needs vary slightly). This provides:
-- Consistent addressing scheme
-- Room for growth on all floors
-- Simplified management
-
-### Your Design:
-
-**Subnet Mask:** ________________ (show /CIDR and dotted decimal)  
-**Magic Number:** ________________  
-**Usable Hosts per Floor:** ________________
-
-**Floor Assignments:**
-
-```
-Floor 1 (Executive):
-   Subnet:           ____________________
-   Gateway (.1):     ____________________
-   DHCP Range:       ____________________ to ____________________
-   Static Range:     ____________________ to ____________________
-   Broadcast:        ____________________
-
-Floor 2 (Engineering):
-   Subnet:           ____________________
-   Gateway:          ____________________
-   DHCP Range:       ____________________ to ____________________
-   Static Range:     ____________________ to ____________________
-   Broadcast:        ____________________
-
-Floor 3 (Sales & Marketing):
-   Subnet:           ____________________
-   Gateway:          ____________________
-   DHCP Range:       ____________________ to ____________________
-   Static Range:     ____________________ to ____________________
-   Broadcast:        ____________________
-
-Floor 4 (Operations & IT):
-   Subnet:           ____________________
-   Gateway:          ____________________
-   DHCP Range:       ____________________ to ____________________
-   Static Range:     ____________________ to ____________________
-   Broadcast:        ____________________
-```
-
-**Network Diagram:** Draw or describe how floors connect to core switches.
+| Subnet # | Network Address | First Usable | Last Usable | Broadcast | Hosts |
+|----------|-----------------|--------------|-------------|-----------|-------|
+| 1 | 192.168.1.0 | _____________ | _____________ | _____________ | ____ |
+| 2 | 192.168.1.___ | _____________ | _____________ | _____________ | ____ |
+| 3 | 192.168.1.___ | _____________ | _____________ | _____________ | ____ |
+| 4 | 192.168.1.___ | _____________ | _____________ | _____________ | ____ |
+| 5 | 192.168.1.___ | _____________ | _____________ | _____________ | ____ |
+| 6 | 192.168.1.___ | _____________ | _____________ | _____________ | ____ |
+| 7 | 192.168.1.___ | _____________ | _____________ | _____________ | ____ |
+| 8 | 192.168.1.___ | _____________ | _____________ | _____________ | ____ |
 
 ---
 
-## 🌐 Part 5: Multi-Site Branch Office Design
+### Activity D: Real-World Scenario
 
-**Scenario:** GlobalTech has 3 branch offices that need connectivity.
+**Scenario:** Your company has 192.168.50.0/24 and needs these subnets:
+- **Sales department:** 60 employees
+- **Engineering department:** 25 employees
+- **Management:** 10 employees
+- **Guest WiFi:** 50 devices
 
-**Given Network:** 172.16.50.0/24  
-**Requirements:**
-- **Branch A (Denver):** 60 devices
-- **Branch B (Austin):** 60 devices
-- **Branch C (Seattle):** 60 devices
-- **WAN Links:** 3 point-to-point connections between offices
+#### Step 1: Determine requirements
 
-### Design Challenge:
+For each department, what's the minimum subnet size needed?
 
-You need to create:
-- 3 branch office subnets (60 devices each)
-- 3 point-to-point WAN subnets (2 hosts each)
+**Sales (60 employees):**
+- Need at least 60 usable hosts
+- /26 = 62 hosts ✅
+- /27 = 30 hosts ❌
 
-**Can you fit this all in a single /24?**
+**Your turn - fill in the rest:**
 
-### Your Analysis:
+**Engineering (25 employees):**
+- Need at least 25 usable hosts
+- /___ = ___ hosts
 
-**Branch Subnets:**
-- How many hosts needed per branch? ________
-- What CIDR provides this? ________
-- How many of these subnets fit in a /24? ________
+**Management (10 employees):**
+- Need at least 10 usable hosts
+- /___ = ___ hosts
 
-**WAN Subnets:**
-- How many hosts per WAN link? ________
-- What CIDR provides this? ________
-- How many /30 subnets fit in remaining space? ________
+**Guest WiFi (50 devices):**
+- Need at least 50 usable hosts
+- /___ = ___ hosts
 
-### Your Proposed Solution:
+#### Step 2: Use the Magic Number method
 
-**Option 1: Try to fit everything**
-- Branches use ________ subnets
-- WAN links use ________ subnets
-- Does it fit? ________ (show math)
+**Design your subnetting scheme:**
+1. Start with largest subnet first (Sales: /26)
+2. Then next largest (Guest: /26)
+3. Continue with smaller subnets
 
-**Option 2: Use separate /24 networks (if Option 1 doesn't fit)**
-- Branches: 172.16.50.0/24
-- WAN links: 172.16.51.0/24
+**Complete this allocation:**
 
-Which option did you choose and why?
-
----
-
-## 🚨 Part 6: Find and Fix Subnetting Errors
-
-GlobalTech hired a junior admin who made several subnetting mistakes. Find and fix them!
-
-### Error Scenario 1: Overlapping Subnets
-
-**Claim:** "I divided 192.168.5.0/24 into 4 subnets"
-
-**Their Subnet Table:**
-| Subnet | Network | Broadcast |
-|--------|---------|-----------|
-| 1      | .0      | .64       |
-| 2      | .64     | .128      |
-| 3      | .128    | .192      |
-| 4      | .192    | .256      |
-
-**Your Analysis:**
-- What's wrong with this table?
-- What should the broadcast addresses actually be?
-- What mistake did they make?
+| Department | CIDR | Network Address | First Usable | Last Usable | Broadcast |
+|------------|------|-----------------|--------------|-------------|-----------|
+| Sales | /26 | 192.168.50.0 | _____________ | _____________ | _____________ |
+| Guest WiFi | /26 | 192.168.50.64 | _____________ | _____________ | _____________ |
+| Engineering | /___ | 192.168.50.___ | _____________ | _____________ | _____________ |
+| Management | /___ | 192.168.50.___ | _____________ | _____________ | _____________ |
 
 ---
 
-### Error Scenario 2: Wrong Subnet Mask
+### Activity E: Common Mistakes Practice
 
-**Claim:** "I created 8 subnets from 10.10.10.0/24 using /26"
+**Identify what's wrong with each scenario:**
 
-**Your Analysis:**
-- How many subnets does /26 actually create?
-- What CIDR should they use for 8 subnets?
-- What's the correct subnet mask?
+**Problem 1:**
+A student subnets 10.0.0.0/24 into /26 and lists these as the 4 subnets:
+- 10.0.0.0/26
+- 10.0.0.50/26
+- 10.0.0.100/26
+- 10.0.0.150/26
 
----
-
-### Error Scenario 3: Invalid Host Assignment
-
-**Network:** 172.16.20.0/27
-
-**Assigned IPs:**
-- Server A: 172.16.20.0
-- Server B: 172.16.20.31
-- Workstation: 172.16.20.15
-
-**Your Analysis:**
-- Which IPs are invalid for hosts?
-- Why are they invalid?
-- What should they be changed to?
+**What's wrong?** ____________________________
 
 ---
 
-### Error Scenario 4: Insufficient Hosts
+**Problem 2:**
+A student says 192.168.1.0/26 has these usable hosts:
+- First: 192.168.1.0
+- Last: 192.168.1.63
 
-**Requirement:** "We need 40 devices per subnet"  
-**Implementation:** "I used /27 which provides 30 hosts"
-
-**Your Analysis:**
-- Is /27 sufficient?
-- What's the minimum CIDR needed for 40 devices?
-- Calculate usable hosts for your recommendation.
+**What's wrong?** ____________________________
 
 ---
 
-## 🎨 Part 7: Creative Design Challenge
+**Problem 3:**
+A student divides 172.16.0.0/24 into /26 subnets and assigns:
+- Subnet 1: 172.16.0.0/26
+- Subnet 2: 172.16.0.64/26
+- Subnet 3: 172.16.0.128/26
+- Subnet 4: 172.16.0.192/26
+- Subnet 5: 172.16.0.256/26
 
-**Scenario:** Design a complete network for a small business from scratch.
-
-**Company:** TechStart Inc. (startup with 80 employees)  
-**Base Network:** 192.168.0.0/23 (yes, a /23! That's 512 addresses)
-
-**Department Breakdown:**
-- Engineering: 30 devices
-- Sales: 20 devices
-- Marketing: 15 devices
-- Operations: 10 devices
-- Guest WiFi: 50 devices (high turnover)
-- Servers/Infrastructure: 10 devices
-- IoT (cameras, printers, phones): 20 devices
-
-**Requirements:**
-1. Segment by department for security
-2. Isolate guest traffic
-3. Separate IoT devices
-4. Allow for 50% growth
-5. Use efficient subnet sizes (not all the same!)
-
-### Your Complete Design:
-
-For each segment, document:
-- Network address
-- Subnet mask (/CIDR)
-- Usable hosts provided
-- Justification for size choice
-
-**Engineering:**
-- Network: ________________
-- Mask: ________________
-- Hosts: ________________
-- Rationale: ________________
-
-**Sales:**
-- Network: ________________
-- Mask: ________________
-- Hosts: ________________
-- Rationale: ________________
-
-**Marketing:**
-- Network: ________________
-- Mask: ________________
-- Hosts: ________________
-- Rationale: ________________
-
-**Operations:**
-- Network: ________________
-- Mask: ________________
-- Hosts: ________________
-- Rationale: ________________
-
-**Guest WiFi:**
-- Network: ________________
-- Mask: ________________
-- Hosts: ________________
-- Rationale: ________________
-
-**Servers/Infrastructure:**
-- Network: ________________
-- Mask: ________________
-- Hosts: ________________
-- Rationale: ________________
-
-**IoT Devices:**
-- Network: ________________
-- Mask: ________________
-- Hosts: ________________
-- Rationale: ________________
-
-**Summary:**
-- Total addresses used: ________________
-- Total addresses available (from /23): 510
-- Efficiency: ________________%
+**What's wrong?** ____________________________
 
 ---
 
-## ✅ Answer Key & Solutions
+### Activity F: Test Your Subnetting Skills
 
-<details>
-<summary>Part 1: Magic Number Drills - Expand for Answers</summary>
+**Without looking at notes, complete these:**
 
-| Subnet Mask      | Interesting Octet | Magic Number |
-|------------------|-------------------|--------------|
-| 255.255.255.128  | 128               | 128          |
-| 255.255.255.192  | 192               | 64           |
-| 255.255.255.224  | 224               | 32           |
-| 255.255.255.240  | 240               | 16           |
-| 255.255.255.248  | 248               | 8            |
-| 255.255.255.252  | 252               | 4            |
-| 255.255.240.0    | 240 (3rd octet)   | 16           |
-| 255.255.192.0    | 192 (3rd octet)   | 64           |
+**Problem 1: Divide 10.10.0.0/24 into 2 equal subnets**
+- New subnet mask: /**___**
+- Magic number: **___**
 
-</details>
-
-<details>
-<summary>Part 2: Problem 1 (2 Subnets) - Expand for Answer</summary>
-
-**Solution:**
-- Borrow: 1 bit
-- New CIDR: /25
-- Mask: 255.255.255.128
-- Magic: 128
-
-| Subnet | Network | First | Last | Broadcast | Hosts |
-|--------|---------|-------|------|-----------|-------|
-| 1      | .0      | .1    | .126 | .127      | 126   |
-| 2      | .128    | .129  | .254 | .255      | 126   |
-
-</details>
-
-<details>
-<summary>Part 2: Problem 2 (4 Subnets) - Expand for Answer</summary>
-
-**Solution:**
-- Borrow: 2 bits
-- New CIDR: /26
-- Mask: 255.255.255.192
-- Magic: 64
-
-| Subnet | Network | First | Last | Broadcast | Hosts |
-|--------|---------|-------|------|-----------|-------|
-| 1      | .0      | .1    | .62  | .63       | 62    |
-| 2      | .64     | .65   | .126 | .127      | 62    |
-| 3      | .128    | .129  | .190 | .191      | 62    |
-| 4      | .192    | .193  | .254 | .255      | 62    |
-
-</details>
-
-<details>
-<summary>Part 2: Problem 3 (8 Subnets) - Expand for Answer</summary>
-
-**Solution:**
-- Borrow: 3 bits
-- New CIDR: /27
-- Mask: 255.255.255.224
-- Magic: 32
-
-| Subnet | Network | First | Last | Broadcast | Hosts |
-|--------|---------|-------|------|-----------|-------|
-| 1      | .0      | .1    | .30  | .31       | 30    |
-| 2      | .32     | .33   | .62  | .63       | 30    |
-| 3      | .64     | .65   | .94  | .95       | 30    |
-| 4      | .96     | .97   | .126 | .127      | 30    |
-| 5      | .128    | .129  | .158 | .159      | 30    |
-| 6      | .160    | .161  | .190 | .191      | 30    |
-| 7      | .192    | .193  | .222 | .223      | 30    |
-| 8      | .224    | .225  | .254 | .255      | 30    |
-
-</details>
-
-<details>
-<summary>Part 2: Problem 4 (16 Subnets) - Expand for Answer</summary>
-
-**Solution:**
-- Borrow: 4 bits
-- New CIDR: /28
-- Mask: 255.255.255.240
-- Magic: 16
-- Hosts per subnet: 14
-
-**Networks:** .0, .16, .32, .48, .64, .80, .96, .112, .128, .144, .160, .176, .192, .208, .224, .240
-
-</details>
-
-<details>
-<summary>Part 3: IP Mapping Scenario A - Expand for Answers</summary>
-
-Magic number: 64, Subnets: .0, .64, .128, .192
-
-| IP | Subnet | Range |
-|----|--------|-------|
-| .10  | .0/26  | .1-.62 |
-| .75  | .64/26 | .65-.126 |
-| .100 | .64/26 | .65-.126 |
-| .150 | .128/26| .129-.190 |
-| .200 | .192/26| .193-.254 |
-| .250 | .192/26| .193-.254 |
-
-</details>
-
-<details>
-<summary>Part 4: Headquarters Design - Sample Solution</summary>
-
-**Decision:** /26 (4 subnets, 62 hosts each)
-- Mask: 255.255.255.192
-- Magic: 64
-
-**Floor 1:** 192.168.10.0/26 (.1-.62, broadcast .63)
-**Floor 2:** 192.168.10.64/26 (.65-.126, broadcast .127)
-**Floor 3:** 192.168.10.128/26 (.129-.190, broadcast .191)
-**Floor 4:** 192.168.10.192/26 (.193-.254, broadcast .255)
-
-</details>
-
-<details>
-<summary>Part 6: Error Corrections - Expand for Answers</summary>
-
-**Error 1:** Broadcasts should be .63, .127, .191, .255 (not .64, .128, .192, .256)
-
-**Error 2:** /26 creates 4 subnets, not 8. Need /27 for 8 subnets.
-
-**Error 3:** .0 is network (use .1+), .31 is broadcast (use .30 or less)
-
-**Error 4:** /27 = 30 hosts (insufficient). Need /26 (62 hosts) for 40 devices.
-
-</details>
+| Subnet | Network | First Usable | Last Usable | Broadcast |
+|--------|---------|--------------|-------------|-----------|
+| 1 | ________ | ________ | ________ | ________ |
+| 2 | ________ | ________ | ________ | ________ |
 
 ---
 
-## 📚 Submission Checklist
+**Problem 2: Divide 172.16.20.0/24 into 16 equal subnets**
+- New subnet mask: /**___**
+- Magic number: **___**
 
-Before completing this lab, ensure you've:
-
-- [ ] Completed all magic number drills in Part 1
-- [ ] Solved all four subnetting problems in Part 2
-- [ ] Mapped IP addresses to subnets in Part 3
-- [ ] Designed the headquarters network in Part 4
-- [ ] Analyzed the branch office scenario in Part 5
-- [ ] Found and fixed all errors in Part 6
-- [ ] Created the complete design in Part 7 (optional)
-- [ ] Checked answers against the answer key
-- [ ] Understood WHY each answer is correct
-
----
-
-## 🎓 Lab Reflection
-
-**Self-Assessment:**
-
-1. **Time taken to complete basic problems (Part 2):** ________ minutes
-
-2. **Accuracy rate before checking answers:** ________%
-
-3. **Which part was most challenging?**
-
-4. **What subnetting concept finally "clicked" for you?**
-
-5. **Rate your confidence (1-10):** ________
-   - Calculating magic numbers: ____/10
-   - Borrowing correct number of bits: ____/10
-   - Finding network addresses: ____/10
-   - Finding broadcast addresses: ____/10
-   - Identifying usable ranges: ____/10
+| Subnet | Network Address |
+|--------|-----------------|
+| 1 | 172.16.20.0 |
+| 2 | 172.16.20.___ |
+| 3 | 172.16.20.___ |
+| 4 | 172.16.20.___ |
+| ... | ... |
+| 16 | 172.16.20.___ |
 
 ---
 
-## 🚀 Speed Goals
+**Problem 3: What subnet is 192.168.5.87/27 on?**
 
-**Target times for exam readiness:**
-
-| Task | Beginner | Intermediate | Expert |
-|------|----------|--------------|--------|
-| Magic number calculation | 10 sec | 5 sec | 2 sec |
-| Divide /24 into 4 subnets | 5 min | 3 min | 90 sec |
-| Divide /24 into 8 subnets | 8 min | 5 min | 2 min |
-| IP to subnet mapping | 30 sec | 15 sec | 5 sec |
-
-**Practice Strategy:**
-- Do 5 problems per day
-- Time yourself
-- Track improvement
-- Aim for "Intermediate" before exam day
+Steps:
+1. /27 magic number: 256 - 224 = ___
+2. Subnets: 0, ___, ___, ___, ___, ___, ___, ___
+3. 87 falls between ___ and ___
+4. Network address: 192.168.5.___
 
 ---
 
-## 🎯 What You've Accomplished
+### Activity G: Use an Online Tool to Verify
 
-By completing this lab, you've:
+**Go to a subnet calculator:**
+- www.subnet-calculator.com
+- OR www.calculator.net/ip-subnet-calculator.html
 
-✅ Mastered the Magic Number method  
-✅ Practiced dividing networks into 2, 4, 8, and 16 subnets  
-✅ Learned to map IP addresses to their subnets  
-✅ Designed real multi-floor and multi-site networks  
-✅ Identified and corrected common subnetting mistakes  
-✅ Built speed and confidence for the exam
+**Test one of your answers from Activity B:**
+- Enter: 192.168.10.64/26
+- Verify your answers match
 
-**You're now ready for Lesson 6: Advanced Subnetting & VLSM!**
+**Then test a tricky one:**
+- Enter: 192.168.5.87/27
+- Does it match what you calculated in Activity F, Problem 3?
 
-This lab solidified your equal-sized subnetting skills. In the next lesson, we'll learn Variable Length Subnet Masking (VLSM)—the technique that lets you create subnets of different sizes for maximum efficiency.
+**Remember:** You can't use calculators on the exam, but they're great for practice!
 
-**Outstanding work! 🎉**
+---
+
+## Section 3: Reflection (5 min)
+
+**Real-World Application:**
+
+You're a network admin at a school. You have 172.16.0.0/16 (65,534 hosts total).
+
+The school wants:
+- **Main building:** 500 computers
+- **Dorms:** 200 devices
+- **Library:** 100 devices
+- **Admin offices:** 50 devices
+- **Guest WiFi:** 300 devices
+
+**Questions to think about:**
+
+1. **Would you give each location a /24 subnet?**
+   - Why or why not?
+   - What problems might this cause?
+
+2. **What subnet sizes would you choose for each?**
+   - Remember: Use the smallest subnet that meets needs + growth
+
+3. **Why not just use /16 for everything?**
+   - What are the downsides of subnets that are too large?
+
+**Hint:** Think about:
+- Security (isolation between departments)
+- Broadcast traffic (smaller subnets = less broadcast noise)
+- IP address conservation
+- Future growth
+
+---
+
+## What You Learned Today
+
+- ✅ You mastered the Magic Number method (256 - last octet)
+- ✅ You can divide a /24 network into equal subnets
+- ✅ You can calculate: Network address, First/Last usable, Broadcast
+- ✅ You understand how to borrow bits (2^n = number of subnets)
+- ✅ You can identify which subnet an IP belongs to
+- ✅ You can design real-world subnetting schemes
+- ✅ You know common mistakes to avoid
+
+**Next Lesson:** Advanced Subnetting & VLSM - Unequal subnet sizes for maximum efficiency!

@@ -1,338 +1,402 @@
-# Lab 6: VLSM Network Design Challenge
+# Lesson 6 Lab: Advanced Subnetting & VLSM
 
-**Lab Time:** 30-40 minutes  
-**Difficulty:** Intermediate  
-**Skills:** VLSM design, IP addressing, documentation
-
----
-
-## Lab Objective
-
-Design a complete VLSM IP addressing scheme for TechStart Inc., a growing technology company that just leased a new 3-floor office building. You'll need to allocate subnets efficiently, document your design, and verify there are no overlaps.
+**Estimated Time:** 30-35 minutes  
+**Topics:** VLSM, Efficient IP schemes, Route summarization, Troubleshooting subnets
 
 ---
 
-## Scenario
+## Section 1: Concept Check (5 min)
 
-**Company:** TechStart Inc. - Software Development & IT Services  
-**Location:** New 3-floor office building + remote sites  
-**Network Assignment:** 172.20.0.0/22 (your ISP gave you this private range)  
-**Router:** Cisco router with Internet connection
+Answer these questions to verify you understand VLSM:
 
-Your boss wants an efficient IP addressing scheme that:
-- Matches each department's needs (no massive waste)
-- Leaves room for 30% growth per department
-- Follows industry best practices
-- Is well-documented for future techs
+1. **What does VLSM stand for?**
+   - a) Very Large Subnet Masking
+   - b) Variable Length Subnet Masking
+   - c) Virtual LAN Subnet Masking
+   - d) Variable Link Subnet Method
 
----
+2. **When designing with VLSM, which subnet should you allocate FIRST?**
+   - a) The smallest subnet
+   - b) The largest subnet
+   - c) It doesn't matter
+   - d) Start with /30 subnets
 
-## Network Requirements
+3. **Which routing protocol does NOT support VLSM?**
+   - a) RIPv2
+   - b) OSPF
+   - c) RIPv1
+   - d) EIGRP
 
-### Building - Floor 1
-- **Sales Department:** 120 employees (desktops + laptops)
-- **Customer Support:** 40 employees (desktops + VoIP phones)
-- **Conference Rooms:** 20 devices (laptops + displays)
+4. **What is supernetting used for?**
+   - a) Making subnets larger
+   - b) Combining multiple networks into one route (route summarization)
+   - c) Dividing networks into smaller subnets
+   - d) Increasing network speed
 
-### Building - Floor 2
-- **Engineering Department:** 80 employees (workstations + build servers)
-- **QA/Testing Lab:** 30 devices (test servers + VMs)
-- **Marketing Department:** 25 employees (desktops + design workstations)
-
-### Building - Floor 3
-- **Executive Offices:** 15 employees (desktops + tablets)
-- **HR Department:** 10 employees (desktops)
-- **Finance Department:** 8 employees (desktops + laptops)
-
-### Infrastructure
-- **Data Center:** 50 devices (servers, storage, switches)
-- **Network Equipment VLAN:** 20 devices (switches, APs, controllers)
-- **Guest Wi-Fi:** 100 devices (visitor laptops + phones)
-- **Security Cameras:** 30 devices (IP cameras)
-- **Printers VLAN:** 15 network printers
-
-### WAN Links
-- **Link to Cloud Provider:** Point-to-point
-- **Link to Backup Site:** Point-to-point
-- **Link to Branch Office:** Point-to-point
+5. **You have 192.168.1.0/24. You need subnets for: 100 hosts, 50 hosts, 20 hosts, 2 hosts. Which should you allocate first?**
+   - a) 2 hosts (/30)
+   - b) 20 hosts (/27)
+   - c) 50 hosts (/26)
+   - d) 100 hosts (/25)
 
 ---
 
-## Your Task
+## Section 2: Hands-On Activity (25-30 min)
 
-### Part 1: Calculate Subnet Requirements (10 min)
+### Activity A: Why VLSM Matters
 
-For each department/area above:
+**Scenario: Without VLSM (Equal subnets only)**
 
-1. Calculate the number of hosts needed
-2. Add 30% for growth (round up)
-3. Add 2 for network + broadcast addresses
-4. Find the next power of 2
-5. Determine the subnet mask
+You have 192.168.1.0/24 and need:
+- Department A: 100 hosts
+- Department B: 50 hosts
+- Department C: 20 hosts
+- WAN link: 2 hosts
 
-**Example:**
+**Using equal subnetting (no VLSM):**
+- Must use /25 for all subnets (126 hosts each) - only fits your largest need
+- You can create 2 subnets from /24
+- But you need 4 subnets total!
+- **Problem:** Can't fit all requirements ❌
+
+**Calculate the waste:**
+- Dept A: Uses 100 of 126 = **26 wasted**
+- Dept B: Uses 50 of 126 = **76 wasted**
+- Dept C: Uses 20 of 126 = **106 wasted**
+- WAN: Uses 2 of 126 = **124 wasted**
+- **Total waste: 332 IP addresses!**
+
+---
+
+**Now with VLSM (Variable subnets):**
+- Dept A: /25 (126 hosts) - perfect fit
+- Dept B: /26 (62 hosts) - good fit
+- Dept C: /27 (30 hosts) - good fit
+- WAN: /30 (2 hosts) - perfect fit
+
+**Calculate the waste:**
+- Dept A: 126-100 = 26 wasted
+- Dept B: 62-50 = 12 wasted
+- Dept C: 30-20 = 10 wasted
+- WAN: 2-2 = 0 wasted
+- **Total waste: 48 IP addresses**
+
+**VLSM saves 284 addresses! (332 - 48)**
+
+---
+
+### Activity B: VLSM Step-by-Step Process
+
+**Network:** 172.16.10.0/24
+
+**Requirements:**
+- Subnet A: 60 hosts
+- Subnet B: 30 hosts
+- Subnet C: 12 hosts
+- Subnet D: 10 hosts
+- WAN Link 1: 2 hosts
+- WAN Link 2: 2 hosts
+
+---
+
+#### Step 1: Organize by size (largest first)
+
+| Subnet | Hosts Needed | CIDR Needed | Usable Hosts |
+|--------|--------------|-------------|--------------|
+| A | 60 | /26 | 62 |
+| B | 30 | /27 | 30 |
+| C | 12 | /28 | 14 |
+| D | 10 | /28 | 14 |
+| WAN 1 | 2 | /30 | 2 |
+| WAN 2 | 2 | /30 | 2 |
+
+**How to choose CIDR:**
+- Find smallest subnet where: 2^(host bits) - 2 ≥ hosts needed
+- 60 hosts: /26 (62 hosts) ✅
+- 30 hosts: /27 (30 hosts) ✅
+- 12 hosts: /28 (14 hosts) ✅
+- 2 hosts: /30 (2 hosts) ✅
+
+---
+
+#### Step 2: Allocate addresses (starting from .0)
+
+**Complete this allocation:**
+
+| Subnet | CIDR | Network | First Usable | Last Usable | Broadcast | Size |
+|--------|------|---------|--------------|-------------|-----------|------|
+| A | /26 | 172.16.10.0 | __________ | __________ | __________ | 64 |
+| B | /27 | 172.16.10.64 | __________ | __________ | __________ | 32 |
+| C | /28 | 172.16.10.96 | __________ | __________ | __________ | 16 |
+| D | /28 | 172.16.10.112 | __________ | __________ | __________ | 16 |
+| WAN 1 | /30 | 172.16.10.128 | __________ | __________ | __________ | 4 |
+| WAN 2 | /30 | 172.16.10.132 | __________ | __________ | __________ | 4 |
+
+**Tips:**
+- Subnet A starts at .0, size 64 (magic number for /26)
+- Subnet B starts at .0 + 64 = .64, size 32
+- Subnet C starts at .64 + 32 = .96, size 16
+- And so on...
+
+**Address utilization:** 
+- Used: 0 through ___
+- Remaining: ___ through 255 (for future growth!)
+
+---
+
+### Activity C: Real-World VLSM Design
+
+**You're a network admin. You have 10.50.0.0/16 to work with.**
+
+**Requirements:**
+- **Building A:** 500 computers
+- **Building B:** 200 computers
+- **Building C:** 100 computers
+- **Server Farm:** 50 servers
+- **Management:** 20 devices
+- **Guest WiFi:** 150 devices
+- **5 WAN links** between buildings (2 hosts each)
+
+---
+
+#### Your Task: Design the VLSM scheme
+
+**Step 1: Determine subnet sizes**
+
+Fill in the CIDR for each:
+
+| Location | Hosts | CIDR | Usable Hosts |
+|----------|-------|------|--------------|
+| Building A | 500 | /___ | ____ |
+| Building B | 200 | /___ | ____ |
+| Guest WiFi | 150 | /___ | ____ |
+| Building C | 100 | /___ | ____ |
+| Server Farm | 50 | /___ | ____ |
+| Management | 20 | /___ | ____ |
+| WAN Link 1 | 2 | /___ | ____ |
+| WAN Link 2 | 2 | /___ | ____ |
+| WAN Link 3 | 2 | /___ | ____ |
+| WAN Link 4 | 2 | /___ | ____ |
+| WAN Link 5 | 2 | /___ | ____ |
+
+---
+
+**Step 2: Allocate addresses (largest first!)**
+
+| Location | Network Address | First Usable | Last Usable | Broadcast |
+|----------|-----------------|--------------|-------------|-----------|
+| Building A | 10.50.0.0/___ | __________ | __________ | __________ |
+| Building B | 10.50.___.___ /___ | __________ | __________ | __________ |
+| Guest WiFi | 10.50.___.___ /___ | __________ | __________ | __________ |
+| Building C | 10.50.___.___ /___ | __________ | __________ | __________ |
+| Server Farm | 10.50.___.___ /___ | __________ | __________ | __________ |
+| Management | 10.50.___.___ /___ | __________ | __________ | __________ |
+| WAN Link 1 | 10.50.___.___ /___ | __________ | __________ | __________ |
+| WAN Link 2 | 10.50.___.___ /___ | __________ | __________ | __________ |
+| WAN Link 3 | 10.50.___.___ /___ | __________ | __________ | __________ |
+| WAN Link 4 | 10.50.___.___ /___ | __________ | __________ | __________ |
+| WAN Link 5 | 10.50.___.___ /___ | __________ | __________ | __________ |
+
+---
+
+### Activity D: Route Summarization (Supernetting)
+
+**Scenario:** Your company has these networks:
+- 192.168.0.0/24
+- 192.168.1.0/24
+- 192.168.2.0/24
+- 192.168.3.0/24
+
+Instead of advertising 4 separate routes, you can summarize into ONE route.
+
+---
+
+#### Step 1: Convert to binary (network portions only)
+
 ```
-Sales: 120 employees
-Growth: 120 × 1.30 = 156 hosts needed
-Plus 2: 156 + 2 = 158 total addresses
-Next power of 2: 256 (2^8)
-Subnet mask: 32 - 8 = /24 (255.255.255.0)
+192.168.0.0 = 11000000.10101000.00000000.00000000
+192.168.1.0 = 11000000.10101000.00000001.00000000
+192.168.2.0 = 11000000.10101000.00000010.00000000
+192.168.3.0 = 11000000.10101000.00000011.00000000
 ```
 
-Create a table like this:
-
-| Department | Current | +30% Growth | +2 | Power of 2 | Subnet Mask |
-|------------|---------|-------------|-----|------------|-------------|
-| Sales | 120 | 156 | 158 | 256 | /24 |
-| ... | ... | ... | ... | ... | ... |
-
----
-
-### Part 2: Sort and Design VLSM Scheme (15 min)
-
-1. **Sort your requirements from LARGEST to SMALLEST**
-   - This is critical! Don't skip this step.
-
-2. **Start allocating from 172.20.0.0/22**
-   - Remember: /22 gives you 172.20.0.0 through 172.20.3.255 (1024 addresses)
-
-3. **Allocate each subnet sequentially:**
-   ```
-   Largest: 172.20.0.0/24
-   Next: 172.20.1.0/25
-   Next: 172.20.1.128/26
-   ... and so on
-   ```
-
-4. **For each subnet, document:**
-   - Network address
-   - Subnet mask (CIDR and dotted decimal)
-   - First usable host
-   - Last usable host
-   - Broadcast address
-   - Number of usable hosts
-   - Purpose/Department
-
-**Pro Tip:** Use the "magic number" method to find the next subnet:
-- /24 = increment by 1 in the third octet
-- /25 = increment by 128 in the fourth octet
-- /26 = increment by 64
-- /27 = increment by 32
-- /28 = increment by 16
-- /29 = increment by 8
-- /30 = increment by 4
-
----
-
-### Part 3: Create Network Documentation (10 min)
-
-Create a clean, professional IPAM (IP Address Management) document:
-
-**Use this template:**
+#### Step 2: Find common bits (where all bits are the same)
 
 ```
-TECHSTART INC. - IP ADDRESSING SCHEME
-Allocated Range: 172.20.0.0/22
-Design Date: [Today's Date]
-Designer: [Your Name]
-
-=======================================================
-SUBNET ALLOCATION TABLE
-=======================================================
-
-Dept/Purpose          | Network Address  | Mask | Usable Range          | Gateway      | VLAN
---------------------- | ---------------- | ---- | --------------------- | ------------ | ----
-Sales                 | 172.20.0.0/24    | /24  | .1 - .254 (254 hosts) | 172.20.0.1   | 10
-Customer Support      | 172.20.1.0/26    | /26  | .1 - .62 (62 hosts)   | 172.20.1.1   | 20
-... (continue for all)
-
-=======================================================
-WAN LINKS
-=======================================================
-
-Link Purpose          | Network Address  | Router A IP   | Router B IP   | Subnet Mask
---------------------- | ---------------- | ------------- | ------------- | ------------
-To Cloud Provider     | 172.20.x.x/30    | 172.20.x.x    | 172.20.x.x    | /30
-... (continue)
-
-=======================================================
-SPECIAL ADDRESSES
-=======================================================
-
-DNS Servers: [To be configured]
-NTP Servers: [To be configured]
-DHCP Servers: [To be configured]
-Default Gateways: [.1 of each subnet]
-
-=======================================================
-ADDRESS SPACE USAGE
-=======================================================
-
-Total Available: 1024 addresses (172.20.0.0/22)
-Total Allocated: [Calculate this]
-Remaining Available: [Calculate this]
-Utilization: [Calculate percentage]
-
-=======================================================
-VLSM DESIGN NOTES
-=======================================================
-
-- All departments sized for 30% growth
-- WAN links use /30 (most efficient)
-- Guest Wi-Fi isolated on separate VLAN
-- Security cameras on separate VLAN for security
-- Room for future expansion: [X addresses remaining]
+Common bits: 11000000.10101000.000000xx.00000000
+                                      ↑↑ These differ
 ```
 
+**Count common bits:** 8 + 8 + 6 = **22 bits**
+
+#### Step 3: Summary route
+
+**192.168.0.0/22** summarizes all 4 networks!
+
 ---
 
-### Part 4: Verification Checklist (5 min)
+**Your turn - Summarize these networks:**
 
-Before submitting your design, verify:
+**Problem 1:**
+- 10.1.0.0/24
+- 10.1.1.0/24
+- 10.1.2.0/24
+- 10.1.3.0/24
+- 10.1.4.0/24
+- 10.1.5.0/24
+- 10.1.6.0/24
+- 10.1.7.0/24
 
-- [ ] All requirements are met (every department has a subnet)
-- [ ] Subnets are sorted largest to smallest
-- [ ] No subnet overlaps (check boundaries carefully!)
-- [ ] All subnets fit within 172.20.0.0/22
-- [ ] WAN links use /30
-- [ ] Each subnet has room for 30% growth
-- [ ] Gateways are .1 of each subnet
-- [ ] VLAN IDs assigned logically
-- [ ] Documentation is complete and professional
-- [ ] You have unused address space for future growth
+**Summary route:** 10.1.0.0 / ___
 
-**Overlap Check Tool:**  
-For each subnet, verify the NEXT subnet starts AFTER the previous one ends.
+**Hint:** Convert third octet to binary:
+- 0 = 00000000
+- 7 = 00000111
+- How many bits are common?
 
-Example:
+---
+
+**Problem 2:**
+- 172.16.8.0/24
+- 172.16.9.0/24
+- 172.16.10.0/24
+- 172.16.11.0/24
+- 172.16.12.0/24
+- 172.16.13.0/24
+- 172.16.14.0/24
+- 172.16.15.0/24
+
+**Summary route:** 172.16.8.0 / ___
+
+---
+
+### Activity E: Troubleshooting Subnet Issues
+
+**For each scenario, identify the problem and solution:**
+
+---
+
+**Scenario 1:**
 ```
-✓ Correct:
-  172.20.0.0/24 (ends at .255)
-  172.20.1.0/25 (starts at 1.0) ← OK!
+Network: 192.168.5.0/26
+Gateway: 192.168.5.64
+Host IP: 192.168.5.50
+Subnet Mask: 255.255.255.192
 
-❌ Wrong:
-  172.20.0.0/24 (ends at .255)
-  172.20.0.128/25 (starts at 0.128) ← OVERLAP!
+Problem: Host can't reach the internet
 ```
 
----
+**What's the issue?** _____________________________
 
-## Deliverables
+**Why?** _____________________________
 
-Submit the following:
-
-1. **Calculation table** showing your power-of-2 calculations
-2. **Complete IPAM document** with all subnets allocated
-3. **Network diagram** (draw in draw.io or on paper):
-   - Show 3 floors
-   - Show router connecting to Internet
-   - Label each subnet with its network address
-   - Show WAN links
+**Solution:** _____________________________
 
 ---
 
-## Bonus Challenges (Optional)
+**Scenario 2:**
+```
+Network: 10.0.0.0/24
+Host A: 10.0.0.50/24
+Host B: 10.0.0.100/25
 
-Want to level up? Try these:
+Problem: Host A can ping Host B, but Host B can't ping Host A
+```
 
-### Challenge 1: Route Summarization
-If you were to advertise your entire TechStart network to another site, what single summary route would you use? Show your binary math.
+**What's the issue?** _____________________________
 
-### Challenge 2: Redundancy Design
-Design a second VLSM scheme using 172.20.4.0/22 for a backup/disaster recovery site that mirrors your main site.
-
-### Challenge 3: IPv6 Planning
-TechStart just got assigned 2001:db8:cafe::/48. Design a parallel IPv6 scheme where each IPv4 subnet has a corresponding /64 IPv6 subnet. (We'll learn more about IPv6 in Lesson 7!)
-
----
-
-## Common Mistakes to Avoid
-
-❌ **Not sorting largest to smallest** → You'll run out of space  
-❌ **Forgetting to add 30% growth** → Future pain when company expands  
-❌ **Not checking for overlaps** → Routing chaos in production  
-❌ **Using /24 for everything** → Massive waste of addresses  
-❌ **Forgetting network + broadcast** → Subnet too small by 2 hosts  
-❌ **Not leaving room for future growth** → Have to re-IP later  
+**Solution:** _____________________________
 
 ---
 
-## Tools You Can Use
+**Scenario 3:**
+```
+Your VLSM allocation:
+- Subnet A: 192.168.1.0/25
+- Subnet B: 192.168.1.64/26
+- Subnet C: 192.168.1.128/26
+- Subnet D: 192.168.1.192/27
 
-**Online VLSM Calculators (for verification only!):**
-- SolarWinds Subnet Calculator
-- subnet-calculator.com
-- ipcalc.org
+Problem: Subnet B devices can't communicate with each other
+```
 
-**Drawing Tools:**
-- draw.io (free, web-based)
-- Microsoft Visio
-- Lucidchart
-- Even pencil and paper!
+**What's the issue?** _____________________________
 
-**Spreadsheet:**
-- Excel, Google Sheets, or LibreOffice Calc
-- Great for organizing your calculations
+**Hint:** Check for overlaps!
 
 ---
 
-## Real-World Context
+**Scenario 4:**
+```
+Network: 172.16.0.0/16
+DHCP server configured with:
+- Scope: 172.16.1.0 - 172.16.1.254
+- Subnet Mask: 255.255.0.0
 
-This lab mirrors what network engineers do when designing enterprise networks:
+Problem: Computers getting APIPA addresses (169.254.x.x)
+```
 
-1. **Requirements gathering** - Understanding what each department needs
-2. **Capacity planning** - Adding growth room (usually 30-50%)
-3. **VLSM design** - Efficiently allocating address space
-4. **Documentation** - Creating IPAM records for operations
-5. **Verification** - Checking for errors before deployment
+**What's the issue?** _____________________________
 
-In a real company, a mistake here means:
-- Re-IPing hundreds of devices (massive downtime)
-- Routing problems causing intermittent failures
-- Security issues from improper segmentation
-- Angry users and costly troubleshooting
-
-Take your time, double-check your work, and make it right!
-
----
-- Keep it in your certification portfolio
-- Review it before your Network+ exam
-- Show it in job interviews as proof of skills!
+**Solution:** _____________________________
 
 ---
 
-## After Completion
+### Activity F: VLSM Planning Challenge
 
-**Reflect on these questions:**
+**You're hired to design a network for a multi-building campus.**
 
-1. How much address space did you have left over? Is that enough for future growth?
-2. Which departments were easiest to size? Which were hardest?
-3. If Sales doubled in size, would your design accommodate them?
-4. What would you do differently if you had to design it again?
-5. How would this design change if you were using 10.0.0.0/16 instead?
+**Given:** 172.20.0.0/16 (65,534 hosts available)
 
-**Next Steps:**
-- Review your work with the answer key (see solutions PDF)
-- Try redesigning with different requirements
-- Practice VLSM on other networks (192.168.0.0/16, 10.0.0.0/8)
-- Move on to Lesson 7: IPv6 Addressing
+**Requirements:**
+- Main Office: 2000 employees
+- Warehouse: 500 devices
+- R&D Building: 250 devices
+- Retail Store 1: 120 devices
+- Retail Store 2: 120 devices
+- Retail Store 3: 120 devices
+- Data Center: 80 servers
+- Guest WiFi (main): 200 devices
+- Guest WiFi (stores): 50 devices each (×3)
+- Management VLAN: 30 devices
+- Security cameras: 15 devices
+- 10 WAN links: 2 hosts each
 
----
-
-## Lab Complete! 🎉
-
-Great job designing a professional VLSM scheme! This is a real-world skill that employers value. Keep your documentation in your portfolio - it's proof you can design networks, not just talk about them.
-
-**Skills You Practiced:**
-✅ Requirements analysis  
-✅ VLSM subnet calculations  
-✅ Sequential subnet allocation  
-✅ Network documentation  
-✅ Best practices application  
-✅ Verification and troubleshooting
-
-**Ready for the next lab?** Head back to the lesson dashboard!
+**Your task:**
+1. Choose appropriate CIDR for each
+2. Allocate addresses (show first 5 allocations)
+3. Calculate total address utilization
+4. Justify your choices
 
 ---
 
-*Note: A sample solution will be provided after you complete your design. Don't peek early - you'll learn more by trying it yourself first!*
+## Section 3: Reflection (5 min)
+
+**Think about these questions:**
+
+1. **Why is VLSM considered "classless"?**
+   - How is it different from traditional Class A/B/C networking?
+
+2. **Real-world scenario:**
+   - You design a VLSM scheme with perfect fit (no wasted IPs)
+   - 6 months later, departments grow
+   - What problems might you face?
+   - How could you plan better from the start?
+
+3. **Route summarization benefits:**
+   - Why would a router with 1000 routes be slower than one with 100?
+   - How does summarization help scalability?
+
+---
+
+## What You Learned Today
+
+- ✅ You understand why VLSM is necessary (efficient IP usage)
+- ✅ You can design VLSM schemes (largest first methodology)
+- ✅ You can allocate different-sized subnets without overlap
+- ✅ You understand route summarization/supernetting
+- ✅ You can troubleshoot common subnet misconfigurations
+- ✅ You can plan scalable IP addressing schemes
+- ✅ You know the difference between classful and classless addressing
+
+**Next Lesson:** IPv6 Addressing and Configuration - The future of IP addressing!

@@ -51,7 +51,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-03.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [2],
     nextLesson: 4
   },
@@ -66,7 +66,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-04.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [3],
     nextLesson: 5
   },
@@ -81,7 +81,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-05.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [4],
     nextLesson: 6
   },
@@ -197,7 +197,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-12.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [11],
     nextLesson: 13
   },
@@ -212,7 +212,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-13.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [12],
     nextLesson: 14
   },
@@ -227,7 +227,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-14.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [13],
     nextLesson: 15
   },
@@ -242,7 +242,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-15.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [14],
     nextLesson: 16
   },
@@ -262,7 +262,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-16.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [15],
     nextLesson: 17
   },
@@ -277,7 +277,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-17.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [16],
     nextLesson: 18
   },
@@ -292,7 +292,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-18.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [17],
     nextLesson: 19
   },
@@ -322,7 +322,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-20.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [19],
     nextLesson: 21
   },
@@ -342,7 +342,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-21.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [20],
     nextLesson: 22
   },
@@ -357,7 +357,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-22.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [21],
     nextLesson: 23
   },
@@ -372,7 +372,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-23.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [22],
     nextLesson: 24
   },
@@ -387,7 +387,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-24.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [23],
     nextLesson: 25
   },
@@ -402,7 +402,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-25.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [24],
     nextLesson: 26
   },
@@ -417,7 +417,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-26.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [25],
     nextLesson: 27
   },
@@ -437,7 +437,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-27.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [26],
     nextLesson: 28
   },
@@ -468,7 +468,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-29.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [28],
     nextLesson: 30
   },
@@ -483,7 +483,7 @@ export const networkPlusLessons = [
     path: "/content/network-plus/lessons/lesson-30.md",
     hasFlashcards: true,
     hasQuiz: true,
-    hasLab: false,
+    hasLab: true,
     prerequisites: [29],
     nextLesson: null
   }
