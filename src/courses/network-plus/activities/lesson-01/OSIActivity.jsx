@@ -22,7 +22,7 @@ function OSIActivity() {
   useEffect(() => {
     const shuffled = [...layers].sort(() => Math.random() - 0.5);
     setShuffledLayers(shuffled);
-  }, []);
+  }, [layers]);
 
   const handleDragStart = (layer) => {
     setDraggedItem(layer);
