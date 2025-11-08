@@ -7,15 +7,15 @@ import SolutionViewer from './components/SolutionViewer';
 import FlashcardPracticeView from './components/FlashcardPracticeView';
 import Login from './components/Login';
 
-// Practice Exam Components
-import ExamSetup from './components/ExamSetup';
-import PracticeExam from './components/PracticeExam';
-import ExamResults from './components/ExamResults';
+// Practice Exam Components - TODO: Create these components
+// import ExamSetup from './components/ExamSetup';
+// import PracticeExam from './components/PracticeExam';
+// import ExamResults from './components/ExamResults';
 
-// Test Components (optional - remove these routes in production)
-import TestExamGenerator from './components/TestExamGenerator';
-import TestExamState from './components/TestExamState';
-import TestScoring from './components/TestScoring';
+// Test Components - TODO: Create these components
+// import TestExamGenerator from './components/TestExamGenerator';
+// import TestExamState from './components/TestExamState';
+// import TestScoring from './components/TestScoring';
 
 // Protected Route wrapper
 function ProtectedRoute({ children }) {
@@ -102,8 +102,8 @@ function AppRoutes() {
         }
       />
 
-      {/* Practice Exams */}
-      <Route
+      {/* Practice Exams - TODO: Uncomment when components are created */}
+      {/* <Route
         path="/practice-exam-setup"
         element={
           <ProtectedRoute>
@@ -126,10 +126,10 @@ function AppRoutes() {
             <ExamResults />
           </ProtectedRoute>
         }
-      />
+      /> */}
 
-      {/* Test Routes - REMOVE THESE IN PRODUCTION */}
-      <Route
+      {/* Test Routes - TODO: Uncomment when components are created */}
+      {/* <Route
         path="/test-generator"
         element={
           <ProtectedRoute>
@@ -152,7 +152,7 @@ function AppRoutes() {
             <TestScoring />
           </ProtectedRoute>
         }
-      />
+      /> */}
 
       {/* Fallback - Redirect unknown routes to dashboard */}
       <Route path="*" element={<Navigate to="/" />} />
