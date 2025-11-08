@@ -15,7 +15,7 @@ import './ExamResults.css';
 function ExamResults() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { examState, mode, settings } = location.state || {};
+  const { examState, mode } = location.state || {};
 
   // Redirect if no exam state
   useEffect(() => {
