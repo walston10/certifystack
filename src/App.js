@@ -7,15 +7,13 @@ import SolutionViewer from './components/SolutionViewer';
 import FlashcardPracticeView from './components/FlashcardPracticeView';
 import Login from './components/Login';
 
-// Practice Exam Components - TODO: Create these components
-// import ExamSetup from './components/ExamSetup';
-// import PracticeExam from './components/PracticeExam';
-// import ExamResults from './components/ExamResults';
+// Practice Exam Components
+import ExamSetup from './components/ExamSetup';
+import PracticeExam from './components/PracticeExam';
+import ExamResults from './components/ExamResults';
 
-// Test Components - TODO: Create these components
-// import TestExamGenerator from './components/TestExamGenerator';
-// import TestExamState from './components/TestExamState';
-// import TestScoring from './components/TestScoring';
+// Test Components (optional - for debugging)
+import TestExamState from './components/TestExamState';
 
 // Protected Route wrapper
 function ProtectedRoute({ children }) {
@@ -102,8 +100,8 @@ function AppRoutes() {
         }
       />
 
-      {/* Practice Exams - TODO: Uncomment when components are created */}
-      {/* <Route
+      {/* Practice Exams */}
+      <Route
         path="/practice-exam-setup"
         element={
           <ProtectedRoute>
@@ -126,17 +124,9 @@ function AppRoutes() {
             <ExamResults />
           </ProtectedRoute>
         }
-      /> */}
-
-      {/* Test Routes - TODO: Uncomment when components are created */}
-      {/* <Route
-        path="/test-generator"
-        element={
-          <ProtectedRoute>
-            <TestExamGenerator />
-          </ProtectedRoute>
-        }
       />
+
+      {/* Test Route - For debugging exam state */}
       <Route
         path="/test-exam-state"
         element={
@@ -145,14 +135,6 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      <Route
-        path="/test-scoring"
-        element={
-          <ProtectedRoute>
-            <TestScoring />
-          </ProtectedRoute>
-        }
-      /> */}
 
       {/* Fallback - Redirect unknown routes to dashboard */}
       <Route path="*" element={<Navigate to="/" />} />
