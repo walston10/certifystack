@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './TopologyActivity.css';
 
 const topologies = [
@@ -10,7 +10,7 @@ const topologies = [
   { id: 'point-to-point', name: 'Point-to-Point', description: 'Direct connection between exactly two devices' }
 ];
 
-const scenarios = [
+const scenariosBase = [
   {
     id: 1,
     scenario: 'Modern office where every computer connects to a switch in the wiring closet',
@@ -50,10 +50,17 @@ const scenarios = [
 ];
 
 function TopologyActivity() {
+  const [scenarios, setScenarios] = useState([]);
   const [assignments, setAssignments] = useState({});
   const [feedback, setFeedback] = useState({});
   const [isChecked, setIsChecked] = useState(false);
   const [score, setScore] = useState(0);
+
+  // Shuffle scenarios on mount
+  useEffect(() => {
+    const shuffled = [...scenariosBase].sort(() => Math.random() - 0.5);
+    setScenarios(shuffled);
+  }, []);
 
   const handleDrop = (scenarioId, topologyId) => {
     if (isChecked) return; // Don't allow changes after checking
@@ -88,10 +95,16 @@ function TopologyActivity() {
     setFeedback({});
     setIsChecked(false);
     setScore(0);
+    // Re-shuffle on reset
+    const shuffled = [...scenariosBase].sort(() => Math.random() - 0.5);
+    setScenarios(shuffled);
   };
 
   const allAssigned = scenarios.every(s => assignments[s.id]);
   const perfectScore = isChecked && score === scenarios.length;
+
+  // Don't render until scenarios are shuffled
+  if (scenarios.length === 0) return null;
 
   return (
     <div className="topology-activity">
@@ -108,7 +121,7 @@ function TopologyActivity() {
         <div className="scenarios-section">
           <h3>Real-World Scenarios</h3>
           
-          {scenarios.map(scenario => (
+          {scenarios.map((scenario, index) => (
             <div 
               key={scenario.id}
               className={`scenario-card ${
@@ -116,7 +129,7 @@ function TopologyActivity() {
                 feedback[scenario.id] === false ? 'incorrect' : ''
               }`}
             >
-              <div className="scenario-number">Scenario {scenario.id}</div>
+              <div className="scenario-number">Scenario {index + 1}</div>
               <div className="scenario-text">{scenario.scenario}</div>
               
               {assignments[scenario.id] && (

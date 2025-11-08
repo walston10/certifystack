@@ -1,24 +1,21 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { PlayCircle, LogOut, User, Lock } from 'lucide-react'; // Added Lock icon
+import { Link, useNavigate } from 'react-router-dom';
+import { PlayCircle, LogOut, User, Lock, Target } from 'lucide-react'; // Added Target icon
 import { networkPlusLessons } from '../courses/network-plus/data/lessons';
 import { getDomainConfig, getLessonIcon } from '../courses/network-plus/data/domainConfig';
 import { useAuth } from '../context/AuthContext';
 import { useUserStats } from '../hooks/useUserStats';
 import FlashcardPracticeModal from './FlashcardPracticeModal';
 import FlashcardStatsWidget from './FlashcardStatsWidget';
-import '../styles/Dashboard.css'; // Your main CSS file
+import '../styles/Dashboard.css';
 
 // --- NEW COMPONENT: Focus Bar (Purely visual header element) ---
 const FocusBar = () => (
-    // The CSS for .focus-bar (fixed position) must be in Dashboard.css
     <div className="focus-bar" /> 
 );
 
 // --- NEW COMPONENT: SVG Gradient for Circular Arc ---
-// This SVG gradient must be defined once outside the main render loop.
 const ProgressGradient = () => (
-    // This is the SVG required for the ring-fill stroke gradient
     <svg width="0" height="0" style={{ position: 'absolute' }}>
       <defs>
           <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -33,6 +30,7 @@ function Dashboard() {
     const { user, signOut } = useAuth();
     const { progress, completeLesson } = useUserStats();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
 
     // Refs for the animated stats
     const totalLessonsRef = useRef(null);
@@ -47,10 +45,8 @@ function Dashboard() {
     
     const progressPercentRounded = Math.round(progressPercent);
 
-
     // --- useEffect for Animations (Runs ONCE after mount) ---
     useEffect(() => {
-        // Function to handle the count-up animation for hero stats
         const animateCounter = (element, target) => {
             if (!element) return;
             const duration = 1000;
@@ -74,12 +70,10 @@ function Dashboard() {
             window.requestAnimationFrame(step);
         };
 
-        // 1. Run Hero Stat Animations
         animateCounter(totalLessonsRef.current, networkPlusLessons.length);
         animateCounter(completedRef.current, completed);
         animateCounter(daysRemainingRef.current, daysRemaining);
 
-        // 2. Run Circular Progress Arc Animation
         const arcContainer = progressArcRef.current;
         if (arcContainer) {
             const radius = 45; 
@@ -89,7 +83,6 @@ function Dashboard() {
             const ringFill = arcContainer.querySelector('.ring-fill');
             const percentageText = arcContainer.querySelector('.progress-percentage-arc');
 
-            // Set initial state and trigger transition
             ringFill.style.strokeDasharray = circumference;
             ringFill.style.strokeDashoffset = circumference; 
 
@@ -97,25 +90,22 @@ function Dashboard() {
                 ringFill.style.strokeDashoffset = offset;
             }, 100);
             
-            // Animate percentage text inside the circle
             animateCounter(percentageText, progressPercentRounded); 
 
-            // Make sure flat bar also transitions
             const flatBar = document.querySelector('.progress-bar-fill');
             if (flatBar) {
                 flatBar.style.width = `${progressPercent}%`;
             }
         }
     }, [completed, daysRemaining, progressPercentRounded, progressPercent]);
-    // ----------------------------------------------------------------
 
     return (
         <>
             <FocusBar />
-            <ProgressGradient /> {/* Invisible SVG for the gradient definition */}
+            <ProgressGradient />
 
             <div className="dashboard">
-                {/* Header (Minimal changes for style/logic separation) */}
+                {/* Header */}
                 <header className="header">
                     <div className="logo">
                         <span className="logo-icon">🚀</span>
@@ -142,7 +132,6 @@ function Dashboard() {
                         </p>
                         
                         <div className="hero-stats">
-                            {/* Stats now use refs for animated count-up */}
                             <div className="stat-item">
                                 <span className="stat-value" ref={totalLessonsRef} data-target={networkPlusLessons.length}>0</span>
                                 <span className="stat-label">Total Lessons</span>
@@ -159,31 +148,25 @@ function Dashboard() {
                     </div>
                 </section>
 
-                {/* Progress Section (Incorporates Circular Arc) */}
+                {/* Progress Section */}
                 <section className="progress-section">
                     <div className="progress-card">
                         <div className="progress-header">
                             <h2>Your Progress</h2>
                             
-                            {/* NEW: CIRCULAR PROGRESS ARC */}
                             <div className="circular-progress-container" ref={progressArcRef}>
                                 <svg className="progress-ring" width="100" height="100">
-                                    {/* Background ring */}
                                     <circle className="ring-bg" cx="50" cy="50" r="45"></circle>
-                                    {/* Fill ring (stroke is defined by the SVG gradient) */}
                                     <circle className="ring-fill" cx="50" cy="50" r="45"></circle>
                                 </svg>
-                                {/* Percentage text positioned over the arc, animated by JS */}
                                 <span className="progress-percentage-arc">0%</span> 
                             </div>
-
                         </div>
                         
-                        {/* Flat progress bar remains for secondary display */}
                         <div className="progress-bar-container">
                             <div
                                 className="progress-bar-fill"
-                                style={{ width: `0%` }} /* Set initial width to 0% for animation */
+                                style={{ width: `0%` }}
                             />
                         </div>
                         
@@ -207,6 +190,32 @@ function Dashboard() {
                             </button>
                         </div>
                     </div>
+
+                    {/* NEW: PRACTICE EXAM CARD */}
+                    <div className="progress-card exam-card">
+                        <div className="progress-header">
+                            <h2>Practice Exams</h2>
+                        </div>
+                        <div className="practice-card-body">
+                            <p>Test your knowledge with full-length simulated Network+ exams</p>
+                            <div className="exam-types">
+                                <div className="exam-type-badge">📝 Full Exam (90 questions)</div>
+                                <div className="exam-type-badge">📚 Domain Practice (25 questions)</div>
+                                <div className="exam-type-badge">⚡ Quick Quiz (15 questions)</div>
+                            </div>
+                            <button 
+                                className="btn-start-practice"
+                                onClick={() => navigate('/practice-exam-setup')}
+                                style={{
+                                    background: 'linear-gradient(135deg, var(--accent-cyan), var(--accent-purple))',
+                                    marginTop: '16px'
+                                }}
+                            >
+                                <Target size={18} />
+                                <span>Start Practice Exam</span>
+                            </button>
+                        </div>
+                    </div>
                 </section>
 
                 {/* Flashcard Stats Widget */}
@@ -214,7 +223,7 @@ function Dashboard() {
                     <FlashcardStatsWidget />
                 </section>
 
-                {/* Lessons Grid (Tile Tilt/Glow CSS is in Dashboard.css) */}
+                {/* Lessons Grid */}
                 <section className="lessons-section">
                     <div className="section-header">
                         <h2 className="section-title">Course Curriculum</h2>
@@ -226,7 +235,7 @@ function Dashboard() {
                     <div className="daily-tiles-grid">
                         {networkPlusLessons.map((lesson) => {
                             const isCompleted = completedLessons.includes(lesson.id);
-                            const isLocked = false; // All lessons are always unlocked for self-paced study
+                            const isLocked = false;
 
                             const domainConfig = getDomainConfig(lesson.domain);
                             const IconComponent = getLessonIcon(lesson.id);
@@ -248,12 +257,10 @@ function Dashboard() {
                                     key={lesson.id}
                                     className={`daily-tile ${isLocked ? 'locked' : ''} ${isCompleted ? 'completed' : ''}`}
                                     style={{
-                                        // Domain colors drive the tilt/glow effect colors via CSS variables
                                         '--domain-color': domainConfig.primary,
                                         '--domain-glow': domainConfig.glow
                                     }}
                                 >
-                                    {/* Icon Header */}
                                     <div className="tile-icon-section">
                                         <div className="lesson-icon" style={{ color: domainConfig.primary }}>
                                             <IconComponent size={32} strokeWidth={2} />
@@ -263,11 +270,10 @@ function Dashboard() {
                                             className="completion-checkbox"
                                             checked={isCompleted}
                                             onChange={handleToggleComplete}
-                                            disabled={isCompleted} // Prevent un-completing lessons
+                                            disabled={isCompleted}
                                         />
                                     </div>
 
-                                    {/* Lesson Number Badge */}
                                     <div className="lesson-number-badge" style={{
                                         backgroundColor: `${domainConfig.primary}15`,
                                         color: domainConfig.primary
@@ -275,7 +281,6 @@ function Dashboard() {
                                         Lesson {lesson.id}
                                     </div>
 
-                                    {/* Content */}
                                     <div className="tile-content">
                                         <h3 className="day-title">{lesson.title}</h3>
                                         <p className="lesson-description" style={{ color: domainConfig.primary }}>
@@ -283,7 +288,6 @@ function Dashboard() {
                                         </p>
                                     </div>
 
-                                    {/* Actions */}
                                     <div className="tile-actions">
                                         {isLocked ? (
                                             <button className="tile-btn btn-locked" disabled>

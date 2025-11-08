@@ -7,6 +7,16 @@ import SolutionViewer from './components/SolutionViewer';
 import FlashcardPracticeView from './components/FlashcardPracticeView';
 import Login from './components/Login';
 
+// Practice Exam Components
+import ExamSetup from './components/ExamSetup';
+import PracticeExam from './components/PracticeExam';
+import ExamResults from './components/ExamResults';
+
+// Test Components (optional - remove these routes in production)
+import TestExamGenerator from './components/TestExamGenerator';
+import TestExamState from './components/TestExamState';
+import TestScoring from './components/TestScoring';
+
 // Protected Route wrapper
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -36,10 +46,13 @@ function AppRoutes() {
 
   return (
     <Routes>
+      {/* Authentication */}
       <Route
         path="/login"
         element={user ? <Navigate to="/" /> : <Login />}
       />
+
+      {/* Dashboard */}
       <Route
         path="/"
         element={
@@ -48,6 +61,8 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      {/* Lessons */}
       <Route
         path="/lesson/:id"
         element={
@@ -56,6 +71,8 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      {/* Labs */}
       <Route
         path="/lab/:id"
         element={
@@ -64,6 +81,8 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      {/* Solutions */}
       <Route
         path="/solution/:id"
         element={
@@ -72,6 +91,8 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      {/* Flashcards */}
       <Route
         path="/practice/flashcards"
         element={
@@ -80,6 +101,61 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      {/* Practice Exams */}
+      <Route
+        path="/practice-exam-setup"
+        element={
+          <ProtectedRoute>
+            <ExamSetup />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/practice-exam"
+        element={
+          <ProtectedRoute>
+            <PracticeExam />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/exam-results"
+        element={
+          <ProtectedRoute>
+            <ExamResults />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Test Routes - REMOVE THESE IN PRODUCTION */}
+      <Route
+        path="/test-generator"
+        element={
+          <ProtectedRoute>
+            <TestExamGenerator />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/test-exam-state"
+        element={
+          <ProtectedRoute>
+            <TestExamState />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/test-scoring"
+        element={
+          <ProtectedRoute>
+            <TestScoring />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Fallback - Redirect unknown routes to dashboard */}
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 }
