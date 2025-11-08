@@ -8,7 +8,7 @@ import {
   getPerformanceLevel,
   formatScoreDisplay,
   generateSummary
-} from '../utils/examScoring';
+} from './examScoring';
 import { formatTimeHuman, getTimeElapsed } from '../hooks/useExamState';
 import './ExamResults.css';
 
