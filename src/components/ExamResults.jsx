@@ -18,7 +18,6 @@ function ExamResults() {
   const navigate = useNavigate();
   const { examState, mode, settings } = location.state || {};
   const [isSaving, setIsSaving] = useState(false);
-  const [saveError, setSaveError] = useState(null);
 
   // Calculate results (before any hooks that depend on it)
   const results = examState ? calculateExamScore(examState) : null;
@@ -48,7 +47,6 @@ function ExamResults() {
         console.log('Exam results saved successfully');
       } else {
         console.error('Failed to save exam results:', response.error);
-        setSaveError(response.error);
       }
 
       setIsSaving(false);

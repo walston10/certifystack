@@ -50,7 +50,6 @@ function PracticeExam() {
     goToQuestion,
     nextQuestion,
     previousQuestion,
-    startTimer,
     submitExam,
     progress
   } = useExamState(questions, mode);

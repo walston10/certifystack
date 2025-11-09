@@ -61,7 +61,8 @@ function PBQOrdering({ question, onAnswer, userAnswer, isReviewMode = false }) {
       setItems(itemIds);
       onAnswer(itemIds);
     }
-  }, [question]); // Intentionally not including userAnswer to prevent reset
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [question]); // Intentionally not including userAnswer and onAnswer to prevent reset
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
