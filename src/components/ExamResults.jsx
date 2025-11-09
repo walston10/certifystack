@@ -20,6 +20,15 @@ function ExamResults() {
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState(null);
 
+  // Calculate results (before any hooks that depend on it)
+  const results = examState ? calculateExamScore(examState) : null;
+  const weakAreas = results ? identifyWeakAreas(results.domainScores) : [];
+  const recommendations = results ? getStudyRecommendations(results) : [];
+  const performance = results ? getPerformanceLevel(results.percentage) : null;
+  const displayScore = results ? formatScoreDisplay(results) : null;
+  const summary = results ? generateSummary(results) : '';
+  const timeSpent = examState ? getTimeElapsed(examState.startTime) : 0;
+
   // Redirect if no exam state
   useEffect(() => {
     if (!examState) {
@@ -27,19 +36,10 @@ function ExamResults() {
     }
   }, [examState, navigate]);
 
-  if (!examState) {
-    return (
-      <div className="exam-results loading">
-        <div className="loading-message">Loading results...</div>
-      </div>
-    );
-  }
-
-  // Calculate results
-  const results = calculateExamScore(examState);
-
   // Save to Supabase on mount
   useEffect(() => {
+    if (!examState || !results) return;
+
     const handleSaveResults = async () => {
       setIsSaving(true);
       const response = await saveExamAttempt(examState, results, { mode, ...settings });
@@ -59,12 +59,14 @@ function ExamResults() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const weakAreas = identifyWeakAreas(results.domainScores);
-  const recommendations = getStudyRecommendations(results);
-  const performance = getPerformanceLevel(results.percentage);
-  const displayScore = formatScoreDisplay(results);
-  const summary = generateSummary(results);
-  const timeSpent = getTimeElapsed(examState.startTime);
+
+  if (!examState) {
+    return (
+      <div className="exam-results loading">
+        <div className="loading-message">Loading results...</div>
+      </div>
+    );
+  }
 
   const getModeLabel = () => {
     if (mode === 'full') return 'Full Practice Exam';
