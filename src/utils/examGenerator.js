@@ -1,4 +1,5 @@
 import { examQuestionPool } from '../data/examQuestions';
+import { getRandomPBQs } from '../data/pbqQuestions';
 
 /**
  * Shuffle array using Fisher-Yates algorithm
@@ -27,26 +28,38 @@ function selectRandom(array, count) {
 
 /**
  * Generate a full practice exam (90 questions)
- * Weighted by CompTIA exam percentages:
- * - Domain 1: 23% (~21 questions)
- * - Domain 2: 20% (~18 questions)
- * - Domain 3: 20% (~18 questions)
- * - Domain 4: 27% (~24 questions)
- * - Domain 5: 22% (~20 questions)
+ * - 3 PBQs (Performance-Based Questions) - appear first like real CompTIA exam
+ * - 87 MCQs weighted by CompTIA exam percentages:
+ *   - Domain 1: 23% of 87 = 20 questions
+ *   - Domain 2: 20% of 87 = 17 questions
+ *   - Domain 3: 19% of 87 = 17 questions
+ *   - Domain 4: 14% of 87 = 12 questions
+ *   - Domain 5: 24% of 87 = 21 questions
+ * Total: 3 PBQs + 87 MCQs = 90 questions
  */
 export function generateFullExam() {
-  const questions = [
-    ...selectRandom(examQuestionPool.domain1, 21),
-    ...selectRandom(examQuestionPool.domain2, 18),
-    ...selectRandom(examQuestionPool.domain3, 18),
-    ...selectRandom(examQuestionPool.domain4, 24),
-    ...selectRandom(examQuestionPool.domain5, 20)
+  // Select 3 random PBQs (will appear first in exam, like real CompTIA)
+  const pbqs = getRandomPBQs(3);
+
+  // Select 87 MCQs based on domain weights
+  const mcqs = [
+    ...selectRandom(examQuestionPool.domain1, 20),
+    ...selectRandom(examQuestionPool.domain2, 17),
+    ...selectRandom(examQuestionPool.domain3, 17),
+    ...selectRandom(examQuestionPool.domain4, 12),
+    ...selectRandom(examQuestionPool.domain5, 21)
   ];
-  
-  // Keep questions grouped by domain for now
-  // (easier to track performance during testing)
-  // In v2, we can shuffle them randomly
-  
+
+  // Shuffle the MCQs
+  const shuffledMCQs = shuffle(mcqs);
+
+  // Combine: PBQs FIRST (questions 1-3), then MCQs (questions 4-90)
+  // This matches the real CompTIA exam format
+  const questions = [
+    ...pbqs,           // Questions 1-3: PBQs
+    ...shuffledMCQs    // Questions 4-90: MCQs
+  ];
+
   return questions;
 }
 
@@ -121,8 +134,8 @@ export function validateQuestionPool() {
   if (counts.domain4 < 24) {
     warnings.push(`Domain 4 has only ${counts.domain4} questions (need 24)`);
   }
-  if (counts.domain5 < 20) {
-    warnings.push(`Domain 5 has only ${counts.domain5} questions (need 20)`);
+  if (counts.domain5 < 9) {
+    warnings.push(`Domain 5 has only ${counts.domain5} questions (need 9)`);
   }
   
   return {

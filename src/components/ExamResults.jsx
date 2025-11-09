@@ -149,6 +149,62 @@ function ExamResults() {
           </div>
         </div>
 
+        {/* PBQ Performance (if exam included PBQs) */}
+        {results.totalPBQPoints > 0 && (
+          <div className="pbq-performance-section">
+            <h2>Performance-Based Questions (PBQs)</h2>
+            <p className="section-description">
+              PBQs test hands-on skills and offer partial credit. Here's how you performed:
+            </p>
+
+            <div className="pbq-stats-grid">
+              <div className="pbq-stat-card">
+                <div className="pbq-stat-label">PBQ Points Earned</div>
+                <div className="pbq-stat-value">
+                  <span className="points-earned">{results.pbqPointsEarned}</span>
+                  <span className="points-separator"> / </span>
+                  <span className="points-total">{results.totalPBQPoints}</span>
+                </div>
+                <div className="pbq-percentage">
+                  {Math.round((results.pbqPointsEarned / results.totalPBQPoints) * 100)}% of PBQ points
+                </div>
+              </div>
+
+              <div className="pbq-stat-card">
+                <div className="pbq-stat-label">MCQ Performance</div>
+                <div className="pbq-stat-value">
+                  <span className="points-earned">{results.mcqCorrect}</span>
+                  <span className="points-separator"> / </span>
+                  <span className="points-total">{results.mcqTotal}</span>
+                </div>
+                <div className="pbq-percentage">
+                  {Math.round((results.mcqCorrect / results.mcqTotal) * 100)}% correct
+                </div>
+              </div>
+
+              <div className="pbq-stat-card highlight">
+                <div className="pbq-stat-label">Overall Score</div>
+                <div className="pbq-stat-value">
+                  <span className="points-earned">{results.earnedPoints}</span>
+                  <span className="points-separator"> / </span>
+                  <span className="points-total">{results.totalPossiblePoints}</span>
+                </div>
+                <div className="pbq-percentage">
+                  {results.percentage}% total points earned
+                </div>
+              </div>
+            </div>
+
+            <div className="pbq-info-note">
+              <div className="info-icon">💡</div>
+              <div className="info-text">
+                <strong>Note:</strong> The real CompTIA exam includes PBQs worth multiple points each.
+                Your final score is calculated based on total points earned, not just number of questions correct.
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Domain Breakdown */}
         <div className="domain-breakdown-section">
           <h2>Performance by Domain</h2>

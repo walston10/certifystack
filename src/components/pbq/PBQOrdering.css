@@ -1,0 +1,144 @@
+.pbq-ordering {
+  margin: 2rem 0;
+}
+
+.ordering-instructions {
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.sortable-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 600px;
+}
+
+.sortable-item-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.item-number {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--accent-primary);
+  min-width: 32px;
+  text-align: center;
+}
+
+.sortable-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  cursor: move;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.sortable-item:hover {
+  border-color: var(--accent-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sortable-item.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.sortable-item.correct {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.sortable-item.incorrect {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.drag-handle {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  cursor: grab;
+  padding: 0 0.5rem;
+}
+
+.sortable-item.dragging .drag-handle {
+  cursor: grabbing;
+}
+
+.item-content {
+  flex: 1;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.sortable-item .status-indicator {
+  font-size: 1.5rem;
+  font-weight: bold;
+  min-width: 24px;
+}
+
+.sortable-item.correct .status-indicator {
+  color: #10b981;
+}
+
+.sortable-item.incorrect .status-indicator {
+  color: #ef4444;
+}
+
+.correct-order-display {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  border-left: 4px solid var(--accent-primary);
+}
+
+.correct-order-display h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.correct-order-display ol {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.correct-order-display li {
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .sortable-list {
+    max-width: 100%;
+  }
+
+  .sortable-item {
+    padding: 0.75rem;
+  }
+
+  .drag-handle {
+    font-size: 1.2rem;
+    padding: 0 0.25rem;
+  }
+
+  .item-number {
+    min-width: 24px;
+    font-size: 1rem;
+  }
+}

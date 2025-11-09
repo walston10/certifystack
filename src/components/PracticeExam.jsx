@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { generateFullExam, generateDomainExam, generateQuickQuiz } from '../utils/examGenerator';
 import { useExamState, formatTime } from '../hooks/useExamState';
+import PBQDragDrop from './pbq/PBQDragDrop';
+import PBQConfiguration from './pbq/PBQConfiguration';
+import PBQMatching from './pbq/PBQMatching';
+import PBQOrdering from './pbq/PBQOrdering';
 import './PracticeExam.css';
 
 function PracticeExam() {
@@ -93,6 +97,12 @@ function PracticeExam() {
   const currentQ = examState.questions[examState.currentQuestion];
   const selectedAnswer = examState.answers[currentQ.id];
   const isMarked = examState.markedForReview.includes(currentQ.id);
+  const isPBQ = currentQ.type !== undefined; // PBQs have a 'type' field
+
+  // Handler for PBQ answers
+  const handlePBQAnswer = (answer) => {
+    answerQuestion(currentQ.id, answer);
+  };
 
   const handleSubmit = () => {
     const unanswered = examState.questions.length - Object.keys(examState.answers).length;
@@ -196,34 +206,97 @@ function PracticeExam() {
       {/* Main Content */}
       <div className="exam-content">
         <div className="question-container">
-          {/* Question Text */}
-          <div className="question-text">
-            <div className="question-number">Question {examState.currentQuestion + 1}</div>
-            {currentQ.question}
-          </div>
+          {isPBQ ? (
+            // PBQ Display
+            <div className="pbq-question">
+              <div className="pbq-header">
+                <div className="pbq-badge">Performance-Based Question</div>
+                <div className="question-number">Question {examState.currentQuestion + 1}</div>
+              </div>
 
-          {/* Answer Options */}
-          <div className="answer-options">
-            {currentQ.options.map((option, index) => (
-              <div
-                key={index}
-                className={`answer-option ${selectedAnswer === index ? 'selected' : ''}`}
-                onClick={() => answerQuestion(currentQ.id, index)}
-              >
-                <div className="option-indicator">
-                  <span className="option-letter">
-                    {String.fromCharCode(65 + index)}
-                  </span>
-                </div>
-                <div className="option-text">{option}</div>
-                {selectedAnswer === index && (
-                  <div className="selected-checkmark">✓</div>
+              <h2 className="pbq-title">{currentQ.title}</h2>
+
+              <div className="pbq-scenario">
+                <h3>Scenario:</h3>
+                <p>{currentQ.scenario}</p>
+              </div>
+
+              <div className="pbq-instructions">
+                <h3>Instructions:</h3>
+                <p>{currentQ.instructions}</p>
+              </div>
+
+              <div className="pbq-component">
+                {currentQ.type === 'drag-drop' && (
+                  <PBQDragDrop
+                    question={currentQ}
+                    onAnswer={handlePBQAnswer}
+                    userAnswer={selectedAnswer}
+                    isReviewMode={false}
+                  />
+                )}
+
+                {currentQ.type === 'configuration' && (
+                  <PBQConfiguration
+                    question={currentQ}
+                    onAnswer={handlePBQAnswer}
+                    userAnswer={selectedAnswer}
+                    isReviewMode={false}
+                  />
+                )}
+
+                {currentQ.type === 'matching' && (
+                  <PBQMatching
+                    question={currentQ}
+                    onAnswer={handlePBQAnswer}
+                    userAnswer={selectedAnswer}
+                    isReviewMode={false}
+                  />
+                )}
+
+                {currentQ.type === 'ordering' && (
+                  <PBQOrdering
+                    question={currentQ}
+                    onAnswer={handlePBQAnswer}
+                    userAnswer={selectedAnswer}
+                    isReviewMode={false}
+                  />
                 )}
               </div>
-            ))}
-          </div>
+            </div>
+          ) : (
+            // MCQ Display
+            <>
+              {/* Question Text */}
+              <div className="question-text">
+                <div className="question-number">Question {examState.currentQuestion + 1}</div>
+                {currentQ.question}
+              </div>
 
-          {/* Mark for Review */}
+              {/* Answer Options */}
+              <div className="answer-options">
+                {currentQ.options.map((option, index) => (
+                  <div
+                    key={index}
+                    className={`answer-option ${selectedAnswer === index ? 'selected' : ''}`}
+                    onClick={() => answerQuestion(currentQ.id, index)}
+                  >
+                    <div className="option-indicator">
+                      <span className="option-letter">
+                        {String.fromCharCode(65 + index)}
+                      </span>
+                    </div>
+                    <div className="option-text">{option}</div>
+                    {selectedAnswer === index && (
+                      <div className="selected-checkmark">✓</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* Mark for Review (works for both MCQ and PBQ) */}
           <button
             className={`mark-review-btn ${isMarked ? 'marked' : ''}`}
             onClick={() => toggleMarkForReview(currentQ.id)}

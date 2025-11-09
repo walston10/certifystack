@@ -1,20 +1,141 @@
 /**
+ * Score a Performance-Based Question (PBQ) with partial credit
+ * @param {Object} question - The PBQ question
+ * @param {any} userAnswer - The user's answer
+ * @returns {Object} {pointsEarned, pointsPossible, isFullyCorrect}
+ */
+function scorePBQ(question, userAnswer) {
+  if (!userAnswer) {
+    return { pointsEarned: 0, pointsPossible: question.points, isFullyCorrect: false };
+  }
+
+  let pointsEarned = 0;
+  const pointsPossible = question.points;
+
+  switch (question.type) {
+    case 'drag-drop':
+      // Check each drop zone
+      Object.keys(question.correctAnswers).forEach(zoneId => {
+        const correctItems = question.correctAnswers[zoneId];
+        const userItems = userAnswer[zoneId] || [];
+
+        // Award 1 point per correctly placed item
+        userItems.forEach(itemId => {
+          if (correctItems.includes(itemId)) {
+            pointsEarned += 1;
+          }
+        });
+      });
+      break;
+
+    case 'configuration':
+      // Check each field
+      question.fields.forEach(field => {
+        const userValue = userAnswer[field.id];
+        if (!userValue) return;
+
+        const normalizedUser = userValue.toString().toLowerCase().trim();
+        const normalizedCorrect = field.correctAnswer.toString().toLowerCase().trim();
+
+        // Check exact match
+        if (normalizedUser === normalizedCorrect) {
+          pointsEarned += 1;
+        } else if (field.partialCredit) {
+          // Check partial credit answers
+          const isPartialCorrect = field.partialCredit.some(answer =>
+            normalizedUser === answer.toString().toLowerCase().trim()
+          );
+          if (isPartialCorrect) {
+            pointsEarned += 1;
+          }
+        }
+      });
+      break;
+
+    case 'matching':
+      // Check each match
+      Object.keys(question.correctMatches).forEach(leftId => {
+        if (userAnswer[leftId] === question.correctMatches[leftId]) {
+          pointsEarned += 1;
+        }
+      });
+      break;
+
+    case 'ordering':
+      // Award full points if completely correct, partial points otherwise
+      const isFullyCorrect = JSON.stringify(userAnswer) === JSON.stringify(question.correctOrder);
+      if (isFullyCorrect) {
+        pointsEarned = pointsPossible;
+      } else {
+        // Award 1 point per item in correct position
+        let correctPositions = 0;
+        userAnswer.forEach((item, index) => {
+          if (item === question.correctOrder[index]) {
+            correctPositions++;
+          }
+        });
+        pointsEarned = Math.min(correctPositions, pointsPossible);
+      }
+      break;
+
+    default:
+      pointsEarned = 0;
+  }
+
+  return {
+    pointsEarned,
+    pointsPossible,
+    isFullyCorrect: pointsEarned === pointsPossible
+  };
+}
+
+/**
  * Calculate comprehensive exam score and performance metrics
+ * Now handles both MCQs and PBQs with partial credit
  * @param {Object} examState - Complete exam state from useExamState
  * @returns {Object} Detailed scoring results
  */
 export function calculateExamScore(examState) {
   const { questions, answers } = examState;
-  
+
   let totalCorrect = 0;
+  let earnedPoints = 0;
+  let totalPossiblePoints = 0;
+  let pbqPointsEarned = 0;
+  let totalPBQPoints = 0;
+  let mcqCorrect = 0;
+  let mcqTotal = 0;
+
   const domainScores = {};
   const questionResults = [];
 
   // Process each question
   questions.forEach((question) => {
     const userAnswer = answers[question.id];
-    const isCorrect = userAnswer === question.correct;
-    
+    let isCorrect = false;
+    let pointsEarned = 0;
+    let pointsPossible = 1; // Default for MCQ
+
+    // Check if it's a PBQ or MCQ
+    if (question.type) {
+      // It's a PBQ - calculate partial credit
+      const pbqResult = scorePBQ(question, userAnswer);
+      pointsPossible = pbqResult.pointsPossible;
+      pointsEarned = pbqResult.pointsEarned;
+      isCorrect = pbqResult.isFullyCorrect;
+
+      pbqPointsEarned += pointsEarned;
+      totalPBQPoints += pointsPossible;
+    } else {
+      // It's an MCQ
+      isCorrect = userAnswer === question.correct;
+      pointsEarned = isCorrect ? 1 : 0;
+      mcqTotal++;
+      if (isCorrect) mcqCorrect++;
+    }
+
+    totalPossiblePoints += pointsPossible;
+    earnedPoints += pointsEarned;
     if (isCorrect) totalCorrect++;
 
     // Track domain performance
@@ -28,13 +149,15 @@ export function calculateExamScore(examState) {
         questions: []
       };
     }
-    
+
     domainScores[domain].total++;
     if (isCorrect) domainScores[domain].correct++;
     domainScores[domain].questions.push({
       id: question.id,
       isCorrect,
-      objective: question.objective
+      objective: question.objective || 'N/A',
+      pointsEarned,
+      pointsPossible
     });
 
     // Store individual question result
@@ -42,7 +165,9 @@ export function calculateExamScore(examState) {
       question,
       userAnswer,
       isCorrect,
-      wasMarked: examState.markedForReview.includes(question.id)
+      pointsEarned,
+      pointsPossible,
+      wasMarked: examState.markedForReview?.includes(question.id) || false
     });
   });
 
@@ -52,9 +177,9 @@ export function calculateExamScore(examState) {
     score.percentage = Math.round((score.correct / score.total) * 100);
   });
 
-  // Calculate overall metrics
+  // Calculate overall metrics based on points (not just questions)
   const totalQuestions = questions.length;
-  const totalPercentage = Math.round((totalCorrect / totalQuestions) * 100);
+  const totalPercentage = Math.round((earnedPoints / totalPossiblePoints) * 100);
   const passed = totalPercentage >= 72; // 720/1000 scaled score
 
   return {
@@ -62,6 +187,12 @@ export function calculateExamScore(examState) {
     totalQuestions,
     totalIncorrect: totalQuestions - totalCorrect,
     percentage: totalPercentage,
+    earnedPoints,
+    totalPossiblePoints,
+    pbqPointsEarned,
+    totalPBQPoints,
+    mcqCorrect,
+    mcqTotal,
     passed,
     domainScores,
     questionResults,
