@@ -9,6 +9,7 @@ import Login from './components/Login';
 
 // Practice Exam Components
 import ExamSetup from './components/ExamSetup';
+import ExamInstructions from './components/ExamInstructions';
 import PracticeExam from './components/PracticeExam';
 import ExamResults from './components/ExamResults';
 
@@ -106,6 +107,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <ExamSetup />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/exam-instructions"
+        element={
+          <ProtectedRoute>
+            <ExamInstructions />
           </ProtectedRoute>
         }
       />

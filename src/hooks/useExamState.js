@@ -1,51 +1,66 @@
 import { useState, useEffect, useCallback } from 'react';
 
 /**
+ * Get time limit based on exam mode
+ */
+function getTimeLimit(mode) {
+  switch (mode) {
+    case 'full':
+      return 90 * 60; // 90 minutes in seconds
+    case 'domain':
+      return 30 * 60; // 30 minutes
+    case 'quick':
+      return 15 * 60; // 15 minutes
+    default:
+      return 90 * 60;
+  }
+}
+
+/**
  * Custom hook to manage exam state
  * @param {Array} questions - Array of exam questions
- * @param {Object} settings - Exam settings (timed, duration, etc.)
+ * @param {string} mode - Exam mode ('full', 'domain', 'quick')
  */
-export function useExamState(questions, settings = {}) {
+export function useExamState(questions, mode = 'full') {
   const [examState, setExamState] = useState({
     questions: questions,
     currentQuestion: 0,
     answers: {}, // { questionId: selectedOptionIndex }
     markedForReview: [], // [questionIds]
     startTime: Date.now(),
-    timeRemaining: settings.timed ? (settings.duration || 5400) : null, // 90 min default
-    isTimerActive: false,
-    isComplete: false,
-    isPaused: false
+    timeLimit: getTimeLimit(mode), // in seconds
+    timeRemaining: getTimeLimit(mode), // counts down
+    isTimerActive: true,
+    examEnded: false
   });
 
-  // Timer effect
+  // Timer countdown effect
   useEffect(() => {
-    if (!examState.isTimerActive || examState.isComplete || examState.isPaused || !settings.timed) {
-      return;
-    }
+    if (!examState.isTimerActive || examState.examEnded) return;
 
-    const timer = setInterval(() => {
+    const interval = setInterval(() => {
       setExamState(prev => {
-        if (prev.timeRemaining === null) return prev;
-        
-        const newTime = prev.timeRemaining - 1;
-        
-        if (newTime <= 0) {
-          // Time's up - auto submit
-          return { 
-            ...prev, 
-            timeRemaining: 0, 
-            isComplete: true,
-            isTimerActive: false 
+        const newTimeRemaining = prev.timeRemaining - 1;
+
+        // Time's up - auto-submit
+        if (newTimeRemaining <= 0) {
+          return {
+            ...prev,
+            timeRemaining: 0,
+            isTimerActive: false,
+            examEnded: true
           };
         }
-        
-        return { ...prev, timeRemaining: newTime };
+
+        return {
+          ...prev,
+          timeRemaining: newTimeRemaining
+        };
       });
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, [examState.isTimerActive, examState.isComplete, examState.isPaused, settings.timed]);
+    return () => clearInterval(interval);
+  }, [examState.isTimerActive, examState.examEnded]);
 
   /**
    * Answer a question
@@ -140,10 +155,10 @@ export function useExamState(questions, settings = {}) {
    * Submit the exam
    */
   const submitExam = useCallback(() => {
-    setExamState(prev => ({ 
-      ...prev, 
-      isComplete: true, 
-      isTimerActive: false 
+    setExamState(prev => ({
+      ...prev,
+      examEnded: true,
+      isTimerActive: false
     }));
   }, []);
 
@@ -244,11 +259,28 @@ export function useExamState(questions, settings = {}) {
 }
 
 /**
+ * Format time remaining for display (MM:SS or H:MM:SS)
+ */
+export function formatTimeRemaining(seconds) {
+  if (seconds <= 0) return '00:00';
+
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+
+  if (hours > 0) {
+    return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+/**
  * Format time in MM:SS format
  */
 export function formatTime(seconds) {
   if (seconds === null || seconds === undefined) return '--:--';
-  
+
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
   return `${mins}:${secs.toString().padStart(2, '0')}`;

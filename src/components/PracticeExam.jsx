@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { generateFullExam, generateDomainExam, generateQuickQuiz } from '../utils/examGenerator';
-import { useExamState, formatTime } from '../hooks/useExamState';
+import { useExamState, formatTimeRemaining } from '../hooks/useExamState';
+import { Clock, AlertTriangle } from 'lucide-react';
 import PBQDragDrop from './pbq/PBQDragDrop';
 import PBQConfiguration from './pbq/PBQConfiguration';
 import PBQMatching from './pbq/PBQMatching';
@@ -13,6 +14,7 @@ function PracticeExam() {
   const navigate = useNavigate();
   const { mode, domain, settings } = location.state || {};
   const [showNavigator, setShowNavigator] = useState(false);
+  const [showTimeUpModal, setShowTimeUpModal] = useState(false);
 
   // Redirect if no state (direct navigation)
   useEffect(() => {
@@ -51,27 +53,40 @@ function PracticeExam() {
     startTimer,
     submitExam,
     progress
-  } = useExamState(questions, settings);
+  } = useExamState(questions, mode);
 
-  // Auto-start timer on mount if timed mode
+  // Check if time expired - auto submit
   useEffect(() => {
-    if (settings?.timed && questions.length > 0) {
-      startTimer();
+    if (examState.timeRemaining === 0 && !examState.examEnded && questions.length > 0) {
+      setShowTimeUpModal(true);
+
+      // Auto-navigate to results after 3 seconds
+      setTimeout(() => {
+        navigate('/exam-results', {
+          state: {
+            examState,
+            mode,
+            settings,
+            timeExpired: true
+          }
+        });
+      }, 3000);
     }
-  }, [settings, questions.length, startTimer]);
+  }, [examState.timeRemaining, examState.examEnded, questions.length, examState, mode, settings, navigate]);
 
-  // Navigate to results when complete
+  // Navigate to results when manually submitted
   useEffect(() => {
-    if (examState.isComplete) {
+    if (examState.examEnded && !showTimeUpModal) {
       navigate('/exam-results', {
         state: {
           examState,
           mode,
-          settings
+          settings,
+          timeExpired: false
         }
       });
     }
-  }, [examState.isComplete, navigate, examState, mode, settings]);
+  }, [examState.examEnded, navigate, examState, mode, settings, showTimeUpModal]);
 
   // Prevent accidental page close
   useEffect(() => {
@@ -129,6 +144,22 @@ function PracticeExam() {
     return 'unanswered';
   };
 
+  // Get timer warning level
+  const getTimerClass = () => {
+    const minutes = Math.floor(examState.timeRemaining / 60);
+    if (minutes <= 5) return 'timer-critical';
+    if (minutes <= 10) return 'timer-warning';
+    return '';
+  };
+
+  const getTimerIcon = () => {
+    const minutes = Math.floor(examState.timeRemaining / 60);
+    if (minutes <= 5) {
+      return <AlertTriangle size={20} className="timer-icon-warning" />;
+    }
+    return <Clock size={20} />;
+  };
+
   return (
     <div className="practice-exam">
       {/* Header */}
@@ -143,14 +174,15 @@ function PracticeExam() {
         </div>
         
         <div className="header-actions">
-          {settings?.timed && examState.timeRemaining !== null && (
-            <div className={`exam-timer ${examState.timeRemaining < 300 ? 'warning' : ''}`}>
-              <span className="timer-icon">⏱️</span>
-              <span className="timer-value">{formatTime(examState.timeRemaining)}</span>
-            </div>
-          )}
-          
-          <button 
+          {/* Timer Display */}
+          <div className={`exam-timer ${getTimerClass()}`}>
+            {getTimerIcon()}
+            <span className="timer-text">
+              {formatTimeRemaining(examState.timeRemaining)}
+            </span>
+          </div>
+
+          <button
             className="navigator-toggle"
             onClick={() => setShowNavigator(!showNavigator)}
             title="Question Navigator"
@@ -160,6 +192,17 @@ function PracticeExam() {
           </button>
         </div>
       </div>
+
+      {/* Time Warning Banner */}
+      {examState.timeRemaining <= 300 && examState.timeRemaining > 0 && (
+        <div className="time-warning-banner">
+          <AlertTriangle size={20} />
+          <span>
+            {Math.floor(examState.timeRemaining / 60)} minutes remaining!
+            The exam will auto-submit when time expires.
+          </span>
+        </div>
+      )}
 
       {/* Question Navigator Overlay */}
       {showNavigator && (
@@ -355,6 +398,21 @@ function PracticeExam() {
           </button>
         </div>
       </div>
+
+      {/* Time's Up Modal */}
+      {showTimeUpModal && (
+        <div className="modal-overlay">
+          <div className="modal-content time-up-modal">
+            <div className="modal-icon">
+              <Clock size={64} />
+            </div>
+            <h2>Time's Up!</h2>
+            <p>The exam time limit has been reached.</p>
+            <p>Your answers are being submitted automatically...</p>
+            <div className="loading-spinner"></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

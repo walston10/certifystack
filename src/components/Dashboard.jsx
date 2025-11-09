@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import { useUserStats } from '../hooks/useUserStats';
 import FlashcardPracticeModal from './FlashcardPracticeModal';
 import FlashcardStatsWidget from './FlashcardStatsWidget';
+import DomainPerformanceWidget from './DomainPerformanceWidget';
 import '../styles/Dashboard.css';
 
 // --- NEW COMPONENT: Focus Bar (Purely visual header element) ---
@@ -221,6 +222,11 @@ function Dashboard() {
                 {/* Flashcard Stats Widget */}
                 <section className="flashcard-stats-section">
                     <FlashcardStatsWidget />
+                </section>
+
+                {/* Exam Performance Analytics Widget */}
+                <section className="exam-analytics-section">
+                    <DomainPerformanceWidget />
                 </section>
 
                 {/* Lessons Grid */}

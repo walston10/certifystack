@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { 
-  calculateExamScore, 
-  identifyWeakAreas, 
+import {
+  calculateExamScore,
+  identifyWeakAreas,
   getStudyRecommendations,
   getDomainName,
   getPerformanceLevel,
@@ -10,12 +10,15 @@ import {
   generateSummary
 } from './examScoring';
 import { formatTimeHuman, getTimeElapsed } from '../hooks/useExamState';
+import { saveExamAttempt } from '../services/examService';
 import './ExamResults.css';
 
 function ExamResults() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { examState, mode } = location.state || {};
+  const { examState, mode, settings } = location.state || {};
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState(null);
 
   // Redirect if no exam state
   useEffect(() => {
@@ -34,6 +37,28 @@ function ExamResults() {
 
   // Calculate results
   const results = calculateExamScore(examState);
+
+  // Save to Supabase on mount
+  useEffect(() => {
+    const handleSaveResults = async () => {
+      setIsSaving(true);
+      const response = await saveExamAttempt(examState, results, { mode, ...settings });
+
+      if (response.success) {
+        console.log('Exam results saved successfully');
+      } else {
+        console.error('Failed to save exam results:', response.error);
+        setSaveError(response.error);
+      }
+
+      setIsSaving(false);
+    };
+
+    if (!isSaving) {
+      handleSaveResults();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const weakAreas = identifyWeakAreas(results.domainScores);
   const recommendations = getStudyRecommendations(results);
   const performance = getPerformanceLevel(results.percentage);

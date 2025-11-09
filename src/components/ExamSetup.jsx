@@ -33,12 +33,15 @@ function ExamSetup() {
       return;
     }
 
-    // Navigate to exam with settings
-    navigate('/practice-exam', {
+    // Navigate to instructions screen instead of directly to exam
+    navigate('/exam-instructions', {
       state: {
         mode: examMode,
-        domain: selectedDomain,
-        settings: settings
+        settings: {
+          ...settings,
+          selectedDomain: selectedDomain,
+          domainName: examMode === 'domain' ? domainNames[selectedDomain] : null
+        }
       }
     });
   };
