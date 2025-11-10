@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { PlayCircle, LogOut, User, Lock, Target } from 'lucide-react'; // Added Target icon
 import { networkPlusLessons } from '../courses/network-plus/data/lessons';
 import { getDomainConfig, getLessonIcon } from '../courses/network-plus/data/domainConfig';
@@ -28,10 +28,14 @@ const ProgressGradient = () => (
 );
 
 function Dashboard() {
+    const { courseId } = useParams();
     const { user, signOut } = useAuth();
     const { progress, completeLesson } = useUserStats();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
+
+    // Default to network-plus for backward compatibility
+    const actualCourseId = courseId || 'network-plus';
 
     // Refs for the animated stats
     const totalLessonsRef = useRef(null);
@@ -300,7 +304,7 @@ function Dashboard() {
                                                 <Lock size={18} /> Locked
                                             </button>
                                         ) : (
-                                            <Link to={`/lesson/${lesson.id}`} className="tile-btn-link">
+                                            <Link to={`/course/${actualCourseId}/lesson/${lesson.id}`} className="tile-btn-link">
                                                 <button
                                                     className="tile-btn btn-start"
                                                     style={{
