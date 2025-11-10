@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FlaskConical, CheckCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { networkPlusLabs } from '../courses/network-plus/data/labs';
 import './LabsGallery.css';
-
-const LABS = [
-  { id: 1, title: 'OSI Model in Action', difficulty: 'Beginner', duration: '20 min', xp: 50, lessonId: 1 },
-  { id: 6, title: 'VLSM Design', difficulty: 'Intermediate', duration: '40 min', xp: 100, lessonId: 6 },
-  { id: 11, title: 'VLAN Configuration', difficulty: 'Advanced', duration: '60 min', xp: 150, lessonId: 11 }
-];
 
 function LabsGallery() {
   const navigate = useNavigate();
+  const { courseId } = useParams();
   const [completedLabs, setCompletedLabs] = useState([]);
+
+  // Default to network-plus for backward compatibility
+  const actualCourseId = courseId || 'network-plus';
 
   useEffect(() => {
     loadLabsProgress();
@@ -49,7 +48,7 @@ function LabsGallery() {
 
       <div className="labs-stats">
         <div className="stat">
-          <span className="stat-value">{LABS.length}</span>
+          <span className="stat-value">{networkPlusLabs.length}</span>
           <span className="stat-label">Total Labs</span>
         </div>
         <div className="stat">
@@ -57,17 +56,17 @@ function LabsGallery() {
           <span className="stat-label">Completed</span>
         </div>
         <div className="stat">
-          <span className="stat-value">{LABS.length - completedLabs.length}</span>
+          <span className="stat-value">{networkPlusLabs.length - completedLabs.length}</span>
           <span className="stat-label">Remaining</span>
         </div>
       </div>
 
       <div className="labs-grid">
-        {LABS.map(lab => (
+        {networkPlusLabs.map(lab => (
           <div
             key={lab.id}
             className={`lab-card ${isCompleted(lab.id) ? 'completed' : ''}`}
-            onClick={() => navigate(`/lab/${lab.id}`)}
+            onClick={() => navigate(`/course/${actualCourseId}/lab/${lab.id}`)}
           >
             <div className={`lab-difficulty ${lab.difficulty.toLowerCase()}`}>
               {lab.difficulty}
@@ -82,9 +81,9 @@ function LabsGallery() {
             <h3>{lab.title}</h3>
 
             <div className="lab-meta">
-              <span>{lab.duration}</span>
+              <span>{lab.estimatedTime}</span>
               <span>•</span>
-              <span>{lab.xp} XP</span>
+              <span>{lab.xpReward} XP</span>
             </div>
 
             <button className="lab-start-btn">

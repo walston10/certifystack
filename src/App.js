@@ -119,6 +119,16 @@ function AppRoutes() {
           }
         />
 
+        {/* Course-Specific Labs Gallery */}
+        <Route
+          path="/course/:courseId/labs"
+          element={
+            <ProtectedRoute>
+              <LabsGallery />
+            </ProtectedRoute>
+          }
+        />
+
         {/* Course-Specific Lab */}
         <Route
           path="/course/:courseId/lab/:labId"
@@ -180,14 +190,10 @@ function AppRoutes() {
           }
         />
 
-        {/* Labs Gallery */}
+        {/* Labs Gallery - Redirect to course-specific labs */}
         <Route
           path="/labs"
-          element={
-            <ProtectedRoute>
-              <LabsGallery />
-            </ProtectedRoute>
-          }
+          element={<Navigate to="/course/network-plus/labs" replace />}
         />
 
         {/* Resources Library */}

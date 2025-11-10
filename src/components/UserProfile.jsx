@@ -1,13 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { User, LogOut, Zap } from 'lucide-react';
+import React, { useEffect, useState, useRef } from 'react';
+import { User, LogOut, Zap, Target } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { networkPlusLessons } from '../courses/network-plus/data/lessons';
+import { useUserStats } from '../hooks/useUserStats';
+import FlashcardPracticeModal from './FlashcardPracticeModal';
+import FlashcardStatsWidget from './FlashcardStatsWidget';
+import DomainPerformanceWidget from './DomainPerformanceWidget';
 import './UserProfile.css';
 
 function UserProfile() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { progress } = useUserStats();
   const [profile, setProfile] = useState(null);
   const [stats, setStats] = useState({
     lessonsCompleted: 0,
@@ -19,12 +25,81 @@ function UserProfile() {
     level: 1
   });
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Refs for the animated stats
+  const totalLessonsRef = useRef(null);
+  const completedRef = useRef(null);
+  const daysRemainingRef = useRef(null);
+  const progressArcRef = useRef(null);
+
+  const completedLessons = progress.completedLessons || [];
+  const completed = completedLessons.length;
+  const progressPercent = (completed / networkPlusLessons.length) * 100;
+  const daysRemaining = Math.max(0, 30 - Math.floor(completed * (30 / networkPlusLessons.length)));
+  const progressPercentRounded = Math.round(progressPercent);
 
   useEffect(() => {
     loadUserProfile();
     loadUserStats();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // --- useEffect for Animations (Runs ONCE after mount) ---
+  useEffect(() => {
+    const animateCounter = (element, target) => {
+      if (!element) return;
+      const duration = 1000;
+      const start = 0;
+      let startTime = null;
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const progress = timestamp - startTime;
+        const percentage = Math.min(progress / duration, 1);
+        const currentValue = Math.round(percentage * (target - start) + start);
+
+        element.textContent = currentValue;
+
+        if (percentage < 1) {
+          window.requestAnimationFrame(step);
+        } else {
+          element.textContent = target;
+        }
+      }
+      window.requestAnimationFrame(step);
+    };
+
+    animateCounter(totalLessonsRef.current, networkPlusLessons.length);
+    animateCounter(completedRef.current, completed);
+    animateCounter(daysRemainingRef.current, daysRemaining);
+
+    const arcContainer = progressArcRef.current;
+    if (arcContainer) {
+      const radius = 45;
+      const circumference = 2 * Math.PI * radius;
+      const offset = circumference - (progressPercentRounded / 100) * circumference;
+
+      const ringFill = arcContainer.querySelector('.ring-fill');
+      const percentageText = arcContainer.querySelector('.progress-percentage-arc');
+
+      if (ringFill && percentageText) {
+        ringFill.style.strokeDasharray = circumference;
+        ringFill.style.strokeDashoffset = circumference;
+
+        setTimeout(() => {
+          ringFill.style.strokeDashoffset = offset;
+        }, 100);
+
+        animateCounter(percentageText, progressPercentRounded);
+      }
+
+      const flatBar = document.querySelector('.progress-bar-fill');
+      if (flatBar) {
+        flatBar.style.width = `${progressPercent}%`;
+      }
+    }
+  }, [completed, daysRemaining, progressPercentRounded, progressPercent]);
 
   const loadUserProfile = async () => {
     try {
@@ -121,6 +196,109 @@ function UserProfile() {
       </div>
 
       <div className="profile-content">
+        {/* Hero Stats Section */}
+        <section className="hero-stats-section">
+          <h2>Course Progress</h2>
+          <div className="hero-stats">
+            <div className="stat-item">
+              <span className="stat-value" ref={totalLessonsRef} data-target={networkPlusLessons.length}>0</span>
+              <span className="stat-label">Total Lessons</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-value" ref={completedRef} data-target={completed}>0</span>
+              <span className="stat-label">Completed</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-value" ref={daysRemainingRef} data-target={daysRemaining}>0</span>
+              <span className="stat-label">Target Days Left</span>
+            </div>
+          </div>
+        </section>
+
+        {/* Progress Section */}
+        <section className="progress-section">
+          <div className="progress-card">
+            <div className="progress-header">
+              <h2>Your Progress</h2>
+
+              <div className="circular-progress-container" ref={progressArcRef}>
+                <svg className="progress-ring" width="100" height="100">
+                  <defs>
+                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" style={{ stopColor: 'var(--accent-cyan)', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: 'var(--accent-purple)', stopOpacity: 1 }} />
+                    </linearGradient>
+                  </defs>
+                  <circle className="ring-bg" cx="50" cy="50" r="45"></circle>
+                  <circle className="ring-fill" cx="50" cy="50" r="45"></circle>
+                </svg>
+                <span className="progress-percentage-arc">0%</span>
+              </div>
+            </div>
+
+            <div className="progress-bar-container">
+              <div
+                className="progress-bar-fill"
+                style={{ width: `0%` }}
+              />
+            </div>
+
+            <div className="progress-details">
+              <span><strong>{completed}</strong> of <strong>{networkPlusLessons.length}</strong> lessons completed</span>
+              <span><strong>{networkPlusLessons.length - completed}</strong> remaining</span>
+            </div>
+          </div>
+
+          <div className="progress-card practice-card">
+            <div className="progress-header">
+              <h2>Practice Center</h2>
+            </div>
+            <div className="practice-card-body">
+              <p>Ready to review? Create a custom flashcard session from multiple lessons to test your knowledge.</p>
+              <button
+                className="btn-start-practice"
+                onClick={() => setIsModalOpen(true)}
+              >
+                🃏 Start Practice Session
+              </button>
+            </div>
+          </div>
+
+          <div className="progress-card exam-card">
+            <div className="progress-header">
+              <h2>Practice Exams</h2>
+            </div>
+            <div className="practice-card-body">
+              <p>Test your knowledge with full-length simulated Network+ exams</p>
+              <div className="exam-types">
+                <div className="exam-type-badge">📝 Full Exam (90 questions)</div>
+                <div className="exam-type-badge">📚 Domain Practice (25 questions)</div>
+                <div className="exam-type-badge">⚡ Quick Quiz (15 questions)</div>
+              </div>
+              <button
+                className="btn-start-practice"
+                onClick={() => navigate('/practice-exam-setup')}
+                style={{
+                  background: 'linear-gradient(135deg, var(--accent-cyan), var(--accent-purple))',
+                  marginTop: '16px'
+                }}
+              >
+                <Target size={18} />
+                <span>Start Practice Exam</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Flashcard Stats Widget */}
+        <section className="flashcard-stats-section">
+          <FlashcardStatsWidget />
+        </section>
+
+        {/* Exam Performance Analytics Widget */}
+        <section className="exam-analytics-section">
+          <DomainPerformanceWidget />
+        </section>
         <section className="stats-section">
           <h2>Progress Overview</h2>
           <div className="stats-grid">
@@ -175,6 +353,8 @@ function UserProfile() {
           </button>
         </section>
       </div>
+
+      <FlashcardPracticeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 }
