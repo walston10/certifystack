@@ -1,0 +1,224 @@
+.user-profile {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  padding: 80px 40px 40px;
+}
+
+.user-profile.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-header {
+  max-width: 1000px;
+  margin: 0 auto 40px;
+  padding: 40px;
+  background: var(--bg-secondary);
+  border-radius: 24px;
+  border: 2px solid rgba(233, 30, 99, 0.2);
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e91e63, #c2185b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.profile-info h1 {
+  font-size: 2rem;
+  margin: 0 0 8px 0;
+  color: var(--text-primary);
+}
+
+.profile-info p {
+  margin: 0 0 12px 0;
+  color: var(--text-muted);
+}
+
+.premium-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #ffd700, #ffa500);
+  color: #000;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.free-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.profile-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.stats-section,
+.xp-section,
+.actions-section {
+  background: var(--bg-secondary);
+  border-radius: 20px;
+  padding: 32px;
+  border: 2px solid rgba(0, 217, 255, 0.1);
+}
+
+.stats-section h2,
+.xp-section h2,
+.actions-section h2 {
+  font-size: 1.5rem;
+  margin: 0 0 24px 0;
+  color: var(--text-primary);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.stat-item {
+  background: var(--bg-tertiary);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.xp-card {
+  background: var(--bg-tertiary);
+  padding: 24px;
+  border-radius: 12px;
+}
+
+.level-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.level-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+}
+
+.level-title {
+  color: var(--text-secondary);
+}
+
+.xp-bar {
+  width: 100%;
+  height: 12px;
+  background: var(--bg-primary);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+  transition: width 1s ease;
+}
+
+.xp-text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.btn-upgrade-premium,
+.btn-logout {
+  width: 100%;
+  padding: 16px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  margin-bottom: 12px;
+}
+
+.btn-upgrade-premium {
+  background: linear-gradient(135deg, #ffd700, #ffa500);
+  color: #000;
+}
+
+.btn-upgrade-premium:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 215, 0, 0.4);
+}
+
+.btn-logout {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.btn-logout:hover {
+  background: var(--bg-primary);
+  color: var(--error);
+}
+
+@media (max-width: 768px) {
+  .user-profile {
+    padding: 80px 20px 20px;
+  }
+
+  .profile-header {
+    padding: 24px;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-info h1 {
+    font-size: 1.5rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

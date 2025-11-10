@@ -8,17 +8,24 @@ import { networkPlusLessons } from '../courses/network-plus/data/lessons';
 import './LabViewer.css';
 
 function LabViewer() {
-  const { id } = useParams();
+  const { courseId, labId, id } = useParams();
   const navigate = useNavigate();
   const [content, setContent] = useState('');
   const [showSolutionWarning, setShowSolutionWarning] = useState(false);
-  const lab = networkPlusLabs.find(l => l.id === parseInt(id));
+
+  // Support both old (id) and new (labId) param names for backward compatibility
+  const actualLabId = labId || id;
+  const actualCourseId = courseId || 'network-plus'; // Default to network-plus for old URLs
+
+  const lab = networkPlusLabs.find(l => l.id === parseInt(actualLabId));
   const lesson = lab ? networkPlusLessons.find(l => l.id === lab.lessonId) : null;
 
   useEffect(() => {
     if (lab) {
-      // Load lab content
-      fetch(lab.labPath)
+      // Load lab content from course-specific directory
+      // Use lab.labPath if it's a full path, otherwise construct from courseId
+      const labPath = lab.labPath || `/content/${actualCourseId}/labs/lab-${actualLabId.padStart(2, '0')}.md`;
+      fetch(labPath)
         .then(res => res.text())
         .then(text => setContent(text))
         .catch(err => {
@@ -26,7 +33,7 @@ function LabViewer() {
           setContent('# Lab content not found\n\nThis lab has not been created yet.');
         });
     }
-  }, [id, lab]);
+  }, [actualLabId, lab, actualCourseId]);
 
   if (!lab) {
     return (
@@ -51,13 +58,13 @@ function LabViewer() {
   };
 
   const handleViewSolution = () => {
-    navigate(`/solution/${lab.id}`);
+    navigate(`/course/${actualCourseId}/solution/${lab.id}`);
   };
 
   return (
     <div className="lab-viewer">
       <header>
-        <Link to={`/lesson/${lab.lessonId}`} className="back">← Back to Lesson {lab.lessonId}</Link>
+        <Link to={`/course/${actualCourseId}/lesson/${lab.lessonId}`} className="back">← Back to Lesson {lab.lessonId}</Link>
       </header>
 
       <div className="lab-header-info">

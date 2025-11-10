@@ -1,0 +1,183 @@
+/* Labs Gallery */
+.labs-gallery {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  padding: 80px 40px 40px;
+}
+
+.labs-header {
+  max-width: 1400px;
+  margin: 0 auto 40px;
+  padding: 40px;
+  background: var(--bg-secondary);
+  border-radius: 24px;
+  border: 2px solid rgba(255, 152, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.labs-header .header-icon {
+  color: #ff9800;
+}
+
+.labs-header h1 {
+  font-size: 2.5rem;
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.labs-header p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+.labs-stats {
+  max-width: 1400px;
+  margin: 0 auto 40px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.stat {
+  background: var(--bg-secondary);
+  padding: 24px;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ff9800;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.labs-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.lab-card {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 24px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.lab-card:hover {
+  transform: translateY(-4px);
+  border-color: #ff9800;
+  box-shadow: 0 8px 24px rgba(255, 152, 0, 0.3);
+}
+
+.lab-card.completed {
+  border-color: #00e676;
+}
+
+.lab-difficulty {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+
+.lab-difficulty.beginner {
+  background: rgba(0, 231, 118, 0.2);
+  color: #00e676;
+}
+
+.lab-difficulty.intermediate {
+  background: rgba(255, 165, 0, 0.2);
+  color: #ffa500;
+}
+
+.lab-difficulty.advanced {
+  background: rgba(255, 68, 68, 0.2);
+  color: var(--error);
+}
+
+.lab-completed-badge {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  color: #00e676;
+}
+
+.lab-card h3 {
+  font-size: 1.3rem;
+  margin: 0 0 16px 0;
+  color: var(--text-primary);
+}
+
+.lab-meta {
+  display: flex;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.lab-start-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lab-start-btn:hover {
+  transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+  .labs-gallery {
+    padding: 80px 20px 20px;
+  }
+
+  .labs-header {
+    padding: 24px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .labs-header h1 {
+    font-size: 2rem;
+  }
+
+  .labs-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .labs-grid {
+    grid-template-columns: 1fr;
+  }
+}

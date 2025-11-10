@@ -8,15 +8,22 @@ import { networkPlusLessons } from '../courses/network-plus/data/lessons';
 import './SolutionViewer.css';
 
 function SolutionViewer() {
-  const { id } = useParams();
+  const { courseId, labId, id } = useParams();
   const [content, setContent] = useState('');
-  const lab = networkPlusLabs.find(l => l.id === parseInt(id));
+
+  // Support both old (id) and new (labId) param names for backward compatibility
+  const actualLabId = labId || id;
+  const actualCourseId = courseId || 'network-plus'; // Default to network-plus for old URLs
+
+  const lab = networkPlusLabs.find(l => l.id === parseInt(actualLabId));
   const lesson = lab ? networkPlusLessons.find(l => l.id === lab.lessonId) : null;
 
   useEffect(() => {
     if (lab) {
-      // Load solution content
-      fetch(lab.solutionPath)
+      // Load solution content from course-specific directory
+      // Use lab.solutionPath if it's a full path, otherwise construct from courseId
+      const solutionPath = lab.solutionPath || `/content/${actualCourseId}/solutions/lab-${actualLabId.padStart(2, '0')}-solution.md`;
+      fetch(solutionPath)
         .then(res => res.text())
         .then(text => setContent(text))
         .catch(err => {
@@ -24,7 +31,7 @@ function SolutionViewer() {
           setContent('# Solution not found\n\nThe solution for this lab has not been created yet.');
         });
     }
-  }, [id, lab]);
+  }, [actualLabId, lab, actualCourseId]);
 
   if (!lab) {
     return (
@@ -46,7 +53,7 @@ function SolutionViewer() {
   return (
     <div className="solution-viewer">
       <header>
-        <Link to={`/lab/${lab.id}`} className="back">← Back to Lab</Link>
+        <Link to={`/course/${actualCourseId}/lab/${lab.id}`} className="back">← Back to Lab</Link>
       </header>
 
       <div className="solution-header-info">

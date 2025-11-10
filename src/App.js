@@ -1,11 +1,25 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import Dashboard from './components/Dashboard';
+
+// Main Pages
+import DashboardHome from './components/DashboardHome';
+import Dashboard from './components/Dashboard'; // Will be LessonsView
 import LessonViewer from './components/LessonViewer';
+import AITutorPage from './components/AITutorPage';
+import PracticeZone from './components/PracticeZone';
+import LabsGallery from './components/LabsGallery';
 import LabViewer from './components/LabViewer';
+import ResourcesLibrary from './components/ResourcesLibrary';
+import UserProfile from './components/UserProfile';
+import CourseCatalog from './components/CourseCatalog';
+import CourseOverview from './components/CourseOverview';
+
+// Secondary Components
 import SolutionViewer from './components/SolutionViewer';
 import FlashcardPracticeView from './components/FlashcardPracticeView';
 import Login from './components/Login';
+import Navigation from './components/Navigation';
+import FloatingChatButton from './components/FloatingChatButton';
 
 // Practice Exam Components
 import ExamSetup from './components/ExamSetup';
@@ -44,110 +58,219 @@ function AppRoutes() {
   const { user } = useAuth();
 
   return (
-    <Routes>
-      {/* Authentication */}
-      <Route
-        path="/login"
-        element={user ? <Navigate to="/" /> : <Login />}
-      />
+    <>
+      {/* Show Navigation for authenticated users */}
+      {user && <Navigation />}
 
-      {/* Dashboard */}
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
+      <Routes>
+        {/* Authentication */}
+        <Route
+          path="/login"
+          element={user ? <Navigate to="/" /> : <Login />}
+        />
 
-      {/* Lessons */}
-      <Route
-        path="/lesson/:id"
-        element={
-          <ProtectedRoute>
-            <LessonViewer />
-          </ProtectedRoute>
-        }
-      />
+        {/* Main Dashboard Home */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <DashboardHome />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Labs */}
-      <Route
-        path="/lab/:id"
-        element={
-          <ProtectedRoute>
-            <LabViewer />
-          </ProtectedRoute>
-        }
-      />
+        {/* Course Catalog */}
+        <Route
+          path="/courses"
+          element={
+            <ProtectedRoute>
+              <CourseCatalog />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Solutions */}
-      <Route
-        path="/solution/:id"
-        element={
-          <ProtectedRoute>
-            <SolutionViewer />
-          </ProtectedRoute>
-        }
-      />
+        {/* Course Overview */}
+        <Route
+          path="/course/:courseId"
+          element={
+            <ProtectedRoute>
+              <CourseOverview />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Flashcards */}
-      <Route
-        path="/practice/flashcards"
-        element={
-          <ProtectedRoute>
-            <FlashcardPracticeView />
-          </ProtectedRoute>
-        }
-      />
+        {/* Course Lessons Grid */}
+        <Route
+          path="/course/:courseId/lessons"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Practice Exams */}
-      <Route
-        path="/practice-exam-setup"
-        element={
-          <ProtectedRoute>
-            <ExamSetup />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/exam-instructions"
-        element={
-          <ProtectedRoute>
-            <ExamInstructions />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/practice-exam"
-        element={
-          <ProtectedRoute>
-            <PracticeExam />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/exam-results"
-        element={
-          <ProtectedRoute>
-            <ExamResults />
-          </ProtectedRoute>
-        }
-      />
+        {/* Course-Specific Lesson */}
+        <Route
+          path="/course/:courseId/lesson/:lessonId"
+          element={
+            <ProtectedRoute>
+              <LessonViewer />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Test Route - For debugging exam state */}
-      <Route
-        path="/test-exam-state"
-        element={
-          <ProtectedRoute>
-            <TestExamState />
-          </ProtectedRoute>
-        }
-      />
+        {/* Course-Specific Lab */}
+        <Route
+          path="/course/:courseId/lab/:labId"
+          element={
+            <ProtectedRoute>
+              <LabViewer />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Fallback - Redirect unknown routes to dashboard */}
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
+        {/* Course-Specific Solution */}
+        <Route
+          path="/course/:courseId/solution/:labId"
+          element={
+            <ProtectedRoute>
+              <SolutionViewer />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Backward Compatibility - Old Network+ URLs */}
+        <Route
+          path="/lessons"
+          element={<Navigate to="/course/network-plus/lessons" replace />}
+        />
+
+        <Route
+          path="/lesson/:id"
+          element={<Navigate to="/course/network-plus/lesson/:id" replace />}
+        />
+
+        <Route
+          path="/lab/:id"
+          element={<Navigate to="/course/network-plus/lab/:id" replace />}
+        />
+
+        <Route
+          path="/solution/:id"
+          element={<Navigate to="/course/network-plus/solution/:id" replace />}
+        />
+
+        {/* AI Tutor Page */}
+        <Route
+          path="/ai-tutor"
+          element={
+            <ProtectedRoute>
+              <AITutorPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Practice Zone */}
+        <Route
+          path="/practice"
+          element={
+            <ProtectedRoute>
+              <PracticeZone />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Labs Gallery */}
+        <Route
+          path="/labs"
+          element={
+            <ProtectedRoute>
+              <LabsGallery />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Resources Library */}
+        <Route
+          path="/resources"
+          element={
+            <ProtectedRoute>
+              <ResourcesLibrary />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* User Profile */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <UserProfile />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Flashcards */}
+        <Route
+          path="/practice/flashcards"
+          element={
+            <ProtectedRoute>
+              <FlashcardPracticeView />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Practice Exams */}
+        <Route
+          path="/practice-exam-setup"
+          element={
+            <ProtectedRoute>
+              <ExamSetup />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/exam-instructions"
+          element={
+            <ProtectedRoute>
+              <ExamInstructions />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/practice-exam"
+          element={
+            <ProtectedRoute>
+              <PracticeExam />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/exam-results"
+          element={
+            <ProtectedRoute>
+              <ExamResults />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Test Route - For debugging exam state */}
+        <Route
+          path="/test-exam-state"
+          element={
+            <ProtectedRoute>
+              <TestExamState />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Fallback - Redirect unknown routes to dashboard */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+
+      {/* AI Tutor Chat Button - Show only for authenticated users */}
+      {user && <FloatingChatButton />}
+    </>
   );
 }
 

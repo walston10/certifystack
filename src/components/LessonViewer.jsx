@@ -12,25 +12,29 @@ import ActivityLoader from './activities/ActivityLoader';
 import '../styles/LessonViewer.css';
 
 function LessonViewer() {
-  const { id } = useParams();
+  const { courseId, lessonId, id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const [content, setContent] = useState('');
   const [labContent, setLabContent] = useState('');
-  
+
+  // Support both old (id) and new (lessonId) param names for backward compatibility
+  const actualLessonId = lessonId || id;
+  const actualCourseId = courseId || 'network-plus'; // Default to network-plus for old URLs
+
   const [activeTab, setActiveTab] = useState(() => {
     const params = new URLSearchParams(location.search);
     return params.get('tab') || 'content';
   });
   const [showSolutionWarning, setShowSolutionWarning] = useState(false);
-  const lesson = networkPlusLessons.find(l => l.id === parseInt(id));
-  const labInfo = getLabByLessonId(parseInt(id));
-  const quizInfo = getQuizByLesson(parseInt(id));
-  const hasActivity = [1, 2].includes(parseInt(id));
+  const lesson = networkPlusLessons.find(l => l.id === parseInt(actualLessonId));
+  const labInfo = getLabByLessonId(parseInt(actualLessonId));
+  const quizInfo = getQuizByLesson(parseInt(actualLessonId));
+  const hasActivity = [1, 2].includes(parseInt(actualLessonId));
 
   useEffect(() => {
-    // Load main lesson content from new lessons/ subdirectory
-    fetch(`/content/network-plus/lessons/lesson-${id.padStart(2, '0')}.md`)
+    // Load main lesson content from course-specific directory
+    fetch(`/content/${actualCourseId}/lessons/lesson-${actualLessonId.padStart(2, '0')}.md`)
       .then(res => res.ok ? res.text() : Promise.reject('Lesson content not found'))
       .then(text => setContent(text))
       .catch(err => console.error('Error loading lesson:', err));
