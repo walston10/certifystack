@@ -6,9 +6,7 @@ import {
   ClipboardCheck,
   TrendingUp,
   CheckCircle,
-  Award,
-  Users,
-  Zap
+  Award
 } from 'lucide-react';
 import './HomePage.css';
 

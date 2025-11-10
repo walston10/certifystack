@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { PlayCircle, LogOut, User, Lock } from 'lucide-react';
 import { networkPlusLessons } from '../courses/network-plus/data/lessons';
