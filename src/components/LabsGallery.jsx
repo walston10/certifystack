@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FlaskConical, CheckCircle, Lock } from 'lucide-react';
+import { FlaskConical, CheckCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import './LabsGallery.css';
 

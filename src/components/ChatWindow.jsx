@@ -19,6 +19,7 @@ function ChatWindow({ isOpen, onClose, currentLesson = null }) {
       loadUserData();
       loadConversationHistory();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, currentLesson]);
 
   // Auto-scroll to bottom when new messages arrive

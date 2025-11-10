@@ -56,6 +56,7 @@ function LessonViewer() {
     if (tabFromQuery) {
       setActiveTab(tabFromQuery);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, labInfo, location.search]);
 
   // Activities are now dynamically loaded via ActivityLoader

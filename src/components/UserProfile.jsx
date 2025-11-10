@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { User, LogOut, Zap, Trophy, TrendingUp } from 'lucide-react';
+import { User, LogOut, Zap } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +23,7 @@ function UserProfile() {
   useEffect(() => {
     loadUserProfile();
     loadUserStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadUserProfile = async () => {

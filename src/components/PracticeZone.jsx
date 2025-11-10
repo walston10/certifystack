@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Target, FileCheck, CreditCard, TrendingUp, AlertTriangle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { getExamAttempts, getDomainStats } from '../services/examService';
+import { getExamAttempts } from '../services/examService';
 import './PracticeZone.css';
 
 function PracticeZone() {
