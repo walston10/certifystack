@@ -13,18 +13,17 @@
 
 /* Header */
 .catalog-header {
-  max-width: 1400px;
-  margin: 0 auto 32px;
-  padding: 40px;
-  background: var(--bg-secondary);
-  border-radius: 24px;
-  border: 2px solid rgba(0, 217, 255, 0.2);
+  max-width: 1200px;
+  margin: 0 auto 48px;
+  padding: 40px 20px;
+  text-align: center;
 }
 
 .header-content {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
 }
 
 .header-icon {
@@ -33,85 +32,85 @@
 
 .catalog-header h1 {
   font-size: 2.5rem;
-  margin: 0 0 8px 0;
-  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  margin: 0;
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 .catalog-header p {
   margin: 0;
-  color: var(--text-muted);
-  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-size: 1.05rem;
 }
 
-/* Subscription Banner */
+/* Subscription Banner - Subtle inline CTA */
 .subscription-banner {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto 40px;
-  padding: 32px;
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
-  border: 2px solid #ffd700;
-  border-radius: 20px;
+  padding: 20px 24px;
+  background: var(--bg-secondary);
+  border: 1px solid rgba(0, 217, 255, 0.2);
+  border-radius: 12px;
   text-align: center;
 }
 
 .banner-content h3 {
-  font-size: 1.8rem;
-  margin: 0 0 12px 0;
+  font-size: 1.2rem;
+  margin: 0 0 8px 0;
   color: var(--text-primary);
 }
 
 .banner-content p {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   color: var(--text-secondary);
-  margin: 0 0 20px 0;
+  margin: 0 0 16px 0;
 }
 
 .btn-subscribe {
-  padding: 14px 32px;
-  background: linear-gradient(135deg, #ffd700, #ffa500);
+  padding: 10px 24px;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
   border: none;
-  border-radius: 12px;
-  color: #000;
-  font-size: 1.05rem;
+  border-radius: 8px;
+  color: white;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .btn-subscribe:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 217, 255, 0.3);
 }
 
 /* Courses Grid */
 .courses-grid {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto 60px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+  padding: 0 20px;
 }
 
 .course-card {
   background: var(--bg-secondary);
-  border-radius: 20px;
+  border-radius: 12px;
   overflow: hidden;
-  border: 2px solid transparent;
+  border: 1px solid rgba(255, 255, 255, 0.05);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   position: relative;
 }
 
 .course-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--course-color);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  transform: translateY(-2px);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 8px 24px rgba(0, 217, 255, 0.15);
 }
 
 .course-card.owned {
-  border-color: #00e676;
+  border-color: rgba(0, 230, 118, 0.3);
 }
 
 /* Access Badge */
@@ -131,18 +130,20 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Course Header */
+/* Course Header - Simplified consistent design */
 .course-header {
-  height: 160px;
+  height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  background: linear-gradient(135deg, rgba(10, 14, 39, 0.9), rgba(22, 33, 62, 0.9)) !important;
+  border-bottom: 1px solid rgba(0, 217, 255, 0.1);
 }
 
 .course-icon {
-  color: white;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+  color: var(--accent-cyan);
+  filter: drop-shadow(0 2px 8px rgba(0, 217, 255, 0.3));
 }
 
 /* Course Content */
@@ -163,24 +164,24 @@
 }
 
 .course-title {
-  font-size: 1.8rem;
-  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  margin: 0 0 6px 0;
   color: var(--text-primary);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .course-exam {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--accent-cyan);
   font-weight: 600;
-  margin: 0 0 16px 0;
+  margin: 0 0 12px 0;
 }
 
 .course-description {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--text-secondary);
-  line-height: 1.6;
-  margin: 0 0 20px 0;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
 }
 
 /* Course Stats */
@@ -204,45 +205,9 @@
   color: var(--accent-cyan);
 }
 
-/* Domains Preview */
+/* Domains Preview - Hidden for cleaner cards */
 .domains-preview {
-  margin-bottom: 24px;
-  padding: 16px;
-  background: var(--bg-tertiary);
-  border-radius: 12px;
-}
-
-.domains-preview strong {
-  display: block;
-  font-size: 0.9rem;
-  color: var(--text-primary);
-  margin-bottom: 12px;
-}
-
-.domains-preview ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.domains-preview li {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  padding: 4px 0;
-  padding-left: 20px;
-  position: relative;
-}
-
-.domains-preview li::before {
-  content: '•';
-  position: absolute;
-  left: 8px;
-  color: var(--accent-cyan);
-}
-
-.domains-preview li.more {
-  color: var(--text-muted);
-  font-style: italic;
+  display: none;
 }
 
 /* Pricing */
@@ -268,40 +233,44 @@
   color: var(--text-muted);
 }
 
-/* Bundle Option */
+/* Bundle Option - Simplified */
 .bundle-option {
-  padding: 16px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(159, 122, 234, 0.1));
-  border: 2px solid #667eea;
-  border-radius: 12px;
+  padding: 12px;
+  background: rgba(102, 126, 234, 0.08);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 8px;
+  margin-top: 12px;
 }
 
 .bundle-badge {
   display: inline-block;
-  padding: 4px 10px;
+  padding: 3px 8px;
   background: #667eea;
   color: white;
-  border-radius: 6px;
-  font-size: 0.85rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .bundle-option p {
-  margin: 0 0 4px 0;
-  font-size: 0.95rem;
+  margin: 0;
+  font-size: 0.85rem;
   color: var(--text-secondary);
+  line-height: 1.4;
 }
 
 .bundle-option strong {
-  color: var(--text-primary);
-  font-size: 1.2rem;
+  color: var(--accent-cyan);
+  font-size: 1rem;
 }
 
 .savings {
   color: #00e676 !important;
   font-weight: 600 !important;
-  font-size: 1rem !important;
+  font-size: 0.85rem !important;
+  display: block;
+  margin-top: 4px;
 }
 
 /* Owned Message */

@@ -24,7 +24,7 @@ function Navigation() {
     <nav className="main-navigation">
       <div className="nav-container">
         {/* Logo */}
-        <NavLink to="/" className="nav-logo" onClick={closeMobileMenu}>
+        <NavLink to="/dashboard" className="nav-logo" onClick={closeMobileMenu}>
           <span className="logo-icon">⚡</span>
           <span className="logo-text">CertifyStack</span>
         </NavLink>

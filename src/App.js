@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 // Main Pages
+import HomePage from './components/HomePage';
 import DashboardHome from './components/DashboardHome';
 import Dashboard from './components/Dashboard'; // Will be LessonsView
 import LessonViewer from './components/LessonViewer';
@@ -63,15 +64,27 @@ function AppRoutes() {
       {user && <Navigation />}
 
       <Routes>
+        {/* Home Page - Sales Landing */}
+        <Route
+          path="/"
+          element={user ? <Navigate to="/dashboard" /> : <HomePage />}
+        />
+
+        {/* Registration - Uses Login component which has signup flow */}
+        <Route
+          path="/register"
+          element={user ? <Navigate to="/dashboard" /> : <Login />}
+        />
+
         {/* Authentication */}
         <Route
           path="/login"
-          element={user ? <Navigate to="/" /> : <Login />}
+          element={user ? <Navigate to="/dashboard" /> : <Login />}
         />
 
         {/* Main Dashboard Home */}
         <Route
-          path="/"
+          path="/dashboard"
           element={
             <ProtectedRoute>
               <DashboardHome />
