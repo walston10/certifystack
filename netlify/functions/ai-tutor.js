@@ -81,41 +81,49 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Check user's premium status
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('membership_tier')
-      .eq('id', user.id)
-      .single();
+    // Check user's premium status (gracefully handle missing table)
+    let isPremium = false;
+    let dailyUsage = 0;
 
-    const isPremium = profile?.membership_tier === 'premium';
+    try {
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('membership_tier')
+        .eq('id', user.id)
+        .single();
 
-    // Rate limiting - check daily usage
-    const today = new Date().toISOString().split('T')[0];
-    const { data: usageData, error: usageError } = await supabase
-      .from('ai_tutor_usage')
-      .select('id')
-      .eq('user_id', user.id)
-      .gte('created_at', `${today}T00:00:00`)
-      .lte('created_at', `${today}T23:59:59`);
+      if (!profileError) {
+        isPremium = profile?.membership_tier === 'premium';
+      }
 
-    if (usageError) {
-      console.error('Error checking usage:', usageError);
-    }
+      // Rate limiting - check daily usage
+      const today = new Date().toISOString().split('T')[0];
+      const { data: usageData, error: usageError } = await supabase
+        .from('ai_tutor_usage')
+        .select('id')
+        .eq('user_id', user.id)
+        .gte('created_at', `${today}T00:00:00`)
+        .lte('created_at', `${today}T23:59:59`);
 
-    const dailyUsage = usageData?.length || 0;
+      if (!usageError) {
+        dailyUsage = usageData?.length || 0;
+      }
 
-    // Enforce rate limit for free users
-    if (!isPremium && dailyUsage >= 3) {
-      return {
-        statusCode: 429,
-        headers,
-        body: JSON.stringify({
-          error: 'Daily limit reached (3 questions). Upgrade to Premium for unlimited access!',
-          dailyUsage,
-          limit: 3
-        })
-      };
+      // Enforce rate limit for free users
+      if (!isPremium && dailyUsage >= 3) {
+        return {
+          statusCode: 429,
+          headers,
+          body: JSON.stringify({
+            error: 'Daily limit reached (3 questions). Upgrade to Premium for unlimited access!',
+            dailyUsage,
+            limit: 3
+          })
+        };
+      }
+    } catch (dbError) {
+      console.log('Database tables not yet created, allowing request to proceed');
+      // Allow the request to proceed without rate limiting if tables don't exist
     }
 
     // Build context-aware prompt
