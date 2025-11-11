@@ -484,6 +484,7 @@ nav {
 .completion-checkbox {
   appearance: none;
   -webkit-appearance: none;
+  -moz-appearance: none;
   width: 24px;
   height: 24px;
   cursor: pointer;
@@ -493,6 +494,14 @@ nav {
   position: relative;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  outline: none;
+}
+
+/* Force hide any browser default checkbox styling */
+.completion-checkbox::-ms-check {
+  display: none;
 }
 
 .completion-checkbox:hover {

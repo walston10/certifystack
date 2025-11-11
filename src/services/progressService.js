@@ -5,12 +5,23 @@ import { supabase } from '../lib/supabase';
 // ============================================
 
 /**
- * Mark a lesson as complete
+ * Mark a lesson as complete and award XP
  */
 export async function markLessonComplete(lessonId, timeSpent = 0) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('User not authenticated');
 
+  // Check if lesson was already completed
+  const { data: existingProgress } = await supabase
+    .from('user_progress')
+    .select('completed')
+    .eq('user_id', user.id)
+    .eq('lesson_id', lessonId)
+    .single();
+
+  const wasAlreadyCompleted = existingProgress?.completed === true;
+
+  // Mark lesson as complete
   const { data, error } = await supabase
     .from('user_progress')
     .upsert({
@@ -25,6 +36,30 @@ export async function markLessonComplete(lessonId, timeSpent = 0) {
     .select();
 
   if (error) throw error;
+
+  // Award XP only if this is the first time completing
+  if (!wasAlreadyCompleted) {
+    const XP_PER_LESSON = 50; // Award 50 XP per lesson completion
+
+    // Get current XP
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('xp_points')
+      .eq('id', user.id)
+      .single();
+
+    const currentXP = profile?.xp_points || 0;
+    const newXP = currentXP + XP_PER_LESSON;
+
+    // Update XP in profile
+    const { error: xpError } = await supabase
+      .from('profiles')
+      .update({ xp_points: newXP })
+      .eq('id', user.id);
+
+    if (xpError) console.error('Error awarding XP:', xpError);
+  }
+
   return data;
 }
 
