@@ -277,7 +277,7 @@ function PracticeZone() {
             <h2>🗂️ Flashcards</h2>
             <button
               className="btn-study-flashcards"
-              onClick={() => navigate('/practice/flashcards')}
+              onClick={() => navigate('/practice/flashcards/setup')}
             >
               Study Now
             </button>
@@ -306,19 +306,19 @@ function PracticeZone() {
             <div className="flashcard-options">
               <button
                 className="flashcard-option-btn"
-                onClick={() => navigate('/practice/flashcards')}
+                onClick={() => navigate('/practice/flashcards/setup')}
               >
                 Study All Cards
               </button>
               <button
                 className="flashcard-option-btn"
-                onClick={() => navigate('/practice/flashcards')}
+                onClick={() => navigate('/practice/flashcards/setup')}
               >
                 Study Weak Cards
               </button>
               <button
                 className="flashcard-option-btn"
-                onClick={() => navigate('/practice/flashcards')}
+                onClick={() => navigate('/practice/flashcards/setup')}
               >
                 Study by Module
               </button>

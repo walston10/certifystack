@@ -1,0 +1,366 @@
+/* Flashcard Setup Page */
+.flashcard-setup {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  padding: 40px 20px;
+}
+
+.setup-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header */
+.setup-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 40px;
+  padding: 32px;
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 217, 255, 0.1);
+}
+
+.setup-header .header-icon {
+  color: var(--accent-cyan);
+  flex-shrink: 0;
+}
+
+.setup-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: var(--text-primary);
+}
+
+.setup-header p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Quick Actions */
+.quick-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.quick-action-btn {
+  padding: 10px 20px;
+  background: var(--bg-secondary);
+  border: 1px solid rgba(0, 217, 255, 0.2);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quick-action-btn:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--accent-cyan);
+  transform: translateY(-2px);
+}
+
+/* Study Mode Section (commented out in component) */
+.study-mode-section {
+  margin-bottom: 32px;
+  padding: 24px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 217, 255, 0.1);
+}
+
+.study-mode-section h3 {
+  font-size: 1.2rem;
+  margin: 0 0 16px 0;
+  color: var(--text-primary);
+}
+
+.mode-options {
+  display: flex;
+  gap: 12px;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 12px 20px;
+  background: var(--bg-tertiary);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mode-btn:hover {
+  border-color: rgba(0, 217, 255, 0.3);
+}
+
+.mode-btn.active {
+  background: rgba(0, 217, 255, 0.1);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+/* Lesson Selection */
+.lesson-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+/* Domain Section */
+.domain-section {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+.domain-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background: rgba(0, 0, 0, 0.2);
+  border-left: 4px solid;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.domain-header:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.domain-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.domain-icon {
+  font-size: 1.8rem;
+}
+
+.domain-info h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.lesson-count {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.domain-checkbox {
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.domain-checkbox.checked {
+  color: var(--accent-cyan);
+}
+
+.domain-checkbox.partial {
+  color: var(--accent-purple);
+}
+
+/* Lessons Grid */
+.lessons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+  padding: 20px;
+}
+
+.lesson-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: var(--bg-tertiary);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lesson-card:hover {
+  background: var(--bg-primary);
+  border-color: rgba(0, 217, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.lesson-card.selected {
+  background: rgba(0, 217, 255, 0.1);
+  border-color: var(--accent-cyan);
+}
+
+.lesson-checkbox {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.lesson-card.selected .lesson-checkbox {
+  color: var(--accent-cyan);
+}
+
+.lesson-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.lesson-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lesson-meta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Footer Summary */
+.setup-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 217, 255, 0.1);
+  position: sticky;
+  bottom: 20px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.selection-summary {
+  display: flex;
+  gap: 32px;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.summary-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+}
+
+.footer-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-cancel {
+  padding: 12px 28px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+  background: var(--bg-tertiary);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-start {
+  padding: 12px 32px;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(0, 217, 255, 0.3);
+}
+
+.btn-start:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 217, 255, 0.4);
+}
+
+.btn-start:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .flashcard-setup {
+    padding: 20px 12px;
+  }
+
+  .setup-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+  }
+
+  .setup-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .quick-actions {
+    flex-wrap: wrap;
+  }
+
+  .lessons-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .setup-footer {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .selection-summary {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .footer-actions {
+    width: 100%;
+  }
+
+  .btn-cancel,
+  .btn-start {
+    flex: 1;
+  }
+}

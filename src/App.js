@@ -18,6 +18,7 @@ import CourseOverview from './components/CourseOverview';
 // Secondary Components
 import SolutionViewer from './components/SolutionViewer';
 import FlashcardPracticeView from './components/FlashcardPracticeView';
+import FlashcardSetup from './components/FlashcardSetup';
 import Login from './components/Login';
 import Navigation from './components/Navigation';
 import FloatingChatButton from './components/FloatingChatButton';
@@ -229,7 +230,17 @@ function AppRoutes() {
           }
         />
 
-        {/* Flashcards */}
+        {/* Flashcards Setup */}
+        <Route
+          path="/practice/flashcards/setup"
+          element={
+            <ProtectedRoute>
+              <FlashcardSetup />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Flashcards Practice */}
         <Route
           path="/practice/flashcards"
           element={

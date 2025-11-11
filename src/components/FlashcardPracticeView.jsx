@@ -15,7 +15,8 @@ function FlashcardPracticeView() {
       setCards(location.state.cards);
       setLoading(false);
     } else {
-      // Otherwise, load all flashcards from all lessons
+      // Fallback: Load all flashcards if accessed directly
+      // (Users should normally come through /practice/flashcards/setup)
       const allCards = [];
       Object.keys(allFlashcards).forEach(lessonId => {
         const lessonCards = allFlashcards[lessonId];
