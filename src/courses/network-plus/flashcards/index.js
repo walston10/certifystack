@@ -37,7 +37,7 @@ import { lesson30Flashcards } from './lesson-30-flashcards';
 import { networkPlusLessons } from '../data/lessons';
 
 // Registry of all flashcards
-const allFlashcards = {
+export const allFlashcards = {
   1: lesson1Flashcards,
   2: lesson2Flashcards,
   3: lesson3Flashcards,
