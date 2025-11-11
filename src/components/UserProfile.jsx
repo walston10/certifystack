@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { User, LogOut, Zap, Target } from 'lucide-react';
+import { User, LogOut, Zap } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { networkPlusLessons } from '../courses/network-plus/data/lessons';
 import { useUserStats } from '../hooks/useUserStats';
-import FlashcardPracticeModal from './FlashcardPracticeModal';
-import FlashcardStatsWidget from './FlashcardStatsWidget';
 import DomainPerformanceWidget from './DomainPerformanceWidget';
 import './UserProfile.css';
 
@@ -25,7 +23,6 @@ function UserProfile() {
     level: 1
   });
   const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Refs for the animated stats
   const totalLessonsRef = useRef(null);
@@ -248,51 +245,6 @@ function UserProfile() {
               <span><strong>{networkPlusLessons.length - completed}</strong> remaining</span>
             </div>
           </div>
-
-          <div className="progress-card practice-card">
-            <div className="progress-header">
-              <h2>Practice Center</h2>
-            </div>
-            <div className="practice-card-body">
-              <p>Ready to review? Create a custom flashcard session from multiple lessons to test your knowledge.</p>
-              <button
-                className="btn-start-practice"
-                onClick={() => setIsModalOpen(true)}
-              >
-                🃏 Start Practice Session
-              </button>
-            </div>
-          </div>
-
-          <div className="progress-card exam-card">
-            <div className="progress-header">
-              <h2>Practice Exams</h2>
-            </div>
-            <div className="practice-card-body">
-              <p>Test your knowledge with full-length simulated Network+ exams</p>
-              <div className="exam-types">
-                <div className="exam-type-badge">📝 Full Exam (90 questions)</div>
-                <div className="exam-type-badge">📚 Domain Practice (25 questions)</div>
-                <div className="exam-type-badge">⚡ Quick Quiz (15 questions)</div>
-              </div>
-              <button
-                className="btn-start-practice"
-                onClick={() => navigate('/practice-exam-setup')}
-                style={{
-                  background: 'linear-gradient(135deg, var(--accent-cyan), var(--accent-purple))',
-                  marginTop: '16px'
-                }}
-              >
-                <Target size={18} />
-                <span>Start Practice Exam</span>
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* Flashcard Stats Widget */}
-        <section className="flashcard-stats-section">
-          <FlashcardStatsWidget />
         </section>
 
         {/* Exam Performance Analytics Widget */}
@@ -353,8 +305,6 @@ function UserProfile() {
           </button>
         </section>
       </div>
-
-      <FlashcardPracticeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 }
