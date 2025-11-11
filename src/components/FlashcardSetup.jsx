@@ -9,7 +9,7 @@ import './FlashcardSetup.css';
 function FlashcardSetup() {
   const navigate = useNavigate();
   const [selectedLessons, setSelectedLessons] = useState([]);
-  const [studyMode, setStudyMode] = useState('all'); // 'all', 'new', 'review'
+  // const [studyMode, setStudyMode] = useState('all'); // 'all', 'new', 'review' - Future feature
 
   // Group lessons by domain
   const lessonsByDomain = networkPlusLessons.reduce((acc, lesson) => {
