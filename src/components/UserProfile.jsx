@@ -37,13 +37,15 @@ function UserProfile() {
   const progressPercentRounded = Math.round(progressPercent);
 
   useEffect(() => {
-    loadUserProfile();
     loadUserStats();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // --- useEffect for Animations (Runs ONCE after mount) ---
+  // --- useEffect for Animations (Runs after data is loaded) ---
   useEffect(() => {
+    // Don't run animations until data is loaded
+    if (loading) return;
+
     const animateCounter = (element, target) => {
       if (!element) return;
       const duration = 1000;
@@ -96,27 +98,37 @@ function UserProfile() {
         flatBar.style.width = `${progressPercent}%`;
       }
     }
-  }, [completed, daysRemaining, progressPercentRounded, progressPercent]);
+  }, [completed, daysRemaining, progressPercentRounded, progressPercent, loading]);
 
   const loadUserProfile = async () => {
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
         .single();
 
+      if (error) {
+        console.error('Error loading profile:', error);
+        return null;
+      }
+
       setProfile(data);
+      return data;
     } catch (error) {
       console.error('Error loading profile:', error);
+      return null;
     }
   };
 
   const loadUserStats = async () => {
     try {
-      // Similar logic to DashboardHome
+      // Load profile first to get XP
+      const profileData = await loadUserProfile();
+
+      // Query user_progress table (not lesson_progress)
       const { data: lessons } = await supabase
-        .from('lesson_progress')
+        .from('user_progress')
         .select('lesson_id')
         .eq('user_id', user.id)
         .eq('completed', true);
@@ -136,7 +148,7 @@ function UserProfile() {
         ? Math.round(quizzes.reduce((sum, q) => sum + q.score, 0) / quizzes.length)
         : 0;
 
-      const xp = profile?.xp_points || 0;
+      const xp = profileData?.xp_points || 0;
       const level = Math.floor(xp / 1000) + 1;
 
       setStats({
@@ -144,7 +156,7 @@ function UserProfile() {
         labsCompleted: labs?.length || 0,
         quizzesTaken: quizzes?.length || 0,
         averageScore: avgScore,
-        studyStreak: profile?.study_streak || 0,
+        studyStreak: profileData?.study_streak || 0,
         xp: xp,
         level: level
       });
