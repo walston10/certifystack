@@ -106,7 +106,7 @@ export async function getExamAttempts(limit = 10) {
 export async function getDomainStats() {
   try {
     const user = await supabase.auth.getUser();
-    if (!user.data.user) return { data: {}, error: null };
+    if (!user.data.user) return { success: true, data: {}, error: null };
 
     const { data, error } = await supabase
       .from('domain_performance')
@@ -118,39 +118,41 @@ export async function getDomainStats() {
     // Aggregate by domain
     const domainStats = {};
 
-    data.forEach(record => {
-      if (!domainStats[record.domain]) {
-        domainStats[record.domain] = {
-          domain: record.domain,
-          domainName: record.domain_name,
-          attempts: 0,
-          totalQuestions: 0,
-          totalCorrect: 0,
-          averagePercentage: 0,
-          bestPercentage: 0,
-          latestPercentage: 0
-        };
-      }
+    if (data && data.length > 0) {
+      data.forEach(record => {
+        if (!domainStats[record.domain]) {
+          domainStats[record.domain] = {
+            domain: record.domain,
+            domainName: record.domain_name,
+            totalAttempts: 0,
+            totalQuestions: 0,
+            totalCorrect: 0,
+            avgPercentage: 0,
+            bestPercentage: 0,
+            latestPercentage: 0
+          };
+        }
 
-      const stats = domainStats[record.domain];
-      stats.attempts += 1;
-      stats.totalQuestions += record.total_questions;
-      stats.totalCorrect += record.correct_answers;
-      stats.bestPercentage = Math.max(stats.bestPercentage, record.percentage);
-      stats.latestPercentage = record.percentage; // Last one processed
-    });
+        const stats = domainStats[record.domain];
+        stats.totalAttempts += 1;
+        stats.totalQuestions += record.total_questions;
+        stats.totalCorrect += record.correct_answers;
+        stats.bestPercentage = Math.max(stats.bestPercentage, record.percentage);
+        stats.latestPercentage = record.percentage; // Last one processed
+      });
 
-    // Calculate averages
-    Object.values(domainStats).forEach(stats => {
-      stats.averagePercentage = Math.round(
-        (stats.totalCorrect / stats.totalQuestions) * 100
-      );
-    });
+      // Calculate averages
+      Object.values(domainStats).forEach(stats => {
+        stats.avgPercentage = Math.round(
+          (stats.totalCorrect / stats.totalQuestions) * 100
+        );
+      });
+    }
 
-    return { data: domainStats, error: null };
+    return { success: true, data: domainStats, error: null };
   } catch (error) {
     console.error('Error fetching domain stats:', error);
-    return { data: {}, error };
+    return { success: false, data: {}, error: error.message };
   }
 }
 
@@ -160,50 +162,74 @@ export async function getDomainStats() {
 export async function getExamStats() {
   try {
     const user = await supabase.auth.getUser();
-    if (!user.data.user) return { data: null, error: null };
+    if (!user.data.user) return { success: true, data: null, error: null };
 
     const { data, error } = await supabase
       .from('exam_attempts')
       .select('*')
-      .eq('user_id', user.data.user.id);
+      .eq('user_id', user.data.user.id)
+      .order('created_at', { ascending: false });
 
     if (error) throw error;
 
     // Calculate statistics
     const stats = {
-      totalAttempts: data.length,
-      totalPassed: data.filter(a => a.passed).length,
-      totalFailed: data.filter(a => !a.passed).length,
-      averageScore: 0,
+      totalAttempts: data?.length || 0,
+      passed: data?.filter(a => a.passed).length || 0,
+      failed: data?.filter(a => !a.passed).length || 0,
+      avgScore: 0,
       bestScore: 0,
       latestScore: 0,
-      averageTimeMinutes: 0,
-      improvementTrend: 'stable' // 'improving', 'declining', 'stable'
+      avgTimeSpent: 0,
+      passRate: 0,
+      trend: 'stable', // 'improving', 'declining', 'stable'
+      trendMessage: 'Not enough data to determine trend'
     };
 
-    if (data.length > 0) {
-      stats.averageScore = Math.round(
+    if (data && data.length > 0) {
+      stats.avgScore = Math.round(
         data.reduce((sum, a) => sum + a.percentage, 0) / data.length
       );
       stats.bestScore = Math.max(...data.map(a => a.percentage));
       stats.latestScore = data[0].percentage; // Most recent (already sorted DESC)
-      stats.averageTimeMinutes = Math.round(
-        data.reduce((sum, a) => sum + a.time_spent_seconds, 0) / data.length / 60
+      stats.avgTimeSpent = Math.round(
+        data.reduce((sum, a) => sum + a.time_spent_seconds, 0) / data.length
       );
+      stats.passRate = Math.round((stats.passed / data.length) * 100);
 
       // Calculate trend (compare last 3 vs previous 3)
       if (data.length >= 6) {
         const recent3 = data.slice(0, 3).reduce((sum, a) => sum + a.percentage, 0) / 3;
         const previous3 = data.slice(3, 6).reduce((sum, a) => sum + a.percentage, 0) / 3;
-        if (recent3 > previous3 + 5) stats.improvementTrend = 'improving';
-        else if (recent3 < previous3 - 5) stats.improvementTrend = 'declining';
+        if (recent3 > previous3 + 5) {
+          stats.trend = 'improving';
+          stats.trendMessage = 'Your scores are improving!';
+        } else if (recent3 < previous3 - 5) {
+          stats.trend = 'declining';
+          stats.trendMessage = 'Your scores are declining. Keep practicing!';
+        } else {
+          stats.trend = 'stable';
+          stats.trendMessage = 'Your performance is consistent';
+        }
+      } else if (data.length >= 2) {
+        const diff = data[0].percentage - data[1].percentage;
+        if (diff > 5) {
+          stats.trend = 'improving';
+          stats.trendMessage = 'Latest score shows improvement!';
+        } else if (diff < -5) {
+          stats.trend = 'declining';
+          stats.trendMessage = 'Latest score is lower. Review weak areas!';
+        } else {
+          stats.trend = 'stable';
+          stats.trendMessage = 'Performance is stable';
+        }
       }
     }
 
-    return { data: stats, error: null };
+    return { success: true, data: stats, error: null };
   } catch (error) {
     console.error('Error fetching exam stats:', error);
-    return { data: null, error };
+    return { success: false, data: null, error: error.message };
   }
 }
 

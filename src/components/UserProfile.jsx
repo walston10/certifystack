@@ -127,26 +127,44 @@ function UserProfile() {
       const profileData = await loadUserProfile();
 
       // Query user_progress table (not lesson_progress)
-      const { data: lessons } = await supabase
+      const { data: lessons, error: lessonsError } = await supabase
         .from('user_progress')
         .select('lesson_id')
         .eq('user_id', user.id)
         .eq('completed', true);
 
-      const { data: labs } = await supabase
+      if (lessonsError && lessonsError.code !== 'PGRST116') {
+        console.warn('Error loading lessons:', lessonsError);
+      }
+
+      const { data: labs, error: labsError } = await supabase
         .from('lab_submissions')
         .select('lab_id')
         .eq('user_id', user.id)
         .eq('completed', true);
 
-      const { data: quizzes } = await supabase
+      if (labsError && labsError.code !== 'PGRST116') {
+        console.warn('Error loading labs:', labsError);
+      }
+
+      const { data: quizzes, error: quizzesError } = await supabase
         .from('quiz_attempts')
-        .select('score')
+        .select('score, total_questions')
         .eq('user_id', user.id);
 
-      const avgScore = quizzes?.length
-        ? Math.round(quizzes.reduce((sum, q) => sum + q.score, 0) / quizzes.length)
-        : 0;
+      if (quizzesError && quizzesError.code !== 'PGRST116') {
+        console.warn('Error loading quizzes:', quizzesError);
+      }
+
+      // Calculate average quiz score as percentage
+      let avgScore = 0;
+      if (quizzes && quizzes.length > 0) {
+        const totalScore = quizzes.reduce((sum, q) => {
+          const percentage = (q.score / q.total_questions) * 100;
+          return sum + percentage;
+        }, 0);
+        avgScore = Math.round(totalScore / quizzes.length);
+      }
 
       const xp = profileData?.xp_points || 0;
       const level = Math.floor(xp / 1000) + 1;
@@ -164,6 +182,16 @@ function UserProfile() {
       setLoading(false);
     } catch (error) {
       console.error('Error loading stats:', error);
+      // Set default values even on error
+      setStats({
+        lessonsCompleted: 0,
+        labsCompleted: 0,
+        quizzesTaken: 0,
+        averageScore: 0,
+        studyStreak: 0,
+        xp: 0,
+        level: 1
+      });
       setLoading(false);
     }
   };
@@ -268,7 +296,7 @@ function UserProfile() {
           <div className="stats-grid">
             <div className="stat-item">
               <div className="stat-label">Lessons Completed</div>
-              <div className="stat-value">{stats.lessonsCompleted}/30</div>
+              <div className="stat-value">{completed}/{networkPlusLessons.length}</div>
             </div>
             <div className="stat-item">
               <div className="stat-label">Labs Completed</div>
