@@ -172,17 +172,17 @@ function LessonViewer() {
         )}
 
         {activeTab === 'activity' && (
-          <ActivityLoader courseId="network-plus" lessonId={parseInt(id)} />
+          <ActivityLoader courseId="network-plus" lessonId={parseInt(actualLessonId)} />
         )}
 
-        {activeTab === 'flashcards' && <FlashcardActivity lessonId={parseInt(id)} />}
+        {activeTab === 'flashcards' && <FlashcardActivity lessonId={parseInt(actualLessonId)} />}
 
-        {activeTab === 'quiz' && <QuizActivity lessonId={parseInt(id)} />}
+        {activeTab === 'quiz' && <QuizActivity lessonId={parseInt(actualLessonId)} />}
       </div>
 
       <div className="footer">
-        {parseInt(id) < networkPlusLessons.length && (
-          <Link to={`/lesson/${parseInt(id) + 1}`}>
+        {parseInt(actualLessonId) < networkPlusLessons.length && (
+          <Link to={`/lesson/${parseInt(actualLessonId) + 1}`}>
             <button className="btn-next">Next Lesson →</button>
           </Link>
         )}
