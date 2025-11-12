@@ -1,11 +1,88 @@
 -- ============================================
--- FIX EXISTING TABLES - Add Missing Columns
+-- FIX EXISTING TABLES - Add Missing Columns and Tables
 -- ============================================
 -- Run this to add missing columns to your existing tables
 
+-- Create profiles table if it doesn't exist
+CREATE TABLE IF NOT EXISTS profiles (
+  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  full_name TEXT,
+  membership_tier TEXT DEFAULT 'free',
+  xp_points INTEGER DEFAULT 0,
+  study_streak INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Enable RLS on profiles if not already enabled
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+
+-- Create RLS policies for profiles if they don't exist
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE tablename = 'profiles' AND policyname = 'Users can view own profile'
+  ) THEN
+    CREATE POLICY "Users can view own profile" ON profiles FOR SELECT USING (auth.uid() = id);
+  END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE tablename = 'profiles' AND policyname = 'Users can insert own profile'
+  ) THEN
+    CREATE POLICY "Users can insert own profile" ON profiles FOR INSERT WITH CHECK (auth.uid() = id);
+  END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE tablename = 'profiles' AND policyname = 'Users can update own profile'
+  ) THEN
+    CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
+  END IF;
+END $$;
+
+-- Create lab_submissions table if it doesn't exist
+CREATE TABLE IF NOT EXISTS lab_submissions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  lab_id TEXT NOT NULL,
+  completed BOOLEAN DEFAULT FALSE,
+  submitted_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id, lab_id)
+);
+
+-- Enable RLS on lab_submissions if not already enabled
+ALTER TABLE lab_submissions ENABLE ROW LEVEL SECURITY;
+
+-- Create RLS policies for lab_submissions if they don't exist
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE tablename = 'lab_submissions' AND policyname = 'Users can view own lab submissions'
+  ) THEN
+    CREATE POLICY "Users can view own lab submissions" ON lab_submissions FOR SELECT USING (auth.uid() = user_id);
+  END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE tablename = 'lab_submissions' AND policyname = 'Users can insert own lab submissions'
+  ) THEN
+    CREATE POLICY "Users can insert own lab submissions" ON lab_submissions FOR INSERT WITH CHECK (auth.uid() = user_id);
+  END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE tablename = 'lab_submissions' AND policyname = 'Users can update own lab submissions'
+  ) THEN
+    CREATE POLICY "Users can update own lab submissions" ON lab_submissions FOR UPDATE USING (auth.uid() = user_id);
+  END IF;
+END $$;
+
 -- Fix user_progress table
 ALTER TABLE user_progress
+ADD COLUMN IF NOT EXISTS completed BOOLEAN DEFAULT FALSE,
 ADD COLUMN IF NOT EXISTS time_spent INTEGER DEFAULT 0;
+
+-- Update existing rows: set completed = true where completed_at is not null
+UPDATE user_progress
+SET completed = TRUE
+WHERE completed_at IS NOT NULL AND completed = FALSE;
 
 -- Fix flashcard_progress table (change lesson_id to card_id)
 -- First, check if lesson_id exists and card_id doesn't
