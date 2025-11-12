@@ -14,7 +14,26 @@ import { lesson7Quiz } from './lesson-07-quiz';
 import { lesson8Quiz } from './lesson-08-quiz';
 import { lesson9Quiz } from './lesson-09-quiz';
 import { lesson10Quiz } from './lesson-10-quiz';
-
+import { lesson11Quiz } from './lesson-11-quiz';
+import { lesson12Quiz } from './lesson-12-quiz';
+import { lesson13Quiz } from './lesson-13-quiz';
+import { lesson14Quiz } from './lesson-14-quiz';
+import { lesson15Quiz } from './lesson-15-quiz';
+import { lesson16Quiz } from './lesson-16-quiz';
+import { lesson17Quiz } from './lesson-17-quiz';
+import { lesson18Quiz } from './lesson-18-quiz';
+import { lesson19Quiz } from './lesson-19-quiz';
+import { lesson20Quiz } from './lesson-20-quiz';
+import { lesson21Quiz } from './lesson-21-quiz';
+import { lesson22Quiz } from './lesson-22-quiz';
+import { lesson23Quiz } from './lesson-23-quiz';
+import { lesson24Quiz } from './lesson-24-quiz';
+import { lesson25Quiz } from './lesson-25-quiz';
+import { lesson26Quiz } from './lesson-26-quiz';
+import { lesson27Quiz } from './lesson-27-quiz';
+import { lesson28Quiz } from './lesson-28-quiz';
+import { lesson29Quiz } from './lesson-29-quiz';
+import { lesson30Quiz } from './lesson-30-quiz';
 
 // Re-export quizzes for direct imports
 export { lesson1Quiz } from './lesson-01-quiz';
@@ -27,6 +46,26 @@ export { lesson7Quiz } from './lesson-07-quiz';
 export { lesson8Quiz } from './lesson-08-quiz';
 export { lesson9Quiz } from './lesson-09-quiz';
 export { lesson10Quiz } from './lesson-10-quiz';
+export { lesson11Quiz } from './lesson-11-quiz';
+export { lesson12Quiz } from './lesson-12-quiz';
+export { lesson13Quiz } from './lesson-13-quiz';
+export { lesson14Quiz } from './lesson-14-quiz';
+export { lesson15Quiz } from './lesson-15-quiz';
+export { lesson16Quiz } from './lesson-16-quiz';
+export { lesson17Quiz } from './lesson-17-quiz';
+export { lesson18Quiz } from './lesson-18-quiz';
+export { lesson19Quiz } from './lesson-19-quiz';
+export { lesson20Quiz } from './lesson-20-quiz';
+export { lesson21Quiz } from './lesson-21-quiz';
+export { lesson22Quiz } from './lesson-22-quiz';
+export { lesson23Quiz } from './lesson-23-quiz';
+export { lesson24Quiz } from './lesson-24-quiz';
+export { lesson25Quiz } from './lesson-25-quiz';
+export { lesson26Quiz } from './lesson-26-quiz';
+export { lesson27Quiz } from './lesson-27-quiz';
+export { lesson28Quiz } from './lesson-28-quiz';
+export { lesson29Quiz } from './lesson-29-quiz';
+export { lesson30Quiz } from './lesson-30-quiz';
 
 // ============================================
 // QUIZ REGISTRY (for dynamic loading by lesson number)
@@ -43,6 +82,26 @@ const allQuizzes = {
   8: lesson8Quiz,
   9: lesson9Quiz,
   10: lesson10Quiz,
+  11: lesson11Quiz,
+  12: lesson12Quiz,
+  13: lesson13Quiz,
+  14: lesson14Quiz,
+  15: lesson15Quiz,
+  16: lesson16Quiz,
+  17: lesson17Quiz,
+  18: lesson18Quiz,
+  19: lesson19Quiz,
+  20: lesson20Quiz,
+  21: lesson21Quiz,
+  22: lesson22Quiz,
+  23: lesson23Quiz,
+  24: lesson24Quiz,
+  25: lesson25Quiz,
+  26: lesson26Quiz,
+  27: lesson27Quiz,
+  28: lesson28Quiz,
+  29: lesson29Quiz,
+  30: lesson30Quiz,
 };
 
 // ============================================

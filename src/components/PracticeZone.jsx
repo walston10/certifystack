@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Target, FileCheck, CreditCard, TrendingUp, AlertTriangle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { getExamAttempts } from '../services/examService';
+import QuizSelectionModal from './QuizSelectionModal';
 import './PracticeZone.css';
 
 function PracticeZone() {
@@ -12,6 +13,7 @@ function PracticeZone() {
   const [flashcardStats, setFlashcardStats] = useState({ mastered: 0, learning: 0, new: 0 });
   const [weakAreas, setWeakAreas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isQuizModalOpen, setIsQuizModalOpen] = useState(false);
 
   useEffect(() => {
     loadAllStats();
@@ -245,9 +247,9 @@ function PracticeZone() {
             <h2>🎯 Topic Quizzes</h2>
             <button
               className="btn-browse-quizzes"
-              onClick={() => navigate('/lessons')}
+              onClick={() => setIsQuizModalOpen(true)}
             >
-              Browse All Lessons
+              Select a Quiz
             </button>
           </div>
 
@@ -270,6 +272,13 @@ function PracticeZone() {
                 <span className="quiz-stat-value">{quizStats.average}%</span>
               </div>
             </div>
+
+            <button
+              className="btn-start-quiz"
+              onClick={() => setIsQuizModalOpen(true)}
+            >
+              Browse All Quizzes
+            </button>
 
             <p className="quiz-info">
               💡 Tip: Complete each lesson before taking its quiz for the best results!
@@ -332,6 +341,12 @@ function PracticeZone() {
           </div>
         </section>
       </div>
+
+      {/* Quiz Selection Modal */}
+      <QuizSelectionModal
+        isOpen={isQuizModalOpen}
+        onClose={() => setIsQuizModalOpen(false)}
+      />
     </div>
   );
 }
