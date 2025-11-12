@@ -14,11 +14,6 @@ function UserProfile() {
   const { progress, loading: progressLoading } = useUserStats();
   const [profile, setProfile] = useState(null);
   const [stats, setStats] = useState({
-    lessonsCompleted: 0,
-    labsCompleted: 0,
-    quizzesTaken: 0,
-    averageScore: 0,
-    studyStreak: 0,
     xp: 0,
     level: 1
   });
@@ -127,58 +122,13 @@ function UserProfile() {
 
   const loadUserStats = async () => {
     try {
-      // Load profile first to get XP
+      // Just load profile for XP
       const profileData = await loadUserProfile();
-
-      // Query user_progress table (not lesson_progress)
-      const { data: lessons, error: lessonsError } = await supabase
-        .from('user_progress')
-        .select('lesson_id')
-        .eq('user_id', user.id)
-        .eq('completed', true);
-
-      if (lessonsError && lessonsError.code !== 'PGRST116') {
-        console.warn('Error loading lessons:', lessonsError);
-      }
-
-      const { data: labs, error: labsError } = await supabase
-        .from('lab_submissions')
-        .select('lab_id')
-        .eq('user_id', user.id)
-        .eq('completed', true);
-
-      if (labsError && labsError.code !== 'PGRST116') {
-        console.warn('Error loading labs:', labsError);
-      }
-
-      const { data: quizzes, error: quizzesError } = await supabase
-        .from('quiz_attempts')
-        .select('score, total_questions')
-        .eq('user_id', user.id);
-
-      if (quizzesError && quizzesError.code !== 'PGRST116') {
-        console.warn('Error loading quizzes:', quizzesError);
-      }
-
-      // Calculate average quiz score as percentage
-      let avgScore = 0;
-      if (quizzes && quizzes.length > 0) {
-        const totalScore = quizzes.reduce((sum, q) => {
-          const percentage = (q.score / q.total_questions) * 100;
-          return sum + percentage;
-        }, 0);
-        avgScore = Math.round(totalScore / quizzes.length);
-      }
 
       const xp = profileData?.xp_points || 0;
       const level = Math.floor(xp / 1000) + 1;
 
       setStats({
-        lessonsCompleted: lessons?.length || 0,
-        labsCompleted: labs?.length || 0,
-        quizzesTaken: quizzes?.length || 0,
-        averageScore: avgScore,
-        studyStreak: profileData?.study_streak || 0,
         xp: xp,
         level: level
       });
@@ -188,11 +138,6 @@ function UserProfile() {
       console.error('Error loading stats:', error);
       // Set default values even on error
       setStats({
-        lessonsCompleted: 0,
-        labsCompleted: 0,
-        quizzesTaken: 0,
-        averageScore: 0,
-        studyStreak: 0,
         xp: 0,
         level: 1
       });
@@ -274,35 +219,6 @@ function UserProfile() {
           </div>
         </section>
 
-        {/* Exam Performance Analytics Widget */}
-        <section className="exam-analytics-section">
-          <DomainPerformanceWidget />
-        </section>
-        <section className="stats-section">
-          <h2>Progress Overview</h2>
-          <div className="stats-grid">
-            <div className="stat-item">
-              <div className="stat-label">Lessons Completed</div>
-              <div className="stat-value">{completed}/{networkPlusLessons.length}</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-label">Labs Completed</div>
-              <div className="stat-value">{stats.labsCompleted}/10</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-label">Quizzes Taken</div>
-              <div className="stat-value">{stats.quizzesTaken}</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-label">Average Score</div>
-              <div className="stat-value">{stats.averageScore}%</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-label">Study Streak</div>
-              <div className="stat-value">{stats.studyStreak} days 🔥</div>
-            </div>
-          </div>
-        </section>
 
         <section className="xp-section">
           <h2>XP Progress</h2>
