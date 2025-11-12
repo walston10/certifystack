@@ -4,6 +4,7 @@ import { Target, FileCheck, CreditCard, TrendingUp, AlertTriangle } from 'lucide
 import { supabase } from '../lib/supabase';
 import { getExamAttempts } from '../services/examService';
 import QuizSelectionModal from './QuizSelectionModal';
+import QuizDebug from './QuizDebug';
 import './PracticeZone.css';
 
 function PracticeZone() {
@@ -114,6 +115,9 @@ function PracticeZone() {
           </div>
         </div>
       </div>
+
+      {/* DEBUG: Quiz Availability - Remove after debugging */}
+      <QuizDebug />
 
       {/* Stats Overview */}
       <section className="stats-overview">
