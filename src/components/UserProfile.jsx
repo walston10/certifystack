@@ -42,7 +42,7 @@ function UserProfile() {
   useEffect(() => {
     loadUserStats();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [completed]); // Reload stats when completed count changes
 
   // --- useEffect for Animations (Runs after data is loaded) ---
   useEffect(() => {

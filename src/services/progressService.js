@@ -11,17 +11,23 @@ export async function markLessonComplete(lessonId, timeSpent = 0) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('User not authenticated');
 
-  // Check if lesson was already completed
-  const { data: existingProgress } = await supabase
-    .from('user_progress')
-    .select('completed')
-    .eq('user_id', user.id)
-    .eq('lesson_id', lessonId)
-    .single();
+  // Check if lesson was already completed (to avoid double XP)
+  let wasAlreadyCompleted = false;
+  try {
+    const { data: existing } = await supabase
+      .from('user_progress')
+      .select('completed')
+      .eq('user_id', user.id)
+      .eq('lesson_id', lessonId)
+      .maybeSingle();
 
-  const wasAlreadyCompleted = existingProgress?.completed === true;
+    wasAlreadyCompleted = existing?.completed === true;
+  } catch (error) {
+    // If RLS blocks this, assume not completed (will award XP)
+    console.warn('Could not check existing completion status:', error);
+  }
 
-  // Mark lesson as complete
+  // Mark lesson as complete (upsert will create or update)
   const { data, error } = await supabase
     .from('user_progress')
     .upsert({
@@ -31,33 +37,38 @@ export async function markLessonComplete(lessonId, timeSpent = 0) {
       time_spent: timeSpent,
       completed_at: new Date().toISOString(),
     }, {
-      onConflict: 'user_id,lesson_id'
+      onConflict: 'user_id,lesson_id',
+      ignoreDuplicates: false // Always update if exists
     })
     .select();
 
   if (error) throw error;
 
-  // Award XP only if this is the first time completing
+  // Award XP only if this is first completion
   if (!wasAlreadyCompleted) {
-    const XP_PER_LESSON = 50; // Award 50 XP per lesson completion
+    const XP_PER_LESSON = 50;
 
-    // Get current XP
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('xp_points')
-      .eq('id', user.id)
-      .single();
+    try {
+      // Get current XP
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('xp_points')
+        .eq('id', user.id)
+        .single();
 
-    const currentXP = profile?.xp_points || 0;
-    const newXP = currentXP + XP_PER_LESSON;
+      const currentXP = profile?.xp_points || 0;
+      const newXP = currentXP + XP_PER_LESSON;
 
-    // Update XP in profile
-    const { error: xpError } = await supabase
-      .from('profiles')
-      .update({ xp_points: newXP })
-      .eq('id', user.id);
+      // Update XP in profile
+      const { error: xpError } = await supabase
+        .from('profiles')
+        .update({ xp_points: newXP })
+        .eq('id', user.id);
 
-    if (xpError) console.error('Error awarding XP:', xpError);
+      if (xpError) console.error('Error awarding XP:', xpError);
+    } catch (xpError) {
+      console.error('Error awarding XP:', xpError);
+    }
   }
 
   return data;
