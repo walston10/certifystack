@@ -57,6 +57,15 @@ function FlashcardSetup() {
     setSelectedLessons([]);
   };
 
+  const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
   const startStudying = () => {
     if (selectedLessons.length === 0) {
       alert('Please select at least one lesson to study.');
@@ -77,10 +86,13 @@ function FlashcardSetup() {
       return;
     }
 
-    // Navigate to flashcard practice with selected cards
+    // Shuffle cards to randomize across all selected lessons
+    const shuffledCards = shuffleArray(cards);
+
+    // Navigate to flashcard practice with shuffled cards
     navigate('/practice/flashcards', {
       state: {
-        cards: cards,
+        cards: shuffledCards,
         sessionTitle: `${selectedLessons.length} Lesson${selectedLessons.length > 1 ? 's' : ''} • ${cards.length} Cards`
       }
     });
