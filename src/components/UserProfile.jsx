@@ -242,15 +242,15 @@ function UserProfile() {
           <h2>Course Progress</h2>
           <div className="hero-stats">
             <div className="stat-item">
-              <span className="stat-value" ref={totalLessonsRef} data-target={networkPlusLessons.length}>0</span>
+              <span className="stat-value">{networkPlusLessons.length}</span>
               <span className="stat-label">Total Lessons</span>
             </div>
             <div className="stat-item">
-              <span className="stat-value" ref={completedRef} data-target={completed}>0</span>
+              <span className="stat-value">{completed}</span>
               <span className="stat-label">Completed</span>
             </div>
             <div className="stat-item">
-              <span className="stat-value" ref={daysRemainingRef} data-target={daysRemaining}>0</span>
+              <span className="stat-value">{daysRemaining}</span>
               <span className="stat-label">Target Days Left</span>
             </div>
           </div>
