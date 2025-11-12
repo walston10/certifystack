@@ -42,12 +42,12 @@ function UserProfile() {
   useEffect(() => {
     loadUserStats();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [completed]); // Reload stats when completed count changes
+  }, []); // Only load once on mount
 
   // --- useEffect for Animations (Runs after data is loaded) ---
   useEffect(() => {
-    // Don't run animations until data is loaded
-    if (loading) return;
+    // Don't run animations until initial data is loaded
+    if (progressLoading) return; // Only wait for progress data, not stats
 
     const animateCounter = (element, target) => {
       if (!element) return;
