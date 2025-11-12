@@ -24,12 +24,17 @@ function DatabaseDebug() {
           .select('*')
           .eq('user_id', user.id);
 
+        const completedCount = data?.filter(d => d.completed === true).length || 0;
+
         results.user_progress = {
           success: !error,
           count: data?.length || 0,
+          completedCount: completedCount,
           error: error?.message,
           sample: data?.[0],
-          allLessonIds: data?.map(d => d.lesson_id)
+          allRecords: data,
+          allLessonIds: data?.map(d => d.lesson_id),
+          completedLessonIds: data?.filter(d => d.completed === true).map(d => d.lesson_id)
         };
       } catch (e) {
         results.user_progress = { error: e.message };
@@ -123,11 +128,21 @@ function DatabaseDebug() {
             <>
               <div style={{ color: '#4ade80' }}>✅ Success</div>
               {info.count !== undefined && (
-                <div style={{ color: '#fff' }}>Records: {info.count}</div>
+                <>
+                  <div style={{ color: '#fff' }}>Total Records: {info.count}</div>
+                  {info.completedCount !== undefined && (
+                    <div style={{ color: '#4ade80' }}>Completed: {info.completedCount}</div>
+                  )}
+                </>
               )}
               {info.allLessonIds && (
                 <div style={{ color: '#fff' }}>
-                  Lesson IDs: {JSON.stringify(info.allLessonIds)}
+                  All Lesson IDs: {JSON.stringify(info.allLessonIds)}
+                </div>
+              )}
+              {info.completedLessonIds && (
+                <div style={{ color: '#4ade80' }}>
+                  Completed Lesson IDs: {JSON.stringify(info.completedLessonIds)}
                 </div>
               )}
               {info.data && (
