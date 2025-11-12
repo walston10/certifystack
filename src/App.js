@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { TourProvider } from './context/TourContext';
 
 // Main Pages
 import HomePage from './components/HomePage';
@@ -23,6 +24,10 @@ import FlashcardSetup from './components/FlashcardSetup';
 import Login from './components/Login';
 import Navigation from './components/Navigation';
 import FloatingChatButton from './components/FloatingChatButton';
+
+// Tour Components
+import WelcomeModal from './components/WelcomeModal';
+import Tour from './components/Tour';
 
 // Practice Exam Components
 import ExamSetup from './components/ExamSetup';
@@ -64,6 +69,14 @@ function AppRoutes() {
     <>
       {/* Show Navigation for authenticated users */}
       {user && <Navigation />}
+
+      {/* Show Tour components for authenticated users */}
+      {user && (
+        <>
+          <WelcomeModal />
+          <Tour />
+        </>
+      )}
 
       <Routes>
         {/* Home Page - Sales Landing */}
@@ -318,9 +331,11 @@ function AppRoutes() {
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <AppRoutes />
-      </Router>
+      <TourProvider>
+        <Router>
+          <AppRoutes />
+        </Router>
+      </TourProvider>
     </AuthProvider>
   );
 }

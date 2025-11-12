@@ -98,6 +98,104 @@
   gap: 16px;
 }
 
+/* Help Menu */
+.help-menu-container {
+  position: relative;
+}
+
+.btn-help {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  border: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-help:hover {
+  background: var(--bg-primary);
+  color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+}
+
+.help-menu-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9998;
+}
+
+.help-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border: 2px solid #00d9ff;
+  border-radius: 12px;
+  min-width: 280px;
+  box-shadow: 0 10px 40px rgba(0, 217, 255, 0.3);
+  z-index: 9999;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.help-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 20px;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+  border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+}
+
+.help-menu-item:last-child {
+  border-bottom: none;
+}
+
+.help-menu-item:hover {
+  background: rgba(0, 217, 255, 0.1);
+}
+
+.help-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.help-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.help-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
 /* Upgrade Button */
 .btn-upgrade {
   display: flex;
@@ -197,6 +295,27 @@
   margin: 8px 0;
 }
 
+.mobile-help-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border: 2px solid var(--accent-cyan);
+  border-radius: 10px;
+  background: rgba(0, 217, 255, 0.1);
+  color: var(--accent-cyan);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+.mobile-help-btn:hover {
+  background: rgba(0, 217, 255, 0.2);
+}
+
 .mobile-upgrade-btn {
   display: flex;
   align-items: center;
@@ -242,6 +361,10 @@
   }
 
   .btn-upgrade {
+    display: none;
+  }
+
+  .help-menu-container {
     display: none;
   }
 
