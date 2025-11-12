@@ -11,10 +11,20 @@ function QuizActivity({ lessonId }) {
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
   const [quizComplete, setQuizComplete] = useState(false);
 
+  // Parse and validate lessonId
+  const parsedLessonId = parseInt(lessonId);
+  const isValidLessonId = !isNaN(parsedLessonId) && parsedLessonId > 0;
+
   // Load quiz when component mounts or lessonId changes
   useEffect(() => {
-    const loadedQuiz = getQuizByLesson(parseInt(lessonId));
-    
+    if (!isValidLessonId) {
+      console.error('Invalid lessonId:', lessonId);
+      setQuiz(null);
+      return;
+    }
+
+    const loadedQuiz = getQuizByLesson(parsedLessonId);
+
     if (loadedQuiz) {
       setQuiz(loadedQuiz);
       // Reset all state when new quiz loads
@@ -27,15 +37,30 @@ function QuizActivity({ lessonId }) {
     } else {
       setQuiz(null);
     }
-  }, [lessonId]);
+  }, [lessonId, parsedLessonId, isValidLessonId]);
+
+  // If lessonId is invalid
+  if (!isValidLessonId) {
+    return (
+      <div className="quiz-activity">
+        <div className="quiz-header">
+          <h2>Error Loading Quiz</h2>
+          <p>Invalid lesson ID: {lessonId}</p>
+        </div>
+        <div className="no-quiz-message">
+          <p>Please return to the lesson and try again.</p>
+        </div>
+      </div>
+    );
+  }
 
   // If quiz doesn't exist yet
-  if (!hasQuiz(parseInt(lessonId))) {
+  if (!hasQuiz(parsedLessonId)) {
     return (
       <div className="quiz-activity">
         <div className="quiz-header">
           <h2>Quiz Not Available</h2>
-          <p>The quiz for Lesson {lessonId} is coming soon!</p>
+          <p>The quiz for Lesson {parsedLessonId} is coming soon!</p>
         </div>
         <div className="no-quiz-message">
           <p>This lesson is still in development. Check back later for the quiz.</p>
