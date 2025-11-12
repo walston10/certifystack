@@ -53,22 +53,28 @@ function PracticeZone() {
       }
 
       // Load flashcard stats
-      const { data: flashcards } = await supabase
+      const { data: flashcards, error: flashcardError } = await supabase
         .from('flashcard_progress')
-        .select('mastery_level')
+        .select('state, repetitions')
         .eq('user_id', user.data.user.id);
 
-      if (flashcards) {
+      if (flashcardError) {
+        console.warn('Error loading flashcard stats:', flashcardError);
+        setFlashcardStats({ mastered: 0, learning: 0, new: 900 });
+      } else if (flashcards) {
         const stats = flashcards.reduce(
           (acc, card) => {
-            if (card.mastery_level >= 5) acc.mastered++;
-            else if (card.mastery_level >= 2) acc.learning++;
+            // Use repetitions as mastery indicator: 0 = new, 1-4 = learning, 5+ = mastered
+            if (card.repetitions >= 5) acc.mastered++;
+            else if (card.repetitions >= 1) acc.learning++;
             else acc.new++;
             return acc;
           },
           { mastered: 0, learning: 0, new: 900 - flashcards.length }
         );
         setFlashcardStats(stats);
+      } else {
+        setFlashcardStats({ mastered: 0, learning: 0, new: 900 });
       }
 
       setLoading(false);
