@@ -5,7 +5,6 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { networkPlusLessons } from '../courses/network-plus/data/lessons';
 import { useUserStats } from '../hooks/useUserStats';
-import DomainPerformanceWidget from './DomainPerformanceWidget';
 import './UserProfile.css';
 
 function UserProfile() {
