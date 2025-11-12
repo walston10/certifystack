@@ -101,7 +101,8 @@ function UserProfile() {
         flatBar.style.width = `${progressPercent}%`;
       }
     }
-  }, [completed, daysRemaining, progressPercentRounded, progressPercent, loading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [completed, daysRemaining, progressPercentRounded, progressPercent]);
 
   const loadUserProfile = async () => {
     try {
