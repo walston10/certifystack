@@ -46,8 +46,8 @@ function UserProfile() {
 
   // --- useEffect for Animations (Runs after data is loaded) ---
   useEffect(() => {
-    // Don't run animations until initial data is loaded
-    if (progressLoading) return; // Only wait for progress data, not stats
+    // Don't run animations until we have data (completed > 0 or progressLoading finished)
+    if (progressLoading && completed === 0) return;
 
     const animateCounter = (element, target) => {
       if (!element) return;
