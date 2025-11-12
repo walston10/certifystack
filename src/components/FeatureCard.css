@@ -42,6 +42,11 @@
   --card-gradient-end: #00b8d4;
 }
 
+.feature-card-teal {
+  --card-gradient-start: #00bfa5;
+  --card-gradient-end: #00897b;
+}
+
 .feature-card-purple {
   --card-gradient-start: var(--accent-purple);
   --card-gradient-end: #9c27b0;
@@ -60,6 +65,16 @@
 .feature-card-blue {
   --card-gradient-start: #2196f3;
   --card-gradient-end: #1976d2;
+}
+
+.feature-card-indigo {
+  --card-gradient-start: #5c6bc0;
+  --card-gradient-end: #3949ab;
+}
+
+.feature-card-yellow {
+  --card-gradient-start: #ffd600;
+  --card-gradient-end: #ffab00;
 }
 
 .feature-card-pink {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User } from 'lucide-react';
+import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Users, ExternalLink, Award } from 'lucide-react';
 import FeatureCard from './FeatureCard';
 import { supabase } from '../lib/supabase';
 import './DashboardHome.css';
@@ -205,7 +205,7 @@ function DashboardHome() {
           status="Always available"
           ctaText="Chat Now"
           ctaLink="/ai-tutor"
-          gradient="purple"
+          gradient="teal"
         />
 
         <FeatureCard
@@ -236,6 +236,36 @@ function DashboardHome() {
           ctaText="Browse Resources"
           ctaLink="/resources"
           gradient="blue"
+        />
+
+        <FeatureCard
+          icon={<Users size={32} />}
+          title="💬 Community"
+          description="Join our Discord community to connect with other students"
+          status="Join the conversation"
+          ctaText="Join Discord"
+          ctaLink="/community"
+          gradient="purple"
+        />
+
+        <FeatureCard
+          icon={<ExternalLink size={32} />}
+          title="🌐 Free Resources"
+          description="Curated collection of the best free study materials online"
+          status="External study tools"
+          ctaText="Explore Resources"
+          ctaLink="/free-resources"
+          gradient="indigo"
+        />
+
+        <FeatureCard
+          icon={<Award size={32} />}
+          title="🏆 Achievements"
+          description="Track your milestones and celebrate your progress"
+          status="Coming soon"
+          ctaText="View Progress"
+          ctaLink="/achievements"
+          gradient="yellow"
         />
 
         <FeatureCard

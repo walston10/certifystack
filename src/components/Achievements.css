@@ -1,0 +1,207 @@
+.achievements-page {
+  padding: 100px 40px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.achievements-header {
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+}
+
+.achievements-header h1 {
+  font-size: 3rem;
+  margin: 0 0 20px;
+  background: linear-gradient(135deg, #ffd600 0%, #ffab00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.achievements-header p {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin: 0 0 20px;
+}
+
+.coming-soon-badge {
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, rgba(255, 214, 0, 0.2), rgba(255, 171, 0, 0.2));
+  border: 2px solid #ffd600;
+  border-radius: 50px;
+  font-weight: 600;
+  color: #ffd600;
+  font-size: 1.1rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 214, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 214, 0, 0.5);
+  }
+}
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.achievement-card {
+  background: var(--bg-secondary);
+  border: 2px solid rgba(255, 214, 0, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  gap: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.achievement-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ffd600, #ffab00);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.achievement-card.unlocked {
+  border-color: #ffd600;
+}
+
+.achievement-card.unlocked:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(255, 214, 0, 0.4);
+}
+
+.achievement-card.unlocked:hover::before {
+  transform: scaleX(1);
+}
+
+.achievement-card.locked {
+  opacity: 0.5;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.achievement-card.locked .achievement-icon {
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+}
+
+.achievement-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ffd600, #ffab00);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  flex-shrink: 0;
+}
+
+.achievement-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.achievement-content h3 {
+  font-size: 1.3rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.achievement-content p {
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.achievement-xp {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(255, 214, 0, 0.1);
+  border: 1px solid rgba(255, 214, 0, 0.3);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #ffd600;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.achievement-unlocked-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #ffd600, #ffab00);
+  color: #000;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.achievements-footer {
+  padding: 32px;
+  background: linear-gradient(135deg, rgba(255, 214, 0, 0.1), rgba(255, 171, 0, 0.1));
+  border: 2px solid rgba(255, 214, 0, 0.2);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.achievements-footer p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.8;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .achievements-page {
+    padding: 80px 20px 40px;
+  }
+
+  .achievements-header h1 {
+    font-size: 2rem;
+  }
+
+  .achievements-header p {
+    font-size: 1rem;
+  }
+
+  .achievements-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .achievement-card {
+    padding: 20px;
+  }
+
+  .achievement-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .achievement-content h3 {
+    font-size: 1.1rem;
+  }
+}

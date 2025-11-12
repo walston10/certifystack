@@ -16,6 +16,8 @@ import UserProfile from './components/UserProfile';
 import CourseCatalog from './components/CourseCatalog';
 import CourseOverview from './components/CourseOverview';
 import Community from './components/Community';
+import FreeResources from './components/FreeResources';
+import Achievements from './components/Achievements';
 
 // Secondary Components
 import SolutionViewer from './components/SolutionViewer';
@@ -240,6 +242,26 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <Community />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Free Resources */}
+        <Route
+          path="/free-resources"
+          element={
+            <ProtectedRoute>
+              <FreeResources />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Achievements */}
+        <Route
+          path="/achievements"
+          element={
+            <ProtectedRoute>
+              <Achievements />
             </ProtectedRoute>
           }
         />
