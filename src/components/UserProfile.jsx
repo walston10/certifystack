@@ -237,56 +237,39 @@ function UserProfile() {
       </div>
 
       <div className="profile-content">
-        {/* Hero Stats Section */}
-        <section className="hero-stats-section">
-          <h2>Course Progress</h2>
-          <div className="hero-stats">
-            <div className="stat-item">
-              <span className="stat-value">{networkPlusLessons.length}</span>
-              <span className="stat-label">Total Lessons</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-value">{completed}</span>
-              <span className="stat-label">Completed</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-value">{daysRemaining}</span>
-              <span className="stat-label">Target Days Left</span>
-            </div>
-          </div>
-        </section>
-
-        {/* Progress Section */}
+        {/* Progress Section - Horizontal Design */}
         <section className="progress-section">
           <div className="progress-card">
-            <div className="progress-header">
-              <h2>Your Progress</h2>
+            <h2>Your Progress</h2>
 
-              <div className="circular-progress-container" ref={progressArcRef}>
-                <svg className="progress-ring" width="100" height="100">
-                  <defs>
-                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" style={{ stopColor: 'var(--accent-cyan)', stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: 'var(--accent-purple)', stopOpacity: 1 }} />
-                    </linearGradient>
-                  </defs>
-                  <circle className="ring-bg" cx="50" cy="50" r="45"></circle>
-                  <circle className="ring-fill" cx="50" cy="50" r="45"></circle>
-                </svg>
-                <span className="progress-percentage-arc">0%</span>
+            <div className="progress-stats-horizontal">
+              <div className="stat-box">
+                <span className="stat-value">{networkPlusLessons.length}</span>
+                <span className="stat-label">Total Lessons</span>
+              </div>
+              <div className="stat-box highlight">
+                <span className="stat-value">{completed}</span>
+                <span className="stat-label">Completed</span>
+              </div>
+              <div className="stat-box">
+                <span className="stat-value">{networkPlusLessons.length - completed}</span>
+                <span className="stat-label">Remaining</span>
+              </div>
+              <div className="stat-box">
+                <span className="stat-value">{daysRemaining}</span>
+                <span className="stat-label">Days Left</span>
+              </div>
+              <div className="stat-box highlight">
+                <span className="stat-value">{progressPercentRounded}%</span>
+                <span className="stat-label">Complete</span>
               </div>
             </div>
 
             <div className="progress-bar-container">
               <div
                 className="progress-bar-fill"
-                style={{ width: `0%` }}
+                style={{ width: `${progressPercent}%` }}
               />
-            </div>
-
-            <div className="progress-details">
-              <span><strong>{completed}</strong> of <strong>{networkPlusLessons.length}</strong> lessons completed</span>
-              <span><strong>{networkPlusLessons.length - completed}</strong> remaining</span>
             </div>
           </div>
         </section>
