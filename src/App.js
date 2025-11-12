@@ -14,6 +14,7 @@ import ResourcesLibrary from './components/ResourcesLibrary';
 import UserProfile from './components/UserProfile';
 import CourseCatalog from './components/CourseCatalog';
 import CourseOverview from './components/CourseOverview';
+import Community from './components/Community';
 
 // Secondary Components
 import SolutionViewer from './components/SolutionViewer';
@@ -216,6 +217,16 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <ResourcesLibrary />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Community */}
+        <Route
+          path="/community"
+          element={
+            <ProtectedRoute>
+              <Community />
             </ProtectedRoute>
           }
         />

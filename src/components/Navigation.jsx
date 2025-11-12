@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Menu, X, Zap, GraduationCap } from 'lucide-react';
+import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Menu, X, Zap, GraduationCap, Users } from 'lucide-react';
 import './Navigation.css';
 
 function Navigation() {
@@ -69,6 +69,14 @@ function Navigation() {
           >
             <FlaskConical size={20} />
             <span>Labs</span>
+          </NavLink>
+
+          <NavLink
+            to="/community"
+            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          >
+            <Users size={20} />
+            <span>Community</span>
           </NavLink>
 
           <NavLink
@@ -153,6 +161,15 @@ function Navigation() {
           >
             <FlaskConical size={20} />
             <span>Labs</span>
+          </NavLink>
+
+          <NavLink
+            to="/community"
+            className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}
+            onClick={closeMobileMenu}
+          >
+            <Users size={20} />
+            <span>Community</span>
           </NavLink>
 
           <NavLink
