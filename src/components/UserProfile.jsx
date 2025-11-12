@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { networkPlusLessons } from '../courses/network-plus/data/lessons';
 import { useUserStats } from '../hooks/useUserStats';
 import DomainPerformanceWidget from './DomainPerformanceWidget';
+import DatabaseDebug from './DatabaseDebug';
 import './UserProfile.css';
 
 function UserProfile() {
@@ -233,6 +234,9 @@ function UserProfile() {
       </div>
 
       <div className="profile-content">
+        {/* Database Debug Info */}
+        <DatabaseDebug />
+
         {/* Hero Stats Section */}
         <section className="hero-stats-section">
           <h2>Course Progress</h2>
