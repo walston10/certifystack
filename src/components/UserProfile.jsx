@@ -11,7 +11,7 @@ import './UserProfile.css';
 function UserProfile() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { progress } = useUserStats();
+  const { progress, loading: progressLoading } = useUserStats();
   const [profile, setProfile] = useState(null);
   const [stats, setStats] = useState({
     lessonsCompleted: 0,
@@ -22,7 +22,10 @@ function UserProfile() {
     xp: 0,
     level: 1
   });
-  const [loading, setLoading] = useState(true);
+  const [statsLoading, setStatsLoading] = useState(true);
+
+  // Combined loading state
+  const loading = progressLoading || statsLoading;
 
   // Refs for the animated stats
   const totalLessonsRef = useRef(null);
@@ -179,7 +182,7 @@ function UserProfile() {
         level: level
       });
 
-      setLoading(false);
+      setStatsLoading(false);
     } catch (error) {
       console.error('Error loading stats:', error);
       // Set default values even on error
@@ -192,7 +195,7 @@ function UserProfile() {
         xp: 0,
         level: 1
       });
-      setLoading(false);
+      setStatsLoading(false);
     }
   };
 
