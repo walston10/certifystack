@@ -427,7 +427,8 @@ nav {
   background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), var(--bg-secondary));
 }
 
-.daily-tile.completed::after {
+/* Removed redundant circle checkmark badge - checkbox already shows completion status */
+/* .daily-tile.completed::after {
   content: '✓';
   position: absolute;
   top: 16px;
@@ -442,7 +443,7 @@ nav {
   justify-content: center;
   font-weight: 700;
   font-size: 1.2rem;
-}
+} */
 
 /* Locked tile styling */
 .daily-tile.locked {
