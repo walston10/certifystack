@@ -233,26 +233,6 @@ function DashboardHome() {
           gradient="pink"
         />
       </section>
-
-      {/* Quick Stats Bar */}
-      <section className="quick-stats">
-        <div className="stat-item">
-          <div className="stat-value">{userStats.lessonsCompleted}</div>
-          <div className="stat-label">Lessons Done</div>
-        </div>
-        <div className="stat-item">
-          <div className="stat-value">{userStats.quizzesTaken}</div>
-          <div className="stat-label">Quizzes Taken</div>
-        </div>
-        <div className="stat-item">
-          <div className="stat-value">{userStats.averageScore}%</div>
-          <div className="stat-label">Avg Score</div>
-        </div>
-        <div className="stat-item">
-          <div className="stat-value">{userStats.studyStreak}</div>
-          <div className="stat-label">Day Streak</div>
-        </div>
-      </section>
     </div>
   );
 }
