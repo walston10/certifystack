@@ -85,10 +85,6 @@ function DashboardHome() {
     }
   };
 
-  const completionPercentage = Math.round(
-    (userStats.lessonsCompleted / userStats.totalLessons) * 100
-  );
-
   const getLevelTitle = (level) => {
     if (level >= 10) return 'Network Master';
     if (level >= 7) return 'Network Professional';
@@ -115,52 +111,11 @@ function DashboardHome() {
           </h1>
 
           <div className="hero-stats">
-            {/* Progress Ring */}
-            <div className="progress-ring-container">
-              <svg className="progress-ring" width="200" height="200">
-                <circle
-                  className="progress-ring-background"
-                  cx="100"
-                  cy="100"
-                  r="80"
-                />
-                <circle
-                  className="progress-ring-progress"
-                  cx="100"
-                  cy="100"
-                  r="80"
-                  style={{
-                    strokeDasharray: `${2 * Math.PI * 80}`,
-                    strokeDashoffset: `${2 * Math.PI * 80 * (1 - completionPercentage / 100)}`
-                  }}
-                />
-                <text
-                  x="100"
-                  y="95"
-                  className="progress-ring-text"
-                  textAnchor="middle"
-                >
-                  {completionPercentage}%
-                </text>
-                <text
-                  x="100"
-                  y="115"
-                  className="progress-ring-subtext"
-                  textAnchor="middle"
-                >
-                  Complete
-                </text>
-              </svg>
-            </div>
-
             {/* Progress Text */}
             <div className="progress-text">
               <p className="progress-message">
                 {userStats.studyStreak > 0 && `You're on fire! 🔥 ${userStats.studyStreak} day streak!`}
                 {userStats.studyStreak === 0 && "Let's build a study streak! 🚀"}
-              </p>
-              <p className="progress-details">
-                {userStats.lessonsCompleted} of {userStats.totalLessons} lessons complete
               </p>
               <button
                 className="btn-continue"
