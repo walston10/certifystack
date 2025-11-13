@@ -31,20 +31,21 @@ function PracticeZone() {
       // Load quiz stats
       const { data: quizAttempts } = await supabase
         .from('quiz_attempts')
-        .select('score, lesson_id')
+        .select('score, total_questions, lesson_id')
         .eq('user_id', user.data.user.id);
 
       if (quizAttempts) {
         const avgScore = quizAttempts.length
-          ? Math.round(quizAttempts.reduce((sum, q) => sum + q.score, 0) / quizAttempts.length)
+          ? Math.round(quizAttempts.reduce((sum, q) => sum + (q.score / q.total_questions * 100), 0) / quizAttempts.length)
           : 0;
         setQuizStats({ taken: quizAttempts.length, average: avgScore });
 
         // Identify weak areas (quizzes with < 70% score)
         const weak = {};
         quizAttempts.forEach(attempt => {
-          if (attempt.score < 70 && !weak[attempt.lesson_id]) {
-            weak[attempt.lesson_id] = attempt.score;
+          const percentage = Math.round((attempt.score / attempt.total_questions) * 100);
+          if (percentage < 70 && !weak[attempt.lesson_id]) {
+            weak[attempt.lesson_id] = percentage;
           }
         });
         const weakList = Object.entries(weak).map(([lessonId, score]) => ({

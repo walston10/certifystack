@@ -13,6 +13,7 @@ import LabsGallery from './components/LabsGallery';
 import LabViewer from './components/LabViewer';
 import ResourcesLibrary from './components/ResourcesLibrary';
 import UserProfile from './components/UserProfile';
+import AccountPage from './pages/AccountPage';
 import CourseCatalog from './components/CourseCatalog';
 import CourseOverview from './components/CourseOverview';
 import Community from './components/Community';
@@ -272,6 +273,16 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <UserProfile />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Account Page */}
+        <Route
+          path="/account"
+          element={
+            <ProtectedRoute>
+              <AccountPage />
             </ProtectedRoute>
           }
         />

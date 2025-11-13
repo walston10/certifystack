@@ -27,7 +27,7 @@ function Navigation() {
   };
 
   const handleUpgrade = () => {
-    navigate('/profile');
+    navigate('/account');
     closeMobileMenu();
   };
 
@@ -162,9 +162,9 @@ function Navigation() {
             )}
           </div>
 
-          {/* Profile Dropdown */}
+          {/* Account/Profile Link */}
           <NavLink
-            to="/profile"
+            to="/account"
             className={({ isActive }) => `nav-profile ${isActive ? 'active' : ''}`}
           >
             <User size={20} />
@@ -248,12 +248,12 @@ function Navigation() {
           </NavLink>
 
           <NavLink
-            to="/profile"
+            to="/account"
             className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}
             onClick={closeMobileMenu}
           >
             <User size={20} />
-            <span>Profile</span>
+            <span>Account</span>
           </NavLink>
 
           <div className="mobile-menu-divider"></div>
