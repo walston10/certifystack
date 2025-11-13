@@ -23,10 +23,10 @@ By the end of this lesson, you will be able to:
 
 ## Video Resources
 
-🔹 **Watch:** [Subnet Masks Explained - Professor Messer](https://www.youtube.com/watch?v=s_Ntt6eTn94)  
-🔹 **Visual Guide:** [Subnet Masks and CIDR - PowerCert](https://www.youtube.com/watch?v=XQ3T14SIlV4)  
-🔹 **Binary ANDing:** [How Subnet Masks Work - NetworkChuck](https://www.youtube.com/watch?v=EkNq4TrHP_U)  
-🔹 **CIDR Notation:** [Subnetting Made Simple - Sunny Classroom](https://www.youtube.com/watch?v=BWZ-MHIhqjM)
+🔹 **Watch:** [Subnet Masks Explained - PowerCert](https://www.youtube.com/watch?v=s_Ntt6eTn94)  
+🔹 **Visual Guide:** [Subnet Masks - NextGen](https://www.youtube.com/watch?v=XQ3T14SIlV4)  
+🔹 **Binary ANDing:** [Subnet Masketing - Eli CPU Guy](https://www.youtube.com/watch?v=EkNq4TrHP_U)  
+🔹 **CIDR Notation:** [Subnetting Made Simple - Sunny Classroom](https://www.youtube.com/watch?v=ecCuyq-Wprc)
 
 ---
 

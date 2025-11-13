@@ -22,10 +22,9 @@ By the end of this lesson, you will be able to:
 
 ## Video Resources
 
-🔹 **Watch:** [IP Addresses Explained - Professor Messer](https://www.youtube.com/watch?v=ddM9AcreVqY)  
-🔹 **Visual Guide:** [IP Address Classes - PowerCert](https://www.youtube.com/watch?v=vcArZIAmnYQ)  
+🔹 **Watch:** [IP Addresses Explained - Next Gen](https://www.youtube.com/watch?v=ddM9AcreVqY)  
+🔹 **Visual Guide:** [IP Address Classes - Sunny Classroom](https://www.youtube.com/watch?v=vcArZIAmnYQ)  
 🔹 **Binary Basics:** [Binary Numbers for Networking - NetworkChuck](https://www.youtube.com/watch?v=5WfiTHiU4x8)  
-🔹 **Deep Dive:** [IPv4 Addressing - Sunny Classroom](https://www.youtube.com/watch?v=XQ3T14SIlV4)
 
 ---
 
@@ -502,13 +501,6 @@ Reserved for research and future use. In practice, these addresses are never use
 | 192 - 223   | C     | Small networks (hundreds of hosts) |
 | 224 - 239   | D     | Multicast |
 | 240 - 255   | E     | Experimental |
-
-**Memory trick:** **"A Big Cat Drank Everything"**
-- **A** = 1-126
-- **B**ig = 128-191
-- **C**at = 192-223
-- **D**rank = 224-239
-- **E**verything = 240-255
 
 ---
 

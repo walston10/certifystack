@@ -28,8 +28,8 @@ By the end of this lesson, you will be able to:
 ## Video Resources
 
 📹 **Watch:** [Network Topologies Explained - PowerCert](https://www.youtube.com/watch?v=zbqrNg4C98U)  
-📹 **Visual Guide:** [Topology Overview - Professor Messer](https://www.youtube.com/watch?v=H7W-zP94HtM)  
-📹 **Real World:** [Network Topologies in Practice - Sunny Classroom](https://www.youtube.com/watch?v=6T8mFeIEIYM)
+📹 **Visual Guide:** [Topology Overview - Professor Messer](https://www.youtube.com/watch?v=3ARTjvpZCoQ)  
+📹 **Real World:** [Network Topologies in Practice - Sunny Classroom](https://www.youtube.com/watch?v=T5xQJk-Aamk)
 
 ---
 

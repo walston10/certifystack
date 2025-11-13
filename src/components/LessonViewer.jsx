@@ -182,7 +182,7 @@ function LessonViewer() {
 
       <div className="footer">
         {parseInt(actualLessonId) < networkPlusLessons.length && (
-          <Link to={`/lesson/${parseInt(actualLessonId) + 1}`}>
+          <Link to={`/course/${actualCourseId}/lesson/${parseInt(actualLessonId) + 1}`}>
             <button className="btn-next">Next Lesson →</button>
           </Link>
         )}

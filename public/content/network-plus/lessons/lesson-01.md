@@ -24,8 +24,8 @@ By the end of this lesson, you will be able to:
 
 📹 **Watch:** [OSI Model Explained - Professor Messer](https://www.youtube.com/watch?v=G7aVKgGUe9c)  
 📹 **Deep Dive:** [OSI vs TCP/IP - Network Chuck](https://www.youtube.com/watch?v=CRdL1PcherM)  
-📹 **Visual Guide:** [7 Layers Animated - PowerCert](https://www.youtube.com/watch?v=vv4y_uOneC0)  
-📹 **Real-World Examples:** [OSI Model in Action - Sunny Classroom](https://www.youtube.com/watch?v=3b_TAYtzuho)  
+📹 **Visual Guide:** [7 Layers Animated - Tech Terms](https://www.youtube.com/watch?v=vv4y_uOneC0)  
+📹 **Real-World Examples:** [OSI Model in Action - Drunk Engineer](https://www.youtube.com/watch?v=3b_TAYtzuho)  
 
 ---
 
