@@ -14,6 +14,7 @@ import LabViewer from './components/LabViewer';
 import ResourcesLibrary from './components/ResourcesLibrary';
 import UserProfile from './components/UserProfile';
 import AccountPage from './pages/AccountPage';
+import CoursesPage from './pages/CoursesPage';
 import CourseCatalog from './components/CourseCatalog';
 import CourseOverview from './components/CourseOverview';
 import FreeResources from './components/FreeResources';
@@ -109,9 +110,19 @@ function AppRoutes() {
           }
         />
 
-        {/* Course Catalog */}
+        {/* Courses Page - Multi-Course Selection */}
         <Route
           path="/courses"
+          element={
+            <ProtectedRoute>
+              <CoursesPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Course Catalog - Legacy */}
+        <Route
+          path="/catalog"
           element={
             <ProtectedRoute>
               <CourseCatalog />
@@ -175,6 +186,16 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <SolutionViewer />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Lessons by Course ID - Simpler URL */}
+        <Route
+          path="/lessons/:courseId"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
             </ProtectedRoute>
           }
         />
