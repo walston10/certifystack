@@ -126,13 +126,13 @@ function SolutionViewer() {
       </div>
 
       <div className="footer">
-        <Link to={`/lab/${lab.id}`}>
+        <Link to={`/course/${actualCourseId}/lab/${lab.id}`}>
           <button className="btn-back-lab">← Back to Lab</button>
         </Link>
-        <Link to={`/lesson/${lab.lessonId}`}>
+        <Link to={`/course/${actualCourseId}/lesson/${lab.lessonId}`}>
           <button className="btn-lesson">Back to Lesson {lab.lessonId}</button>
         </Link>
-        <Link to="/">
+        <Link to="/dashboard">
           <button className="btn-dashboard">Dashboard</button>
         </Link>
       </div>

@@ -181,10 +181,10 @@ function LabViewer() {
       )}
 
       <div className="footer">
-        <Link to={`/lesson/${lab.lessonId}`}>
+        <Link to={`/course/${actualCourseId}/lesson/${lab.lessonId}`}>
           <button className="btn-back">← Back to Lesson</button>
         </Link>
-        <Link to="/">
+        <Link to="/dashboard">
           <button className="btn-dashboard">Dashboard</button>
         </Link>
       </div>
