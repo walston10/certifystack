@@ -23,10 +23,8 @@ By the end of this lesson, you will be able to:
 
 ## Video Resources
 
-**Watch:** [VLSM Explained - Professor Messer](https://www.youtube.com/watch?v=VVeyEimRn68)  
-**Visual Guide:** [Variable Length Subnet Masking - PowerCert](https://www.youtube.com/watch?v=qH87AYAmtdE)  
-**Practice:** [VLSM Design Tutorial - NetworkChuck](https://www.youtube.com/watch?v=EkNq4TrHP_U)  
-**Deep Dive:** [Advanced Subnetting - Sunny Classroom](https://www.youtube.com/watch?v=BWZ-MHIhqjM)
+**Practice:** [Suck at Subnetting - NetworkChuck](https://www.youtube.com/watch?v=OD2vG5st4zI)  
+**Deep Dive:** [Advanced Subnetting - Sunny Classroom](https://www.youtube.com/watch?v=RLCd5u0sjoU)
 
 ---
 
@@ -480,113 +478,6 @@ Cannot be cleanly summarized (not contiguous)
 **Rule 3: Summary routes may include addresses you're not using**
 
 When you summarize 192.168.4.0/24 through 192.168.7.0/24 as 192.168.4.0/22, you're also including any addresses in 192.168.4.0 - 192.168.7.255. Make sure those addresses aren't used elsewhere in your network!
-
----
-
-## Real-World VLSM Scenario: ISP Network
-
-**Scenario:** You're a network engineer at a small ISP. You've been assigned 203.0.113.0/24 by your regional registry. You need to allocate addresses to customers:
-
-- Customer A (business): needs 100 usable IPs
-- Customer B (business): needs 50 usable IPs
-- Customer C (business): needs 25 usable IPs
-- Customer D (small office): needs 10 usable IPs
-- Customer E (small office): needs 10 usable IPs
-- Customer F (home office): needs 5 usable IPs
-- Point-to-point link to upstream provider: 2 IPs
-- Your internal management network: 20 IPs
-
-**Your task:** Design a VLSM addressing scheme.
-
-**Solution:**
-
-**Step 1: Requirements in order**
-
-1. Customer A: 100 → /25 (126 usable)
-2. Customer B: 50 → /26 (62 usable)
-3. Customer C: 25 → /27 (30 usable)
-4. Management: 20 → /27 (30 usable)
-5. Customer D: 10 → /28 (14 usable)
-6. Customer E: 10 → /28 (14 usable)
-7. Customer F: 5 → /29 (6 usable)
-8. Upstream link: 2 → /30 (2 usable)
-
-**Step 2: Sequential allocation**
-
-```
-Customer A: 203.0.113.0/25 (0-127)
-Customer B: 203.0.113.128/26 (128-191)
-Customer C: 203.0.113.192/27 (192-223)
-Management: 203.0.113.224/28 (224-239) -- Wait, /27 needed!
-```
-
-Oops! Let me recalculate with /28 for management (we can make it work with 14 IPs):
-
-```
-Customer A: 203.0.113.0/25 (0-127)
-Customer B: 203.0.113.128/26 (128-191)
-Customer C: 203.0.113.192/27 (192-223)
-Management: 203.0.113.224/28 (224-239)
-Customer D: 203.0.113.240/28 (240-255)
-
-Hmm, we've used 0-255. Need to reconsider...
-```
-
-Actually, let's be smarter. Customer C only needs 25, so /27 (30) is fine. Management needs 20, so /27 (30) is fine. Let me restart:
-
-```
-Customer A: 203.0.113.0/25 (0-127)
-Customer B: 203.0.113.128/26 (128-191)
-Customer C: 203.0.113.192/27 (192-223)
-Customer D: 203.0.113.224/28 (224-239)
-Customer E: 203.0.113.240/28 (240-255)
-
-Now we're out of space in the third octet. We need to fit Management, Customer F, and upstream link.
-```
-
-This reveals an important lesson: **VLSM requires careful planning.** Let me try a better allocation:
-
-```
-Customer A: 203.0.113.0/25 (126 usable) → 0-127
-Customer B: 203.0.113.128/26 (62 usable) → 128-191
-Customer C: 203.0.113.192/27 (30 usable) → 192-223
-Management: 203.0.113.224/27 (30 usable) → 224-255
-
-Total used: 256 addresses (the entire /24!)
-```
-
-We're out of space! We can't fit Customer D, E, F, and the upstream link.
-
-**Solution:** Use smaller subnets where possible, or request more address space.
-
-Actually, let's reconsider. Do Customer C and Management really need /27? Let's optimize:
-
-```
-Customer A: 203.0.113.0/25 (126) → needs 100 ✓
-Customer B: 203.0.113.128/26 (62) → needs 50 ✓
-Customer C: 203.0.113.192/27 (30) → needs 25 ✓
-Management: 203.0.113.224/28 (14) → needs 20 ✗ Too small!
-```
-
-Ah, we need to give Management a /27 (30 usable) because /28 only has 14.
-
-**Final optimized allocation:**
-
-```
-Customer A: 203.0.113.0/25 (0-127, 126 usable)
-Customer B: 203.0.113.128/26 (128-191, 62 usable)
-Customer C: 203.0.113.192/27 (192-223, 30 usable)
-
-Remaining: 203.0.113.224-255 (32 addresses)
-
-Management: 203.0.113.224/27 (224-255, 30 usable) for 20 hosts ✓
-
-But now we have no space left for D, E, F, and upstream!
-```
-
-This is a real-world problem. **The solution:** Request a /23 instead of a /24, giving you 512 addresses instead of 256. Or tell Customer A they're getting a /26 (62 usable) instead of /25, and make it work.
-
-This messy example shows why network planning is hard. VLSM helps, but sometimes there's just not enough address space.
 
 ---
 

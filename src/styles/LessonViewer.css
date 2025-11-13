@@ -166,7 +166,7 @@ header {
   border-radius: 4px;
   font-family: 'Fira Code', monospace;
   font-size: 0.9em;
-  color: var(--accent-purple);
+  color: #00d9ff;
 }
 
 .markdown-content pre {

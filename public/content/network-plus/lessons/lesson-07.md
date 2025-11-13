@@ -25,10 +25,9 @@ By the end of this lesson, you will be able to:
 
 **Watch these videos to reinforce the concepts:**
 
-- **Professor Messer - IPv6 Addressing:** [IPv6 Overview](https://www.youtube.com/watch?v=oItwDXraK1M) (12 min)
-- **NetworkChuck - IPv6 Explained:** [You Suck at Subnetting (IPv6 Edition)](https://www.youtube.com/watch?v=5WfiTHiU4x8) (18 min)
-- **PowerCert - IPv6 Basics:** [IPv6 Addresses Explained](https://www.youtube.com/watch?v=ThdO9beHhpA) (9 min)
-- **Sunny Classroom - IPv6 Deep Dive:** [IPv6 Tutorial](https://www.youtube.com/watch?v=qVQz-bP4fG4) (25 min)
+- **OneMarcFifty - IPv6 Addressing:** [IPv6 Overview](https://www.youtube.com/watch?v=oItwDXraK1M)
+- **PowerCert - IPv6 Basics:** [IPv6 Addresses Explained](https://www.youtube.com/watch?v=ThdO9beHhpA)
+- **Sunny Classroom - IPv6 Deep Dive:** [IPv6 Tutorial](https://www.youtube.com/watch?v=6g_DEcwNgp0&list=PLSNNzog5eydtb5wyH2UtK09L9MsW9Hufq)
 
 ---
 

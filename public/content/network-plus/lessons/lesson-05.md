@@ -22,10 +22,9 @@ By the end of this lesson, you will be able to:
 
 ## Video Resources
 
-**Watch:** [Subnetting Mastery - Professor Messer](https://www.youtube.com/watch?v=BWZ-MHIhqjM)  
-**Visual Guide:** [Subnetting Step by Step - PowerCert](https://www.youtube.com/watch?v=EkNq4TrHP_U)  
-**Practice:** [7 Second Subnetting - NetworkChuck](https://www.youtube.com/watch?v=ZxAwQB8TZsM)  
-**Deep Dive:** [Complete Subnetting Tutorial - Sunny Classroom](https://www.youtube.com/watch?v=BWZ-MHIhqjM)
+**Watch:** [Subnetting Mastery - Practical Networking](https://www.youtube.com/watch?v=BWZ-MHIhqjM)  
+**Visual Guide:** [Subnetting Step by Step - Eli CPU Guy](https://www.youtube.com/watch?v=EkNq4TrHP_U)  
+**Practice:** [7 Second Subnetting - Professor Messer](https://www.youtube.com/watch?v=I3LBYMXBhus)  
 
 ---
 
