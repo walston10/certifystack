@@ -65,8 +65,16 @@ function DashboardHome() {
       const xp = profile?.xp_points || 0;
       const level = Math.floor(xp / 1000) + 1;
 
+      // Get name from profile, user metadata, or email
+      // Google OAuth stores name in user_metadata
+      const displayName = profile?.full_name
+        || user.user_metadata?.full_name
+        || user.user_metadata?.name
+        || user.email?.split('@')[0]
+        || 'Student';
+
       setUserStats({
-        name: profile?.full_name || user.email?.split('@')[0] || 'Student',
+        name: displayName,
         lessonsCompleted: lessonsProgress?.length || 0,
         totalLessons: 30,
         labsCompleted: labsProgress?.length || 0,

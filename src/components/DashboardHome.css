@@ -134,7 +134,7 @@
 .level-number {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--accent-cyan);
+  color: #00d9ff;
 }
 
 .level-title {
@@ -163,7 +163,7 @@
 
 .xp-text {
   font-size: 0.9rem;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* Features Grid */
