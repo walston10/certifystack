@@ -65,8 +65,13 @@ export function updateCard(card, rating) {
       updatedCard.ease = Math.min(2.8, updatedCard.ease + 0.05);
     }
 
-    // Update state based on repetitions
-    if (updatedCard.repetitions >= 2) {
+    // Update state based on interval (days until next review)
+    // learning: interval < 1 day (should be 1 day after first success)
+    // review: interval >= 1 day but < 21 days
+    // mature: interval >= 21 days
+    if (updatedCard.interval >= 21) {
+      updatedCard.state = 'mature';
+    } else if (updatedCard.interval >= 1) {
       updatedCard.state = 'review';
     } else {
       updatedCard.state = 'learning';
