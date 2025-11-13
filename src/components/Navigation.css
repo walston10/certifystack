@@ -196,6 +196,30 @@
   color: var(--text-secondary);
 }
 
+/* Community Button */
+.btn-community {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 2px solid #00d9ff;
+  border-radius: 10px;
+  background: transparent;
+  color: #00d9ff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.btn-community:hover {
+  background: rgba(0, 217, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 217, 255, 0.3);
+}
+
 /* Upgrade Button */
 .btn-upgrade {
   display: flex;

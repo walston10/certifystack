@@ -88,14 +88,6 @@ function Navigation() {
           </NavLink>
 
           <NavLink
-            to="/community"
-            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-          >
-            <Users size={20} />
-            <span>Community</span>
-          </NavLink>
-
-          <NavLink
             to="/resources"
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
@@ -106,6 +98,17 @@ function Navigation() {
 
         {/* Right Side Actions */}
         <div className="nav-actions">
+          {/* Community Button */}
+          <a
+            href="https://discord.gg/YNDe94Z9"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-community"
+          >
+            <Users size={16} />
+            <span>Community</span>
+          </a>
+
           {/* Upgrade Button */}
           <button className="btn-upgrade" onClick={handleUpgrade}>
             <Zap size={16} />
@@ -230,15 +233,6 @@ function Navigation() {
           </NavLink>
 
           <NavLink
-            to="/community"
-            className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}
-            onClick={closeMobileMenu}
-          >
-            <Users size={20} />
-            <span>Community</span>
-          </NavLink>
-
-          <NavLink
             to="/resources"
             className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}
             onClick={closeMobileMenu}
@@ -246,6 +240,17 @@ function Navigation() {
             <FileText size={20} />
             <span>Resources</span>
           </NavLink>
+
+          <a
+            href="https://discord.gg/YNDe94Z9"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mobile-nav-link"
+            onClick={closeMobileMenu}
+          >
+            <Users size={20} />
+            <span>Community</span>
+          </a>
 
           <NavLink
             to="/account"

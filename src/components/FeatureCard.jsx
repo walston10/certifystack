@@ -10,7 +10,8 @@ function FeatureCard({
   ctaText,
   ctaLink,
   gradient = 'cyan',
-  onClick
+  onClick,
+  external = false
 }) {
   const navigate = useNavigate();
 
@@ -18,7 +19,11 @@ function FeatureCard({
     if (onClick) {
       onClick();
     } else if (ctaLink) {
-      navigate(ctaLink);
+      if (external) {
+        window.open(ctaLink, '_blank', 'noopener,noreferrer');
+      } else {
+        navigate(ctaLink);
+      }
     }
   };
 

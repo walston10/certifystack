@@ -54,11 +54,11 @@ function DashboardHome() {
       // Get quiz stats
       const { data: quizAttempts } = await supabase
         .from('quiz_attempts')
-        .select('score')
+        .select('score, total_questions')
         .eq('user_id', user.id);
 
       const avgScore = quizAttempts?.length
-        ? Math.round(quizAttempts.reduce((sum, q) => sum + q.score, 0) / quizAttempts.length)
+        ? Math.round(quizAttempts.reduce((sum, q) => sum + (q.score / q.total_questions * 100), 0) / quizAttempts.length)
         : 0;
 
       // Calculate level from XP (every 1000 XP = 1 level)
@@ -207,8 +207,9 @@ function DashboardHome() {
           description="Join our Discord community to connect with other students"
           status="Join the conversation"
           ctaText="Join Discord"
-          ctaLink="/community"
+          ctaLink="https://discord.gg/YNDe94Z9"
           gradient="purple"
+          external={true}
         />
 
         <FeatureCard
