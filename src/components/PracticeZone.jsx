@@ -58,7 +58,7 @@ function PracticeZone() {
       // Load flashcard stats
       const { data: flashcards, error: flashcardError } = await supabase
         .from('flashcard_progress')
-        .select('state, repetitions')
+        .select('state')
         .eq('user_id', user.data.user.id);
 
       if (flashcardError) {
@@ -67,10 +67,14 @@ function PracticeZone() {
       } else if (flashcards) {
         const stats = flashcards.reduce(
           (acc, card) => {
-            // Use repetitions as mastery indicator: 0 = new, 1-4 = learning, 5+ = mastered
-            if (card.repetitions >= 5) acc.mastered++;
-            else if (card.repetitions >= 1) acc.learning++;
-            else acc.new++;
+            // Use actual state field from database
+            // Mastered = review + mature states
+            if (card.state === 'review' || card.state === 'mature') {
+              acc.mastered++;
+            } else if (card.state === 'learning') {
+              acc.learning++;
+            }
+            // 'new' state cards are not in DB yet, counted separately
             return acc;
           },
           { mastered: 0, learning: 0, new: 900 - flashcards.length }
