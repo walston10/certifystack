@@ -25,17 +25,17 @@ By the end of this lesson, you will be able to:
 
 **Watch these videos to reinforce the concepts:**
 
-1. **Professor Messer - Network Cables** (10 min)  
+1. **Powercert - Network Cables** 
    https://www.youtube.com/watch?v=_NX99ad2FUA
 
-2. **PowerCert - Ethernet Cables Explained** (8 min)  
+2. **Messer - Copper Cables**
    https://www.youtube.com/watch?v=_NX99ad2FUA
 
-3. **NetworkChuck - How to Make Ethernet Cables** (15 min)  
+3. **Messer - Fiber Optic Cables**  
    https://www.youtube.com/watch?v=lullzS740wI
 
-4. **Sunny Classroom - Fiber Optic Cables** (12 min)  
-   https://www.youtube.com/watch?v=r_xkMxIzzfE
+4. **Network Chuck - Kids Make Ethernet Cables**  
+   https://www.youtube.com/watch?v=y8h5qY3zwic
 
 ---
 

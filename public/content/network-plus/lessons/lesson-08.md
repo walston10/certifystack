@@ -25,10 +25,10 @@ By the end of this lesson, you will be able to:
 
 ## Video Resources
 
-🔹 **DNS Explained:** [DNS (Domain Name System) - Professor Messer](https://www.youtube.com/watch?v=mpQZVYPuDGU)  
+🔹 **DNS Explained:** [DNS (Domain Name System) - PowerCert](https://www.youtube.com/watch?v=mpQZVYPuDGU)  
 🔹 **DHCP Deep Dive:** [DHCP Explained - PowerCert](https://www.youtube.com/watch?v=e6-TaH5bkjo)  
-🔹 **DNS Records Tutorial:** [DNS Record Types Explained - NetworkChuck](https://www.youtube.com/watch?v=HnUDtycXSNE)  
-🔹 **DHCP Process:** [Understanding DHCP - Sunny Classroom](https://www.youtube.com/watch?v=S43CFcpOZSI)
+🔹 **DNS Records Tutorial:** [DNS Record Types Explained - NetworkChuck](https://www.youtube.com/watch?v=NiQTs9DbtW4)  
+🔹 **DHCP Process:** [Understanding DHCP - Messer](https://www.youtube.com/watch?v=b7fiXM3vO18&t=17s)
 
 ---
 

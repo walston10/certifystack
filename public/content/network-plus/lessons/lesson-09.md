@@ -23,10 +23,10 @@ By the end of this lesson, you will be able to:
 
 ## Video Resources
 
-🔹 **Port Numbers Overview:** [Understanding Port Numbers - Professor Messer](https://www.youtube.com/watch?v=g2fT-g9PX9o)  
-🔹 **Common Ports Explained:** [Network Ports Explained - PowerCert](https://www.youtube.com/watch?v=RDotMcs0Erg)  
-🔹 **TCP vs UDP:** [TCP vs UDP Comparison - NetworkChuck](https://www.youtube.com/watch?v=uwoD5YsGACg)  
-🔹 **Wireshark Basics:** [Wireshark Tutorial for Beginners - NetworkChuck](https://www.youtube.com/watch?v=TkCSr30UojM)
+🔹 **Port Numbers Overview:** [Understanding Port Numbers - Professor Messer](https://www.youtube.com/watch?v=jX1pobYmZdE)  
+🔹 **Common Ports Explained:** [Port Numbers to Know - Cyber James](https://www.youtube.com/watch?v=xBKctNm2fE0)  
+🔹 **TCP vs UDP:** [TCP vs UDP Comparison - PowerCert](https://www.youtube.com/watch?v=uwoD5YsGACg)  
+🔹 **Wireshark Basics:** [Wireshark Tutorial for Beginners - Anson Alexander](https://www.youtube.com/watch?v=qTaOZrDnMzQ)
 
 ---
 
