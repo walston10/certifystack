@@ -37,7 +37,7 @@ function Community() {
             )}
 
             <iframe
-              src="https://discord.com/widget?id=1312195655916769342&theme=dark"
+              src="https://discord.com/widget?id=1437522931751059640&theme=dark"
               width="100%"
               height="500"
               allowTransparency="true"
