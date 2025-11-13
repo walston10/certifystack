@@ -7,7 +7,7 @@ import { supabase } from '../lib/supabase';
 /**
  * Mark a lesson as complete and award XP
  */
-export async function markLessonComplete(lessonId, timeSpent = 0) {
+export async function markLessonComplete(lessonId, timeSpent = 0, courseId = 'network-plus') {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('User not authenticated');
 
@@ -15,9 +15,10 @@ export async function markLessonComplete(lessonId, timeSpent = 0) {
   let wasAlreadyCompleted = false;
   try {
     const { data: existing } = await supabase
-      .from('user_progress')
+      .from('lesson_progress')
       .select('completed')
       .eq('user_id', user.id)
+      .eq('course_id', courseId)
       .eq('lesson_id', lessonId)
       .maybeSingle();
 
@@ -29,15 +30,16 @@ export async function markLessonComplete(lessonId, timeSpent = 0) {
 
   // Mark lesson as complete (upsert will create or update)
   const { data, error } = await supabase
-    .from('user_progress')
+    .from('lesson_progress')
     .upsert({
       user_id: user.id,
+      course_id: courseId,
       lesson_id: lessonId,
       completed: true,
       time_spent: timeSpent,
-      completed_at: new Date().toISOString(),
+      completion_date: new Date().toISOString(),
     }, {
-      onConflict: 'user_id,lesson_id',
+      onConflict: 'user_id,course_id,lesson_id',
       ignoreDuplicates: false // Always update if exists
     })
     .select();
@@ -77,14 +79,15 @@ export async function markLessonComplete(lessonId, timeSpent = 0) {
 /**
  * Get all completed lessons for current user
  */
-export async function getCompletedLessons() {
+export async function getCompletedLessons(courseId = 'network-plus') {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
 
   const { data, error } = await supabase
-    .from('user_progress')
+    .from('lesson_progress')
     .select('lesson_id')
     .eq('user_id', user.id)
+    .eq('course_id', courseId)
     .eq('completed', true);
 
   if (error) throw error;
@@ -98,7 +101,7 @@ export async function getCompletedLessons() {
 /**
  * Save quiz score
  */
-export async function saveQuizScore(lessonId, score, totalQuestions) {
+export async function saveQuizScore(lessonId, score, totalQuestions, courseId = 'network-plus', quizType = 'lesson-quiz', answers = []) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('User not authenticated');
 
@@ -106,10 +109,13 @@ export async function saveQuizScore(lessonId, score, totalQuestions) {
     .from('quiz_attempts')
     .insert({
       user_id: user.id,
+      course_id: courseId,
       lesson_id: lessonId,
+      quiz_type: quizType,
       score,
       total_questions: totalQuestions,
-      attempted_at: new Date().toISOString(),
+      answers,
+      created_at: new Date().toISOString(),
     })
     .select();
 

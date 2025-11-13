@@ -17,27 +17,36 @@ function DatabaseDebug() {
     const checkDatabase = async () => {
       const results = {};
 
-      // Check user_progress table
+      // Check lesson_progress table
       try {
         const { data, error } = await supabase
-          .from('user_progress')
+          .from('lesson_progress')
           .select('*')
           .eq('user_id', user.id);
 
         const completedCount = data?.filter(d => d.completed === true).length || 0;
+        const courseBreakdown = {};
+        data?.forEach(d => {
+          if (!courseBreakdown[d.course_id]) {
+            courseBreakdown[d.course_id] = { total: 0, completed: 0 };
+          }
+          courseBreakdown[d.course_id].total++;
+          if (d.completed) courseBreakdown[d.course_id].completed++;
+        });
 
-        results.user_progress = {
+        results.lesson_progress = {
           success: !error,
           count: data?.length || 0,
           completedCount: completedCount,
+          courseBreakdown: courseBreakdown,
           error: error?.message,
           sample: data?.[0],
           allRecords: data,
-          allLessonIds: data?.map(d => d.lesson_id),
-          completedLessonIds: data?.filter(d => d.completed === true).map(d => d.lesson_id)
+          allLessonIds: data?.map(d => `${d.course_id}:${d.lesson_id}`),
+          completedLessonIds: data?.filter(d => d.completed === true).map(d => `${d.course_id}:${d.lesson_id}`)
         };
       } catch (e) {
-        results.user_progress = { error: e.message };
+        results.lesson_progress = { error: e.message };
       }
 
       // Check profiles table

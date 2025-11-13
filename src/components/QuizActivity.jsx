@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getQuizByLesson, hasQuiz } from '../courses/network-plus/quizzes';
+import { saveQuizScore } from '../services/progressService';
 import '../styles/QuizActivity.css';
 
 function QuizActivity({ lessonId }) {
@@ -10,6 +11,8 @@ function QuizActivity({ lessonId }) {
   const [score, setScore] = useState(0);
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
   const [quizComplete, setQuizComplete] = useState(false);
+  const [savingResults, setSavingResults] = useState(false);
+  const [saveError, setSaveError] = useState(null);
 
   // Parse and validate lessonId
   const parsedLessonId = parseInt(lessonId);
@@ -111,15 +114,35 @@ function QuizActivity({ lessonId }) {
     }
   };
 
-  const handleNextQuestion = () => {
+  const handleNextQuestion = async () => {
     if (currentQuestionIndex < totalQuestions - 1) {
       // Move to next question
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedAnswer(null);
       setShowExplanation(false);
     } else {
-      // Quiz complete
+      // Quiz complete - save results to database
       setQuizComplete(true);
+      setSavingResults(true);
+      setSaveError(null);
+
+      try {
+        // Save quiz results to database
+        await saveQuizScore(
+          parsedLessonId,
+          score,
+          totalQuestions,
+          'network-plus', // courseId - hardcoded for now, could be passed as prop
+          'lesson-quiz',
+          answeredQuestions
+        );
+        console.log('Quiz results saved successfully');
+      } catch (error) {
+        console.error('Error saving quiz results:', error);
+        setSaveError(error.message);
+      } finally {
+        setSavingResults(false);
+      }
     }
   };
 
@@ -141,7 +164,25 @@ function QuizActivity({ lessonId }) {
       <div className="quiz-activity">
         <div className={`quiz-results ${passed ? 'passed' : 'failed'}`}>
           <h2>Quiz Complete!</h2>
-          
+
+          {savingResults && (
+            <div style={{ padding: '10px', background: '#ffa500', color: '#000', borderRadius: '4px', marginBottom: '15px' }}>
+              Saving your results...
+            </div>
+          )}
+
+          {saveError && (
+            <div style={{ padding: '10px', background: '#ff4444', color: '#fff', borderRadius: '4px', marginBottom: '15px' }}>
+              ⚠️ Error saving results: {saveError}
+            </div>
+          )}
+
+          {!savingResults && !saveError && (
+            <div style={{ padding: '10px', background: '#4ade80', color: '#000', borderRadius: '4px', marginBottom: '15px' }}>
+              ✓ Results saved to your profile!
+            </div>
+          )}
+
           <div className="score-display">
             <div className="score-big">{percentage}%</div>
             <div className="score-details">
