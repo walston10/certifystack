@@ -380,7 +380,7 @@
   display: block;
   font-size: 2rem;
   font-weight: 700;
-  color: var(--accent-cyan);
+  color: #00d9ff;
 }
 
 .quiz-info {
