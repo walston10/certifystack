@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, LogOut, TrendingUp, Target, Award, Flame, Zap, CreditCard } from 'lucide-react';
+import { User, LogOut, Target, Award, Flame, Zap, CreditCard } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import {
