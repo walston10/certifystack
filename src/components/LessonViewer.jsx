@@ -6,9 +6,11 @@ import rehypeRaw from 'rehype-raw';
 import { networkPlusLessons } from '../courses/network-plus/data/lessons';
 import { getLabByLessonId } from '../courses/network-plus/data/labs';
 import { getQuizByLesson } from '../courses/network-plus/quizzes';
+import { supabase } from '../lib/supabase';
 import FlashcardActivity from './FlashcardActivity';
 import QuizActivity from './QuizActivity';
 import ActivityLoader from './activities/ActivityLoader';
+import LockedContent from './LockedContent';
 import '../styles/LessonViewer.css';
 
 function LessonViewer() {
@@ -17,6 +19,8 @@ function LessonViewer() {
   const navigate = useNavigate();
   const [content, setContent] = useState('');
   const [labContent, setLabContent] = useState('');
+  const [isPremium, setIsPremium] = useState(false);
+  const [loadingTier, setLoadingTier] = useState(true);
 
   // Support both old (id) and new (lessonId) param names for backward compatibility
   const actualLessonId = lessonId || id;
@@ -31,6 +35,35 @@ function LessonViewer() {
   const labInfo = getLabByLessonId(parseInt(actualLessonId));
   const quizInfo = getQuizByLesson(parseInt(actualLessonId));
   const hasActivity = [1, 2].includes(parseInt(actualLessonId));
+
+  // Check if content is locked (lesson > 3 and user is not premium)
+  const isContentLocked = (lessonNumber) => {
+    return lessonNumber > 3 && !isPremium;
+  };
+
+  useEffect(() => {
+    // Load user's membership tier
+    const loadMembershipTier = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('membership_tier')
+            .eq('id', user.id)
+            .single();
+
+          setIsPremium(profile?.membership_tier === 'premium');
+        }
+      } catch (error) {
+        console.error('Error loading membership tier:', error);
+      } finally {
+        setLoadingTier(false);
+      }
+    };
+
+    loadMembershipTier();
+  }, []);
 
   useEffect(() => {
     // Load main lesson content from course-specific directory
@@ -149,35 +182,51 @@ function LessonViewer() {
         )}
 
         {activeTab === 'lab' && labInfo && (
-          <div className="lab-content-wrapper">
-            <div className="lab-header">
-              <h2>{labInfo.title}</h2>
-              <div className="lab-meta">
-                <span className={`difficulty difficulty-${labInfo.difficulty.toLowerCase()}`}>
-                  {labInfo.difficulty}
-                </span>
-                <span className="time">⏱️ {labInfo.estimatedTime}</span>
-                <span className="xp">⭐ {labInfo.xpReward} XP</span>
+          isContentLocked(parseInt(actualLessonId)) ? (
+            <LockedContent type="lab" itemNumber={parseInt(actualLessonId)} />
+          ) : (
+            <div className="lab-content-wrapper">
+              <div className="lab-header">
+                <h2>{labInfo.title}</h2>
+                <div className="lab-meta">
+                  <span className={`difficulty difficulty-${labInfo.difficulty.toLowerCase()}`}>
+                    {labInfo.difficulty}
+                  </span>
+                  <span className="time">⏱️ {labInfo.estimatedTime}</span>
+                  <span className="xp">⭐ {labInfo.xpReward} XP</span>
+                </div>
+                <button className="btn-solution" onClick={() => setShowSolutionWarning(true)}>
+                  📝 View Solution
+                </button>
               </div>
-              <button className="btn-solution" onClick={() => setShowSolutionWarning(true)}>
-                📝 View Solution
-              </button>
+              <div className="markdown-content">
+                <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                  {labContent}
+                </ReactMarkdown>
+              </div>
             </div>
-            <div className="markdown-content">
-              <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                {labContent}
-              </ReactMarkdown>
-            </div>
-          </div>
+          )
         )}
 
         {activeTab === 'activity' && (
           <ActivityLoader courseId="network-plus" lessonId={parseInt(actualLessonId)} />
         )}
 
-        {activeTab === 'flashcards' && <FlashcardActivity lessonId={parseInt(actualLessonId)} />}
+        {activeTab === 'flashcards' && (
+          isContentLocked(parseInt(actualLessonId)) ? (
+            <LockedContent type="flashcards" itemNumber={parseInt(actualLessonId)} />
+          ) : (
+            <FlashcardActivity lessonId={parseInt(actualLessonId)} />
+          )
+        )}
 
-        {activeTab === 'quiz' && <QuizActivity lessonId={parseInt(actualLessonId)} />}
+        {activeTab === 'quiz' && (
+          isContentLocked(parseInt(actualLessonId)) ? (
+            <LockedContent type="quiz" itemNumber={parseInt(actualLessonId)} />
+          ) : (
+            <QuizActivity lessonId={parseInt(actualLessonId)} />
+          )
+        )}
       </div>
 
       <div className="footer">

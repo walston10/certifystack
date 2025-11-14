@@ -1,15 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CreditCard, CheckCircle, Circle } from 'lucide-react';
+import { CreditCard, CheckCircle, Circle, Lock } from 'lucide-react';
 import { networkPlusLessons } from '../courses/network-plus/data/lessons';
 import { allFlashcards } from '../courses/network-plus/flashcards';
 import { getDomainConfig } from '../courses/network-plus/data/domainConfig';
+import { supabase } from '../lib/supabase';
+import { createCheckoutSession } from '../lib/stripe';
 import './FlashcardSetup.css';
 
 function FlashcardSetup() {
   const navigate = useNavigate();
   const [selectedLessons, setSelectedLessons] = useState([]);
+  const [isPremium, setIsPremium] = useState(false);
+  const [upgrading, setUpgrading] = useState(false);
   // const [studyMode, setStudyMode] = useState('all'); // 'all', 'new', 'review' - Future feature
+
+  // Load membership tier
+  useEffect(() => {
+    const loadMembershipTier = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('membership_tier')
+            .eq('id', user.id)
+            .single();
+
+          setIsPremium(profile?.membership_tier === 'premium');
+        }
+      } catch (error) {
+        console.error('Error loading membership tier:', error);
+      }
+    };
+
+    loadMembershipTier();
+  }, []);
 
   // Group lessons by domain
   const lessonsByDomain = networkPlusLessons.reduce((acc, lesson) => {
@@ -20,7 +46,30 @@ function FlashcardSetup() {
     return acc;
   }, {});
 
+  const isLessonLocked = (lessonId) => {
+    return lessonId > 3 && !isPremium;
+  };
+
+  const handleUpgrade = async () => {
+    setUpgrading(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await createCheckoutSession(user.id, user.email);
+      }
+    } catch (error) {
+      console.error('Error starting checkout:', error);
+      alert('Failed to start checkout. Please try again.');
+      setUpgrading(false);
+    }
+  };
+
   const toggleLesson = (lessonId) => {
+    if (isLessonLocked(lessonId)) {
+      handleUpgrade();
+      return;
+    }
+
     setSelectedLessons(prev =>
       prev.includes(lessonId)
         ? prev.filter(id => id !== lessonId)
@@ -184,21 +233,28 @@ function FlashcardSetup() {
                 <div className="lessons-grid">
                   {lessons.map(lesson => {
                     const isSelected = selectedLessons.includes(lesson.id);
+                    const locked = isLessonLocked(lesson.id);
                     const cardCount = Array.isArray(allFlashcards[lesson.id]) ? allFlashcards[lesson.id].length : 0;
 
                     return (
                       <div
                         key={lesson.id}
-                        className={`lesson-card ${isSelected ? 'selected' : ''}`}
+                        className={`lesson-card ${isSelected ? 'selected' : ''} ${locked ? 'locked' : ''}`}
                         onClick={() => toggleLesson(lesson.id)}
                       >
                         <div className="lesson-checkbox">
-                          {isSelected ? <CheckCircle size={20} /> : <Circle size={20} />}
+                          {locked ? (
+                            <Lock size={20} />
+                          ) : isSelected ? (
+                            <CheckCircle size={20} />
+                          ) : (
+                            <Circle size={20} />
+                          )}
                         </div>
                         <div className="lesson-info">
                           <div className="lesson-title">Lesson {lesson.id}: {lesson.title}</div>
                           <div className="lesson-meta">
-                            {cardCount} cards
+                            {locked ? 'Premium Only' : `${cardCount} cards`}
                           </div>
                         </div>
                       </div>

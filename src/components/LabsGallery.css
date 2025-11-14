@@ -95,6 +95,29 @@
   border-color: #00e676;
 }
 
+.lab-card.locked {
+  opacity: 0.7;
+  border-color: rgba(255, 215, 0, 0.3);
+}
+
+.lab-card.locked:hover {
+  border-color: rgba(255, 215, 0, 0.6);
+  box-shadow: 0 8px 24px rgba(255, 215, 0, 0.2);
+}
+
+.lab-locked-badge {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.1);
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .lab-difficulty {
   display: inline-block;
   padding: 6px 12px;
