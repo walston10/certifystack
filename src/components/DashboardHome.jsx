@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Users, ExternalLink, Award, GraduationCap } from 'lucide-react';
+import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Users, ExternalLink, Gamepad2, GraduationCap } from 'lucide-react';
 import FeatureCard from './FeatureCard';
 import { supabase } from '../lib/supabase';
 import { getActiveCourse } from '../services/courseService';
@@ -247,12 +247,12 @@ function DashboardHome() {
         />
 
         <FeatureCard
-          icon={<Award size={32} />}
-          title="Achievements"
-          description="Track your milestones and celebrate your progress"
-          status="Coming soon"
-          ctaText="View Progress"
-          ctaLink="/achievements"
+          icon={<Gamepad2 size={32} />}
+          title="Study Games"
+          description="Fun, interactive games to reinforce networking concepts"
+          status="Learn while playing"
+          ctaText="Play Games"
+          ctaLink="/games"
           gradient="yellow"
         />
 
