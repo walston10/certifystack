@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FlaskConical, CheckCircle } from 'lucide-react';
+import { FlaskConical, CheckCircle, Lock } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { createCheckoutSession } from '../lib/stripe';
 import { networkPlusLabs } from '../courses/network-plus/data/labs';
 import './LabsGallery.css';
 
@@ -9,13 +10,33 @@ function LabsGallery() {
   const navigate = useNavigate();
   const { courseId } = useParams();
   const [completedLabs, setCompletedLabs] = useState([]);
+  const [isPremium, setIsPremium] = useState(false);
+  const [upgrading, setUpgrading] = useState(false);
 
   // Default to network-plus for backward compatibility
   const actualCourseId = courseId || 'network-plus';
 
   useEffect(() => {
     loadLabsProgress();
+    loadMembershipTier();
   }, []);
+
+  const loadMembershipTier = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('membership_tier')
+          .eq('id', user.id)
+          .single();
+
+        setIsPremium(profile?.membership_tier === 'premium');
+      }
+    } catch (error) {
+      console.error('Error loading membership tier:', error);
+    }
+  };
 
   const loadLabsProgress = async () => {
     try {
@@ -35,6 +56,30 @@ function LabsGallery() {
   };
 
   const isCompleted = (labId) => completedLabs.includes(labId);
+
+  const isLabLocked = (labIndex) => {
+    // Lab index starts at 0, so labs at index 0, 1, 2 are free (first 3 labs)
+    return labIndex > 2 && !isPremium;
+  };
+
+  const handleLabClick = async (lab, labIndex) => {
+    if (isLabLocked(labIndex)) {
+      // Trigger upgrade flow
+      setUpgrading(true);
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await createCheckoutSession(user.id, user.email);
+        }
+      } catch (error) {
+        console.error('Error starting checkout:', error);
+        alert('Failed to start checkout. Please try again.');
+        setUpgrading(false);
+      }
+    } else {
+      navigate(`/course/${actualCourseId}/lab/${lab.id}`);
+    }
+  };
 
   return (
     <div className="labs-gallery">
@@ -62,35 +107,44 @@ function LabsGallery() {
       </div>
 
       <div className="labs-grid">
-        {networkPlusLabs.map(lab => (
-          <div
-            key={lab.id}
-            className={`lab-card ${isCompleted(lab.id) ? 'completed' : ''}`}
-            onClick={() => navigate(`/course/${actualCourseId}/lab/${lab.id}`)}
-          >
-            <div className={`lab-difficulty ${lab.difficulty.toLowerCase()}`}>
-              {lab.difficulty}
-            </div>
-
-            {isCompleted(lab.id) && (
-              <div className="lab-completed-badge">
-                <CheckCircle size={20} />
+        {networkPlusLabs.map((lab, index) => {
+          const locked = isLabLocked(index);
+          return (
+            <div
+              key={lab.id}
+              className={`lab-card ${isCompleted(lab.id) ? 'completed' : ''} ${locked ? 'locked' : ''}`}
+              onClick={() => handleLabClick(lab, index)}
+            >
+              <div className={`lab-difficulty ${lab.difficulty.toLowerCase()}`}>
+                {lab.difficulty}
               </div>
-            )}
 
-            <h3>{lab.title}</h3>
+              {locked && (
+                <div className="lab-locked-badge">
+                  <Lock size={20} />
+                </div>
+              )}
 
-            <div className="lab-meta">
-              <span>{lab.estimatedTime}</span>
-              <span>•</span>
-              <span>{lab.xpReward} XP</span>
+              {!locked && isCompleted(lab.id) && (
+                <div className="lab-completed-badge">
+                  <CheckCircle size={20} />
+                </div>
+              )}
+
+              <h3>{lab.title}</h3>
+
+              <div className="lab-meta">
+                <span>{lab.estimatedTime}</span>
+                <span>•</span>
+                <span>{lab.xpReward} XP</span>
+              </div>
+
+              <button className="lab-start-btn">
+                {locked ? 'Unlock with Premium' : isCompleted(lab.id) ? 'Review Lab' : 'Start Lab'}
+              </button>
             </div>
-
-            <button className="lab-start-btn">
-              {isCompleted(lab.id) ? 'Review Lab' : 'Start Lab'}
-            </button>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
