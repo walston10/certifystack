@@ -11,7 +11,6 @@ function LabsGallery() {
   const { courseId } = useParams();
   const [completedLabs, setCompletedLabs] = useState([]);
   const [isPremium, setIsPremium] = useState(false);
-  const [upgrading, setUpgrading] = useState(false);
 
   // Default to network-plus for backward compatibility
   const actualCourseId = courseId || 'network-plus';
@@ -65,7 +64,6 @@ function LabsGallery() {
   const handleLabClick = async (lab, labIndex) => {
     if (isLabLocked(labIndex)) {
       // Trigger upgrade flow
-      setUpgrading(true);
       try {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
@@ -74,7 +72,6 @@ function LabsGallery() {
       } catch (error) {
         console.error('Error starting checkout:', error);
         alert('Failed to start checkout. Please try again.');
-        setUpgrading(false);
       }
     } else {
       navigate(`/course/${actualCourseId}/lab/${lab.id}`);

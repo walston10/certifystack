@@ -20,7 +20,6 @@ function LessonViewer() {
   const [content, setContent] = useState('');
   const [labContent, setLabContent] = useState('');
   const [isPremium, setIsPremium] = useState(false);
-  const [loadingTier, setLoadingTier] = useState(true);
 
   // Support both old (id) and new (lessonId) param names for backward compatibility
   const actualLessonId = lessonId || id;
@@ -57,8 +56,6 @@ function LessonViewer() {
         }
       } catch (error) {
         console.error('Error loading membership tier:', error);
-      } finally {
-        setLoadingTier(false);
       }
     };
 
