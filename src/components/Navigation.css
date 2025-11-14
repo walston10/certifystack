@@ -37,7 +37,9 @@
 }
 
 .logo-icon {
-  font-size: 2rem;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 }
 
 .logo-text {
@@ -445,7 +447,8 @@
   }
 
   .logo-icon {
-    font-size: 1.5rem;
+    width: 32px;
+    height: 32px;
   }
 
   .logo-text {

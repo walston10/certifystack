@@ -56,7 +56,7 @@ function Navigation() {
       <div className="nav-container">
         {/* Logo */}
         <NavLink to="/dashboard" className="nav-logo" onClick={closeMobileMenu}>
-          <span className="logo-icon">⚡</span>
+          <img src="/logo.png" alt="CertifyStack" className="logo-icon" />
           <span className="logo-text">CertifyStack</span>
         </NavLink>
 
