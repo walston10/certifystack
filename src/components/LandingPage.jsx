@@ -271,11 +271,11 @@ const LandingPage = () => {
             </div>
             <div className="feature-image">
               <div className="screenshot-frame">
-                {/* Dashboard screenshot placeholder */}
-                <div className="screenshot-placeholder">
-                  <div className="placeholder-text">📊 Dashboard Screenshot</div>
-                  <p>Show your beautiful progress dashboard here</p>
-                </div>
+                <img
+                  src="/screenshots/Dashboard.PNG"
+                  alt="CertifyStack Dashboard showing progress tracking, lessons, and study features"
+                  className="screenshot-image"
+                />
               </div>
             </div>
           </div>

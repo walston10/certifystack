@@ -233,7 +233,7 @@ function AITutorPage() {
           <Sparkles size={32} className="header-icon" />
           <div>
             <h1>AI Tutor</h1>
-            <p>Your 24/7 Network+ Certification Coach</p>
+            <p>Your 24/7 IT Certification Coach</p>
           </div>
         </div>
 
@@ -308,7 +308,7 @@ function AITutorPage() {
               <div className="welcome-screen">
                 <Sparkles size={64} className="welcome-icon" />
                 <h2>Welcome to AI Tutor!</h2>
-                <p>Ask me anything about CompTIA Network+ topics. I'm here to help you understand networking concepts and prepare for your certification exam.</p>
+                <p>Ask me anything about your IT certification topics. I'm here to help you understand concepts and prepare for your certification exam.</p>
 
                 <div className="suggested-questions">
                   <h3>Try asking:</h3>
@@ -355,7 +355,7 @@ function AITutorPage() {
               placeholder={
                 !isPremium && dailyUsage >= 3
                   ? 'Daily limit reached. Upgrade to Premium for unlimited access!'
-                  : 'Ask a question about Network+ topics...'
+                  : 'Ask a question about your certification topics...'
               }
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
