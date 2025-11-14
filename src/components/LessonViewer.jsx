@@ -33,7 +33,9 @@ function LessonViewer() {
   const lesson = networkPlusLessons.find(l => l.id === parseInt(actualLessonId));
   const labInfo = getLabByLessonId(parseInt(actualLessonId));
   const quizInfo = getQuizByLesson(parseInt(actualLessonId));
-  const hasActivity = [1, 2].includes(parseInt(actualLessonId));
+  // Temporarily hiding Activities tab during development - will re-enable once all activities are complete
+  // Original code: const hasActivity = [1, 2, 3].includes(parseInt(actualLessonId));
+  const hasActivity = false;
 
   // Check if content is locked (lesson > 3 and user is not premium)
   const isContentLocked = (lessonNumber) => {

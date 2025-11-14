@@ -3,7 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { TourProvider } from './context/TourContext';
 
 // Main Pages
-import HomePage from './components/HomePage';
+import LandingPage from './components/LandingPage';
 import DashboardHome from './components/DashboardHome';
 import Dashboard from './components/Dashboard'; // Will be LessonsView
 import LessonViewer from './components/LessonViewer';
@@ -86,7 +86,7 @@ function AppRoutes() {
         {/* Home Page - Sales Landing */}
         <Route
           path="/"
-          element={user ? <Navigate to="/dashboard" /> : <HomePage />}
+          element={user ? <Navigate to="/dashboard" /> : <LandingPage />}
         />
 
         {/* Registration - Uses Login component which has signup flow */}
@@ -98,6 +98,16 @@ function AppRoutes() {
         {/* Authentication */}
         <Route
           path="/login"
+          element={user ? <Navigate to="/dashboard" /> : <Login />}
+        />
+
+        <Route
+          path="/signin"
+          element={user ? <Navigate to="/dashboard" /> : <Login />}
+        />
+
+        <Route
+          path="/signup"
           element={user ? <Navigate to="/dashboard" /> : <Login />}
         />
 
