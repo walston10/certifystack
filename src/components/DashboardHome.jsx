@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Users, ExternalLink, Award } from 'lucide-react';
+import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Users, ExternalLink, Award, GraduationCap } from 'lucide-react';
 import FeatureCard from './FeatureCard';
 import { supabase } from '../lib/supabase';
+import { getActiveCourse } from '../services/courseService';
 import './DashboardHome.css';
 
 function DashboardHome() {
@@ -19,6 +20,7 @@ function DashboardHome() {
     xp: 0,
     level: 1
   });
+  const [activeCourse, setActiveCourse] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,6 +32,10 @@ function DashboardHome() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
+      // Get active course with progress
+      const course = await getActiveCourse();
+      setActiveCourse(course);
+
       // Get user profile
       const { data: profile } = await supabase
         .from('profiles')
@@ -37,11 +43,12 @@ function DashboardHome() {
         .eq('id', user.id)
         .single();
 
-      // Get lessons progress
+      // Get lessons progress for active course
       const { data: lessonsProgress } = await supabase
         .from('lesson_progress')
         .select('lesson_id')
         .eq('user_id', user.id)
+        .eq('course_id', course?.id || 'network-plus')
         .eq('completed', true);
 
       // Get labs progress
@@ -76,7 +83,7 @@ function DashboardHome() {
       setUserStats({
         name: displayName,
         lessonsCompleted: lessonsProgress?.length || 0,
-        totalLessons: 30,
+        totalLessons: course?.total_lessons || 30,
         labsCompleted: labsProgress?.length || 0,
         totalLabs: 10,
         quizzesTaken: quizAttempts?.length || 0,
@@ -118,6 +125,23 @@ function DashboardHome() {
             Welcome back, {userStats.name}! 👋
           </h1>
 
+          {/* Active Course Display */}
+          {activeCourse && (
+            <div className="active-course-info">
+              <div className="course-badge">
+                <span className="course-emoji">{activeCourse.icon_emoji}</span>
+                <span className="course-name">{activeCourse.short_name}</span>
+              </div>
+              <button
+                className="btn-switch-course"
+                onClick={() => navigate('/courses')}
+              >
+                <GraduationCap size={16} />
+                Switch Course
+              </button>
+            </div>
+          )}
+
           <div className="hero-stats">
             {/* Progress Text */}
             <div className="progress-text">
@@ -153,8 +177,8 @@ function DashboardHome() {
       <section className="features-grid">
         <FeatureCard
           icon={<BookOpen size={32} />}
-          title="📚 Lessons"
-          description="30 comprehensive lessons covering all Network+ exam objectives"
+          title={`📚 Lessons${activeCourse ? ` - ${activeCourse.short_name}` : ''}`}
+          description={activeCourse?.description || "Comprehensive lessons covering all exam objectives"}
           status={`${userStats.lessonsCompleted}/${userStats.totalLessons} completed`}
           ctaText="Continue Learning"
           ctaLink="/lessons"

@@ -39,11 +39,66 @@
 .hero-greeting {
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
   background: linear-gradient(135deg, #00d9ff, #a78bfa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Active Course Info */
+.active-course-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.active-course-info .course-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.15), rgba(102, 126, 234, 0.15));
+  border: 1px solid rgba(0, 217, 255, 0.4);
+  border-radius: 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  box-shadow: 0 2px 8px rgba(0, 217, 255, 0.2);
+}
+
+.active-course-info .course-emoji {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.active-course-info .course-name {
+  line-height: 1;
+}
+
+.btn-switch-course {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: var(--bg-tertiary);
+  border: 1px solid rgba(0, 217, 255, 0.3);
+  border-radius: 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-switch-course:hover {
+  background: rgba(0, 217, 255, 0.1);
+  color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 217, 255, 0.2);
 }
 
 .hero-stats {

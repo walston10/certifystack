@@ -1,14 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Menu, X, Zap, GraduationCap, Users, HelpCircle } from 'lucide-react';
 import { useTour } from '../context/TourContext';
+import { getActiveCourse } from '../services/courseService';
 import './Navigation.css';
 
 function Navigation() {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [helpMenuOpen, setHelpMenuOpen] = useState(false);
+  const [activeCourse, setActiveCourse] = useState(null);
   const { restartTour } = useTour();
+
+  useEffect(() => {
+    loadActiveCourse();
+  }, []);
+
+  const loadActiveCourse = async () => {
+    try {
+      const course = await getActiveCourse();
+      setActiveCourse(course);
+    } catch (error) {
+      console.error('Error loading active course:', error);
+    }
+  };
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -54,6 +69,14 @@ function Navigation() {
             <GraduationCap size={20} />
             <span>Courses</span>
           </NavLink>
+
+          {/* Active Course Badge */}
+          {activeCourse && (
+            <div className="active-course-badge" title={activeCourse.title}>
+              <span className="course-emoji">{activeCourse.icon_emoji}</span>
+              <span className="course-name">{activeCourse.short_name}</span>
+            </div>
+          )}
 
           <NavLink
             to="/lessons"
@@ -195,6 +218,14 @@ function Navigation() {
             <GraduationCap size={20} />
             <span>Courses</span>
           </NavLink>
+
+          {/* Active Course Badge - Mobile */}
+          {activeCourse && (
+            <div className="active-course-badge mobile-badge" title={activeCourse.title}>
+              <span className="course-emoji">{activeCourse.icon_emoji}</span>
+              <span className="course-name">Active: {activeCourse.short_name}</span>
+            </div>
+          )}
 
           <NavLink
             to="/lessons"
