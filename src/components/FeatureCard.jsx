@@ -32,12 +32,14 @@ function FeatureCard({
       className={`feature-card feature-card-${gradient}`}
       onClick={handleClick}
     >
-      <div className="feature-card-icon">
-        {icon}
+      <div className="feature-card-header">
+        <div className="feature-card-icon">
+          {icon}
+        </div>
+        <h3 className="feature-card-title">{title}</h3>
       </div>
 
       <div className="feature-card-content">
-        <h3 className="feature-card-title">{title}</h3>
         <p className="feature-card-description">{description}</p>
 
         {status && (
