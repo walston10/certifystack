@@ -177,7 +177,7 @@ function DashboardHome() {
       <section className="features-grid">
         <FeatureCard
           icon={<BookOpen size={32} />}
-          title={`📚 Lessons${activeCourse ? ` - ${activeCourse.short_name}` : ''}`}
+          title={`Lessons${activeCourse ? ` - ${activeCourse.short_name}` : ''}`}
           description={activeCourse?.description || "Comprehensive lessons covering all exam objectives"}
           status={`${userStats.lessonsCompleted}/${userStats.totalLessons} completed`}
           ctaText="Continue Learning"
@@ -187,7 +187,7 @@ function DashboardHome() {
 
         <FeatureCard
           icon={<MessageCircle size={32} />}
-          title="🤖 AI Tutor"
+          title="AI Tutor"
           description="24/7 intelligent help for any Network+ topic"
           status="Always available"
           ctaText="Chat Now"
@@ -197,7 +197,7 @@ function DashboardHome() {
 
         <FeatureCard
           icon={<Target size={32} />}
-          title="🎯 Practice Zone"
+          title="Practice Zone"
           description="Practice exams, quizzes, and flashcards to test your knowledge"
           status={`${userStats.quizzesTaken} quizzes taken · ${userStats.averageScore}% avg`}
           ctaText="Start Practicing"
@@ -207,7 +207,7 @@ function DashboardHome() {
 
         <FeatureCard
           icon={<FlaskConical size={32} />}
-          title="🧪 Labs"
+          title="Labs"
           description="Hands-on practice with real networking scenarios"
           status={`${userStats.labsCompleted}/${userStats.totalLabs} completed`}
           ctaText="Practice Labs"
@@ -217,7 +217,7 @@ function DashboardHome() {
 
         <FeatureCard
           icon={<FileText size={32} />}
-          title="📖 Resources"
+          title="Resources"
           description="Cheat sheets, reference guides, and study materials"
           status="Quick reference materials"
           ctaText="Browse Resources"
@@ -227,7 +227,7 @@ function DashboardHome() {
 
         <FeatureCard
           icon={<Users size={32} />}
-          title="💬 Community"
+          title="Community"
           description="Join our Discord community to connect with other students"
           status="Join the conversation"
           ctaText="Join Discord"
@@ -238,7 +238,7 @@ function DashboardHome() {
 
         <FeatureCard
           icon={<ExternalLink size={32} />}
-          title="🌐 Free Resources"
+          title="Free Resources"
           description="Curated collection of the best free study materials online"
           status="External study tools"
           ctaText="Explore Resources"
@@ -248,7 +248,7 @@ function DashboardHome() {
 
         <FeatureCard
           icon={<Award size={32} />}
-          title="🏆 Achievements"
+          title="Achievements"
           description="Track your milestones and celebrate your progress"
           status="Coming soon"
           ctaText="View Progress"
@@ -258,7 +258,7 @@ function DashboardHome() {
 
         <FeatureCard
           icon={<User size={32} />}
-          title="👤 Profile"
+          title="Profile"
           description="Track your progress, view stats, and manage settings"
           status={`Level ${userStats.level} · ${userStats.xp} XP`}
           ctaText="View Profile"
