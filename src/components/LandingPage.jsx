@@ -298,10 +298,11 @@ const LandingPage = () => {
             </div>
             <div className="feature-image">
               <div className="screenshot-frame">
-                <div className="screenshot-placeholder">
-                  <div className="placeholder-text">🤖 AI Tutor Screenshot</div>
-                  <p>Show AI tutor conversation here</p>
-                </div>
+                <img
+                  src="/screenshots/AITutor.PNG"
+                  alt="CertifyStack AI Tutor providing instant help and explanations"
+                  className="screenshot-image"
+                />
               </div>
             </div>
           </div>
@@ -324,10 +325,11 @@ const LandingPage = () => {
             </div>
             <div className="feature-image">
               <div className="screenshot-frame">
-                <div className="screenshot-placeholder">
-                  <div className="placeholder-text">💻 Lab Screenshot</div>
-                  <p>Show interactive lab interface here</p>
-                </div>
+                <img
+                  src="/screenshots/Labs.PNG"
+                  alt="CertifyStack interactive labs with hands-on practice"
+                  className="screenshot-image"
+                />
               </div>
             </div>
           </div>
@@ -336,24 +338,26 @@ const LandingPage = () => {
           <div className="feature-row feature-row-reverse">
             <div className="feature-text">
               <div className="feature-badge">Exam Prep</div>
-              <h3 className="feature-title">Practice Exams That Actually Help</h3>
+              <h3 className="feature-title">Full-Length Practice Exams with Working PBQs</h3>
               <p className="feature-description">
-                Realistic questions. Detailed explanations. Performance tracking.
+                Realistic questions. Interactive Performance-Based Questions (PBQs). Detailed explanations.
                 Know exactly what you'll see on test day—no surprises.
               </p>
               <ul className="feature-list">
-                <li>Questions written in CompTIA's style</li>
+                <li>Full-length exams with actual working PBQ simulations</li>
+                <li>Questions written in CompTIA's exact style</li>
                 <li>Detailed explanations for every answer (right and wrong)</li>
-                <li>Performance analytics by domain</li>
-                <li>Unlimited retakes to master weak areas</li>
+                <li>Performance analytics by domain to identify weak areas</li>
+                <li>Unlimited retakes to master every topic</li>
               </ul>
             </div>
             <div className="feature-image">
               <div className="screenshot-frame">
-                <div className="screenshot-placeholder">
-                  <div className="placeholder-text">📝 Exam Screenshot</div>
-                  <p>Show practice exam interface here</p>
-                </div>
+                <img
+                  src="/screenshots/PracticeExam.PNG"
+                  alt="CertifyStack practice exams with PBQ simulations"
+                  className="screenshot-image"
+                />
               </div>
             </div>
           </div>
