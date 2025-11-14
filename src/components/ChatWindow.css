@@ -98,6 +98,10 @@
   text-align: center;
   font-size: 0.85rem;
   color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }
 
 .usage-indicator.premium {
@@ -110,6 +114,25 @@
   background: rgba(255, 68, 68, 0.1);
   color: var(--error);
   font-weight: 600;
+}
+
+.upgrade-link-chat {
+  padding: 6px 16px;
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  color: #000;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.upgrade-link-chat:hover {
+  background: linear-gradient(135deg, #ffed4e, #ffa500);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
 }
 
 /* Messages Container */

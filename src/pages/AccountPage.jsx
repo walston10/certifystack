@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, LogOut, Target, Award, Flame, Zap, CreditCard } from 'lucide-react';
+import { User, LogOut, Target, Award, Flame, Zap, CreditCard, Crown, Sparkles } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -12,12 +12,15 @@ import {
   formatRelativeTime,
   getCourseName
 } from '../services/accountService';
+import { createCheckoutSession, createPortalSession } from '../lib/stripe';
 import './AccountPage.css';
 
 function AccountPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [membershipTier, setMembershipTier] = useState('free');
+  const [processingUpgrade, setProcessingUpgrade] = useState(false);
   const [courseProgress, setCourseProgress] = useState([]);
   const [studyStats, setStudyStats] = useState(null);
   const [quizPerformance, setQuizPerformance] = useState(null);
@@ -32,6 +35,21 @@ function AccountPage() {
     setLoading(true);
 
     try {
+      // Get user profile for membership tier
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+
+      if (currentUser) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('membership_tier')
+          .eq('id', currentUser.id)
+          .single();
+
+        if (profile) {
+          setMembershipTier(profile.membership_tier || 'free');
+        }
+      }
+
       // Load all account data in parallel
       const [courses, stats, quizzes, exams, activity] = await Promise.all([
         getCourseProgress(),
@@ -50,6 +68,34 @@ function AccountPage() {
       console.error('Error loading account data:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleUpgradeToPremium = async () => {
+    setProcessingUpgrade(true);
+    try {
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      if (currentUser) {
+        await createCheckoutSession(currentUser.id, currentUser.email);
+      }
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      alert('Failed to start checkout. Please try again.');
+      setProcessingUpgrade(false);
+    }
+  };
+
+  const handleManageSubscription = async () => {
+    setProcessingUpgrade(true);
+    try {
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      if (currentUser) {
+        await createPortalSession(currentUser.id);
+      }
+    } catch (error) {
+      console.error('Error opening billing portal:', error);
+      alert('Failed to open billing portal. Please try again.');
+      setProcessingUpgrade(false);
     }
   };
 
@@ -106,6 +152,73 @@ function AccountPage() {
       </div>
 
       <div className="account-content">
+        {/* Subscription Section */}
+        <section className="account-section subscription-section">
+          <h2 className="section-title">
+            {membershipTier === 'premium' ? (
+              <>
+                <Crown size={24} className="premium-icon" />
+                Premium Membership
+              </>
+            ) : (
+              <>💳 Subscription</>
+            )}
+          </h2>
+
+          {membershipTier === 'premium' ? (
+            <div className="subscription-card premium-card">
+              <div className="premium-badge">
+                <Sparkles size={20} />
+                <span>Active Premium</span>
+              </div>
+              <div className="subscription-details">
+                <p className="subscription-description">
+                  You have unlimited access to all premium features including:
+                </p>
+                <ul className="premium-features">
+                  <li>✨ Unlimited AI Tutor questions</li>
+                  <li>🎯 Advanced progress analytics</li>
+                  <li>📚 Priority support</li>
+                  <li>🚀 Early access to new features</li>
+                </ul>
+              </div>
+              <button
+                className="btn-manage-subscription"
+                onClick={handleManageSubscription}
+                disabled={processingUpgrade}
+              >
+                {processingUpgrade ? 'Loading...' : 'Manage Subscription'}
+              </button>
+            </div>
+          ) : (
+            <div className="subscription-card free-card">
+              <div className="free-badge">
+                <span>Free Tier</span>
+              </div>
+              <div className="subscription-details">
+                <p className="subscription-description">
+                  You're currently on the free tier with limited access:
+                </p>
+                <ul className="free-limitations">
+                  <li>⚠️ 3 AI Tutor questions per day</li>
+                  <li>📊 Basic progress tracking</li>
+                </ul>
+                <p className="upgrade-prompt">
+                  Upgrade to Premium for unlimited access and advanced features!
+                </p>
+              </div>
+              <button
+                className="btn-upgrade-premium"
+                onClick={handleUpgradeToPremium}
+                disabled={processingUpgrade}
+              >
+                <Crown size={20} />
+                <span>{processingUpgrade ? 'Loading...' : 'Upgrade to Premium'}</span>
+              </button>
+            </div>
+          )}
+        </section>
+
         {/* Course Progress Section */}
         <section className="account-section">
           <h2 className="section-title">📖 Course Progress</h2>

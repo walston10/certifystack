@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Sparkles, Send, Loader, AlertCircle, History, Plus } from 'lucide-react';
 import ChatMessage from './ChatMessage';
 import { supabase } from '../lib/supabase';
+import { createCheckoutSession } from '../lib/stripe';
 import './AITutorPage.css';
 
 function AITutorPage() {
@@ -203,6 +204,18 @@ function AITutorPage() {
     return Math.max(0, 3 - dailyUsage);
   };
 
+  const handleUpgrade = async () => {
+    try {
+      const user = await supabase.auth.getUser();
+      if (user.data.user) {
+        await createCheckoutSession(user.data.user.id, user.data.user.email);
+      }
+    } catch (error) {
+      console.error('Error starting checkout:', error);
+      alert('Failed to start checkout. Please try again.');
+    }
+  };
+
   const suggestedQuestions = [
     "Explain the OSI model in simple terms",
     "What's the difference between TCP and UDP?",
@@ -253,7 +266,7 @@ function AITutorPage() {
               Free Tier: {getRemainingQuestions()} question{getRemainingQuestions() !== 1 ? 's' : ''} remaining today
             </span>
             {dailyUsage >= 3 && (
-              <button className="upgrade-link">Upgrade to Premium</button>
+              <button className="upgrade-link" onClick={handleUpgrade}>Upgrade to Premium</button>
             )}
           </>
         )}

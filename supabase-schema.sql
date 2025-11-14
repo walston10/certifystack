@@ -36,6 +36,28 @@ CREATE POLICY "Users can update own profile"
   USING (auth.uid() = id);
 
 -- ============================================
+-- TRIGGER: Auto-create profile on user signup
+-- Automatically creates a profile record when a new user signs up
+-- ============================================
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.profiles (id, membership_tier)
+  VALUES (NEW.id, 'free');
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Drop the trigger if it exists to avoid conflicts
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+
+-- Create the trigger
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW
+  EXECUTE FUNCTION public.handle_new_user();
+
+-- ============================================
 -- TABLE: user_progress
 -- Tracks lesson completion and quiz scores
 -- ============================================
