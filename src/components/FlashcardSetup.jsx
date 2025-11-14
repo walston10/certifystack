@@ -12,7 +12,6 @@ function FlashcardSetup() {
   const navigate = useNavigate();
   const [selectedLessons, setSelectedLessons] = useState([]);
   const [isPremium, setIsPremium] = useState(false);
-  const [upgrading, setUpgrading] = useState(false);
   // const [studyMode, setStudyMode] = useState('all'); // 'all', 'new', 'review' - Future feature
 
   // Load membership tier
@@ -51,7 +50,6 @@ function FlashcardSetup() {
   };
 
   const handleUpgrade = async () => {
-    setUpgrading(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
@@ -60,7 +58,6 @@ function FlashcardSetup() {
     } catch (error) {
       console.error('Error starting checkout:', error);
       alert('Failed to start checkout. Please try again.');
-      setUpgrading(false);
     }
   };
 
