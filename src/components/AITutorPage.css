@@ -104,20 +104,23 @@
 }
 
 .upgrade-link {
-  background: var(--accent-cyan);
-  color: white;
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  color: #000;
   border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 6px 16px;
+  border-radius: 20px;
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   margin-left: 12px;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .upgrade-link:hover {
-  transform: scale(1.05);
+  background: linear-gradient(135deg, #ffed4e, #ffa500);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
 }
 
 /* Main Content */

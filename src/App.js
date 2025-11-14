@@ -15,6 +15,7 @@ import ResourcesLibrary from './components/ResourcesLibrary';
 import UserProfile from './components/UserProfile';
 import AccountPage from './pages/AccountPage';
 import CoursesPage from './pages/CoursesPage';
+import PricingPage from './pages/PricingPage';
 import CourseCatalog from './components/CourseCatalog';
 import CourseOverview from './components/CourseOverview';
 import FreeResources from './components/FreeResources';
@@ -293,6 +294,16 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <AccountPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Pricing Page */}
+        <Route
+          path="/pricing"
+          element={
+            <ProtectedRoute>
+              <PricingPage />
             </ProtectedRoute>
           }
         />

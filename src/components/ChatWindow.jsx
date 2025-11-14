@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { X, Send, Loader, AlertCircle, Sparkles } from 'lucide-react';
 import ChatMessage from './ChatMessage';
 import { supabase } from '../lib/supabase';
+import { createCheckoutSession } from '../lib/stripe';
 import './ChatWindow.css';
 
 function ChatWindow({ isOpen, onClose, currentLesson = null }) {
@@ -183,6 +184,18 @@ function ChatWindow({ isOpen, onClose, currentLesson = null }) {
     return Math.max(0, 3 - dailyUsage);
   };
 
+  const handleUpgrade = async () => {
+    try {
+      const user = await supabase.auth.getUser();
+      if (user.data.user) {
+        await createCheckoutSession(user.data.user.id, user.data.user.email);
+      }
+    } catch (error) {
+      console.error('Error starting checkout:', error);
+      alert('Failed to start checkout. Please try again.');
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -210,9 +223,14 @@ function ChatWindow({ isOpen, onClose, currentLesson = null }) {
         {isPremium ? (
           <span>Premium - Unlimited Questions</span>
         ) : (
-          <span>
-            Free Tier: {getRemainingQuestions()} question{getRemainingQuestions() !== 1 ? 's' : ''} remaining today
-          </span>
+          <>
+            <span>
+              Free Tier: {getRemainingQuestions()} question{getRemainingQuestions() !== 1 ? 's' : ''} remaining today
+            </span>
+            {dailyUsage >= 3 && (
+              <button className="upgrade-link-chat" onClick={handleUpgrade}>Upgrade</button>
+            )}
+          </>
         )}
       </div>
 

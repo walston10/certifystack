@@ -84,6 +84,154 @@
   font-size: 1.5rem;
   color: #00d9ff;
   margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-title .premium-icon {
+  color: #ffd700;
+}
+
+/* Subscription Section */
+.subscription-section {
+  margin-bottom: 2rem;
+}
+
+.subscription-card {
+  background: rgba(26, 26, 46, 0.8);
+  border: 1px solid rgba(0, 217, 255, 0.3);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.subscription-card.premium-card {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 140, 0, 0.05));
+  border: 2px solid rgba(255, 215, 0, 0.4);
+}
+
+.subscription-card.free-card {
+  background: rgba(26, 26, 46, 0.8);
+  border: 1px solid rgba(0, 217, 255, 0.3);
+}
+
+.premium-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  border-radius: 20px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 1.5rem;
+}
+
+.premium-badge svg {
+  color: #fff;
+}
+
+.free-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.subscription-details {
+  margin-bottom: 1.5rem;
+}
+
+.subscription-description {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.premium-features,
+.free-limitations {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.premium-features li,
+.free-limitations li {
+  padding: 0.5rem 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+}
+
+.premium-features li {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.upgrade-prompt {
+  color: #00d9ff;
+  font-weight: 600;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+.btn-upgrade-premium {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-upgrade-premium:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ffed4e, #ffa500);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+}
+
+.btn-upgrade-premium:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-upgrade-premium svg {
+  color: #000;
+}
+
+.btn-manage-subscription {
+  padding: 0.875rem 2rem;
+  background: rgba(0, 217, 255, 0.1);
+  color: #00d9ff;
+  border: 2px solid #00d9ff;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-manage-subscription:hover:not(:disabled) {
+  background: rgba(0, 217, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 217, 255, 0.3);
+}
+
+.btn-manage-subscription:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Course Progress */
