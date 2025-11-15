@@ -1,0 +1,214 @@
+.games-selection-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+  padding: 40px 20px;
+  position: relative;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 217, 255, 0.1);
+  border: 2px solid #00d9ff;
+  color: #00d9ff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 40px;
+}
+
+.back-button:hover {
+  background: rgba(0, 217, 255, 0.2);
+  transform: translateX(-5px);
+}
+
+.games-hero {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.games-hero-icon {
+  color: #00d9ff;
+  margin-bottom: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.games-title {
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #00d9ff 0%, #667eea 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+}
+
+.games-subtitle {
+  font-size: 1.2rem;
+  color: #8b9dc3;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.game-card {
+  background: rgba(15, 15, 35, 0.8);
+  backdrop-filter: blur(10px);
+  border: 2px solid transparent;
+  border-radius: 16px;
+  padding: 32px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  padding: 2px;
+  background: linear-gradient(135deg, #00d9ff, #667eea);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.game-card:not(.locked):hover::before {
+  opacity: 1;
+}
+
+.game-card:not(.locked):hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 217, 255, 0.3);
+}
+
+.game-card.locked {
+  opacity: 0.6;
+}
+
+.game-card-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(102, 126, 234, 0.2));
+  color: #00d9ff;
+}
+
+.game-card.purple .game-card-icon {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(240, 147, 251, 0.2));
+  color: #667eea;
+}
+
+.game-card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.game-card-description {
+  font-size: 1rem;
+  color: #8b9dc3;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  min-height: 48px;
+}
+
+.game-card-stats {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #8b9dc3;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #00d9ff;
+}
+
+.play-button {
+  width: 100%;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #00d9ff, #667eea);
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.play-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 217, 255, 0.4);
+}
+
+.locked-badge {
+  width: 100%;
+  padding: 14px 24px;
+  background: rgba(139, 157, 195, 0.2);
+  border: 2px dashed rgba(139, 157, 195, 0.5);
+  border-radius: 8px;
+  color: #8b9dc3;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .games-title {
+    font-size: 2rem;
+  }
+
+  .games-subtitle {
+    font-size: 1rem;
+  }
+
+  .games-grid {
+    grid-template-columns: 1fr;
+  }
+}
