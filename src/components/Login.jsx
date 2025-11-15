@@ -52,7 +52,7 @@ function Login() {
     <div className="login-container">
       <div className="login-card">
         <div className="login-header">
-          <span className="login-icon">🚀</span>
+          <img src="/logo.png" alt="CertifyStack" className="login-icon" />
           <h1>CertifyStack</h1>
           <p className="login-subtitle">
             {isSignUp ? 'Create your account' : 'Welcome back!'}

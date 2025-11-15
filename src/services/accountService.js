@@ -8,12 +8,26 @@ export async function getCourseProgress() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { success: false, data: [], error: 'Not authenticated' };
 
+    // Get lesson progress
     const { data, error } = await supabase
       .from('lesson_progress')
       .select('course_id, completed')
       .eq('user_id', user.id);
 
     if (error) throw error;
+
+    // Get all courses to get actual total_lessons
+    const { data: courses, error: coursesError } = await supabase
+      .from('courses')
+      .select('course_id, total_lessons');
+
+    if (coursesError) throw coursesError;
+
+    // Create a map of course_id to total_lessons
+    const courseTotalsMap = {};
+    courses?.forEach(course => {
+      courseTotalsMap[course.course_id] = course.total_lessons || 30;
+    });
 
     // Group by course and calculate stats
     const courseStats = {};
@@ -24,12 +38,11 @@ export async function getCourseProgress() {
           courseStats[record.course_id] = {
             course_id: record.course_id,
             completed_lessons: 0,
-            total_lessons: 0,
+            total_lessons: courseTotalsMap[record.course_id] || 30,
             progress_pct: 0
           };
         }
 
-        courseStats[record.course_id].total_lessons++;
         if (record.completed) {
           courseStats[record.course_id].completed_lessons++;
         }

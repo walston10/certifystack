@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Menu, X, Zap, GraduationCap, Users, HelpCircle } from 'lucide-react';
 import { useTour } from '../context/TourContext';
 import { getActiveCourse } from '../services/courseService';
+import { supabase } from '../lib/supabase';
 import './Navigation.css';
 
 function Navigation() {
@@ -10,10 +11,12 @@ function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [helpMenuOpen, setHelpMenuOpen] = useState(false);
   const [activeCourse, setActiveCourse] = useState(null);
+  const [isPremium, setIsPremium] = useState(false);
   const { restartTour } = useTour();
 
   useEffect(() => {
     loadActiveCourse();
+    loadUserProfile();
   }, []);
 
   const loadActiveCourse = async () => {
@@ -22,6 +25,23 @@ function Navigation() {
       setActiveCourse(course);
     } catch (error) {
       console.error('Error loading active course:', error);
+    }
+  };
+
+  const loadUserProfile = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('membership_tier')
+        .eq('id', user.id)
+        .single();
+
+      setIsPremium(profile?.membership_tier === 'premium');
+    } catch (error) {
+      console.error('Error loading user profile:', error);
     }
   };
 
@@ -56,7 +76,7 @@ function Navigation() {
       <div className="nav-container">
         {/* Logo */}
         <NavLink to="/dashboard" className="nav-logo" onClick={closeMobileMenu}>
-          <span className="logo-icon">⚡</span>
+          <img src="/logo.png" alt="CertifyStack" className="logo-icon" />
           <span className="logo-text">CertifyStack</span>
         </NavLink>
 
@@ -132,11 +152,13 @@ function Navigation() {
             <span>Community</span>
           </a>
 
-          {/* Upgrade Button */}
-          <button className="btn-upgrade" onClick={handleUpgrade}>
-            <Zap size={16} />
-            <span>Upgrade to Premium</span>
-          </button>
+          {/* Upgrade Button - Only show for non-premium users */}
+          {!isPremium && (
+            <button className="btn-upgrade" onClick={handleUpgrade}>
+              <Zap size={16} />
+              <span>Upgrade to Premium</span>
+            </button>
+          )}
 
           {/* Help Menu */}
           <div className="help-menu-container">
@@ -299,10 +321,13 @@ function Navigation() {
             <span>Take the Tour</span>
           </button>
 
-          <button className="mobile-upgrade-btn" onClick={handleUpgrade}>
-            <Zap size={20} />
-            <span>Upgrade to Premium</span>
-          </button>
+          {/* Upgrade Button - Only show for non-premium users */}
+          {!isPremium && (
+            <button className="mobile-upgrade-btn" onClick={handleUpgrade}>
+              <Zap size={20} />
+              <span>Upgrade to Premium</span>
+            </button>
+          )}
         </div>
       )}
     </nav>

@@ -2,10 +2,10 @@
 .feature-card {
   background: var(--bg-secondary);
   border-radius: 16px;
-  padding: 32px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
   border: 2px solid transparent;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -82,18 +82,33 @@
   --card-gradient-end: #c2185b;
 }
 
+/* Card Header (Icon + Title together) */
+.feature-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 /* Card Icon */
 .feature-card-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
   background: linear-gradient(135deg, var(--card-gradient-start), var(--card-gradient-end));
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 2rem;
+  font-size: 1.75rem;
   flex-shrink: 0;
+}
+
+.feature-card-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.2;
 }
 
 /* Card Content */
@@ -102,13 +117,6 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
-
-.feature-card-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
 }
 
 .feature-card-description {
@@ -149,17 +157,17 @@
 /* Responsive */
 @media (max-width: 768px) {
   .feature-card {
-    padding: 24px;
+    padding: 20px;
   }
 
   .feature-card-icon {
-    width: 56px;
-    height: 56px;
-    font-size: 1.75rem;
+    width: 48px;
+    height: 48px;
+    font-size: 1.5rem;
   }
 
   .feature-card-title {
-    font-size: 1.3rem;
+    font-size: 1.15rem;
   }
 
   .feature-card-description {

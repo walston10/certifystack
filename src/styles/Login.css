@@ -23,9 +23,11 @@
 }
 
 .login-icon {
-  font-size: 3rem;
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
   display: block;
-  margin-bottom: 16px;
+  margin: 0 auto 16px auto;
   filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.4));
 }
 
