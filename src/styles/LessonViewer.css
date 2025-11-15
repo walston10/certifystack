@@ -160,6 +160,11 @@ header {
   font-weight: 600;
 }
 
+.markdown-content em {
+  color: var(--accent-cyan);
+  font-style: italic;
+}
+
 .markdown-content code {
   background: var(--bg-tertiary);
   padding: 3px 8px;
