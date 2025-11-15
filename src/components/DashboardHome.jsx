@@ -42,14 +42,6 @@ function DashboardHome() {
         .eq('id', user.id)
         .single();
 
-      // Get lessons progress for active course
-      const { data: lessonsProgress } = await supabase
-        .from('lesson_progress')
-        .select('lesson_id')
-        .eq('user_id', user.id)
-        .eq('course_id', course?.id || 'network-plus')
-        .eq('completed', true);
-
       // Get labs progress
       const { data: labsProgress } = await supabase
         .from('lab_submissions')
@@ -67,8 +59,8 @@ function DashboardHome() {
         ? Math.round(quizAttempts.reduce((sum, q) => sum + (q.score / q.total_questions * 100), 0) / quizAttempts.length)
         : 0;
 
-      // Calculate completion percentage
-      const completedLessons = lessonsProgress?.length || 0;
+      // Calculate completion percentage from course data
+      const completedLessons = course?.lessonsCompleted || 0;
       const totalCourseLessons = course?.total_lessons || 30;
       const completionPct = Math.round((completedLessons / totalCourseLessons) * 100);
 
@@ -251,7 +243,7 @@ function DashboardHome() {
           icon={<User size={32} />}
           title="Profile"
           description="Track your progress, view stats, and manage settings"
-          status={`Level ${userStats.level} · ${userStats.xp} XP`}
+          status={`${userStats.completionPercentage}% complete · ${userStats.studyStreak} day streak`}
           ctaText="View Profile"
           ctaLink="/profile"
           gradient="pink"
