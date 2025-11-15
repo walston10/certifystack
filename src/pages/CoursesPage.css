@@ -3,7 +3,7 @@
 .courses-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
-  padding: 2rem 1rem;
+  padding: 100px 1rem 2rem;
 }
 
 .courses-container {

@@ -17,8 +17,7 @@ function DashboardHome() {
     quizzesTaken: 0,
     averageScore: 0,
     studyStreak: 0,
-    xp: 0,
-    level: 1
+    completionPercentage: 0
   });
   const [activeCourse, setActiveCourse] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -39,7 +38,7 @@ function DashboardHome() {
       // Get user profile
       const { data: profile } = await supabase
         .from('profiles')
-        .select('full_name, xp_points, study_streak')
+        .select('full_name, study_streak')
         .eq('id', user.id)
         .single();
 
@@ -68,9 +67,10 @@ function DashboardHome() {
         ? Math.round(quizAttempts.reduce((sum, q) => sum + (q.score / q.total_questions * 100), 0) / quizAttempts.length)
         : 0;
 
-      // Calculate level from XP (every 1000 XP = 1 level)
-      const xp = profile?.xp_points || 0;
-      const level = Math.floor(xp / 1000) + 1;
+      // Calculate completion percentage
+      const completedLessons = lessonsProgress?.length || 0;
+      const totalCourseLessons = course?.total_lessons || 30;
+      const completionPct = Math.round((completedLessons / totalCourseLessons) * 100);
 
       // Get name from profile, user metadata, or email
       // Google OAuth stores name in user_metadata
@@ -82,15 +82,14 @@ function DashboardHome() {
 
       setUserStats({
         name: displayName,
-        lessonsCompleted: lessonsProgress?.length || 0,
-        totalLessons: course?.total_lessons || 30,
+        lessonsCompleted: completedLessons,
+        totalLessons: totalCourseLessons,
         labsCompleted: labsProgress?.length || 0,
         totalLabs: 10,
         quizzesTaken: quizAttempts?.length || 0,
         averageScore: avgScore,
         studyStreak: profile?.study_streak || 0,
-        xp: xp,
-        level: level
+        completionPercentage: completionPct
       });
 
       setLoading(false);
@@ -98,14 +97,6 @@ function DashboardHome() {
       console.error('Error loading user stats:', error);
       setLoading(false);
     }
-  };
-
-  const getLevelTitle = (level) => {
-    if (level >= 10) return 'Network Master';
-    if (level >= 7) return 'Network Professional';
-    if (level >= 5) return 'Network Specialist';
-    if (level >= 3) return 'Network Novice';
-    return 'Network Beginner';
   };
 
   if (loading) {
@@ -122,7 +113,7 @@ function DashboardHome() {
       <section className="hero-section">
         <div className="hero-content">
           <h1 className="hero-greeting">
-            Welcome back, {userStats.name}! 👋
+            Welcome back, {userStats.name}! <span style={{ filter: 'none', WebkitTextFillColor: 'initial' }}>👋</span>
           </h1>
 
           {/* Active Course Display */}
@@ -158,17 +149,17 @@ function DashboardHome() {
             </div>
           </div>
 
-          {/* Level Badge */}
+          {/* Course Progress Badge */}
           <div className="level-badge">
-            <span className="level-number">Level {userStats.level}</span>
-            <span className="level-title">{getLevelTitle(userStats.level)}</span>
+            <span className="level-number">{userStats.completionPercentage}%</span>
+            <span className="level-title">Course Complete</span>
             <div className="xp-bar">
               <div
                 className="xp-bar-fill"
-                style={{ width: `${(userStats.xp % 1000) / 10}%` }}
+                style={{ width: `${userStats.completionPercentage}%` }}
               ></div>
             </div>
-            <span className="xp-text">{userStats.xp % 1000}/1000 XP</span>
+            <span className="xp-text">{userStats.lessonsCompleted}/{userStats.totalLessons} lessons</span>
           </div>
         </div>
       </section>
