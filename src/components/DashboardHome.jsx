@@ -43,14 +43,6 @@ function DashboardHome() {
         .eq('id', user.id)
         .single();
 
-      // Get lessons progress for active course
-      const { data: lessonsProgress } = await supabase
-        .from('lesson_progress')
-        .select('lesson_id')
-        .eq('user_id', user.id)
-        .eq('course_id', course?.id || 'network-plus')
-        .eq('completed', true);
-
       // Get labs progress
       const { data: labsProgress } = await supabase
         .from('lab_submissions')
@@ -82,7 +74,7 @@ function DashboardHome() {
 
       setUserStats({
         name: displayName,
-        lessonsCompleted: lessonsProgress?.length || 0,
+        lessonsCompleted: course?.lessonsCompleted || 0,
         totalLessons: course?.total_lessons || 30,
         labsCompleted: labsProgress?.length || 0,
         totalLabs: 10,
