@@ -3,8 +3,14 @@
 ## Problem
 When clicking the "mark as complete" checkbox on lesson tiles, nothing happens.
 
-## Root Cause
-The `user_progress` table likely doesn't exist in the Supabase database yet.
+## Root Causes
+
+### Cause 1: Table doesn't exist
+The `user_progress` table doesn't exist in the Supabase database yet.
+
+### Cause 2: Missing unique constraint (400 Error)
+The table exists but is missing the required unique constraint on `(user_id, course_id, lesson_id)`.
+This causes a 400 Bad Request error from Supabase.
 
 ## How to Check
 
@@ -25,7 +31,28 @@ The `user_progress` table likely doesn't exist in the Supabase database yet.
 
 ## Solution
 
-### Step 1: Create the `user_progress` table in Supabase
+### Quick Fix (Recommended)
+
+If you're seeing **400 errors** in the console (like the errors you just showed me), use this SQL:
+
+1. Go to your Supabase Dashboard: https://app.supabase.com
+2. Select your project
+3. Click on "SQL Editor" in the left sidebar
+4. Click "New Query"
+5. Copy the contents of `fix-user-progress-constraint.sql` and paste it
+6. Click "Run"
+
+This will:
+- Create the table if it doesn't exist
+- Add the `course_id` column if missing
+- Remove old/incorrect unique constraints
+- Add the correct unique constraint
+- Set up RLS policies
+- Create performance indexes
+
+### Manual Fix (Alternative)
+
+If you prefer to create the table from scratch, follow these steps:
 
 1. Go to your Supabase Dashboard: https://app.supabase.com
 2. Select your project
