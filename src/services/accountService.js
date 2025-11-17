@@ -19,14 +19,14 @@ export async function getCourseProgress() {
     // Get all courses to get actual total_lessons
     const { data: courses, error: coursesError } = await supabase
       .from('courses')
-      .select('course_id, total_lessons');
+      .select('id, total_lessons');
 
     if (coursesError) throw coursesError;
 
     // Create a map of course_id to total_lessons
     const courseTotalsMap = {};
     courses?.forEach(course => {
-      courseTotalsMap[course.course_id] = course.total_lessons || 30;
+      courseTotalsMap[course.id] = course.total_lessons || 30;
     });
 
     // Group by course and calculate stats
