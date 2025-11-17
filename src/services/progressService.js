@@ -15,7 +15,7 @@ export async function markLessonComplete(lessonId, timeSpent = 0, courseId = 'ne
   let wasAlreadyCompleted = false;
   try {
     const { data: existing } = await supabase
-      .from('lesson_progress')
+      .from('user_progress')
       .select('completed')
       .eq('user_id', user.id)
       .eq('course_id', courseId)
@@ -30,7 +30,7 @@ export async function markLessonComplete(lessonId, timeSpent = 0, courseId = 'ne
 
   // Mark lesson as complete (upsert will create or update)
   const { data, error } = await supabase
-    .from('lesson_progress')
+    .from('user_progress')
     .upsert({
       user_id: user.id,
       course_id: courseId,
@@ -84,7 +84,7 @@ export async function getCompletedLessons(courseId = 'network-plus') {
   if (!user) return [];
 
   const { data, error } = await supabase
-    .from('lesson_progress')
+    .from('user_progress')
     .select('lesson_id')
     .eq('user_id', user.id)
     .eq('course_id', courseId)

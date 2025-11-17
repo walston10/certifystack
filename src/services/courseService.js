@@ -44,7 +44,7 @@ export async function getAllCourses(userId = null) {
     courses.map(async (course) => {
       try {
         const { count, error: progressError } = await supabase
-          .from('lesson_progress')
+          .from('user_progress')
           .select('*', { count: 'exact', head: true })
           .eq('user_id', userId)
           .eq('course_id', course.id)

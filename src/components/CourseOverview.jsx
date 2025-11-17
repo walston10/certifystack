@@ -67,7 +67,7 @@ function CourseOverview() {
         // Load progress if has access
         if (userHasAccess) {
           const { data: lessonsProgress } = await supabase
-            .from('lesson_progress')
+            .from('user_progress')
             .select('lesson_id, completed')
             .eq('user_id', user.id)
             .eq('course_id', courseId);
