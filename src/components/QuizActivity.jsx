@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getQuizByLesson, hasQuiz } from '../courses/network-plus/quizzes';
 import { saveQuizScore } from '../services/progressService';
+import { randomizeQuizAnswers } from '../utils/quizUtils';
 import '../styles/QuizActivity.css';
 
 function QuizActivity({ lessonId }) {
@@ -29,7 +30,9 @@ function QuizActivity({ lessonId }) {
     const loadedQuiz = getQuizByLesson(parsedLessonId);
 
     if (loadedQuiz) {
-      setQuiz(loadedQuiz);
+      // Randomize answer choices to prevent AI bias towards specific positions
+      const randomizedQuiz = randomizeQuizAnswers(loadedQuiz);
+      setQuiz(randomizedQuiz);
       // Reset all state when new quiz loads
       setCurrentQuestionIndex(0);
       setSelectedAnswer(null);
@@ -147,6 +150,13 @@ function QuizActivity({ lessonId }) {
   };
 
   const handleRetryQuiz = () => {
+    // Re-randomize answer choices for a fresh quiz attempt
+    const loadedQuiz = getQuizByLesson(parsedLessonId);
+    if (loadedQuiz) {
+      const randomizedQuiz = randomizeQuizAnswers(loadedQuiz);
+      setQuiz(randomizedQuiz);
+    }
+
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
     setShowExplanation(false);
