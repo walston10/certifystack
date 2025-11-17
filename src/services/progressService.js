@@ -36,8 +36,8 @@ export async function markLessonComplete(lessonId, timeSpent = 0, courseId = 'ne
       course_id: courseId,
       lesson_id: lessonId,
       completed: true,
+      completed_at: new Date().toISOString(),
       time_spent: timeSpent,
-      completion_date: new Date().toISOString(),
     }, {
       onConflict: 'user_id,course_id,lesson_id',
       ignoreDuplicates: false // Always update if exists

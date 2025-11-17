@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
-import { PlayCircle, LogOut, User, Lock } from 'lucide-react';
+import { useState } from 'react';
+import { PlayCircle, LogOut, User, Lock, AlertCircle } from 'lucide-react';
 import { networkPlusLessons } from '../courses/network-plus/data/lessons';
 import { getDomainConfig, getLessonIcon } from '../courses/network-plus/data/domainConfig';
 import { useAuth } from '../context/AuthContext';
@@ -10,6 +11,7 @@ function Dashboard() {
     const { courseId } = useParams();
     const { user, signOut } = useAuth();
     const { progress, completeLesson } = useUserStats();
+    const [error, setError] = useState(null);
 
     // Default to network-plus for backward compatibility
     const actualCourseId = courseId || 'network-plus';
@@ -36,6 +38,40 @@ function Dashboard() {
                 </nav>
             </header>
 
+            {/* Error Banner */}
+            {error && (
+                <div style={{
+                    padding: '16px',
+                    margin: '16px',
+                    backgroundColor: '#fee',
+                    border: '1px solid #fcc',
+                    borderRadius: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    color: '#c33'
+                }}>
+                    <AlertCircle size={24} />
+                    <div>
+                        <strong>Error:</strong> {error}
+                    </div>
+                    <button
+                        onClick={() => setError(null)}
+                        style={{
+                            marginLeft: 'auto',
+                            padding: '8px 16px',
+                            background: 'white',
+                            border: '1px solid #c33',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            color: '#c33'
+                        }}
+                    >
+                        Dismiss
+                    </button>
+                </div>
+            )}
+
             {/* Lessons Grid */}
                 <section className="lessons-section">
                     <div className="section-header">
@@ -59,9 +95,11 @@ function Dashboard() {
                                     return;
                                 }
                                 try {
+                                    setError(null); // Clear any previous errors
                                     await completeLesson(lesson.id);
                                 } catch (error) {
                                     console.error('Failed to complete lesson:', error);
+                                    setError(`Failed to mark lesson ${lesson.id} as complete. ${error.message || 'Please check the console for details.'}`);
                                 }
                             };
 

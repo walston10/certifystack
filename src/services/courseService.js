@@ -149,16 +149,26 @@ export async function getActiveCourse(userId = null) {
     userId = user.id;
   }
 
-  // Get user's active course ID
-  const { data: profile, error: profileError } = await supabase
-    .from('profiles')
-    .select('active_course')
-    .eq('id', userId)
-    .single();
+  // Default to network-plus if active_course column doesn't exist or profile not found
+  let activeCourseId = 'network-plus';
 
-  if (profileError) throw profileError;
+  try {
+    // Try to get user's active course ID
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('active_course')
+      .eq('id', userId)
+      .single();
 
-  const activeCourseId = profile.active_course || 'network-plus';
+    // Only throw if it's not a "column doesn't exist" or "no rows" error
+    if (profileError && profileError.code !== '42703' && profileError.code !== 'PGRST116') {
+      throw profileError;
+    }
+
+    activeCourseId = profile?.active_course || 'network-plus';
+  } catch (error) {
+    console.warn('Could not load active course from profile, defaulting to network-plus:', error);
+  }
 
   // Get full course details
   const { data: course, error: courseError } = await supabase
@@ -171,7 +181,7 @@ export async function getActiveCourse(userId = null) {
 
   // Get user's progress for this course
   const { count, error: progressError } = await supabase
-    .from('lesson_progress')
+    .from('user_progress')
     .select('*', { count: 'exact', head: true })
     .eq('user_id', userId)
     .eq('course_id', activeCourseId)
