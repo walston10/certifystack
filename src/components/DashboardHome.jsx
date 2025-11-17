@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Users, ExternalLink, Gamepad2, GraduationCap } from 'lucide-react';
 import FeatureCard from './FeatureCard';
@@ -24,11 +24,7 @@ function DashboardHome() {
   const [activeCourse, setActiveCourse] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadUserStats();
-  }, [progress, stats]);
-
-  const loadUserStats = async () => {
+  const loadUserStats = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
@@ -81,7 +77,11 @@ function DashboardHome() {
       console.error('Error loading user stats:', error);
       setLoading(false);
     }
-  };
+  }, [progress, stats]);
+
+  useEffect(() => {
+    loadUserStats();
+  }, [loadUserStats]);
 
   if (loading) {
     return (
