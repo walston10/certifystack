@@ -4,10 +4,12 @@ import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Users, E
 import FeatureCard from './FeatureCard';
 import { supabase } from '../lib/supabase';
 import { getActiveCourse } from '../services/courseService';
+import { useUserStats } from '../hooks/useUserStats';
 import './DashboardHome.css';
 
 function DashboardHome() {
   const navigate = useNavigate();
+  const { progress, stats } = useUserStats();
   const [userStats, setUserStats] = useState({
     name: '',
     lessonsCompleted: 0,
@@ -24,7 +26,7 @@ function DashboardHome() {
 
   useEffect(() => {
     loadUserStats();
-  }, []);
+  }, [progress, stats]);
 
   const loadUserStats = async () => {
     try {
@@ -49,18 +51,8 @@ function DashboardHome() {
         .eq('user_id', user.id)
         .eq('completed', true);
 
-      // Get quiz stats
-      const { data: quizAttempts } = await supabase
-        .from('quiz_attempts')
-        .select('score, total_questions')
-        .eq('user_id', user.id);
-
-      const avgScore = quizAttempts?.length
-        ? Math.round(quizAttempts.reduce((sum, q) => sum + (q.score / q.total_questions * 100), 0) / quizAttempts.length)
-        : 0;
-
-      // Calculate completion percentage from course data
-      const completedLessons = course?.lessonsCompleted || 0;
+      // Use data from useUserStats hook for lessons and quiz stats
+      const completedLessons = progress?.completedLessons?.length || 0;
       const totalCourseLessons = course?.total_lessons || 30;
       const completionPct = Math.round((completedLessons / totalCourseLessons) * 100);
 
@@ -78,8 +70,8 @@ function DashboardHome() {
         totalLessons: totalCourseLessons,
         labsCompleted: labsProgress?.length || 0,
         totalLabs: 10,
-        quizzesTaken: quizAttempts?.length || 0,
-        averageScore: avgScore,
+        quizzesTaken: stats?.quizzesTaken || 0,
+        averageScore: stats?.avgQuizScore || 0,
         studyStreak: profile?.study_streak || 0,
         completionPercentage: completionPct
       });
