@@ -10,7 +10,7 @@ export async function getCourseProgress() {
 
     // Get lesson progress
     const { data, error } = await supabase
-      .from('lesson_progress')
+      .from('user_progress')
       .select('course_id, completed')
       .eq('user_id', user.id);
 
@@ -180,7 +180,7 @@ export async function getRecentActivity(limit = 10) {
 
     // Get recent lesson completions
     const { data: lessons } = await supabase
-      .from('lesson_progress')
+      .from('user_progress')
       .select('lesson_id, course_id, completion_date')
       .eq('user_id', user.id)
       .eq('completed', true)

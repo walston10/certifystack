@@ -64,11 +64,12 @@ CREATE TRIGGER on_auth_user_created
 CREATE TABLE IF NOT EXISTS user_progress (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  course_id TEXT DEFAULT 'network-plus',
   lesson_id INTEGER NOT NULL,
   completed BOOLEAN DEFAULT FALSE,
   completed_at TIMESTAMPTZ DEFAULT NOW(),
   time_spent INTEGER DEFAULT 0, -- in seconds
-  UNIQUE(user_id, lesson_id)
+  UNIQUE(user_id, course_id, lesson_id)
 );
 
 -- RLS Policies for user_progress
