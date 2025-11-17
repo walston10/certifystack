@@ -10,8 +10,7 @@ CREATE TABLE IF NOT EXISTS user_progress (
   lesson_id INTEGER NOT NULL,
   completed BOOLEAN DEFAULT FALSE,
   completed_at TIMESTAMPTZ DEFAULT NOW(),
-  time_spent INTEGER DEFAULT 0,
-  completion_date TIMESTAMPTZ
+  time_spent INTEGER DEFAULT 0
 );
 
 -- Step 2: Add course_id column if it doesn't exist
