@@ -132,8 +132,6 @@ function LabsGallery() {
 
               <div className="lab-meta">
                 <span>{lab.estimatedTime}</span>
-                <span>•</span>
-                <span>{lab.xpReward} XP</span>
               </div>
 
               <button className="lab-start-btn">

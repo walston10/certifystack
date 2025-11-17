@@ -264,11 +264,13 @@ function AccountPage() {
 
             <div className="stat-card-account">
               <div className="stat-icon-account xp-icon">
-                <Zap size={32} />
+                <Award size={32} />
               </div>
               <div className="stat-details">
-                <div className="stat-value-large">{studyStats?.xp_points || 0}</div>
-                <div className="stat-label-account">XP Points</div>
+                <div className="stat-value-large">
+                  {courseProgress.reduce((sum, course) => sum + course.completed_lessons, 0)}
+                </div>
+                <div className="stat-label-account">Lessons Completed</div>
               </div>
             </div>
 
