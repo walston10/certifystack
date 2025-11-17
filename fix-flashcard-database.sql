@@ -1,7 +1,7 @@
 -- ============================================
--- FIX FLASHCARD DATABASE ISSUES
+-- FIX FLASHCARD DATABASE ISSUES - COMPLETE
 -- ============================================
--- This migration adds missing tables and columns needed for the application
+-- This migration adds ALL missing tables and columns needed for flashcards
 -- Run this in Supabase SQL Editor
 
 -- ============================================
@@ -69,6 +69,96 @@ WHERE completed = TRUE AND completion_date IS NULL;
 CREATE INDEX IF NOT EXISTS idx_user_progress_completion_date ON user_progress(user_id, completion_date);
 
 -- ============================================
+-- 4. CREATE FLASHCARD_PROGRESS TABLE (for Anki system)
+-- ============================================
+CREATE TABLE IF NOT EXISTS flashcard_progress (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  card_id TEXT NOT NULL, -- Format: "lessonId-cardIndex" e.g., "1-0", "1-1", etc.
+  state TEXT DEFAULT 'new', -- 'new', 'learning', 'review'
+  ease NUMERIC DEFAULT 2.5,
+  interval INTEGER DEFAULT 0,
+  repetitions INTEGER DEFAULT 0,
+  due_date DATE DEFAULT CURRENT_DATE,
+  last_reviewed TIMESTAMPTZ,
+  times_hard INTEGER DEFAULT 0,
+  times_good INTEGER DEFAULT 0,
+  times_easy INTEGER DEFAULT 0,
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id, card_id)
+);
+
+-- RLS Policies for flashcard_progress
+ALTER TABLE flashcard_progress ENABLE ROW LEVEL SECURITY;
+
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE tablename = 'flashcard_progress' AND policyname = 'Users can view own flashcard progress'
+  ) THEN
+    CREATE POLICY "Users can view own flashcard progress" ON flashcard_progress FOR SELECT USING (auth.uid() = user_id);
+  END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE tablename = 'flashcard_progress' AND policyname = 'Users can insert own flashcard progress'
+  ) THEN
+    CREATE POLICY "Users can insert own flashcard progress" ON flashcard_progress FOR INSERT WITH CHECK (auth.uid() = user_id);
+  END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE tablename = 'flashcard_progress' AND policyname = 'Users can update own flashcard progress'
+  ) THEN
+    CREATE POLICY "Users can update own flashcard progress" ON flashcard_progress FOR UPDATE USING (auth.uid() = user_id);
+  END IF;
+END $$;
+
+-- Create indexes for flashcard_progress
+CREATE INDEX IF NOT EXISTS idx_flashcard_progress_user_id ON flashcard_progress(user_id);
+CREATE INDEX IF NOT EXISTS idx_flashcard_progress_due_date ON flashcard_progress(due_date);
+
+-- ============================================
+-- 5. CREATE STUDY_STREAKS TABLE (for analytics)
+-- ============================================
+CREATE TABLE IF NOT EXISTS study_streaks (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  current_streak INTEGER DEFAULT 0,
+  longest_streak INTEGER DEFAULT 0,
+  last_study_date DATE,
+  total_cards_studied INTEGER DEFAULT 0,
+  total_reviews INTEGER DEFAULT 0,
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id)
+);
+
+-- RLS Policies for study_streaks
+ALTER TABLE study_streaks ENABLE ROW LEVEL SECURITY;
+
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE tablename = 'study_streaks' AND policyname = 'Users can view own study streaks'
+  ) THEN
+    CREATE POLICY "Users can view own study streaks" ON study_streaks FOR SELECT USING (auth.uid() = user_id);
+  END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE tablename = 'study_streaks' AND policyname = 'Users can insert own study streaks'
+  ) THEN
+    CREATE POLICY "Users can insert own study streaks" ON study_streaks FOR INSERT WITH CHECK (auth.uid() = user_id);
+  END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE tablename = 'study_streaks' AND policyname = 'Users can update own study streaks'
+  ) THEN
+    CREATE POLICY "Users can update own study streaks" ON study_streaks FOR UPDATE USING (auth.uid() = user_id);
+  END IF;
+END $$;
+
+-- Create index for study_streaks
+CREATE INDEX IF NOT EXISTS idx_study_streaks_user_id ON study_streaks(user_id);
+
+-- ============================================
 -- SUCCESS MESSAGE
 -- ============================================
-SELECT 'Database schema updated successfully! Courses table created, active_course and completion_date columns added.' as message;
+SELECT 'Database schema updated successfully! All flashcard tables created with Anki system support.' as message;
