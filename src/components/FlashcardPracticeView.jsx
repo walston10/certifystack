@@ -21,7 +21,12 @@ function FlashcardPracticeView() {
       Object.keys(allFlashcards).forEach(lessonId => {
         const lessonCards = allFlashcards[lessonId];
         if (Array.isArray(lessonCards)) {
-          allCards.push(...lessonCards);
+          // Attach lessonId to each card so progress can be saved
+          const cardsWithLesson = lessonCards.map(card => ({
+            ...card,
+            lessonId: parseInt(lessonId)
+          }));
+          allCards.push(...cardsWithLesson);
         }
       });
       setCards(allCards);
