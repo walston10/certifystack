@@ -291,6 +291,12 @@ export async function updateStudyStreak() {
     }
   }
 
+  // Calculate actual total_cards_studied from flashcard_progress
+  const { count: uniqueCardsStudied } = await supabase
+    .from('flashcard_progress')
+    .select('card_id', { count: 'exact', head: true })
+    .eq('user_id', user.id);
+
   const { data, error } = await supabase
     .from('study_streaks')
     .upsert({
@@ -298,7 +304,7 @@ export async function updateStudyStreak() {
       current_streak: currentStreak,
       longest_streak: longestStreak,
       last_study_date: today,
-      total_cards_studied: stats.totalCardsStudied,
+      total_cards_studied: uniqueCardsStudied || 0,
       total_reviews: stats.totalReviews + 1,
     }, {
       onConflict: 'user_id'
