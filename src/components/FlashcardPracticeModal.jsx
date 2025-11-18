@@ -34,22 +34,34 @@ function FlashcardPracticeModal({ isOpen, onClose }) {
   };
 
   const handleStartSession = () => {
+    console.log('🎲 Starting flashcard session with selected lessons:', Array.from(selectedLessons));
     let bulkCards = [];
     selectedLessons.forEach(lessonId => {
       // Get cards for this lesson and attach the lessonId to each card
       const lessonCards = getFlashcardsByLesson(lessonId);
+      console.log(`🎲 Lesson ${lessonId}: Got ${lessonCards.length} cards from getFlashcardsByLesson`);
+      console.log(`🎲 Lesson ${lessonId}: First card before lessonId attachment:`, lessonCards[0]);
+
       const cardsWithLesson = lessonCards.map(card => ({
         ...card,
         lessonId: lessonId  // Attach lessonId so we can save progress later
       }));
+      console.log(`🎲 Lesson ${lessonId}: First card AFTER lessonId attachment:`, cardsWithLesson[0]);
+
       bulkCards = [...bulkCards, ...cardsWithLesson];
     });
+
+    console.log(`🎲 Total cards before shuffle: ${bulkCards.length}`);
+    console.log(`🎲 First card in bulkCards before shuffle:`, bulkCards[0]);
 
     // Shuffle the combined deck
     for (let i = bulkCards.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [bulkCards[i], bulkCards[j]] = [bulkCards[j], bulkCards[i]];
     }
+
+    console.log(`🎲 First card after shuffle:`, bulkCards[0]);
+    console.log(`🎲 Navigating to /practice/flashcards with ${bulkCards.length} cards`);
 
     onClose();
     navigate('/practice/flashcards', { state: { cards: bulkCards } });
