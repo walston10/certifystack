@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FlaskConical, CheckCircle, Lock } from 'lucide-react';
+import { FlaskConical, Lock } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { createCheckoutSession } from '../lib/stripe';
 import { networkPlusLabs } from '../courses/network-plus/data/labs';
@@ -9,14 +9,12 @@ import './LabsGallery.css';
 function LabsGallery() {
   const navigate = useNavigate();
   const { courseId } = useParams();
-  const [completedLabs, setCompletedLabs] = useState([]);
   const [isPremium, setIsPremium] = useState(false);
 
   // Default to network-plus for backward compatibility
   const actualCourseId = courseId || 'network-plus';
 
   useEffect(() => {
-    loadLabsProgress();
     loadMembershipTier();
   }, []);
 
@@ -36,25 +34,6 @@ function LabsGallery() {
       console.error('Error loading membership tier:', error);
     }
   };
-
-  const loadLabsProgress = async () => {
-    try {
-      const user = await supabase.auth.getUser();
-      if (!user.data.user) return;
-
-      const { data } = await supabase
-        .from('lab_submissions')
-        .select('lab_id')
-        .eq('user_id', user.data.user.id)
-        .eq('completed', true);
-
-      setCompletedLabs(data?.map(l => l.lab_id) || []);
-    } catch (error) {
-      console.error('Error loading labs progress:', error);
-    }
-  };
-
-  const isCompleted = (labId) => completedLabs.includes(labId);
 
   const isLabLocked = (labIndex) => {
     // Lab index starts at 0, so labs at index 0, 1, 2 are free (first 3 labs)
@@ -88,28 +67,13 @@ function LabsGallery() {
         </div>
       </div>
 
-      <div className="labs-stats">
-        <div className="stat">
-          <span className="stat-value">{networkPlusLabs.length}</span>
-          <span className="stat-label">Total Labs</span>
-        </div>
-        <div className="stat">
-          <span className="stat-value">{completedLabs.length}</span>
-          <span className="stat-label">Completed</span>
-        </div>
-        <div className="stat">
-          <span className="stat-value">{networkPlusLabs.length - completedLabs.length}</span>
-          <span className="stat-label">Remaining</span>
-        </div>
-      </div>
-
       <div className="labs-grid">
         {networkPlusLabs.map((lab, index) => {
           const locked = isLabLocked(index);
           return (
             <div
               key={lab.id}
-              className={`lab-card ${isCompleted(lab.id) ? 'completed' : ''} ${locked ? 'locked' : ''}`}
+              className={`lab-card ${locked ? 'locked' : ''}`}
               onClick={() => handleLabClick(lab, index)}
             >
               <div className={`lab-difficulty ${lab.difficulty.toLowerCase()}`}>
@@ -122,12 +86,6 @@ function LabsGallery() {
                 </div>
               )}
 
-              {!locked && isCompleted(lab.id) && (
-                <div className="lab-completed-badge">
-                  <CheckCircle size={20} />
-                </div>
-              )}
-
               <h3>{lab.title}</h3>
 
               <div className="lab-meta">
@@ -135,7 +93,7 @@ function LabsGallery() {
               </div>
 
               <button className="lab-start-btn">
-                {locked ? 'Unlock with Premium' : isCompleted(lab.id) ? 'Review Lab' : 'Start Lab'}
+                {locked ? 'Unlock with Premium' : 'Start Lab'}
               </button>
             </div>
           );

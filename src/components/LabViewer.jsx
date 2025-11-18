@@ -52,11 +52,6 @@ function LabViewer() {
     );
   }
 
-  const handleMarkComplete = () => {
-    // TODO: Implement progress tracking when authentication is added
-    alert('Lab marked as complete! (Progress tracking coming soon)');
-  };
-
   const handleViewSolution = () => {
     navigate(`/course/${actualCourseId}/solution/${lab.id}`);
   };
@@ -76,7 +71,6 @@ function LabViewer() {
         <div className="lab-meta">
           <span className="difficulty difficulty-{lab.difficulty.toLowerCase()}">{lab.difficulty}</span>
           <span className="time">⏱️ {lab.estimatedTime}</span>
-          <span className="xp">⭐ {lab.xpReward} XP</span>
           {lesson && <span className="lesson-ref">Related: Lesson {lesson.id}</span>}
         </div>
       </div>
@@ -135,17 +129,6 @@ function LabViewer() {
             onClick={() => setShowSolutionWarning(true)}
           >
             View Solution
-          </button>
-        </div>
-
-        <div className="action-card completion-card">
-          <h3>✅ Finished the Lab?</h3>
-          <p>Mark this lab as complete to track your progress and earn XP.</p>
-          <button
-            className="btn-complete"
-            onClick={handleMarkComplete}
-          >
-            Mark Complete ({lab.xpReward} XP)
           </button>
         </div>
       </div>
