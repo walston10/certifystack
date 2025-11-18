@@ -69,15 +69,25 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
 
   // Handle card rating
   const handleRating = async (rating) => {
-    if (currentIndex >= cards.length) return;
+    console.log('🎯 handleRating called with rating:', rating);
+    console.log('📍 currentIndex:', currentIndex, 'cards.length:', cards.length);
+
+    if (currentIndex >= cards.length) {
+      console.log('⚠️ Early return: currentIndex >= cards.length');
+      return;
+    }
 
     const currentCard = cards[currentIndex];
+    console.log('🃏 Current card:', currentCard);
 
     // Determine which lessonId to use: card's own lessonId (practice mode) or prop lessonId (single-lesson mode)
     const cardLessonId = currentCard.lessonId || lessonId;
+    console.log('📚 cardLessonId:', cardLessonId, '(from card:', currentCard.lessonId, 'or prop:', lessonId, ')');
 
     // Save progress if we have a lessonId (either from card or prop)
     if (cardLessonId) {
+      console.log('✅ Have cardLessonId - entering save block');
+
       const cardState = currentCard.cardState || {
         state: 'new',
         ease: 2.5,
@@ -89,17 +99,23 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
         timesGood: 0,
         timesEasy: 0
       };
+      console.log('📊 Card state:', cardState);
 
       // Update card using SM-2 algorithm
       const updatedState = updateCardAlgorithm(cardState, rating);
+      console.log('🔄 Updated state from algorithm:', updatedState);
 
       // Save to Supabase (works for both single-lesson and multi-lesson practice)
       try {
-        await updateCardState(cardLessonId, currentCard.id, updatedState);
-        console.log('Flashcard progress saved:', cardLessonId, currentCard.id);
+        console.log('💾 Calling updateCardState with:', { cardLessonId, cardId: currentCard.id, updatedState });
+        const result = await updateCardState(cardLessonId, currentCard.id, updatedState);
+        console.log('✅ Flashcard progress saved successfully! Result:', result);
       } catch (error) {
-        console.error('Error saving flashcard progress:', error);
+        console.error('❌ Error saving flashcard progress:', error);
+        console.error('❌ Error details:', { message: error.message, stack: error.stack });
       }
+    } else {
+      console.log('⚠️ No cardLessonId - skipping save');
     }
 
     // Track rating for session stats (always)

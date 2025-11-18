@@ -149,29 +149,45 @@ export async function getQuizHistory(lessonId) {
  * Update flashcard progress (for Anki-style system)
  */
 export async function updateFlashcardProgress(lessonId, cardId, cardState) {
+  console.log('🗄️ progressService.updateFlashcardProgress called with:', { lessonId, cardId, cardState });
+
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) throw new Error('User not authenticated');
+  console.log('🗄️ Current user:', user?.id);
+
+  if (!user) {
+    console.error('🗄️ ❌ User not authenticated!');
+    throw new Error('User not authenticated');
+  }
+
+  const payload = {
+    user_id: user.id,
+    card_id: cardId,
+    state: cardState.state,
+    ease: cardState.ease,
+    interval: cardState.interval,
+    due_date: cardState.dueDate,
+    last_reviewed: cardState.lastReviewed,
+    repetitions: cardState.repetitions,
+    times_hard: cardState.timesHard,
+    times_good: cardState.timesGood,
+    times_easy: cardState.timesEasy,
+  };
+
+  console.log('🗄️ Upserting to flashcard_progress table with payload:', payload);
 
   const { data, error } = await supabase
     .from('flashcard_progress')
-    .upsert({
-      user_id: user.id,
-      card_id: cardId,
-      state: cardState.state,
-      ease: cardState.ease,
-      interval: cardState.interval,
-      due_date: cardState.dueDate,
-      last_reviewed: cardState.lastReviewed,
-      repetitions: cardState.repetitions,
-      times_hard: cardState.timesHard,
-      times_good: cardState.timesGood,
-      times_easy: cardState.timesEasy,
-    }, {
+    .upsert(payload, {
       onConflict: 'user_id,card_id'
     })
     .select();
 
-  if (error) throw error;
+  if (error) {
+    console.error('🗄️ ❌ Supabase error:', error);
+    throw error;
+  }
+
+  console.log('🗄️ ✅ Supabase upsert successful! Data:', data);
   return data;
 }
 
