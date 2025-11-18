@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Users, ExternalLink, Gamepad2, GraduationCap } from 'lucide-react';
+import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Users, ExternalLink, Gamepad2 } from 'lucide-react';
 import FeatureCard from './FeatureCard';
 import { supabase } from '../lib/supabase';
 import { getActiveCourse } from '../services/courseService';
@@ -107,13 +107,6 @@ function DashboardHome() {
                 <span className="course-emoji">{activeCourse.icon_emoji}</span>
                 <span className="course-name">{activeCourse.short_name}</span>
               </div>
-              <button
-                className="btn-switch-course"
-                onClick={() => navigate('/courses')}
-              >
-                <GraduationCap size={16} />
-                Switch Course
-              </button>
             </div>
           )}
 
