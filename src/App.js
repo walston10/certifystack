@@ -20,6 +20,8 @@ import CourseCatalog from './components/CourseCatalog';
 import CourseOverview from './components/CourseOverview';
 import FreeResources from './components/FreeResources';
 import Achievements from './components/Achievements';
+import GamesGallery from './components/GamesGallery';
+import MDRGame from './components/MDRGame';
 
 // Secondary Components
 import SolutionViewer from './components/SolutionViewer';
@@ -284,6 +286,26 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <Achievements />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Games Gallery */}
+        <Route
+          path="/games"
+          element={
+            <ProtectedRoute>
+              <GamesGallery />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* MDR Game */}
+        <Route
+          path="/games/mdr"
+          element={
+            <ProtectedRoute>
+              <MDRGame />
             </ProtectedRoute>
           }
         />
