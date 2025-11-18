@@ -68,7 +68,7 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
   };
 
   // Handle card rating
-  const handleRating = (rating) => {
+  const handleRating = async (rating) => {
     if (currentIndex >= cards.length) return;
 
     const currentCard = cards[currentIndex];
@@ -94,14 +94,23 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
       const updatedState = updateCardAlgorithm(cardState, rating);
 
       // Save to Supabase (works for both single-lesson and multi-lesson practice)
-      updateCardState(cardLessonId, currentCard.id, updatedState);
+      try {
+        await updateCardState(cardLessonId, currentCard.id, updatedState);
+        console.log('Flashcard progress saved:', cardLessonId, currentCard.id);
+      } catch (error) {
+        console.error('Error saving flashcard progress:', error);
+      }
     }
 
     // Track rating for session stats (always)
     setSessionRatings(prev => [...prev, rating]);
 
     // Increment total reviews
-    incrementReviews();
+    try {
+      await incrementReviews();
+    } catch (error) {
+      console.error('Error incrementing reviews:', error);
+    }
 
     // Move to next card or complete session
     if (currentIndex < cards.length - 1) {
@@ -111,7 +120,11 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
       // Session complete
       setSessionComplete(true);
       // Update streak (always, since we're saving progress now)
-      updateStreakData();
+      try {
+        await updateStreakData();
+      } catch (error) {
+        console.error('Error updating streak:', error);
+      }
     }
   };
 
