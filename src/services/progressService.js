@@ -229,6 +229,177 @@ export async function getFlashcardProgress(lessonId) {
 }
 
 /**
+ * Get weak cards (cards in learning state or with high hard-rating count)
+ * Returns card data with lessonId attached for practice
+ */
+export async function getWeakCards() {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return [];
+
+  // Query for cards that are either:
+  // 1. In 'learning' state (not yet mastered)
+  // 2. Have been marked 'hard' 2+ times (struggling cards)
+  const { data, error } = await supabase
+    .from('flashcard_progress')
+    .select('*')
+    .eq('user_id', user.id)
+    .or('state.eq.learning,times_hard.gte.2');
+
+  if (error) {
+    console.error('Error fetching weak cards:', error);
+    return [];
+  }
+
+  if (!data || data.length === 0) {
+    return [];
+  }
+
+  // Import allFlashcards dynamically to get card content
+  const { allFlashcards } = await import('../courses/network-plus/flashcards');
+
+  // Convert card_id format "lessonId-cardIndex" back to actual cards
+  const weakCards = [];
+  data.forEach(progressItem => {
+    const [lessonId, cardIndex] = progressItem.card_id.split('-').map(Number);
+    const lessonCards = allFlashcards[lessonId];
+
+    if (lessonCards && lessonCards[cardIndex]) {
+      weakCards.push({
+        ...lessonCards[cardIndex],
+        lessonId: lessonId,
+        // Include progress data for potential future use
+        progressData: {
+          state: progressItem.state,
+          timesHard: progressItem.times_hard,
+          timesGood: progressItem.times_good,
+          timesEasy: progressItem.times_easy,
+        }
+      });
+    }
+  });
+
+  return weakCards;
+}
+
+/**
+ * Get a smart study session from all cards (Anki-style)
+ * Prioritizes due cards, mixes in new cards, limits to session size
+ */
+export async function getSmartStudySession(sessionSize = 30) {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return [];
+
+  const today = new Date().toISOString().split('T')[0];
+
+  // Get all card progress for user
+  const { data: progressData, error } = await supabase
+    .from('flashcard_progress')
+    .select('*')
+    .eq('user_id', user.id);
+
+  if (error) {
+    console.error('Error fetching card progress:', error);
+    return [];
+  }
+
+  // Import allFlashcards dynamically
+  const { allFlashcards } = await import('../courses/network-plus/flashcards');
+
+  // Build a map of existing progress by card_id
+  const progressMap = {};
+  if (progressData) {
+    progressData.forEach(item => {
+      progressMap[item.card_id] = {
+        state: item.state,
+        dueDate: item.due_date,
+        timesHard: item.times_hard,
+        timesGood: item.times_good,
+        timesEasy: item.times_easy,
+        ease: item.ease,
+        interval: item.interval,
+        lastReviewed: item.last_reviewed,
+        repetitions: item.repetitions,
+      };
+    });
+  }
+
+  // Categorize all cards: due, new
+  const dueCards = [];
+  const newCards = [];
+
+  // Iterate through all lessons and cards
+  Object.keys(allFlashcards).forEach(lessonId => {
+    const lessonCards = allFlashcards[lessonId];
+    if (Array.isArray(lessonCards)) {
+      lessonCards.forEach((card, cardIndex) => {
+        const cardId = `${lessonId}-${cardIndex}`;
+        const progress = progressMap[cardId];
+
+        if (!progress) {
+          // New card (never studied)
+          newCards.push({
+            ...card,
+            lessonId: parseInt(lessonId),
+            cardState: null
+          });
+        } else if (progress.dueDate <= today) {
+          // Due for review
+          dueCards.push({
+            ...card,
+            lessonId: parseInt(lessonId),
+            cardState: progress,
+            dueDate: progress.dueDate // For sorting
+          });
+        }
+      });
+    }
+  });
+
+  // Sort due cards by due date (oldest first - most overdue)
+  dueCards.sort((a, b) => {
+    return new Date(a.dueDate) - new Date(b.dueDate);
+  });
+
+  // Calculate distribution (70% due, 30% new)
+  const totalAvailable = dueCards.length + newCards.length;
+  const actualSessionSize = Math.min(sessionSize, totalAvailable);
+
+  let selectedCards = [];
+
+  if (dueCards.length === 0 && newCards.length === 0) {
+    // No cards available
+    return [];
+  } else if (dueCards.length >= actualSessionSize) {
+    // Enough due cards to fill session
+    selectedCards = dueCards.slice(0, actualSessionSize);
+  } else {
+    // Mix due cards + new cards
+    const dueCount = dueCards.length;
+    const newCount = Math.min(actualSessionSize - dueCount, newCards.length);
+
+    // Shuffle new cards before selecting
+    const shuffledNew = [...newCards];
+    for (let i = shuffledNew.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledNew[i], shuffledNew[j]] = [shuffledNew[j], shuffledNew[i]];
+    }
+
+    selectedCards = [
+      ...dueCards.slice(0, dueCount),
+      ...shuffledNew.slice(0, newCount)
+    ];
+  }
+
+  // Shuffle the final selection
+  for (let i = selectedCards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [selectedCards[i], selectedCards[j]] = [selectedCards[j], selectedCards[i]];
+  }
+
+  return selectedCards;
+}
+
+/**
  * Get global flashcard stats
  */
 export async function getFlashcardStats() {

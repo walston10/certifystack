@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Target, FileCheck, CreditCard, TrendingUp, AlertTriangle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { getExamAttempts } from '../services/examService';
+import { getWeakCards, getSmartStudySession } from '../services/progressService';
 import QuizSelectionModal from './QuizSelectionModal';
 import './PracticeZone.css';
 
@@ -97,6 +98,57 @@ function PracticeZone() {
       day: 'numeric',
       year: 'numeric'
     });
+  };
+
+  const handleStudyAllCards = async () => {
+    try {
+      const sessionCards = await getSmartStudySession(30);
+
+      if (sessionCards.length === 0) {
+        alert('No cards available to study right now! All cards are scheduled for future review.');
+        return;
+      }
+
+      // Navigate directly to flashcard practice with smart session
+      navigate('/practice/flashcards', {
+        state: {
+          cards: sessionCards,
+          sessionTitle: `Daily Study Session • ${sessionCards.length} Cards`
+        }
+      });
+    } catch (error) {
+      console.error('Error loading study session:', error);
+      alert('Failed to load study session. Please try again.');
+    }
+  };
+
+  const handleStudyWeakCards = async () => {
+    try {
+      const weakCards = await getWeakCards();
+
+      if (weakCards.length === 0) {
+        alert('No weak cards found! Keep studying to build up your practice history.');
+        return;
+      }
+
+      // Shuffle the weak cards
+      const shuffled = [...weakCards];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+
+      // Navigate directly to flashcard practice with weak cards
+      navigate('/practice/flashcards', {
+        state: {
+          cards: shuffled,
+          sessionTitle: `Weak Cards Review • ${weakCards.length} Cards`
+        }
+      });
+    } catch (error) {
+      console.error('Error loading weak cards:', error);
+      alert('Failed to load weak cards. Please try again.');
+    }
   };
 
   if (loading) {
@@ -326,13 +378,13 @@ function PracticeZone() {
             <div className="flashcard-options">
               <button
                 className="flashcard-option-btn"
-                onClick={() => navigate('/practice/flashcards/setup')}
+                onClick={handleStudyAllCards}
               >
                 Study All Cards
               </button>
               <button
                 className="flashcard-option-btn"
-                onClick={() => navigate('/practice/flashcards/setup')}
+                onClick={handleStudyWeakCards}
               >
                 Study Weak Cards
               </button>
