@@ -12,9 +12,12 @@ function FlashcardPracticeView() {
   useEffect(() => {
     // If cards were passed via location.state, use those
     if (location.state?.cards && location.state.cards.length > 0) {
+      console.log('📦 Loading cards from location.state:', location.state.cards.length, 'cards');
+      console.log('📦 First card from state:', location.state.cards[0]);
       setCards(location.state.cards);
       setLoading(false);
     } else {
+      console.log('📦 No cards in location.state, loading all flashcards as fallback');
       // Fallback: Load all flashcards if accessed directly
       // (Users should normally come through /practice/flashcards/setup)
       const allCards = [];
@@ -26,9 +29,12 @@ function FlashcardPracticeView() {
             ...card,
             lessonId: parseInt(lessonId)
           }));
+          console.log(`📦 Lesson ${lessonId}: Added ${cardsWithLesson.length} cards with lessonId attached`);
           allCards.push(...cardsWithLesson);
         }
       });
+      console.log('📦 Total fallback cards loaded:', allCards.length);
+      console.log('📦 First fallback card:', allCards[0]);
       setCards(allCards);
       setLoading(false);
     }
