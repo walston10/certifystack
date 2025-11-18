@@ -75,21 +75,13 @@ function Navigation() {
     <nav className="main-navigation">
       <div className="nav-container">
         {/* Logo */}
-        <NavLink to="/dashboard" className="nav-logo" onClick={closeMobileMenu}>
-          <img src="/logo.png" alt="CertifyStack" className="logo-icon" />
-          <span className="logo-text">CertifyStack</span>
+        <NavLink to="/account" className="nav-logo" onClick={closeMobileMenu}>
+          <img src="/logo.png" alt="MyStack" className="logo-icon" />
+          <span className="logo-text">MyStack</span>
         </NavLink>
 
         {/* Desktop Navigation Links */}
         <div className="nav-links desktop-nav">
-          <NavLink
-            to="/courses"
-            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-          >
-            <GraduationCap size={20} />
-            <span>Courses</span>
-          </NavLink>
-
           {/* Active Course Badge */}
           {activeCourse && (
             <div className="active-course-badge" title={activeCourse.title}>
@@ -97,6 +89,14 @@ function Navigation() {
               <span className="course-name">{activeCourse.short_name}</span>
             </div>
           )}
+
+          <NavLink
+            to="/courses"
+            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          >
+            <GraduationCap size={20} />
+            <span>Courses</span>
+          </NavLink>
 
           <NavLink
             to="/lessons"
