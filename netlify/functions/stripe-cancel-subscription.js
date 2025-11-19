@@ -8,6 +8,19 @@ const supabase = createClient(
 );
 
 exports.handler = async (event) => {
+  // Handle CORS preflight
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      },
+      body: '',
+    };
+  }
+
   // Only allow POST requests
   if (event.httpMethod !== 'POST') {
     return {
@@ -33,10 +46,29 @@ exports.handler = async (event) => {
       .eq('user_id', userId)
       .single();
 
-    if (dbError || !subscription?.stripe_subscription_id) {
+    if (dbError) {
+      console.error('Database error:', dbError);
       return {
         statusCode: 404,
-        body: JSON.stringify({ error: 'No subscription found for this user' })
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({
+          error: 'No subscription found for this user',
+          details: dbError.message
+        })
+      };
+    }
+
+    if (!subscription?.stripe_subscription_id) {
+      return {
+        statusCode: 404,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({ error: 'No active subscription found' })
       };
     }
 
