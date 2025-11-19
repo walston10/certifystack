@@ -7,7 +7,7 @@ export const lesson9Quiz = [
       "8080",
       "8443"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "HTTPS uses port 443 for encrypted web traffic via TLS/SSL. Port 80 is used for unencrypted HTTP, so using it would cause certificate and encryption errors."
   },
   {
@@ -18,7 +18,7 @@ export const lesson9Quiz = [
       "SSH on port 22",
       "SMTP on port 25"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "SSH (Secure Shell) uses port 22 and provides encrypted command-line and file-transfer sessions, replacing Telnet’s insecure plaintext communication."
   },
   {
@@ -29,7 +29,7 @@ export const lesson9Quiz = [
       "Port 20 handles uploads, port 21 handles downloads",
       "They're interchangeable"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "FTP uses port 21 for control commands (login, directory navigation) and port 20 for the data connection (file transfer). This dual-port design separates command and data channels."
   },
   {
@@ -40,7 +40,7 @@ export const lesson9Quiz = [
       "49152-65535",
       "1-65535"
     ],
-    answerIndex: 0,
+    correct: 0,
     explanation: "Well-known ports (0–1023) are assigned to standardized services like HTTP (80) and DNS (53). Registered ports (1024–49151) and dynamic ports (49152–65535) are used for other applications and client sessions."
   },
   {
@@ -51,7 +51,7 @@ export const lesson9Quiz = [
       "80",
       "143"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "DNS uses port 53 for both UDP (queries) and TCP (zone transfers). If blocked, domain names can’t resolve to IP addresses."
   },
   {
@@ -62,7 +62,7 @@ export const lesson9Quiz = [
       "SNMP using ports 161 and 162",
       "FTP using ports 20 and 21"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "DHCP uses port 67 (server) and port 68 (client) over UDP to assign IP addresses dynamically through the DORA process (Discover, Offer, Request, Acknowledge)."
   },
   {
@@ -73,7 +73,7 @@ export const lesson9Quiz = [
       "HTTPS (443)",
       "SFTP (22)"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "SSH on port 22 provides encrypted command-line access and is the secure replacement for Telnet (port 23)."
   },
   {
@@ -84,7 +84,7 @@ export const lesson9Quiz = [
       "POP3 on port 110",
       "IMAPS on port 993"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "POP3 on port 110 downloads and typically removes emails from the server. IMAP keeps emails stored on the server for access from multiple devices."
   },
   {
@@ -95,7 +95,7 @@ export const lesson9Quiz = [
       "143",
       "465"
     ],
-    answerIndex: 0,
+    correct: 0,
     explanation: "SMTP uses port 25 for sending mail between servers. Modern clients use port 587 (STARTTLS) or 465 (implicit TLS) for secure outbound mail submission."
   },
   {
@@ -106,7 +106,7 @@ export const lesson9Quiz = [
       "SSH on port 22",
       "FTPS on port 990"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "HTTPS uses port 443 to encrypt web traffic with TLS/SSL, ensuring data confidentiality and integrity between client and server."
   },
   {
@@ -117,7 +117,7 @@ export const lesson9Quiz = [
       "Both TCP and UDP",
       "ICMP"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "DNS uses UDP for quick queries and TCP for larger data transfers (e.g., zone transfers). Both operate on port 53."
   },
   {
@@ -128,7 +128,7 @@ export const lesson9Quiz = [
       "3389",
       "5900"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "RDP uses port 3389 for graphical remote desktop sessions, primarily on Windows systems."
   },
   {
@@ -139,7 +139,7 @@ export const lesson9Quiz = [
       "161 and 162",
       "137 and 138"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "The DHCP client broadcasts from port 68 to the server at port 67. The server replies from 67 to 68, completing the IP assignment."
   },
   {
@@ -150,7 +150,7 @@ export const lesson9Quiz = [
       "Accessing email on server (IMAP)",
       "Secure email (IMAPS)"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "IMAP uses port 143 to allow real-time access and synchronization of emails on the server across multiple devices."
   },
   {
@@ -161,7 +161,7 @@ export const lesson9Quiz = [
       "LDAP",
       "NetBIOS"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "SNMP uses port 161 for queries and 162 for traps/alerts, allowing centralized device monitoring and status reporting."
   },
   {
@@ -172,7 +172,7 @@ export const lesson9Quiz = [
       "443",
       "8008"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "HTTP uses port 80 for unencrypted web traffic. HTTPS uses port 443 for encrypted sessions."
   },
   {
@@ -183,7 +183,7 @@ export const lesson9Quiz = [
       "49152-65535",
       "1024-65535"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "Ephemeral (dynamic) ports 49152–65535 are randomly assigned for temporary client sessions to well-known server ports."
   },
   {
@@ -194,7 +194,7 @@ export const lesson9Quiz = [
       "HTTP/S on port 80",
       "Secure HTTP on port 8080"
     ],
-    answerIndex: 0,
+    correct: 0,
     explanation: "HTTPS (port 443) encrypts HTTP traffic using TLS/SSL, securing online transactions and sensitive user data."
   },
   {
@@ -205,7 +205,7 @@ export const lesson9Quiz = [
       "SMB",
       "RDP"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "SMB uses port 445 for file and printer sharing. Blocking this port prevents network share access."
   },
   {
@@ -216,7 +216,7 @@ export const lesson9Quiz = [
       "80 and 443",
       "110 and 143"
     ],
-    answerIndex: 0,
+    correct: 0,
     explanation: "FTP uses port 21 for control commands and port 20 for the data connection. For security, modern networks prefer SFTP or FTPS."
   },
   {
@@ -227,7 +227,7 @@ export const lesson9Quiz = [
       "Port 21, TCP",
       "Port 20, UDP"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "TFTP uses UDP port 69 for lightweight file transfers during PXE boot and firmware updates. It has no authentication and minimal overhead."
   },
   {
@@ -238,7 +238,7 @@ export const lesson9Quiz = [
       "636",
       "3389"
     ],
-    answerIndex: 0,
+    correct: 0,
     explanation: "LDAP uses port 389 for unencrypted directory lookups and authentication in Active Directory environments."
   },
   {
@@ -249,7 +249,7 @@ export const lesson9Quiz = [
       "Secure LDAP on port 3389",
       "LDAP/TLS on port 443"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "LDAPS uses port 636 and wraps LDAP traffic in TLS/SSL encryption to secure directory communication."
   },
   {
@@ -260,7 +260,7 @@ export const lesson9Quiz = [
       "5900 and 5901",
       "50 and 51"
     ],
-    answerIndex: 0,
+    correct: 0,
     explanation: "SIP uses port 5060 for unencrypted signaling and 5061 for TLS-encrypted VoIP signaling. Audio data uses separate RTP ports."
   },
   {
@@ -271,7 +271,7 @@ export const lesson9Quiz = [
       "223",
       "323"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "NTP uses UDP port 123 to synchronize clocks across network devices. Accurate timekeeping is crucial for authentication and log correlation."
   }
 ];

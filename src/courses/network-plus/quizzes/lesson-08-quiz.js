@@ -7,7 +7,7 @@ export const lesson8Quiz = [
       "Data Network System",
       "Domain Network Service"
     ],
-    answerIndex: 0,
+    correct: 0,
     explanation: "DNS stands for Domain Name System. It resolves human-readable hostnames to IP addresses so clients can reach services without memorizing IPs."
   },
   {
@@ -18,7 +18,7 @@ export const lesson8Quiz = [
       "A Record",
       "MX Record"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "An A record maps a hostname to an IPv4 address. AAAA is for IPv6, CNAME is an alias to another name, and MX designates mail exchangers."
   },
   {
@@ -29,7 +29,7 @@ export const lesson8Quiz = [
       "Specifies mail servers for a domain",
       "Performs reverse DNS lookup"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "MX (Mail Exchange) records specify which mail servers handle a domain’s email and include priorities for failover."
   },
   {
@@ -40,7 +40,7 @@ export const lesson8Quiz = [
       "nslookup",
       "ipconfig"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "nslookup can query specific record types (e.g., MX, A, TXT). Example: nslookup -type=MX example.com."
   },
   {
@@ -51,7 +51,7 @@ export const lesson8Quiz = [
       "IPv6 Address - maps hostname to IPv6 address",
       "Automated Address - automatically assigns IPs"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "AAAA (quad-A) records map hostnames to IPv6 addresses. They’re the IPv6 counterpart to A records."
   },
   {
@@ -62,7 +62,7 @@ export const lesson8Quiz = [
       "Deploy",
       "Declare"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "DORA = Discover, Offer, Request, Acknowledge. The client begins with a DHCP Discover broadcast to locate a DHCP server."
   },
   {
@@ -73,7 +73,7 @@ export const lesson8Quiz = [
       "Assigning the same IP to a specific device based on MAC address",
       "Backing up DHCP configuration"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "A DHCP reservation binds a device’s MAC address to a fixed IP while still delivering other DHCP options (gateway, DNS, etc.)."
   },
   {
@@ -84,7 +84,7 @@ export const lesson8Quiz = [
       "169.254.x.x",
       "172.16.x.x"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "169.254.0.0/16 is APIPA. It appears when a DHCP client can’t contact a server; check DHCP reachability and scope availability."
   },
   {
@@ -95,7 +95,7 @@ export const lesson8Quiz = [
       "To speed up DNS resolution by storing previous results",
       "To load balance DNS servers"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "DNS caching stores recent answers until TTL expiry, accelerating lookups. During migrations, cached entries may briefly point to the old IP."
   },
   {
@@ -106,7 +106,7 @@ export const lesson8Quiz = [
       "Creates a copy of all DNS records",
       "Creates a connection to a mail server"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "A CNAME makes an alias that targets another hostname (not an IP). Managing the target’s A/AAAA records automatically updates the alias."
   },
   {
@@ -117,7 +117,7 @@ export const lesson8Quiz = [
       "Network Tracking Protocol - monitors network traffic",
       "Network Tunnel Protocol - creates VPN connections"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "NTP synchronizes time across systems. Accurate time is critical for Kerberos, TLS, log correlation, and MFA."
   },
   {
@@ -128,7 +128,7 @@ export const lesson8Quiz = [
       "Primary time servers directly connected to atomic clocks",
       "Unsynchronized devices"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "Stratum 1 servers get time from Stratum 0 (atomic/GPS). Lower stratum numbers indicate higher accuracy; Stratum 16 is unsynchronized."
   },
   {
@@ -139,7 +139,7 @@ export const lesson8Quiz = [
       "Provides pointer to mail servers",
       "Points to the root DNS servers"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "PTR records support reverse DNS (IP→name). Many mail systems require that an IP’s PTR resolves to the sending host’s FQDN."
   },
   {
@@ -150,7 +150,7 @@ export const lesson8Quiz = [
       "DHCP lease times expiring too quickly",
       "DHCP conflicts between multiple servers"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "DHCP relay (IP helper) converts client broadcasts to unicast requests to a remote DHCP server, enabling multi-subnet leasing."
   },
   {
@@ -161,7 +161,7 @@ export const lesson8Quiz = [
       "IP address, subnet mask, default gateway, DNS servers (via DHCP options)",
       "IP address and hostname only"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "DHCP options deliver the subnet mask, default gateway (Opt. 3), DNS servers (Opt. 6), domain name (Opt. 15), etc."
   },
   {
@@ -172,7 +172,7 @@ export const lesson8Quiz = [
       "Internal Protocol Access Module - network security tool",
       "IP Address Migration - tool for changing IP schemes"
     ],
-    answerIndex: 0,
+    correct: 0,
     explanation: "IPAM centralizes planning and tracking of IP space, DHCP scopes, DNS records, and allocations—vital at scale."
   },
   {
@@ -183,7 +183,7 @@ export const lesson8Quiz = [
       "Forward query",
       "Reverse query"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "Recursive queries have the DNS server perform the full resolution (root→TLD→authoritative) and return a final answer to the client."
   },
   {
@@ -194,7 +194,7 @@ export const lesson8Quiz = [
       "TLD → Root → Authoritative",
       "Root → TLD → Authoritative"
     ],
-    answerIndex: 3,
+    correct: 3,
     explanation: "Resolvers work top-down: Root (.) → TLD (.com) → Authoritative (example.com) to obtain the final record."
   },
   {
@@ -205,7 +205,7 @@ export const lesson8Quiz = [
       "Target Transfer Location",
       "Top Level Tag"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "TTL controls how long resolvers cache a record before re-querying. Short TTLs speed propagation during planned changes."
   },
   {
@@ -216,7 +216,7 @@ export const lesson8Quiz = [
       "netsh release and netsh renew",
       "nslookup /release and nslookup /renew"
     ],
-    answerIndex: 0,
+    correct: 0,
     explanation: "ipconfig /release discards the lease; ipconfig /renew requests a new one, triggering the DORA process."
   },
   {
@@ -227,7 +227,7 @@ export const lesson8Quiz = [
       "How long the DHCP server has been running",
       "How long the network has been operational"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "Lease time is the period a client can hold an address before renewal. Clients typically attempt renewal at T1 (50% of the lease)."
   },
   {
@@ -238,7 +238,7 @@ export const lesson8Quiz = [
       "Name Server - specifies authoritative DNS servers for a domain",
       "Network Security - defines security policies"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "NS records specify which name servers are authoritative for the zone. Multiple NS records provide redundancy."
   },
   {
@@ -249,7 +249,7 @@ export const lesson8Quiz = [
       "Recursive queries use UDP, iterative use TCP",
       "Recursive queries are cached, iterative are not"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "Recursive queries have the server chase the full path and reply with a final answer; iterative queries return referrals for the client to follow."
   },
   {
@@ -260,7 +260,7 @@ export const lesson8Quiz = [
       "To encrypt email communications",
       "To store email addresses"
     ],
-    answerIndex: 1,
+    correct: 1,
     explanation: "Receiving servers often verify that the sending IP’s PTR resolves to a hostname matching the HELO/From domain to reduce spam."
   },
   {
@@ -271,7 +271,7 @@ export const lesson8Quiz = [
       "Store arbitrary text data, often for verification and email security (SPF, DKIM, DMARC)",
       "Create text-based aliases"
     ],
-    answerIndex: 2,
+    correct: 2,
     explanation: "TXT records store arbitrary text, including SPF policies, DKIM keys, DMARC policies, and domain-ownership verification tokens."
   }
 ];
