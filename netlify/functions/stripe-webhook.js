@@ -123,6 +123,7 @@ async function handleCheckoutCompleted(session) {
       price_id: subscription.items.data[0].price.id,
       current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
       current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+      trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null,
       cancel_at_period_end: subscription.cancel_at_period_end,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
@@ -158,6 +159,7 @@ async function handleSubscriptionUpdated(subscription) {
       status: subscription.status,
       current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
       current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+      trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null,
       cancel_at_period_end: subscription.cancel_at_period_end,
       updated_at: new Date().toISOString()
     })

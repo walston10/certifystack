@@ -26,29 +26,36 @@ exports.handler = async (event) => {
       };
     }
 
-    // Get the user's Stripe customer ID from database
+    // Get the user's subscription info from database
     const { data: subscription, error: dbError } = await supabase
       .from('user_subscriptions')
-      .select('stripe_customer_id, stripe_subscription_id')
+      .select('stripe_subscription_id, stripe_customer_id, status')
       .eq('user_id', userId)
       .single();
 
-    if (dbError || !subscription?.stripe_customer_id) {
+    if (dbError || !subscription?.stripe_subscription_id) {
       return {
         statusCode: 404,
         body: JSON.stringify({ error: 'No subscription found for this user' })
       };
     }
 
-    // Create billing portal session
-    // Note: The portal configuration must be set up in Stripe Dashboard
-    // to enable subscription cancellation. Go to:
-    // Stripe Dashboard > Settings > Billing > Customer Portal
-    // and enable "Subscription cancellation"
-    const portalSession = await stripe.billingPortal.sessions.create({
-      customer: subscription.stripe_customer_id,
-      return_url: `${event.headers.origin || 'https://certifystack.com'}/account`,
-    });
+    // Cancel the subscription at period end (won't charge after trial)
+    const canceledSubscription = await stripe.subscriptions.update(
+      subscription.stripe_subscription_id,
+      {
+        cancel_at_period_end: true,
+      }
+    );
+
+    // Update database to reflect cancellation status
+    await supabase
+      .from('user_subscriptions')
+      .update({
+        cancel_at_period_end: true,
+        updated_at: new Date().toISOString()
+      })
+      .eq('user_id', userId);
 
     return {
       statusCode: 200,
@@ -58,16 +65,22 @@ exports.handler = async (event) => {
         'Access-Control-Allow-Headers': 'Content-Type',
       },
       body: JSON.stringify({
-        url: portalSession.url
+        success: true,
+        message: 'Subscription will be canceled at period end',
+        subscription: {
+          id: canceledSubscription.id,
+          cancel_at_period_end: canceledSubscription.cancel_at_period_end,
+          current_period_end: canceledSubscription.current_period_end,
+        }
       })
     };
 
   } catch (error) {
-    console.error('Stripe portal error:', error);
+    console.error('Stripe cancellation error:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({
-        error: 'Failed to create portal session',
+        error: 'Failed to cancel subscription',
         message: error.message
       })
     };

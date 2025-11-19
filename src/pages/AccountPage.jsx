@@ -12,7 +12,7 @@ import {
   formatRelativeTime,
   getCourseName
 } from '../services/accountService';
-import { createPortalSession } from '../lib/stripe';
+import { createPortalSession, cancelSubscription } from '../lib/stripe';
 import './AccountPage.css';
 
 function AccountPage() {
@@ -26,6 +26,7 @@ function AccountPage() {
   const [quizPerformance, setQuizPerformance] = useState(null);
   const [examPerformance, setExamPerformance] = useState(null);
   const [recentActivity, setRecentActivity] = useState([]);
+  const [subscriptionDetails, setSubscriptionDetails] = useState(null);
 
   useEffect(() => {
     loadAccountData();
@@ -47,6 +48,19 @@ function AccountPage() {
 
         if (profile) {
           setMembershipTier(profile.membership_tier || 'free');
+        }
+
+        // Get subscription details if premium
+        if (profile?.membership_tier === 'premium') {
+          const { data: subscription } = await supabase
+            .from('user_subscriptions')
+            .select('status, cancel_at_period_end, current_period_end, trial_end')
+            .eq('user_id', currentUser.id)
+            .single();
+
+          if (subscription) {
+            setSubscriptionDetails(subscription);
+          }
         }
       }
 
@@ -86,6 +100,35 @@ function AccountPage() {
     } catch (error) {
       console.error('Error opening billing portal:', error);
       alert('Failed to open billing portal. Please try again.');
+      setProcessingUpgrade(false);
+    }
+  };
+
+  const handleCancelSubscription = async () => {
+    const isOnTrial = subscriptionDetails?.trial_end &&
+                      new Date(subscriptionDetails.trial_end) > new Date();
+
+    const confirmMessage = isOnTrial
+      ? 'Are you sure you want to cancel your trial? You will lose access when your trial ends and will not be charged.'
+      : 'Are you sure you want to cancel? You will retain access until the end of your current billing period.';
+
+    if (!window.confirm(confirmMessage)) {
+      return;
+    }
+
+    setProcessingUpgrade(true);
+    try {
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      if (currentUser) {
+        await cancelSubscription(currentUser.id);
+        alert('Subscription canceled successfully. You will retain access until the end of your current period.');
+        // Reload account data to reflect cancellation
+        await loadAccountData();
+      }
+    } catch (error) {
+      console.error('Error canceling subscription:', error);
+      alert('Failed to cancel subscription. Please try again or contact support.');
+    } finally {
       setProcessingUpgrade(false);
     }
   };
@@ -160,9 +203,28 @@ function AccountPage() {
             <div className="subscription-card premium-card">
               <div className="premium-badge">
                 <Sparkles size={20} />
-                <span>Active Premium</span>
+                <span>
+                  {subscriptionDetails?.cancel_at_period_end
+                    ? 'Premium (Canceling)'
+                    : subscriptionDetails?.trial_end && new Date(subscriptionDetails.trial_end) > new Date()
+                    ? 'Premium Trial'
+                    : 'Active Premium'}
+                </span>
               </div>
               <div className="subscription-details">
+                {subscriptionDetails?.cancel_at_period_end ? (
+                  <p className="subscription-warning">
+                    ⚠️ Your subscription is set to cancel on{' '}
+                    {new Date(subscriptionDetails.current_period_end).toLocaleDateString()}.
+                    You will retain access until then.
+                  </p>
+                ) : subscriptionDetails?.trial_end && new Date(subscriptionDetails.trial_end) > new Date() ? (
+                  <p className="subscription-description">
+                    🎉 You're on a free trial until{' '}
+                    {new Date(subscriptionDetails.trial_end).toLocaleDateString()}.
+                    You won't be charged until your trial ends.
+                  </p>
+                ) : null}
                 <p className="subscription-description">
                   You have unlimited access to all premium features including:
                 </p>
@@ -173,13 +235,34 @@ function AccountPage() {
                   <li>🚀 Early access to new features</li>
                 </ul>
               </div>
-              <button
-                className="btn-manage-subscription"
-                onClick={handleManageSubscription}
-                disabled={processingUpgrade}
-              >
-                {processingUpgrade ? 'Loading...' : 'Manage Subscription'}
-              </button>
+              <div style={{ display: 'flex', gap: '10px', flexDirection: 'column' }}>
+                {!subscriptionDetails?.cancel_at_period_end && (
+                  <button
+                    className="btn-cancel-subscription"
+                    onClick={handleCancelSubscription}
+                    disabled={processingUpgrade}
+                    style={{
+                      backgroundColor: '#dc3545',
+                      color: 'white',
+                      border: 'none',
+                      padding: '12px 24px',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      fontSize: '16px',
+                      fontWeight: '600'
+                    }}
+                  >
+                    {processingUpgrade ? 'Loading...' : 'Cancel Subscription'}
+                  </button>
+                )}
+                <button
+                  className="btn-manage-subscription"
+                  onClick={handleManageSubscription}
+                  disabled={processingUpgrade}
+                >
+                  {processingUpgrade ? 'Loading...' : 'Manage Payment Method'}
+                </button>
+              </div>
             </div>
           ) : (
             <div className="subscription-card free-card">
