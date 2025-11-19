@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Menu, X, Zap, GraduationCap, Users, HelpCircle } from 'lucide-react';
 import { useTour } from '../context/TourContext';
 import { getActiveCourse } from '../services/courseService';
@@ -7,7 +7,6 @@ import { supabase } from '../lib/supabase';
 import './Navigation.css';
 
 function Navigation() {
-  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [helpMenuOpen, setHelpMenuOpen] = useState(false);
   const [activeCourse, setActiveCourse] = useState(null);
