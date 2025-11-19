@@ -19,6 +19,13 @@ exports.handler = async (event) => {
   const sig = event.headers['stripe-signature'];
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
+  // Debug logging
+  console.log('Webhook Secret exists:', !!webhookSecret);
+  console.log('Webhook Secret length:', webhookSecret?.length);
+  console.log('Signature exists:', !!sig);
+  console.log('Body type:', typeof event.body);
+  console.log('Body length:', event.body?.length);
+
   let stripeEvent;
 
   try {
@@ -30,6 +37,7 @@ exports.handler = async (event) => {
     );
   } catch (err) {
     console.error('Webhook signature verification failed:', err.message);
+    console.error('Full error:', err);
     return {
       statusCode: 400,
       body: JSON.stringify({ error: `Webhook Error: ${err.message}` })
