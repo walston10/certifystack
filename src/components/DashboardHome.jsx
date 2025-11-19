@@ -26,7 +26,27 @@ const motivationalQuotes = [
   "The journey of a thousand lessons begins with one.",
   "Consistency beats intensity every time.",
   "Learn something new every day, even if it's just one concept.",
-  "Certification earned, career advanced."
+  "Certification earned, career advanced.",
+  "The best time to start was yesterday. The next best time is now.",
+  "Champions keep playing until they get it right.",
+  "Knowledge is power, but only when applied.",
+  "Every lesson completed is a step closer to your goal.",
+  "Doubt kills more dreams than failure ever will.",
+  "The harder you work, the luckier you get.",
+  "Success doesn't come from what you do occasionally, but what you do consistently.",
+  "Focus on progress, not perfection.",
+  "Your certification journey is a marathon, not a sprint.",
+  "The only bad study session is the one that didn't happen.",
+  "Every subnet you master brings you closer to certification.",
+  "Dream big, study hard, achieve more.",
+  "The pain of discipline is nothing compared to the pain of regret.",
+  "You're not just learning networking, you're building your future.",
+  "The difference between try and triumph is a little umph.",
+  "Today's struggle is tomorrow's strength.",
+  "Stay committed to your goals, not your excuses.",
+  "A little progress each day adds up to big results.",
+  "The certification exam doesn't care about your feelings, only your preparation.",
+  "Your career breakthrough is just one certification away."
 ];
 
 function DashboardHome() {
