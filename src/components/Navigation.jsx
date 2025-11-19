@@ -75,7 +75,7 @@ function Navigation() {
     <nav className="main-navigation">
       <div className="nav-container">
         {/* Logo */}
-        <NavLink to="/account" className="nav-logo" onClick={closeMobileMenu}>
+        <NavLink to="/dashboard" className="nav-logo" onClick={closeMobileMenu}>
           <img src="/logo.png" alt="MyStack" className="logo-icon" />
           <span className="logo-text">MyStack</span>
         </NavLink>
