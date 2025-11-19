@@ -252,7 +252,7 @@ function AccountPage() {
 
         {/* Course Progress Section */}
         <section className="account-section">
-          <h2 className="section-title">📖 Course Progress</h2>
+          <h2 className="section-title"><span style={{ filter: 'none', color: 'inherit' }}>📖</span> Course Progress</h2>
           <div className="course-progress-list">
             {courseProgress.length === 0 ? (
               <div className="empty-state">
@@ -281,7 +281,7 @@ function AccountPage() {
 
         {/* Study Stats Grid */}
         <section className="account-section">
-          <h2 className="section-title">📊 Study Stats</h2>
+          <h2 className="section-title"><span style={{ filter: 'none', color: 'inherit' }}>📊</span> Study Stats</h2>
           <div className="stats-grid">
             <div className="stat-card-account">
               <div className="stat-icon-account streak-icon">
@@ -319,7 +319,7 @@ function AccountPage() {
 
         {/* Performance Section */}
         <section className="account-section">
-          <h2 className="section-title">🎯 Performance</h2>
+          <h2 className="section-title"><span style={{ filter: 'none', color: 'inherit' }}>🎯</span> Performance</h2>
 
           {/* Quiz Performance */}
           <div className="performance-card">
@@ -380,7 +380,7 @@ function AccountPage() {
 
         {/* Recent Activity Feed */}
         <section className="account-section">
-          <h2 className="section-title">⚡ Recent Activity</h2>
+          <h2 className="section-title"><span style={{ filter: 'none', color: 'inherit' }}>⚡</span> Recent Activity</h2>
           <div className="activity-feed">
             {recentActivity.length === 0 ? (
               <div className="empty-state">

@@ -41,6 +41,12 @@ function FreeResources() {
       category: 'Lab Tools'
     },
     {
+      name: 'Wireshark',
+      url: 'https://www.wireshark.org/',
+      description: 'Free network protocol analyzer for packet capture and analysis',
+      category: 'Lab Tools'
+    },
+    {
       name: '/r/CompTIA',
       url: 'https://www.reddit.com/r/CompTIA/',
       description: 'Reddit community with study tips, resources, and support',
@@ -57,12 +63,6 @@ function FreeResources() {
       url: 'https://ankiweb.net/',
       description: 'Powerful spaced repetition flashcard software',
       category: 'Study Tools'
-    },
-    {
-      name: 'Jason Dion Practice Exams',
-      url: 'https://www.udemy.com/user/jason-dion/',
-      description: 'High-quality practice exams on Udemy (frequently on sale)',
-      category: 'Practice Tests'
     },
     {
       name: 'Mike Meyers Courses',

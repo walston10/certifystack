@@ -194,7 +194,7 @@ function Navigation() {
                     </div>
                   </a>
                   <a
-                    href="mailto:support@certifystack.com"
+                    href="mailto:hello@certifystack.com"
                     className="help-menu-item"
                     onClick={closeHelpMenu}
                   >

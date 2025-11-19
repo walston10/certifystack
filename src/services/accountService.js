@@ -74,7 +74,7 @@ export async function getStudyStats() {
       .from('study_streaks')
       .select('current_streak')
       .eq('user_id', user.id)
-      .single();
+      .maybeSingle(); // Use maybeSingle() to handle missing records gracefully
 
     // Get XP points
     const { data: profileData } = await supabase
