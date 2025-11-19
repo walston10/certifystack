@@ -119,10 +119,28 @@ function DashboardHome() {
     <div className="dashboard-home">
       {/* Hero Section */}
       <section className="hero-section">
-        <div className="hero-content">
+        <div className="hero-content" style={{ position: 'relative' }}>
           <h1 className="hero-greeting">
             Welcome back, {userStats.name}! <span style={{ filter: 'none', WebkitTextFillColor: 'initial' }}>👋</span>
           </h1>
+
+          {/* Motivational Quote - Floating on the right */}
+          <div style={{
+            position: 'absolute',
+            top: '0',
+            right: '0',
+            fontSize: '0.95rem',
+            fontStyle: 'italic',
+            color: 'rgba(255, 255, 255, 0.7)',
+            padding: '1rem 1.5rem',
+            borderLeft: '3px solid #00d9ff',
+            background: 'rgba(0, 217, 255, 0.05)',
+            borderRadius: '8px',
+            maxWidth: '350px',
+            lineHeight: '1.5'
+          }}>
+            "{dailyQuote}"
+          </div>
 
           {/* Active Course Display */}
           {activeCourse && (
@@ -133,21 +151,6 @@ function DashboardHome() {
               </div>
             </div>
           )}
-
-          {/* Motivational Quote */}
-          <div style={{
-            fontSize: '1.1rem',
-            fontStyle: 'italic',
-            color: 'rgba(255, 255, 255, 0.8)',
-            margin: '1.5rem 0',
-            padding: '1rem 1.5rem',
-            borderLeft: '4px solid #00d9ff',
-            background: 'rgba(0, 217, 255, 0.05)',
-            borderRadius: '8px',
-            maxWidth: '600px'
-          }}>
-            "{dailyQuote}"
-          </div>
 
           <div className="hero-stats">
             {/* Progress Text */}
