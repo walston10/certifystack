@@ -12,7 +12,6 @@ import PracticeZone from './components/PracticeZone';
 import LabsGallery from './components/LabsGallery';
 import LabViewer from './components/LabViewer';
 import ResourcesLibrary from './components/ResourcesLibrary';
-import UserProfile from './components/UserProfile';
 import AccountPage from './pages/AccountPage';
 import CoursesPage from './pages/CoursesPage';
 import PricingPage from './pages/PricingPage';
@@ -310,14 +309,10 @@ function AppRoutes() {
           }
         />
 
-        {/* User Profile */}
+        {/* User Profile - Redirect to Account */}
         <Route
           path="/profile"
-          element={
-            <ProtectedRoute>
-              <UserProfile />
-            </ProtectedRoute>
-          }
+          element={<Navigate to="/account" replace />}
         />
 
         {/* Account Page */}

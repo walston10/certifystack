@@ -226,11 +226,11 @@ function DashboardHome() {
 
         <FeatureCard
           icon={<User size={32} />}
-          title="Profile"
+          title="My Account"
           description="Track your progress, view stats, and manage settings"
           status={`${userStats.completionPercentage}% complete · ${userStats.studyStreak} day streak`}
-          ctaText="View Profile"
-          ctaLink="/profile"
+          ctaText="View Account"
+          ctaLink="/account"
           gradient="pink"
         />
       </section>
