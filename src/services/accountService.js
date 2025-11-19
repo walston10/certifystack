@@ -181,10 +181,10 @@ export async function getRecentActivity(limit = 10) {
     // Get recent lesson completions
     const { data: lessons } = await supabase
       .from('user_progress')
-      .select('lesson_id, course_id, completion_date')
+      .select('lesson_id, course_id, completed_at')
       .eq('user_id', user.id)
       .eq('completed', true)
-      .order('completion_date', { ascending: false })
+      .order('completed_at', { ascending: false })
       .limit(limit);
 
     // Get recent quiz attempts
@@ -212,7 +212,7 @@ export async function getRecentActivity(limit = 10) {
           type: 'lesson',
           lesson_id: lesson.lesson_id,
           course_id: lesson.course_id,
-          timestamp: lesson.completion_date
+          timestamp: lesson.completed_at
         });
       });
     }
