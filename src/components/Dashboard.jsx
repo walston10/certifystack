@@ -164,6 +164,28 @@ function Dashboard() {
                         })}
                     </div>
                 </section>
+
+                {/* Support Footer */}
+                <div style={{
+                    textAlign: 'center',
+                    padding: '2rem 1rem',
+                    marginTop: '3rem',
+                    borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                    color: 'rgba(255, 255, 255, 0.6)',
+                    fontSize: '0.9rem'
+                }}>
+                    Need help? Contact support at{' '}
+                    <a
+                        href="mailto:hello@certifystack.com"
+                        style={{
+                            color: '#00d9ff',
+                            textDecoration: 'none',
+                            fontWeight: '500'
+                        }}
+                    >
+                        hello@certifystack.com
+                    </a>
+                </div>
             </div>
     );
 }

@@ -7,6 +7,28 @@ import { getActiveCourse } from '../services/courseService';
 import { useUserStats } from '../hooks/useUserStats';
 import './DashboardHome.css';
 
+// Motivational quotes for IT certification students
+const motivationalQuotes = [
+  "Success is the sum of small efforts repeated day in and day out.",
+  "The expert in anything was once a beginner.",
+  "Every certification starts with a single lesson.",
+  "Your future self will thank you for starting today.",
+  "Progress, not perfection, is what matters.",
+  "The only way to do great work is to love what you do.",
+  "Believe you can and you're halfway there.",
+  "Small daily improvements lead to stunning results.",
+  "Don't watch the clock; do what it does. Keep going.",
+  "The secret of getting ahead is getting started.",
+  "You don't have to be great to start, but you have to start to be great.",
+  "Every expert was once a beginner who refused to give up.",
+  "Your only limit is you.",
+  "Study smart, work hard, and success will follow.",
+  "The journey of a thousand lessons begins with one.",
+  "Consistency beats intensity every time.",
+  "Learn something new every day, even if it's just one concept.",
+  "Certification earned, career advanced."
+];
+
 function DashboardHome() {
   const navigate = useNavigate();
   const { progress, stats } = useUserStats();
@@ -23,6 +45,8 @@ function DashboardHome() {
   });
   const [activeCourse, setActiveCourse] = useState(null);
   const [loading, setLoading] = useState(true);
+  // Pick a random quote on component mount
+  const [dailyQuote] = useState(() => motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]);
 
   const loadUserStats = useCallback(async () => {
     try {
@@ -109,6 +133,21 @@ function DashboardHome() {
               </div>
             </div>
           )}
+
+          {/* Motivational Quote */}
+          <div style={{
+            fontSize: '1.1rem',
+            fontStyle: 'italic',
+            color: 'rgba(255, 255, 255, 0.8)',
+            margin: '1.5rem 0',
+            padding: '1rem 1.5rem',
+            borderLeft: '4px solid #00d9ff',
+            background: 'rgba(0, 217, 255, 0.05)',
+            borderRadius: '8px',
+            maxWidth: '600px'
+          }}>
+            "{dailyQuote}"
+          </div>
 
           <div className="hero-stats">
             {/* Progress Text */}
