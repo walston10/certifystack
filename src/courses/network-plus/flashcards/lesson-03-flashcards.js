@@ -4,151 +4,153 @@ export const lesson3Flashcards = [
   {
     id: 1,
     front: "What is an IPv4 address?",
-    back: "A 32-bit number that uniquely identifies a device on a network. It's displayed in dotted decimal notation (four octets separated by periods), like 192.168.1.10. Each octet represents 8 bits and ranges from 0-255."
+    back: "32-bit number identifying a device. Dotted decimal: four octets (0-255) separated by periods. Example: 192.168.1.10. Each octet = 8 bits."
   },
   {
     id: 2,
-    front: "What are the powers of 2 for an 8-bit octet?",
-    back: "128, 64, 32, 16, 8, 4, 2, 1 (from left to right). These represent the value of each bit position. When a bit is 'on' (1), you count its value. When 'off' (0), you don't."
+    front: "Powers of 2 for 8-bit octet?",
+    back: "128, 64, 32, 16, 8, 4, 2, 1 (left to right). Bit on (1) = count value, off (0) = don't count."
   },
   {
     id: 3,
     front: "Convert 192 to binary",
-    back: "11000000. Using powers of 2: 128 + 64 = 192, so we place 1s in the 128 and 64 positions, and 0s in all other positions (32, 16, 8, 4, 2, 1)."
+    back: "11000000. 128+64=192. 1s in 128 and 64 positions, 0s elsewhere."
   },
   {
     id: 4,
     front: "Convert 11111111 to decimal",
-    back: "255. All bits are on, so we add all powers of 2: 128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = 255. This is the maximum value for any octet."
+    back: "255. All bits on. 128+64+32+16+8+4+2+1=255. Maximum octet value."
   },
   {
     id: 5,
-    front: "What is the range for Class A addresses?",
-    back: "1.0.0.0 to 126.255.255.255 with a default mask of 255.0.0.0 (/8). The first octet identifies the network, and the last three octets identify hosts. Designed for huge networks with 16.7 million hosts."
+    front: "Class A range?",
+    back: "1.0.0.0 to 126.255.255.255, mask 255.0.0.0 (/8). First octet = network, last three = hosts. 16.7M hosts."
   },
   {
     id: 6,
-    front: "What is the range for Class B addresses?",
-    back: "128.0.0.0 to 191.255.255.255 with a default mask of 255.255.0.0 (/16). The first two octets identify the network, and the last two identify hosts. Designed for medium-large networks with 65,534 hosts."
+    front: "Class B range?",
+    back: "128.0.0.0 to 191.255.255.255, mask 255.255.0.0 (/16). First two octets = network, last two = hosts. 65,534 hosts."
   },
   {
     id: 7,
-    front: "What is the range for Class C addresses?",
-    back: "192.0.0.0 to 223.255.255.255 with a default mask of 255.255.255.0 (/24). The first three octets identify the network, and the last octet identifies hosts. Designed for small networks with 254 hosts."
+    front: "Class C range?",
+    back: "192.0.0.0 to 223.255.255.255, mask 255.255.255.0 (/24). First three octets = network, last = hosts. 254 hosts."
   },
   {
     id: 8,
-    front: "What is Class D used for?",
-    back: "Multicast addressing (224.0.0.0 to 239.255.255.255). Used for one-to-many communication, like streaming video or routing protocol updates. Not used for regular host addressing."
+    front: "Class D used for?",
+    back: "Multicast (224.0.0.0 to 239.255.255.255). One-to-many communication. Not for regular host addressing."
   },
   {
     id: 9,
     front: "What is Class E?",
-    back: "Experimental addresses (240.0.0.0 to 255.255.255.255). Reserved for research and future use. Never used on production networks or the public internet."
+    back: "Experimental (240.0.0.0 to 255.255.255.255). Reserved for research. Never used in production."
   },
   {
     id: 10,
-    front: "What are the three private IP address ranges (RFC 1918)?",
-    back: "1) 10.0.0.0/8 (Class A), 2) 172.16.0.0/12 (Class B), 3) 192.168.0.0/16 (Class C). These addresses cannot route on the public internet and can be reused infinitely inside private networks."
+    front: "Three private IP ranges (RFC 1918)?",
+    back: "10.0.0.0/8 (Class A), 172.16.0.0/12 (Class B), 192.168.0.0/16 (Class C). Non-routable on internet, reusable in private networks."
   },
   {
     id: 11,
-    front: "What is the loopback address?",
-    back: "127.0.0.1 (or any address in 127.0.0.0/8). Used for testing and diagnostics. When you ping 127.0.0.1, packets never leave your computer—they loop back within the network stack. Tests if TCP/IP is working."
+    front: "Loopback address?",
+    back: "127.0.0.1 (or 127.0.0.0/8). Testing/diagnostics. Ping loops back within computer, tests TCP/IP stack."
   },
   {
     id: 12,
-    front: "What is APIPA and what's its range?",
-    back: "Automatic Private IP Addressing (169.254.0.0/16). When a device is configured for DHCP but can't reach a DHCP server, it assigns itself an APIPA address for local communication only. Seeing 169.254.x.x indicates DHCP failure."
+    front: "What is APIPA?",
+    back: "Automatic Private IP Addressing (169.254.0.0/16). Self-assigned when DHCP fails. Seeing 169.254.x.x indicates DHCP problem."
   },
   {
     id: 13,
-    front: "What does 0.0.0.0 represent?",
-    back: "The default route, meaning 'any network' or 'all networks.' In routing tables, 0.0.0.0/0 means 'send traffic here if you don't have a more specific route.' Also used for listening on all interfaces."
+    front: "What does 0.0.0.0 mean?",
+    back: "Default route, 'any network.' In routing: 0.0.0.0/0 = send here if no specific route. Also: listen on all interfaces."
   },
   {
     id: 14,
-    front: "Is 10.50.100.20 a public or private IP?",
-    back: "Private. It falls within the 10.0.0.0/8 range, which is one of the three RFC 1918 private address ranges. This address cannot route on the public internet."
+    front: "10.50.100.20 - public or private?",
+    back: "Private. Falls in 10.0.0.0/8 (RFC 1918). Cannot route on public internet."
   },
   {
     id: 15,
-    front: "Is 172.32.1.5 a public or private IP?",
-    back: "Public. While it starts with 172, the private Class B range is only 172.16.0.0 through 172.31.255.255. Since 172.32 is outside this range, it's a public address."
+    front: "172.32.1.5 - public or private?",
+    back: "Public. Private range is only 172.16.0.0-172.31.255.255. 172.32 is outside, so public."
   },
   {
     id: 16,
-    front: "Is 192.168.50.100 a public or private IP?",
-    back: "Private. It falls within the 192.168.0.0/16 range, which is the Class C private address range defined in RFC 1918."
+    front: "192.168.50.100 - public or private?",
+    back: "Private. Falls in 192.168.0.0/16 (RFC 1918 Class C range)."
   },
   {
     id: 17,
-    front: "What class is the IP address 150.100.50.25?",
-    back: "Class B. The first octet is 150, which falls in the range 128-191 (Class B). Class B addresses use the pattern N.N.H.H (two network octets, two host octets)."
+    front: "What class is 150.100.50.25?",
+    back: "Class B. First octet 150 falls in 128-191. Pattern: N.N.H.H."
   },
   {
     id: 18,
     front: "What is dotted decimal notation?",
-    back: "The format used to display IP addresses in a human-readable way. Instead of showing 32 binary bits, we divide them into four 8-bit octets and display each octet as a decimal number (0-255), separated by periods. Example: 192.168.1.10"
+    back: "Human-readable IP format. Four 8-bit octets as decimal (0-255), separated by periods. Example: 192.168.1.10."
   },
   {
     id: 19,
-    front: "What is the network address in a subnet?",
-    back: "The first IP address in a subnet where all host bits are 0. It identifies the network itself and cannot be assigned to a device. Example: In 192.168.1.0/24, the network address is 192.168.1.0."
+    front: "What is network address?",
+    back: "First IP where all host bits = 0. Identifies network, can't be assigned. Example: 192.168.1.0 in /24."
   },
   {
     id: 20,
-    front: "What is the broadcast address in a subnet?",
-    back: "The last IP address in a subnet where all host bits are 1. Used to send data to all devices on the network simultaneously. Cannot be assigned to a device. Example: In 192.168.1.0/24, the broadcast is 192.168.1.255."
+    front: "What is broadcast address?",
+    back: "Last IP where all host bits = 1. Sends to all devices, can't be assigned. Example: 192.168.1.255 in /24."
   },
   {
     id: 21,
     front: "Convert 248 to binary",
-    back: "11111000. Using powers of 2: 128 + 64 + 32 + 16 + 8 = 248. The first five bits are on (1), and the last three are off (0)."
+    back: "11111000. 128+64+32+16+8=248. First five bits on, last three off."
   },
   {
     id: 22,
     front: "Convert 10101000 to decimal",
-    back: "168. Add the values where you see a 1: 128 + 32 + 8 = 168. This is commonly seen in private IP addresses like 192.168.x.x."
+    back: "168. Add where 1 appears: 128+32+8=168. Common in 192.168.x.x."
   },
   {
     id: 23,
     front: "What does N.H.H.H mean?",
-    back: "Class A network/host pattern. 'N' is the network portion (first octet), and 'H.H.H' represents the host portion (last three octets). Example: In 10.50.100.20, '10' is the network, '50.100.20' identifies the host."
+    back: "Class A pattern. N = network (first octet), H.H.H = host (last three). Example: 10.50.100.20 → network 10, host 50.100.20."
   },
   {
     id: 24,
-    front: "Why do we need private IP addresses?",
-    back: "Because IPv4 addresses are limited (4.3 billion total), and we'd run out if every device needed a public IP. Private addresses (RFC 1918) can be reused infinitely inside organizations. NAT converts private IPs to public IPs for internet access."
+    front: "Why need private IPs?",
+    back: "IPv4 limited (4.3B total). Private IPs (RFC 1918) reusable infinitely inside orgs. NAT converts private to public for internet."
   },
   {
     id: 25,
-    front: "Quick identification: First octet is 200. What class?",
-    back: "Class C. The range 192-223 is Class C. This network would use N.N.N.H format with a default /24 mask, supporting 254 usable hosts."
+    front: "First octet 200 - what class?",
+    back: "Class C (192-223 range). N.N.N.H format, default /24 mask, 254 usable hosts."
   },
   {
     id: 26,
-    front: "A user has IP 169.254.100.50. What should you check?",
-    back: "Check DHCP connectivity. The 169.254.x.x range indicates APIPA, meaning the device couldn't reach the DHCP server. Troubleshoot: Is DHCP server running? Is the network cable connected? Is there connectivity to the DHCP server?"
+    front: "User has 169.254.100.50 - what check?",
+    back: "Check DHCP. 169.254.x.x = APIPA (DHCP failed). Troubleshoot: DHCP server running? Cable connected? Network connectivity?"
   },
   {
     id: 27,
-    front: "What is the difference between network portion and host portion?",
-    back: "Network portion identifies which network the device is on (like an area code). Host portion identifies the specific device on that network (like the last digits of a phone number). The subnet mask determines where one ends and the other begins."
+    front: "Network vs host portion?",
+    back: "Network = which network (like area code). Host = specific device (like phone number). Subnet mask determines division."
   },
   {
     id: 28,
-    front: "How many usable hosts in a Class C network?",
-    back: "254 usable hosts. A Class C /24 network has 256 total addresses (2^8), but we subtract 2: the network address (first IP) and broadcast address (last IP), leaving 254 addresses for devices."
+    front: "Class C usable hosts?",
+    back: "254. /24 = 256 total (2^8) - 2 (network + broadcast) = 254 usable."
   },
   {
     id: 29,
-    front: "Can private IP addresses route on the public internet?",
-    back: "No. Private IP addresses (10.x.x.x, 172.16-31.x.x, 192.168.x.x) are non-routable on the internet. Routers use NAT (Network Address Translation) to convert private IPs to public IPs when accessing internet resources."
+    front: "Can private IPs route on internet?",
+    back: "No. 10.x.x.x, 172.16-31.x.x, 192.168.x.x non-routable. Routers use NAT to convert private to public for internet access."
   },
   {
     id: 30,
-    front: "What does it mean to 'ping 127.0.0.1'?",
-    back: "You're testing your computer's TCP/IP stack by sending packets to yourself (loopback). If this works, your networking software is functioning. If it fails, you have a driver or software problem, not a network connectivity issue."
+    front: "What does 'ping 127.0.0.1' mean?",
+    back: "Test TCP/IP stack (loopback). Packets to yourself. Works = networking software OK. Fails = driver/software problem, not network."
   }
 ];
+
+export default lesson3Flashcards;

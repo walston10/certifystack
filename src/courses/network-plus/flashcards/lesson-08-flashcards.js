@@ -2,252 +2,252 @@ export const lesson8Flashcards = [
   {
     id: 1,
     front: "What is DNS?",
-    back: "Domain Name System - translates human-readable domain names (like google.com) into IP addresses that computers use to communicate."
+    back: "Translates domain names (google.com) into IP addresses computers use."
   },
   {
     id: 2,
     front: "What does an A Record do?",
-    back: "Maps a hostname to an IPv4 address. Most common DNS record type. Example: google.com → 142.250.185.46"
+    back: "Maps hostname to IPv4 address. Most common DNS record. Example: google.com → 142.250.185.46"
   },
   {
     id: 3,
     front: "What does an AAAA Record do?",
-    back: "Maps a hostname to an IPv6 address. IPv6 equivalent of A record. Pronounced 'quad-A record'. Example: google.com → 2607:f8b0:4004:c07::71"
+    back: "Maps hostname to IPv6 address. 'Quad-A record'. Example: google.com → 2607:f8b0:4004:c07::71"
   },
   {
     id: 4,
     front: "What is a CNAME Record?",
-    back: "Canonical Name - creates an alias that points to another domain name. Example: www.example.com → example.com. Allows redirection without duplicate A records."
+    back: "Canonical Name - alias pointing to another domain. Example: www.example.com → example.com. Avoids duplicate A records."
   },
   {
     id: 5,
     front: "What is an MX Record?",
-    back: "Mail Exchange record - specifies which mail servers handle email for a domain. Includes priority numbers (lower = higher priority) for redundancy."
+    back: "Mail Exchange - specifies mail servers for domain. Priority numbers (lower = higher priority) for redundancy."
   },
   {
     id: 6,
     front: "What is a PTR Record?",
-    back: "Pointer record - performs reverse DNS lookup (IP address to hostname). Example: 8.8.8.8 → dns.google. Essential for mail servers to avoid spam filters."
+    back: "Pointer - reverse DNS lookup (IP to hostname). Example: 8.8.8.8 → dns.google. Essential for mail servers."
   },
   {
     id: 7,
     front: "What is a TXT Record?",
-    back: "Stores arbitrary text data. Used for domain verification, SPF/DKIM/DMARC email security records, and site verification. Example: 'v=spf1 include:_spf.google.com ~all'"
+    back: "Stores text data. Used for domain verification, SPF/DKIM/DMARC email security, site verification."
   },
   {
     id: 8,
     front: "What is an NS Record?",
-    back: "Name Server record - identifies which DNS servers are authoritative for a domain. Points to servers that have the actual DNS records. Multiple NS records provide redundancy."
+    back: "Name Server - identifies authoritative DNS servers for domain. Multiple NS records provide redundancy."
   },
   {
     id: 9,
     front: "What is an SOA Record?",
-    back: "Start of Authority - contains administrative info about a DNS zone: primary name server, admin email, serial number, refresh timers. Only one SOA per zone."
+    back: "Start of Authority - admin info: primary name server, email, serial, timers. One SOA per zone."
   },
   {
     id: 10,
-    front: "What is the DNS hierarchy?",
-    back: "Root Servers (.) → Top-Level Domain servers (.com, .org) → Authoritative Name Servers (specific domains). Queries flow from root down to find answers."
+    front: "DNS hierarchy?",
+    back: "Root Servers (.) → Top-Level Domain (.com, .org) → Authoritative Name Servers. Queries flow root to specific domain."
   },
   {
     id: 11,
-    front: "What is a Recursive DNS Query?",
-    back: "Client asks DNS server to return the complete answer. Server does all the work - contacts root, TLD, and authoritative servers. Most common for end users."
+    front: "Recursive DNS Query?",
+    back: "Client asks server for complete answer. Server does all work—contacts root, TLD, authoritative servers. Most common for end users."
   },
   {
     id: 12,
-    front: "What is an Iterative DNS Query?",
-    back: "DNS server provides referrals to next servers in chain instead of doing all the work. Client follows referrals. How DNS servers communicate with each other."
+    front: "Iterative DNS Query?",
+    back: "Server provides referrals to next servers instead of doing all work. Client follows referrals. How DNS servers communicate."
   },
   {
     id: 13,
     front: "What is DNS Caching?",
-    back: "Storing DNS query results temporarily based on TTL (Time to Live) to speed up future lookups. Devices and DNS servers both cache results."
+    back: "Temporarily storing DNS results based on TTL to speed up future lookups. Both devices and servers cache."
   },
   {
     id: 14,
     front: "What is TTL in DNS?",
-    back: "Time To Live - number of seconds a DNS record can be cached before it expires and requires a fresh lookup. Short TTL = frequently changing, Long TTL = stable records."
+    back: "Time To Live - seconds a record can be cached before expiring. Short TTL = frequently changing, long TTL = stable."
   },
   {
     id: 15,
     front: "What does nslookup do?",
-    back: "Command-line tool for querying DNS records. Can look up A, AAAA, MX, TXT, NS, and other record types. Works on Windows, Mac, and Linux. Example: nslookup -type=MX google.com"
+    back: "Command-line DNS query tool. Looks up A, AAAA, MX, TXT, NS records. Example: nslookup -type=MX google.com"
   },
   {
     id: 16,
     front: "What is DHCP?",
-    back: "Dynamic Host Configuration Protocol - automatically assigns IP addresses and network configuration to devices. Eliminates manual configuration."
+    back: "Dynamic Host Configuration Protocol - automatically assigns IP addresses and network config. Eliminates manual configuration."
   },
   {
     id: 17,
     front: "What is the DORA Process?",
-    back: "Discover, Offer, Request, Acknowledge - the 4-step process DHCP uses to assign IP addresses. Client discovers server, server offers IP, client requests it, server acknowledges."
+    back: "Discover, Offer, Request, Acknowledge - 4-step DHCP IP assignment process."
   },
   {
     id: 18,
-    front: "What happens in DHCP Discover?",
-    back: "New device broadcasts 'Is there a DHCP server? I need an IP address!' to 255.255.255.255. First step of DORA process."
+    front: "DHCP Discover?",
+    back: "Device broadcasts 'I need an IP!' to 255.255.255.255. First step of DORA."
   },
   {
     id: 19,
-    front: "What happens in DHCP Offer?",
-    back: "DHCP server responds 'Here's an IP I can offer you' with IP address, subnet mask, gateway, DNS servers, and lease time. Second step of DORA."
+    front: "DHCP Offer?",
+    back: "Server responds with IP, mask, gateway, DNS, lease time. Second step of DORA."
   },
   {
     id: 20,
-    front: "What happens in DHCP Request?",
-    back: "Device broadcasts acceptance 'I'll take that IP!' in case multiple DHCP servers responded. Third step of DORA process."
+    front: "DHCP Request?",
+    back: "Device broadcasts 'I'll take that IP!' (in case multiple servers). Third step of DORA."
   },
   {
     id: 21,
-    front: "What happens in DHCP Acknowledge?",
-    back: "DHCP server confirms 'Confirmed! That IP is yours for X hours.' Device configures itself. Final step of DORA process."
+    front: "DHCP Acknowledge?",
+    back: "Server confirms 'That IP is yours for X hours.' Device configures itself. Final DORA step."
   },
   {
     id: 22,
     front: "What is a DHCP Scope?",
-    back: "The range of IP addresses a DHCP server can assign. Example: 192.168.1.100-200 (101 addresses). Excludes IPs reserved for static assignments."
+    back: "Range of IPs server can assign. Example: 192.168.1.100-200. Excludes static assignments."
   },
   {
     id: 23,
     front: "What is a DHCP Lease Time?",
-    back: "How long a device can keep its assigned IP before renewal. Typical: 8 hours to 7 days. After half the lease, device tries to renew. Prevents IP waste from transient devices."
+    back: "How long device keeps IP before renewal. Typical: 8 hours to 7 days. Renews at half lease. Prevents IP waste."
   },
   {
     id: 24,
     front: "What is a DHCP Reservation?",
-    back: "Assigns the same IP to a specific device every time based on MAC address. Device uses DHCP but always gets same IP. Used for servers, printers, network devices."
+    back: "Same IP to specific device (by MAC) every time. Device uses DHCP but gets consistent IP. For servers/printers."
   },
   {
     id: 25,
     front: "What are DHCP Options?",
-    back: "Additional configuration settings sent with IP address: Option 3 (default gateway), Option 6 (DNS servers), Option 15 (domain name), Option 42 (NTP servers), Option 51 (lease time)."
+    back: "Extra settings: Option 3 (gateway), 6 (DNS), 15 (domain name), 42 (NTP), 51 (lease time)."
   },
   {
     id: 26,
     front: "What is DHCP Relay / IP Helper?",
-    back: "Router feature that forwards DHCP broadcasts to DHCP server in different subnet. Solves problem of DHCP broadcasts not crossing routers. Allows one DHCP server for multiple subnets."
+    back: "Router forwards DHCP broadcasts to server in different subnet. Solves broadcasts not crossing routers. One server for multiple subnets."
   },
   {
     id: 27,
     front: "What does 169.254.x.x IP mean?",
-    back: "APIPA (Automatic Private IP Addressing) - device couldn't reach DHCP server so assigned itself an IP. Indicates DHCP failure. Check network connectivity, DHCP server status, scope exhaustion."
+    back: "APIPA - device couldn't reach DHCP server, self-assigned IP. Indicates DHCP failure. Check connectivity/server/scope."
   },
   {
     id: 28,
     front: "What is NTP?",
-    back: "Network Time Protocol - synchronizes clocks across network devices. Critical for Kerberos authentication, SSL certificates, log correlation, and two-factor authentication."
+    back: "Network Time Protocol - synchronizes clocks. Critical for Kerberos, SSL certs, logs, 2FA."
   },
   {
     id: 29,
-    front: "Why is accurate time important in networking?",
-    back: "Kerberos auth fails if time difference >5 minutes. SSL/TLS certificates have time-based validity. Security logs need synchronized timestamps. Two-factor auth codes are time-based."
+    front: "Why is accurate time important?",
+    back: "Kerberos fails if >5 min difference. SSL certs have time validity. Logs need sync. 2FA codes are time-based."
   },
   {
     id: 30,
-    front: "What is NTP Stratum 0?",
-    back: "The ultimate time source: atomic clocks and GPS satellites. Not directly accessible via network - hardware devices that provide perfect time."
+    front: "NTP Stratum 0?",
+    back: "Ultimate time source: atomic clocks and GPS. Hardware devices, not network accessible."
   },
   {
     id: 31,
-    front: "What is NTP Stratum 1?",
-    back: "Primary time servers directly connected to Stratum 0 devices. Highest accuracy (microsecond precision). Example: time.nist.gov"
+    front: "NTP Stratum 1?",
+    back: "Primary servers directly connected to Stratum 0. Highest accuracy (microsecond). Example: time.nist.gov"
   },
   {
     id: 32,
-    front: "What is NTP Stratum 2-15?",
-    back: "Secondary time servers. Stratum 2 syncs to Stratum 1, Stratum 3 syncs to Stratum 2, etc. Most devices sync to Stratum 2-3. Lower stratum = more accurate."
+    front: "NTP Stratum 2-15?",
+    back: "Secondary servers. Each syncs to lower stratum. Most devices use 2-3. Lower stratum = more accurate."
   },
   {
     id: 33,
-    front: "What is NTP Stratum 16?",
-    back: "Considered unsynchronized - too many hops from time source. Device is not in sync with accurate time."
+    front: "NTP Stratum 16?",
+    back: "Unsynchronized - too many hops from source. Device not in sync."
   },
   {
     id: 34,
-    front: "What are common public NTP servers?",
-    back: "time.nist.gov (US govt), time.windows.com (Microsoft), pool.ntp.org (global), time.google.com (Google), time.cloudflare.com (Cloudflare)"
+    front: "Common public NTP servers?",
+    back: "time.nist.gov, time.windows.com, pool.ntp.org, time.google.com, time.cloudflare.com"
   },
   {
     id: 35,
     front: "What is IPAM?",
-    back: "IP Address Management - centralized system for planning, tracking, and managing IP address allocation. Tracks static IPs, DHCP scopes, DNS records, subnets, conflicts. Essential for 100+ device networks."
+    back: "IP Address Management - centralized tracking of IP allocation. Static IPs, DHCP, DNS, subnets, conflicts. Essential for 100+ devices."
   },
   {
     id: 36,
     front: "What does IPAM track?",
-    back: "Static IP assignments, DHCP scopes and leases, DNS records, subnet/VLAN assignments, IP conflicts, available vs used addresses, capacity planning, audit trails."
+    back: "Static IPs, DHCP scopes/leases, DNS records, subnets/VLANs, conflicts, available/used addresses, capacity, audit trails."
   },
   {
     id: 37,
-    front: "Why use IPAM instead of spreadsheets?",
-    back: "Centralized database prevents errors. Automated conflict detection. Integration with DNS/DHCP. Audit trails. Capacity planning. Real-time accuracy. Spreadsheets fail at scale (100+ devices)."
+    front: "Why IPAM vs spreadsheets?",
+    back: "Centralized, automated conflict detection, DNS/DHCP integration, audit trails, capacity planning. Spreadsheets fail at scale (100+ devices)."
   },
   {
     id: 38,
-    front: "What command queries DNS on Windows?",
-    back: "nslookup [domain] or nslookup -type=[record type] [domain]. Example: nslookup -type=MX google.com to see mail servers."
+    front: "Query DNS on Windows?",
+    back: "nslookup [domain] or nslookup -type=[record] [domain]. Example: nslookup -type=MX google.com"
   },
   {
     id: 39,
-    front: "What command flushes DNS cache on Windows?",
-    back: "ipconfig /flushdns - clears all cached DNS entries. Used when cached data is stale or corrupted. Forces fresh DNS lookups."
+    front: "Flush DNS cache on Windows?",
+    back: "ipconfig /flushdns - clears cached DNS. Used when cache is stale/corrupted. Forces fresh lookups."
   },
   {
     id: 40,
-    front: "What command shows DHCP info on Windows?",
-    back: "ipconfig /all - shows DHCP server IP, lease obtained/expires times, DNS servers, default gateway, and all DHCP options received."
+    front: "Show DHCP info on Windows?",
+    back: "ipconfig /all - shows DHCP server, lease times, DNS, gateway, all DHCP options."
   },
   {
     id: 41,
-    front: "What commands release and renew DHCP on Windows?",
-    back: "ipconfig /release (releases current lease) and ipconfig /renew (requests new lease). Manually triggers DORA process for troubleshooting."
+    front: "Release and renew DHCP on Windows?",
+    back: "ipconfig /release (release lease), ipconfig /renew (request new). Manually triggers DORA for troubleshooting."
   },
   {
     id: 42,
-    front: "What is the difference between A and AAAA records?",
-    back: "A Record: Maps hostname to IPv4 address (32-bit). AAAA Record: Maps hostname to IPv6 address (128-bit). Same purpose, different IP versions."
+    front: "A vs AAAA records?",
+    back: "A: hostname to IPv4 (32-bit). AAAA: hostname to IPv6 (128-bit). Same purpose, different IP versions."
   },
   {
     id: 43,
-    front: "When would you use a CNAME instead of an A record?",
-    back: "When you want multiple hostnames to point to the same target, allowing you to change the target once instead of updating multiple A records. Also used for CDN services."
+    front: "When use CNAME vs A record?",
+    back: "CNAME when multiple hostnames point to same target. Change target once instead of updating multiple A records. Used for CDNs."
   },
   {
     id: 44,
-    front: "Why do domains have multiple MX records?",
-    back: "Redundancy - if primary mail server (priority 10) fails, email routes to backup servers (priority 20, 30). Ensures email delivery even during failures."
+    front: "Why multiple MX records?",
+    back: "Redundancy. If primary fails (priority 10), email routes to backups (20, 30). Ensures delivery during failures."
   },
   {
     id: 45,
-    front: "What happens if a DHCP scope runs out of addresses?",
-    back: "New devices can't get IPs - they fall back to APIPA (169.254.x.x) or show network errors. Solution: expand scope, reduce lease time, or add more DHCP servers."
+    front: "DHCP scope exhaustion?",
+    back: "New devices can't get IPs, fall back to APIPA (169.254.x.x). Solution: expand scope, reduce lease time, add servers."
   },
   {
     id: 46,
-    front: "Can you have multiple DHCP servers on one network?",
-    back: "Yes, but they must have non-overlapping scopes (80/20 rule common: Server 1 assigns .100-.199, Server 2 assigns .200-.254). Provides redundancy and load balancing."
+    front: "Multiple DHCP servers on one network?",
+    back: "Yes, with non-overlapping scopes. 80/20 rule common: Server 1 (.100-.199), Server 2 (.200-.254). Provides redundancy."
   },
   {
     id: 47,
-    front: "What is the difference between DHCP and Static IP?",
-    back: "DHCP: Automatic, temporary (leased), easy to manage at scale. Static: Manual configuration, permanent, used for servers/printers/infrastructure. DHCP reservations combine both benefits."
+    front: "DHCP vs Static IP?",
+    back: "DHCP: automatic, temporary, scalable. Static: manual, permanent, for servers/infrastructure. DHCP reservations combine both."
   },
   {
     id: 48,
-    front: "Why would DNS resolution fail?",
-    back: "DNS server unreachable, DNS server misconfigured, firewall blocking DNS (port 53), stale DNS cache, incorrect DNS server IP in DHCP options, domain doesn't exist."
+    front: "Why DNS resolution fails?",
+    back: "Server unreachable, misconfigured, firewall blocking port 53, stale cache, wrong DNS IP, domain doesn't exist."
   },
   {
     id: 49,
-    front: "What is dig command used for?",
-    back: "DNS lookup tool (Mac/Linux) that provides detailed query information including TTL, record types, authoritative servers. dig +trace shows full DNS resolution path from root to authoritative servers."
+    front: "What is dig command?",
+    back: "DNS lookup tool (Mac/Linux) with detailed info: TTL, record types, servers. dig +trace shows full resolution path."
   },
   {
     id: 50,
-    front: "What is the relationship between DNS, DHCP, and NTP?",
-    back: "All three are essential network services. DHCP assigns IPs and tells devices which DNS servers to use. DNS resolves hostnames including NTP servers. NTP syncs time for all services. They work together for automatic network configuration."
+    front: "Relationship: DNS, DHCP, NTP?",
+    back: "DHCP assigns IPs and DNS servers. DNS resolves hostnames including NTP servers. NTP syncs time for all. Work together for auto-config."
   }
 ];
 

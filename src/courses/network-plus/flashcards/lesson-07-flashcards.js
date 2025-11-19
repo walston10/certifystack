@@ -3,155 +3,154 @@
 export const lesson7Flashcards = [
   {
     id: 1,
-    front: "How many bits is an IPv6 address, and how is it written?",
-    back: "128 bits, written in hexadecimal as eight groups of four hex digits separated by colons. Example: 2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+    front: "IPv6 address: bits and format?",
+    back: "128 bits, hexadecimal, eight groups of four hex digits with colons. Example: 2001:0db8:85a3:0000:0000:8a2e:0370:7334"
   },
   {
     id: 2,
-    front: "What are the two IPv6 shortening rules?",
-    back: "Rule 1: Remove leading zeros from any group (but keep at least one digit). Rule 2: Compress one continuous string of zeros with :: (double colon). You can only use :: ONCE per address."
+    front: "Two IPv6 shortening rules?",
+    back: "1) Remove leading zeros (keep at least one). 2) Compress consecutive zeros with :: (only once per address)."
   },
   {
     id: 3,
-    front: "Shorten this IPv6 address: 2001:0db8:0000:0000:0000:ff00:0042:8329",
-    back: "2001:db8::ff00:42:8329. First remove leading zeros (2001:db8:0:0:0:ff00:42:8329), then compress consecutive zeros with :: (2001:db8::ff00:42:8329)."
+    front: "Shorten: 2001:0db8:0000:0000:0000:ff00:0042:8329",
+    back: "2001:db8::ff00:42:8329. Remove leading zeros, then compress consecutive zeros with ::."
   },
   {
     id: 4,
-    front: "What IPv6 address type starts with fe80::/10?",
-    back: "Link-local address. These are automatically assigned to every IPv6 interface, only valid on the local link (not routable), and used for NDP and local communication."
+    front: "What starts with fe80::/10?",
+    back: "Link-local address. Auto-assigned to every interface, not routable, used for NDP and local communication."
   },
   {
     id: 5,
-    front: "What IPv6 address type starts with 2000::/3?",
-    back: "Global unicast address. These are routable on the internet (like IPv4 public addresses). They start with 2 or 3 in the first hextet."
+    front: "What starts with 2000::/3?",
+    back: "Global unicast address. Routable on internet (like IPv4 public). First hextet starts with 2 or 3."
   },
   {
     id: 6,
-    front: "What is the IPv6 loopback address?",
-    back: "::1 (fully expanded: 0000:0000:0000:0000:0000:0000:0000:0001). It's equivalent to 127.0.0.1 in IPv4 and used for testing the local IPv6 stack."
+    front: "IPv6 loopback address?",
+    back: "::1 (0000:0000:0000:0000:0000:0000:0000:0001). IPv6 equivalent of 127.0.0.1."
   },
   {
     id: 7,
-    front: "What IPv6 address type starts with ff00::/8?",
-    back: "Multicast address. IPv6 has no broadcast - everything uses multicast instead. Example: ff02::1 (all nodes) replaces IPv4 broadcast."
+    front: "What starts with ff00::/8?",
+    back: "Multicast address. IPv6 has no broadcast - uses multicast. Example: ff02::1 (all nodes)."
   },
   {
     id: 8,
-    front: "What is the standard IPv6 subnet size and why?",
-    back: "/64. The first 64 bits are the network prefix, the last 64 bits are the interface ID. This allows SLAAC and EUI-64 to work properly. Don't use anything smaller than /64 for subnets."
+    front: "Standard IPv6 subnet size?",
+    back: "/64. First 64 bits = network prefix, last 64 = interface ID. Required for SLAAC and EUI-64."
   },
   {
     id: 9,
-    front: "How many /64 subnets can you create from a /48 prefix?",
-    back: "65,536 subnets (2^16). You have 16 bits available for subnetting (64 - 48 = 16), and 2^16 = 65,536. This is why even a 'small' IPv6 allocation is huge!"
+    front: "/48 prefix creates how many /64 subnets?",
+    back: "65,536 subnets (2^16). 16 bits for subnetting (64-48=16)."
   },
   {
     id: 10,
-    front: "What does SLAAC stand for and what does it do?",
-    back: "Stateless Address Autoconfiguration. It lets devices automatically configure their own IPv6 addresses without a DHCP server. The router advertises a prefix, and the device creates its address by combining the prefix with its interface ID."
+    front: "What is SLAAC?",
+    back: "Stateless Address Autoconfiguration. Devices auto-configure IPv6 without DHCP. Router advertises prefix, device creates address with interface ID."
   },
   {
     id: 11,
-    front: "What are the steps in the SLAAC process?",
-    back: "1) Device assigns itself a link-local address (fe80::), 2) Router sends Router Advertisement with network prefix, 3) Device combines prefix + interface ID, 4) Device performs Duplicate Address Detection (DAD), 5) Device has working global address."
+    front: "SLAAC process steps?",
+    back: "1) Device assigns link-local (fe80::), 2) Router sends RA with prefix, 3) Device combines prefix+interface ID, 4) DAD check, 5) Working address."
   },
   {
     id: 12,
-    front: "What is EUI-64 and how does it work?",
-    back: "Extended Unique Identifier-64 creates a 64-bit interface ID from a 48-bit MAC address. Process: Split MAC in half, insert ff:fe in middle, flip 7th bit. Example: 00:0c:29:ab:cd:ef becomes 020c:29ff:feab:cdef."
+    front: "What is EUI-64?",
+    back: "Creates 64-bit interface ID from 48-bit MAC. Split MAC, insert ff:fe, flip 7th bit. Example: 00:0c:29:ab:cd:ef → 020c:29ff:feab:cdef."
   },
   {
     id: 13,
-    front: "What's the difference between stateful and stateless DHCPv6?",
-    back: "Stateful: Server assigns the complete address and tracks it (like DHCPv4). Stateless: Device uses SLAAC for address, DHCPv6 only provides DNS/options. Stateless is most common - combines SLAAC benefits with centralized options."
+    front: "Stateful vs stateless DHCPv6?",
+    back: "Stateful: server assigns full address, tracks it (like DHCPv4). Stateless: SLAAC for address, DHCPv6 only for DNS/options. Stateless most common."
   },
   {
     id: 14,
-    front: "What are the M and O flags in IPv6 Router Advertisements?",
-    back: "M flag (Managed): If set, use stateful DHCPv6 for address. O flag (Other): If set, use DHCPv6 for options like DNS. M=0,O=1 means 'use SLAAC for address, DHCPv6 for DNS.'"
+    front: "M and O flags in Router Advertisements?",
+    back: "M (Managed): use stateful DHCPv6 for address. O (Other): use DHCPv6 for options. M=0,O=1: SLAAC for address, DHCPv6 for DNS."
   },
   {
     id: 15,
-    front: "What protocol replaces ARP in IPv6?",
-    back: "NDP (Neighbor Discovery Protocol). NDP uses ICMPv6 and multicast instead of broadcast. It handles address resolution, router discovery, prefix discovery, and duplicate address detection."
+    front: "What replaces ARP in IPv6?",
+    back: "NDP (Neighbor Discovery Protocol). Uses ICMPv6 and multicast. Handles address resolution, router/prefix discovery, DAD."
   },
   {
     id: 16,
-    front: "What are the five main NDP message types?",
-    back: "1) Router Solicitation (RS) - 'Any routers here?', 2) Router Advertisement (RA) - 'I'm here, here's your prefix', 3) Neighbor Solicitation (NS) - 'Who has this address?', 4) Neighbor Advertisement (NA) - 'I do!', 5) Redirect - 'Use this router instead.'"
+    front: "Five NDP message types?",
+    back: "1) Router Solicitation (RS), 2) Router Advertisement (RA), 3) Neighbor Solicitation (NS), 4) Neighbor Advertisement (NA), 5) Redirect."
   },
   {
     id: 17,
-    front: "What IPv6 address type is fc00::/7 and what is it used for?",
-    back: "Unique Local Address (ULA). These are private IPv6 addresses (like 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 in IPv4). Use fd00::/8 for locally assigned. Not routable on the internet."
+    front: "What is fc00::/7?",
+    back: "Unique Local Address (ULA). Private IPv6 (like 10.x, 172.16.x, 192.168.x). Use fd00::/8 locally. Not routable on internet."
   },
   {
     id: 18,
     front: "Why was IPv6 created?",
-    back: "IPv4 address exhaustion. IPv4 has only 4.3 billion addresses, which isn't enough for billions of people and tens of billions of IoT devices. IPv6 has 340 undecillion addresses - we won't run out."
+    back: "IPv4 exhaustion. IPv4: 4.3 billion addresses. IPv6: 340 undecillion. Needed for billions of devices and IoT."
   },
   {
     id: 19,
-    front: "What is dual-stack networking?",
-    back: "Running both IPv4 and IPv6 simultaneously on all devices and infrastructure. Every interface has both an IPv4 and IPv6 address. Most common transition mechanism. Allows gradual migration to IPv6."
+    front: "What is dual-stack?",
+    back: "Running IPv4 and IPv6 simultaneously. Every interface has both addresses. Most common transition mechanism."
   },
   {
     id: 20,
-    front: "What are the three IPv6 transition mechanisms?",
-    back: "1) Dual-stack: Run both protocols simultaneously. 2) Tunneling: Encapsulate IPv6 packets inside IPv4 (6to4, Teredo). 3) Translation: Convert between protocols at boundary (NAT64/DNS64). Dual-stack is most common."
+    front: "Three IPv6 transition mechanisms?",
+    back: "1) Dual-stack (both protocols), 2) Tunneling (IPv6 in IPv4 - 6to4, Teredo), 3) Translation (NAT64/DNS64). Dual-stack most common."
   },
   {
     id: 21,
-    front: "What is NAT64 used for?",
-    back: "NAT64 translates between IPv6 and IPv4 at the network boundary. Used when IPv6-only clients need to reach IPv4 servers (common in mobile networks). DNS64 provides synthesized IPv6 addresses for IPv4 destinations."
+    front: "What is NAT64?",
+    back: "Translates between IPv6 and IPv4 at boundary. IPv6-only clients reach IPv4 servers. DNS64 provides synthesized IPv6 for IPv4 destinations."
   },
   {
     id: 22,
-    front: "What multicast address means 'all nodes' in IPv6?",
-    back: "ff02::1 (all nodes on local link). This is the IPv6 equivalent of IPv4 broadcast. Other common ones: ff02::2 (all routers), ff02::1:ff00:0/104 (solicited-node multicast for NDP)."
+    front: "'All nodes' multicast address?",
+    back: "ff02::1 (all nodes on local link). IPv6 equivalent of IPv4 broadcast. Also: ff02::2 (all routers)."
   },
   {
     id: 23,
-    front: "If an organization gets 2001:db8:1234::/48, what are valid /64 subnets?",
-    back: "2001:db8:1234:0::/64, 2001:db8:1234:1::/64, 2001:db8:1234:2::/64... through 2001:db8:1234:ffff::/64. They have 16 subnet bits (hextet between /48 and /64) giving 65,536 possible subnets."
+    front: "2001:db8:1234::/48 gets what /64 subnets?",
+    back: "2001:db8:1234:0::/64 through 2001:db8:1234:ffff::/64. 16 subnet bits = 65,536 subnets."
   },
   {
     id: 24,
-    front: "What does :: (double colon) represent in IPv6?",
-    back: "One or more groups of consecutive zeros. Example: 2001:db8::1 expands to 2001:db8:0:0:0:0:0:1. Can only be used ONCE per address (otherwise it's ambiguous how many zero groups were compressed)."
+    front: "What does :: mean in IPv6?",
+    back: "One or more consecutive zero groups. Example: 2001:db8::1 = 2001:db8:0:0:0:0:0:1. Only once per address."
   },
   {
     id: 25,
-    front: "How do you ping an IPv6 address?",
-    back: "Use ping6 (Linux/Mac) or ping -6 (Windows). Example: ping6 2001:4860:4860::8888 (Google's public DNS). For link-local addresses, specify interface: ping6 fe80::1%eth0"
+    front: "How to ping IPv6?",
+    back: "ping6 (Linux/Mac) or ping -6 (Windows). Example: ping6 2001:4860:4860::8888. Link-local needs interface: ping6 fe80::1%eth0"
   },
   {
     id: 26,
-    front: "What's the purpose of Duplicate Address Detection (DAD) in IPv6?",
-    back: "DAD verifies that an IPv6 address isn't already in use before a device starts using it. The device sends Neighbor Solicitation for its own address. If someone replies, there's a duplicate and the device won't use that address."
+    front: "Purpose of DAD?",
+    back: "Duplicate Address Detection. Verifies address not in use before using it. Sends NS for own address. If reply, duplicate found."
   },
   {
     id: 27,
-    front: "Does IPv6 have broadcast? If not, what does it use instead?",
-    back: "No, IPv6 has NO broadcast. It uses multicast instead (ff00::/8). This is more efficient because only interested devices listen to multicast groups, whereas broadcast interrupts all devices on the network."
+    front: "Does IPv6 have broadcast?",
+    back: "No broadcast. Uses multicast (ff00::/8) instead. More efficient - only interested devices listen vs interrupting all."
   },
   {
     id: 28,
-    front: "What is an anycast address in IPv6?",
-    back: "An address assigned to multiple interfaces (usually on different devices). Traffic is routed to the nearest instance. Has no special prefix - looks like a regular unicast address. Used for load balancing (e.g., DNS root servers)."
+    front: "What is anycast in IPv6?",
+    back: "Address assigned to multiple interfaces. Traffic routes to nearest. No special prefix. Used for load balancing (DNS roots)."
   },
   {
     id: 29,
-    front: "What information does a Router Advertisement (RA) contain?",
-    back: "Network prefix (for SLAAC), router's link-local address (default gateway), prefix lifetime, M and O flags (DHCPv6 instructions), MTU, hop limit. Sent periodically by routers or in response to Router Solicitations."
+    front: "Router Advertisement contains?",
+    back: "Network prefix (SLAAC), router link-local (gateway), prefix lifetime, M/O flags (DHCPv6), MTU, hop limit."
   },
   {
     id: 30,
-    front: "Why does EUI-64 flip the 7th bit of the MAC address?",
-    back: "The 7th bit is the Universal/Local bit. When 0, the MAC is globally unique (manufacturer-assigned). When 1, it's locally administered. EUI-64 flips it to indicate this is a modified MAC address used for IPv6 interface ID generation."
+    front: "Why EUI-64 flip 7th bit?",
+    back: "7th bit = Universal/Local. 0=globally unique, 1=locally administered. Flip indicates modified MAC for IPv6 interface ID."
   }
 ];
 
-// Export for use in the FlashcardActivity component
 export default lesson7Flashcards;

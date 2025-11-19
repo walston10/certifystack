@@ -2,252 +2,252 @@ export const lesson9Flashcards = [
   {
     id: 1,
     front: "What are port numbers?",
-    back: "16-bit numbers (0-65535) that identify specific processes or services on a device. They allow multiple network applications to run simultaneously on the same IP address."
+    back: "16-bit numbers (0-65535) identifying specific processes/services. Allow multiple apps on same IP."
   },
   {
     id: 2,
-    front: "What is the well-known port range?",
-    back: "Ports 0-1023. Reserved for standard services (HTTP, HTTPS, SSH, etc.). Require administrative/root privileges to use."
+    front: "Well-known port range?",
+    back: "0-1023. Reserved for standard services. Require admin/root privileges."
   },
   {
     id: 3,
-    front: "What is the registered port range?",
-    back: "Ports 1024-49151. Used by vendors for specific applications. Don't require special privileges. Less standardized than well-known ports."
+    front: "Registered port range?",
+    back: "1024-49151. Vendor-specific applications. No special privileges required."
   },
   {
     id: 4,
-    front: "What is the dynamic/ephemeral port range?",
-    back: "Ports 49152-65535. Used as temporary source ports by client applications. Randomly assigned by the operating system."
+    front: "Dynamic/ephemeral port range?",
+    back: "49152-65535. Temporary client source ports, randomly assigned by OS."
   },
   {
     id: 5,
-    front: "FTP - Ports?",
-    back: "Port 20 (data transfer) and Port 21 (control commands). TCP protocol. Unencrypted (insecure). Replaced by SFTP (port 22) or FTPS (989/990)."
+    front: "FTP ports?",
+    back: "20 (data), 21 (control). TCP. Unencrypted. Use SFTP (22) or FTPS (989/990)."
   },
   {
     id: 6,
-    front: "SSH - Port?",
-    back: "Port 22. TCP. Secure remote access with encryption. Also used for SFTP (secure file transfer). Replaced Telnet (port 23)."
+    front: "SSH port?",
+    back: "22. TCP. Secure remote access with encryption. Also SFTP. Replaced Telnet."
   },
   {
     id: 7,
-    front: "Telnet - Port?",
-    back: "Port 23. TCP. Unencrypted remote access (OBSOLETE). Sends passwords in plain text. Replaced by SSH (port 22) in modern networks."
+    front: "Telnet port?",
+    back: "23. TCP. Unencrypted remote access (OBSOLETE). Plain text passwords. Use SSH."
   },
   {
     id: 8,
-    front: "SMTP - Port?",
-    back: "Port 25. TCP. Sending email between mail servers. Can use TLS (port 587 for submission). Used with POP3/IMAP for receiving."
+    front: "SMTP port?",
+    back: "25. TCP. Sending email between servers. TLS: port 587."
   },
   {
     id: 9,
-    front: "DNS - Port?",
-    back: "Port 53. UDP (for queries) and TCP (for zone transfers). Translates domain names to IP addresses. Essential for internet browsing."
+    front: "DNS port?",
+    back: "53. UDP (queries) and TCP (zone transfers). Domain name to IP translation."
   },
   {
     id: 10,
-    front: "DHCP - Ports?",
-    back: "Port 67 (server) and Port 68 (client). UDP. Automatic IP address assignment. DORA process: Discover, Offer, Request, Acknowledge."
+    front: "DHCP ports?",
+    back: "67 (server), 68 (client). UDP. Automatic IP assignment. DORA process."
   },
   {
     id: 11,
-    front: "TFTP - Port?",
-    back: "Port 69. UDP (not TCP!). Simple file transfer with no authentication. Used for firmware updates, PXE boot. Less reliable than FTP."
+    front: "TFTP port?",
+    back: "69. UDP (not TCP!). Simple file transfer, no auth. Firmware updates, PXE boot."
   },
   {
     id: 12,
-    front: "HTTP - Port?",
-    back: "Port 80. TCP. Web browsing (unencrypted). Being phased out for HTTPS. Browsers show 'Not Secure' warnings."
+    front: "HTTP port?",
+    back: "80. TCP. Unencrypted web. Being replaced by HTTPS. Browsers show 'Not Secure'."
   },
   {
     id: 13,
-    front: "POP3 - Port?",
-    back: "Port 110. TCP. Downloading email (removes from server). Secure version: POP3S (port 995). Different from IMAP which keeps messages on server."
+    front: "POP3 port?",
+    back: "110. TCP. Downloads email, removes from server. Secure: POP3S (995)."
   },
   {
     id: 14,
-    front: "NTP - Port?",
-    back: "Port 123. UDP. Time synchronization. Critical for Kerberos auth, SSL certificates, logging, 2FA. Syncs to stratum servers."
+    front: "NTP port?",
+    back: "123. UDP. Time sync. Critical for Kerberos, SSL certs, logging, 2FA."
   },
   {
     id: 15,
-    front: "NetBIOS - Ports?",
-    back: "Ports 137 (Name Service - UDP), 138 (Datagram - UDP), 139 (Session - TCP). Windows networking (legacy). Mostly replaced by SMB on port 445."
+    front: "NetBIOS ports?",
+    back: "137 (Name-UDP), 138 (Datagram-UDP), 139 (Session-TCP). Windows networking. Replaced by SMB (445)."
   },
   {
     id: 16,
-    front: "IMAP - Port?",
-    back: "Port 143. TCP. Accessing email on server (stays on server). Syncs across devices. Secure version: IMAPS (port 993)."
+    front: "IMAP port?",
+    back: "143. TCP. Email stays on server, syncs devices. Secure: IMAPS (993)."
   },
   {
     id: 17,
-    front: "SNMP - Ports?",
-    back: "Port 161 (queries/commands) and Port 162 (traps/alerts). UDP. Network device monitoring and management. Used on routers, switches, servers."
+    front: "SNMP ports?",
+    back: "161 (queries), 162 (traps). UDP. Network monitoring. Routers, switches, servers."
   },
   {
     id: 18,
-    front: "LDAP - Port?",
-    back: "Port 389. TCP. Directory services (Active Directory, user authentication). Secure version: LDAPS (port 636) with TLS/SSL."
+    front: "LDAP port?",
+    back: "389. TCP. Directory services (Active Directory). Secure: LDAPS (636)."
   },
   {
     id: 19,
-    front: "HTTPS - Port?",
-    back: "Port 443. TCP. Secure web browsing with TLS/SSL encryption. Replaced HTTP (port 80) for sensitive sites. Padlock icon in browsers."
+    front: "HTTPS port?",
+    back: "443. TCP. Secure web with TLS/SSL. Replaced HTTP. Padlock icon."
   },
   {
     id: 20,
-    front: "SMB - Port?",
-    back: "Port 445. TCP. Windows file and printer sharing. Also called CIFS. Accessing network drives and shared folders. Should be blocked at firewalls."
+    front: "SMB port?",
+    back: "445. TCP. Windows file/printer sharing (CIFS). Network drives. Block at firewalls."
   },
   {
     id: 21,
-    front: "LDAPS - Port?",
-    back: "Port 636. TCP. LDAP with TLS/SSL encryption. Secure directory services. Protects authentication credentials and user data."
+    front: "LDAPS port?",
+    back: "636. TCP. LDAP with TLS/SSL. Secure directory services."
   },
   {
     id: 22,
-    front: "FTPS - Ports?",
-    back: "Port 989 (data) and Port 990 (control). TCP. FTP with TLS/SSL encryption. Different from SFTP which uses SSH (port 22)."
+    front: "FTPS ports?",
+    back: "989 (data), 990 (control). TCP. FTP with TLS/SSL. Different from SFTP (uses SSH port 22)."
   },
   {
     id: 23,
-    front: "IMAPS - Port?",
-    back: "Port 993. TCP. IMAP with TLS/SSL encryption. Secure email access with messages staying on server."
+    front: "IMAPS port?",
+    back: "993. TCP. IMAP with TLS/SSL. Secure email, stays on server."
   },
   {
     id: 24,
-    front: "POP3S - Port?",
-    back: "Port 995. TCP. POP3 with TLS/SSL encryption. Secure email download with messages removed from server."
+    front: "POP3S port?",
+    back: "995. TCP. POP3 with TLS/SSL. Secure email download, removes from server."
   },
   {
     id: 25,
-    front: "RDP - Port?",
-    back: "Port 3389. TCP. Remote Desktop Protocol (Windows graphical remote access). Can be encrypted with TLS. Should use VPN when internet-facing."
+    front: "RDP port?",
+    back: "3389. TCP. Windows Remote Desktop. Use VPN when internet-facing."
   },
   {
     id: 26,
-    front: "SIP - Ports?",
-    back: "Port 5060 (unencrypted) and Port 5061 (with TLS). TCP and UDP. VoIP call signaling. Sets up, modifies, terminates voice/video calls."
+    front: "SIP ports?",
+    back: "5060 (unencrypted), 5061 (TLS). TCP/UDP. VoIP call signaling."
   },
   {
     id: 27,
     front: "What is a socket?",
-    back: "The combination of IP address + port number. Example: 192.168.1.100:443 (IP address 192.168.1.100 on port 443). Uniquely identifies a network connection endpoint."
+    back: "IP address + port number. Example: 192.168.1.100:443. Uniquely identifies connection endpoint."
   },
   {
     id: 28,
-    front: "What is the difference between source and destination ports?",
-    back: "Destination port: The service you're connecting to (usually well-known, like 80 for HTTP). Source port: Your computer's randomly assigned port (usually ephemeral range 49152-65535) for that specific connection."
+    front: "Source vs destination ports?",
+    back: "Destination: service you're connecting to (well-known). Source: your randomly assigned port (ephemeral 49152-65535)."
   },
   {
     id: 29,
-    front: "Why use TCP for some protocols and UDP for others?",
-    back: "TCP: Reliable, connection-oriented, guarantees delivery (web, email, file transfer). UDP: Fast, connectionless, no delivery guarantee (DNS queries, DHCP, streaming, time sync). Choice depends on whether reliability or speed matters more."
+    front: "TCP vs UDP usage?",
+    back: "TCP: reliable, guaranteed delivery (web, email, files). UDP: fast, no guarantee (DNS, DHCP, streaming). Reliability vs speed."
   },
   {
     id: 30,
     front: "Which protocols use TCP?",
-    back: "HTTP (80), HTTPS (443), SSH (22), Telnet (23), FTP (20/21), SMTP (25), POP3 (110), IMAP (143), SMB (445), RDP (3389), LDAP (389). Protocols needing reliability."
+    back: "HTTP (80), HTTPS (443), SSH (22), Telnet (23), FTP (20/21), SMTP (25), POP3 (110), IMAP (143), SMB (445), RDP (3389), LDAP (389)."
   },
   {
     id: 31,
     front: "Which protocols use UDP?",
-    back: "DNS (53), DHCP (67/68), TFTP (69), NTP (123), SNMP (161/162), NetBIOS (137/138). Protocols prioritizing speed over guaranteed delivery."
+    back: "DNS (53), DHCP (67/68), TFTP (69), NTP (123), SNMP (161/162), NetBIOS (137/138)."
   },
   {
     id: 32,
-    front: "HTTP → HTTPS upgrade",
-    back: "Port 80 → Port 443. Adds TLS/SSL encryption. Protects data in transit, prevents eavesdropping. Modern websites default to HTTPS."
+    front: "HTTP → HTTPS?",
+    back: "80 → 443. Adds TLS/SSL encryption. Protects data, prevents eavesdropping."
   },
   {
     id: 33,
-    front: "Telnet → SSH upgrade",
-    back: "Port 23 → Port 22. Adds encryption. Telnet sends passwords in plain text. SSH encrypts all communication. Never use Telnet in production."
+    front: "Telnet → SSH?",
+    back: "23 → 22. Adds encryption. Telnet sends plain text passwords. Never use Telnet in production."
   },
   {
     id: 34,
-    front: "FTP → SFTP/FTPS upgrade",
-    back: "Ports 20/21 → Port 22 (SFTP via SSH) or Ports 989/990 (FTPS via TLS). Adds encryption. FTP credentials visible to packet sniffers."
+    front: "FTP → SFTP/FTPS?",
+    back: "20/21 → 22 (SFTP via SSH) or 989/990 (FTPS via TLS). Adds encryption."
   },
   {
     id: 35,
-    front: "SMTP → SMTP with TLS upgrade",
-    back: "Port 25 → Port 587 (with STARTTLS). Adds encryption. Protects email content and credentials during transmission."
+    front: "SMTP → SMTP with TLS?",
+    back: "25 → 587 (with STARTTLS). Adds encryption for email/credentials."
   },
   {
     id: 36,
-    front: "POP3 → POP3S upgrade",
-    back: "Port 110 → Port 995. Adds TLS/SSL encryption. Protects email download and authentication."
+    front: "POP3 → POP3S?",
+    back: "110 → 995. Adds TLS/SSL for email download."
   },
   {
     id: 37,
-    front: "IMAP → IMAPS upgrade",
-    back: "Port 143 → Port 993. Adds TLS/SSL encryption. Protects email access and credentials."
+    front: "IMAP → IMAPS?",
+    back: "143 → 993. Adds TLS/SSL for email access."
   },
   {
     id: 38,
-    front: "LDAP → LDAPS upgrade",
-    back: "Port 389 → Port 636. Adds TLS/SSL encryption. Protects directory queries and authentication credentials."
+    front: "LDAP → LDAPS?",
+    back: "389 → 636. Adds TLS/SSL for directory queries."
   },
   {
     id: 39,
     front: "What is multiplexing?",
-    back: "Using port numbers to allow multiple network conversations simultaneously on the same IP address. Example: browsing web (port 443), checking email (port 993), streaming music (various ports) all at once."
+    back: "Multiple network conversations on same IP using different ports. Example: web, email, music streaming simultaneously."
   },
   {
     id: 40,
-    front: "Why do client source ports use high numbers?",
-    back: "Clients use ephemeral ports (49152-65535) randomly assigned by OS. This allows multiple simultaneous connections to the same destination (e.g., multiple browser tabs to google.com:443 use different source ports: 52341, 52342, etc.)."
+    front: "Why high client source ports?",
+    back: "Ephemeral ports (49152-65535) randomly assigned. Allows multiple connections to same destination (different source ports)."
   },
   {
     id: 41,
     front: "What does 192.168.1.100:443 mean?",
-    back: "IP address 192.168.1.100 on port 443 (HTTPS). This socket notation shows the exact endpoint: which device (IP) and which service (port) on that device."
+    back: "IP 192.168.1.100 on port 443 (HTTPS). Socket notation showing device + service."
   },
   {
     id: 42,
-    front: "Why does DNS use both UDP and TCP?",
-    back: "UDP (port 53): Fast queries for normal DNS lookups. TCP (port 53): Reliable zone transfers and queries >512 bytes. Most DNS queries are UDP for speed."
+    front: "Why DNS use UDP and TCP?",
+    back: "UDP (53): fast queries. TCP (53): zone transfers and large queries (>512 bytes). Most queries use UDP."
   },
   {
     id: 43,
-    front: "What is SFTP and what port does it use?",
-    back: "SSH File Transfer Protocol - uses port 22 (same as SSH). Secure file transfer over SSH tunnel. NOT the same as FTPS (FTP over TLS on ports 989/990)."
+    front: "What is SFTP?",
+    back: "SSH File Transfer Protocol, port 22 (via SSH). NOT FTPS (FTP over TLS on 989/990)."
   },
   {
     id: 44,
-    front: "What is the difference between POP3 and IMAP?",
-    back: "POP3 (110): Downloads messages and typically deletes from server. IMAP (143): Keeps messages on server, syncs across devices. IMAP better for multiple devices."
+    front: "POP3 vs IMAP?",
+    back: "POP3 (110): downloads, deletes from server. IMAP (143): keeps on server, syncs devices. IMAP better for multiple devices."
   },
   {
     id: 45,
-    front: "Memory trick: SSH port 22",
+    front: "Memory: SSH port 22",
     back: "Two shoes for secure shell - SSH needs 2 'shoes' (encryption) to walk securely."
   },
   {
     id: 46,
-    front: "Memory trick: SMTP port 25",
-    back: "Send Mail To Port 25 - The words spell out the port number."
+    front: "Memory: SMTP port 25",
+    back: "Send Mail To Port 25 - words spell out port."
   },
   {
     id: 47,
-    front: "Memory trick: DNS port 53",
-    back: "Tree-fiddy (3.50 = $3.50) for a name - DNS gives you names for IP addresses."
+    front: "Memory: DNS port 53",
+    back: "Tree-fiddy ($3.50) for a name - DNS gives names for IPs."
   },
   {
     id: 48,
-    front: "Memory trick: HTTP port 80",
-    back: "Ate-zero security - HTTP has 8-0 (ate nothing) = no security/encryption."
+    front: "Memory: HTTP port 80",
+    back: "Ate-zero security - HTTP has 8-0 (ate nothing) = no encryption."
   },
   {
     id: 49,
-    front: "Memory trick: HTTPS port 443",
-    back: "Four-four-three, secure for me - The rhyme makes it memorable."
+    front: "Memory: HTTPS port 443",
+    back: "Four-four-three, secure for me - rhyme."
   },
   {
     id: 50,
-    front: "Memory trick: RDP port 3389",
-    back: "Three-three-eight-nine, remote desktop fine - Rhyme to remember RDP port."
+    front: "Memory: RDP port 3389",
+    back: "Three-three-eight-nine, remote desktop fine - rhyme."
   }
 ];
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Menu, X, Zap, GraduationCap, Users, HelpCircle } from 'lucide-react';
 import { useTour } from '../context/TourContext';
 import { getActiveCourse } from '../services/courseService';
@@ -7,7 +7,6 @@ import { supabase } from '../lib/supabase';
 import './Navigation.css';
 
 function Navigation() {
-  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [helpMenuOpen, setHelpMenuOpen] = useState(false);
   const [activeCourse, setActiveCourse] = useState(null);
@@ -62,8 +61,8 @@ function Navigation() {
   };
 
   const handleUpgrade = () => {
-    navigate('/account');
-    closeMobileMenu();
+    // Redirect to Stripe payment link with 7-day free trial
+    window.location.href = 'https://buy.stripe.com/3cI8wPewj6FWbwJ1UVcEw01';
   };
 
   const handleRestartTour = () => {
@@ -76,20 +75,12 @@ function Navigation() {
       <div className="nav-container">
         {/* Logo */}
         <NavLink to="/dashboard" className="nav-logo" onClick={closeMobileMenu}>
-          <img src="/logo.png" alt="CertifyStack" className="logo-icon" />
-          <span className="logo-text">CertifyStack</span>
+          <img src="/logo.png" alt="MyStack" className="logo-icon" />
+          <span className="logo-text">MyStack</span>
         </NavLink>
 
         {/* Desktop Navigation Links */}
         <div className="nav-links desktop-nav">
-          <NavLink
-            to="/courses"
-            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-          >
-            <GraduationCap size={20} />
-            <span>Courses</span>
-          </NavLink>
-
           {/* Active Course Badge */}
           {activeCourse && (
             <div className="active-course-badge" title={activeCourse.title}>
@@ -97,6 +88,14 @@ function Navigation() {
               <span className="course-name">{activeCourse.short_name}</span>
             </div>
           )}
+
+          <NavLink
+            to="/courses"
+            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          >
+            <GraduationCap size={20} />
+            <span>Courses</span>
+          </NavLink>
 
           <NavLink
             to="/lessons"

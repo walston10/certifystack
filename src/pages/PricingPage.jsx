@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Crown, Check, Zap, Sparkles, ArrowRight, AlertCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { createCheckoutSession } from '../lib/stripe';
 import './PricingPage.css';
 
 function PricingPage() {
@@ -20,11 +19,10 @@ function PricingPage() {
         return;
       }
 
-      // Start Stripe checkout
-      await createCheckoutSession(user.id, user.email);
+      // Redirect to Stripe payment link with 7-day free trial
+      window.location.href = 'https://buy.stripe.com/3cI8wPewj6FWbwJ1UVcEw01';
     } catch (error) {
-      console.error('Error starting checkout:', error);
-      alert('Failed to start checkout. Please try again.');
+      console.error('Error:', error);
       setLoading(false);
     }
   };

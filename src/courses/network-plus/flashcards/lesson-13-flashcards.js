@@ -3,152 +3,152 @@
 export const lesson13Flashcards = [
   {
     id: 1,
-    front: "What are the key specs for 802.11a?",
-    back: "Frequency: 5 GHz only. Speed: 54 Mbps max. Range: shorter than 2.4 GHz due to higher frequency. Not compatible with 802.11b/g (different frequency). Introduced in 1999, largely obsolete. Better for less interference but shorter range."
+    front: "802.11a specs?",
+    back: "5 GHz only, 54 Mbps max. Shorter range, not compatible with b/g. Largely obsolete."
   },
   {
     id: 2,
-    front: "What are the key specs for 802.11b?",
-    back: "Frequency: 2.4 GHz only. Speed: 11 Mbps max. Range: better than 5 GHz. First widely adopted standard (1999). Compatible with 802.11g. Major limitation: slow speed. Now obsolete, but legacy devices may still use it."
+    front: "802.11b specs?",
+    back: "2.4 GHz only, 11 Mbps max. First widely adopted (1999). Compatible with g. Obsolete but legacy devices remain."
   },
   {
     id: 3,
-    front: "What are the key specs for 802.11g?",
-    back: "Frequency: 2.4 GHz only. Speed: 54 Mbps max. Backward compatible with 802.11b (but drops to 11 Mbps). Popular in early 2000s. Suffers from 2.4 GHz interference (microwaves, Bluetooth, baby monitors). Largely replaced by 802.11n."
+    front: "802.11g specs?",
+    back: "2.4 GHz only, 54 Mbps max. Backward compatible with b. Popular early 2000s, replaced by n."
   },
   {
     id: 4,
-    front: "What are the key specs for 802.11n (Wi-Fi 4)?",
-    back: "Frequency: Dual-band (2.4 GHz AND 5 GHz). Speed: up to 600 Mbps (theoretical). Key feature: MIMO (Multiple Input Multiple Output - multiple antennas). Channel bonding (40 MHz wide). Introduced 2009. Still common in homes/small offices today."
+    front: "802.11n (Wi-Fi 4) specs?",
+    back: "Dual-band (2.4/5 GHz), up to 600 Mbps. Key: MIMO, channel bonding (40 MHz). Still common today."
   },
   {
     id: 5,
-    front: "What are the key specs for 802.11ac (Wi-Fi 5)?",
-    back: "Frequency: 5 GHz ONLY (no 2.4 GHz). Speed: multi-gigabit (up to 6.9 Gbps theoretical). Features: MU-MIMO, beamforming, wider channels (80/160 MHz). Introduced 2014. Current mainstream standard for enterprise. Less congestion than 2.4 GHz."
+    front: "802.11ac (Wi-Fi 5) specs?",
+    back: "5 GHz only, multi-gigabit speeds. Features: MU-MIMO, beamforming, 80/160 MHz channels. Current mainstream."
   },
   {
     id: 6,
-    front: "What are the key specs for 802.11ax (Wi-Fi 6/6E)?",
-    back: "Frequency: Wi-Fi 6 uses 2.4/5 GHz, Wi-Fi 6E adds 6 GHz band. Speed: up to 9.6 Gbps theoretical. Features: OFDMA (better efficiency), MU-MIMO (8 streams), Target Wake Time (IoT battery saving), better dense environment performance. Latest standard (2019/2021)."
+    front: "802.11ax (Wi-Fi 6/6E) specs?",
+    back: "2.4/5 GHz (6 adds 6 GHz), up to 9.6 Gbps. Features: OFDMA, 8-stream MU-MIMO, better density performance. Latest standard."
   },
   {
     id: 7,
-    front: "What's the difference between Wi-Fi 6 and Wi-Fi 6E?",
-    back: "Wi-Fi 6 (802.11ax): 2.4 GHz and 5 GHz bands. Wi-Fi 6E: adds the new 6 GHz band (5.925-7.125 GHz) with 1200 MHz of spectrum and NO legacy device interference. 6E provides: more channels, less congestion, faster speeds, lower latency. Requires new hardware."
+    front: "Wi-Fi 6 vs Wi-Fi 6E?",
+    back: "Wi-Fi 6: 2.4/5 GHz. Wi-Fi 6E: adds 6 GHz band (1200 MHz new spectrum, no legacy interference). Requires new hardware."
   },
   {
     id: 8,
-    front: "Why is 2.4 GHz better for range but worse for speed?",
-    back: "Lower frequencies (2.4 GHz) have longer wavelengths that penetrate walls/obstacles better = better range but slower speeds. Higher frequencies (5/6 GHz) have shorter wavelengths that don't penetrate as well = shorter range but much faster speeds. Physics trade-off."
+    front: "Why is 2.4 GHz better range but slower?",
+    back: "Lower frequency = longer wavelengths = better wall penetration = better range but slower. Higher frequency = opposite."
   },
   {
     id: 9,
-    front: "How many non-overlapping channels exist in 2.4 GHz, and which are they?",
-    back: "Only 3 non-overlapping channels: 1, 6, and 11 (in North America). Each channel is 20 MHz wide but only 5 MHz apart, causing overlap. With multiple APs, use only channels 1, 6, 11 to avoid interference. This is a major limitation of 2.4 GHz."
+    front: "2.4 GHz non-overlapping channels?",
+    back: "Only 3: channels 1, 6, and 11. Use only these to avoid interference. Major 2.4 GHz limitation."
   },
   {
     id: 10,
-    front: "How many channels are available in 5 GHz?",
-    back: "24+ non-overlapping channels (varies by country due to regulations). Examples: channels 36, 40, 44, 48, 149, 153, 157, 161. Much less congestion than 2.4 GHz. DFS (Dynamic Frequency Selection) channels require radar detection. More channels = less interference."
+    front: "How many 5 GHz channels?",
+    back: "24+ non-overlapping channels (36, 40, 44, 48, 149, 153, 157, 161, etc.). Much less congestion than 2.4 GHz."
   },
   {
     id: 11,
-    front: "What is channel bonding and why use it?",
-    back: "Channel bonding combines multiple channels to increase bandwidth. Examples: 20 MHz (1 channel), 40 MHz (2 channels), 80 MHz (4 channels), 160 MHz (8 channels). Wider = faster speeds BUT more interference and fewer available channels. Use 20/40 MHz for 2.4 GHz, 80/160 MHz for 5/6 GHz."
+    front: "What is channel bonding?",
+    back: "Combines channels for more bandwidth. 20 MHz (1 channel), 40 MHz (2), 80 MHz (4), 160 MHz (8). Wider = faster but more interference."
   },
   {
     id: 12,
-    front: "What is MIMO (Multiple Input Multiple Output)?",
-    back: "MIMO uses multiple antennas on both transmitter and receiver to send/receive multiple data streams simultaneously. Example: 4x4 MIMO = 4 transmit, 4 receive antennas. Increases throughput and reliability. Introduced in 802.11n, enhanced in 802.11ac/ax."
+    front: "What is MIMO?",
+    back: "Multiple antennas send/receive multiple data streams simultaneously. Example: 4x4 MIMO = 4 transmit, 4 receive. Increases throughput."
   },
   {
     id: 13,
-    front: "What is MU-MIMO and how does it differ from regular MIMO?",
-    back: "MU-MIMO (Multi-User MIMO) allows an AP to communicate with multiple clients simultaneously. Regular MIMO: one client at a time (fast switching). MU-MIMO: multiple clients in parallel = better efficiency in dense environments. 802.11ac: 4 clients. 802.11ax: 8 clients. Game changer for crowded networks."
+    front: "What is MU-MIMO?",
+    back: "Multi-User MIMO allows AP to communicate with multiple clients simultaneously (not one at a time). 802.11ac: 4 clients, ax: 8 clients."
   },
   {
     id: 14,
     front: "What is beamforming?",
-    back: "Beamforming focuses the wireless signal directly toward specific clients instead of broadcasting equally in all directions. Benefits: stronger signal, longer range, less interference, better throughput. Like using a spotlight vs a lightbulb. Supported in 802.11ac/ax."
+    back: "Focuses wireless signal toward specific clients instead of broadcasting equally. Stronger signal, longer range, less interference."
   },
   {
     id: 15,
-    front: "What is an SSID and what's the difference between broadcasting and hiding it?",
-    back: "SSID (Service Set Identifier) is the wireless network name (e.g., 'HomeWiFi'). Broadcasting: SSID visible in available networks list (default, user-friendly). Hidden: SSID not broadcast (users must manually enter name). Hiding provides minimal security - determined attackers can still discover it."
+    front: "What is an SSID?",
+    back: "Network name. Broadcasting: visible in network list. Hidden: not broadcast (users type manually). Hiding provides minimal security."
   },
   {
     id: 16,
-    front: "What are the two main wireless modes?",
-    back: "1) Infrastructure mode: devices connect through an Access Point (AP). Most common - home/enterprise networks. AP provides centralized management, internet access, roaming between APs. 2) Ad-hoc mode: peer-to-peer, devices connect directly without AP. Limited use - file sharing, temporary connections."
+    front: "Infrastructure vs ad-hoc mode?",
+    back: "Infrastructure: devices connect through AP (most common). Ad-hoc: peer-to-peer direct connection without AP (limited use)."
   },
   {
     id: 17,
-    front: "What is a wireless site survey and why perform one?",
-    back: "Site survey maps RF coverage, identifies dead zones, sources of interference, optimal AP placement, and channel selection. Tools: WiFi analyzer, spectrum analyzer, heat mapping software. Perform: before deployment, after changes, when troubleshooting. Critical for enterprise deployments."
+    front: "What is a wireless site survey?",
+    back: "Maps RF coverage, identifies dead zones, interference, optimal AP placement. Critical for enterprise deployments."
   },
   {
     id: 18,
-    front: "What is a heat map in wireless networking?",
-    back: "Heat map is a color-coded visualization showing wireless signal strength throughout a physical area. Red/warm = strong signal. Blue/cold = weak signal. Created during site surveys. Used to: optimize AP placement, identify coverage gaps, plan capacity. Visual tool for wireless design."
+    front: "What is a heat map?",
+    back: "Color-coded visualization of signal strength. Red/warm = strong, blue/cold = weak. Used to optimize AP placement."
   },
   {
     id: 19,
-    front: "What is roaming in wireless networks?",
-    back: "Roaming allows clients to move between APs while maintaining connectivity (handoff/handover). Requirements: same SSID across APs, overlapping coverage (10-15% overlap), fast authentication (802.11r). Seamless roaming critical for: VoIP calls, video streaming, mobile devices. Poor roaming = dropped connections."
+    front: "What is roaming?",
+    back: "Clients move between APs while maintaining connectivity. Requires same SSID, overlapping coverage, fast authentication. Critical for VoIP."
   },
   {
     id: 20,
-    front: "What is a wireless controller and why use one?",
-    back: "Wireless controller is centralized management for multiple APs. Benefits: configure all APs from one interface, consistent policies, automatic channel/power adjustment, client roaming optimization, guest access management. Enterprise feature. APs become 'lightweight' (controller-dependent) vs 'autonomous' (independent)."
+    front: "What is a wireless controller?",
+    back: "Centralized management for multiple APs. Configure all from one interface, consistent policies, automatic optimization. Enterprise feature."
   },
   {
     id: 21,
     front: "What is a wireless mesh network?",
-    back: "Mesh network: APs connect wirelessly to each other (not just to wired switch). Each AP can relay traffic for others. Benefits: easy to extend coverage without running cables, self-healing (finds alternate paths if AP fails). Drawbacks: half bandwidth used for backhaul. Common in large homes, outdoor deployments."
+    back: "APs connect wirelessly to each other. Easy coverage extension without cables, self-healing. Half bandwidth used for backhaul."
   },
   {
     id: 22,
-    front: "What sources of interference affect 2.4 GHz WiFi?",
-    back: "Microwave ovens (huge problem), Bluetooth devices, cordless phones, baby monitors, wireless cameras, neighboring WiFi networks, wireless keyboards/mice, some LED lights. 2.4 GHz is crowded because it's unlicensed ISM band. Solution: use 5 GHz when possible."
+    front: "2.4 GHz interference sources?",
+    back: "Microwaves, Bluetooth, cordless phones, baby monitors, wireless cameras, neighboring WiFi, LED lights. Use 5 GHz when possible."
   },
   {
     id: 23,
-    front: "What is OFDMA and why is it important in Wi-Fi 6?",
-    back: "OFDMA (Orthogonal Frequency Division Multiple Access) divides channels into smaller sub-channels (Resource Units) allowing multiple clients to transmit simultaneously. Old way: one client uses full channel at a time. OFDMA: multiple clients share channel efficiently. Huge improvement for IoT/small packet traffic."
+    front: "What is OFDMA in Wi-Fi 6?",
+    back: "Divides channels into sub-channels allowing multiple clients to transmit simultaneously. Huge improvement for IoT/small packets."
   },
   {
     id: 24,
-    front: "What is BSS vs ESS vs IBSS?",
-    back: "BSS (Basic Service Set): single AP and its clients. ESS (Extended Service Set): multiple APs with same SSID creating one logical network (roaming enabled). IBSS (Independent BSS): ad-hoc network, no AP. BSSID = AP's MAC address. ESSID = network name shared by all APs."
+    front: "BSS vs ESS vs IBSS?",
+    back: "BSS: single AP + clients. ESS: multiple APs with same SSID (roaming network). IBSS: ad-hoc, no AP."
   },
   {
     id: 25,
-    front: "Quick scenario: Users complain about slow WiFi in conference room. What do you check?",
-    back: "Check: 1) Channel overlap (are nearby APs on same channel?), 2) Client count (too many users on one AP?), 3) Interference sources (microwave, Bluetooth?), 4) Signal strength (dead zone?), 5) AP capacity (old 802.11g?), 6) Frequency band (everyone on 2.4 GHz?). Use WiFi analyzer."
+    front: "Slow WiFi in conference room—what to check?",
+    back: "1) Channel overlap, 2) Client count per AP, 3) Interference, 4) Signal strength, 5) AP capacity, 6) Frequency band. Use WiFi analyzer."
   },
   {
     id: 26,
     front: "What is the hidden node problem?",
-    back: "Two clients can hear the AP but can't hear each other, causing collisions when both transmit simultaneously. Example: Client A and Client C are far apart but both connect to AP in middle. Solution: RTS/CTS (Request to Send/Clear to Send) protocol reserves channel before transmission."
+    back: "Two clients hear AP but not each other, causing collisions. Solution: RTS/CTS reserves channel before transmission."
   },
   {
     id: 27,
-    front: "What is channel width and how does it affect performance?",
-    back: "Channel width is the MHz of spectrum used. 20 MHz = slower but stable, less interference. 40 MHz = 2x faster, more interference. 80 MHz = 4x faster, very prone to interference. 160 MHz = fastest but difficult in crowded areas. 2.4 GHz: use 20 MHz. 5/6 GHz: 80 MHz typical."
+    front: "Channel width trade-offs?",
+    back: "20 MHz: slower, stable. 40 MHz: 2x faster, more interference. 80 MHz: 4x faster, prone to interference. 160 MHz: fastest but difficult."
   },
   {
     id: 28,
-    front: "What are DFS channels in 5 GHz?",
-    back: "DFS (Dynamic Frequency Selection) channels (52-144) share spectrum with weather radar and military systems. APs must: 1) scan for radar before using channel (1 minute), 2) immediately vacate if radar detected. Pro: less congested. Con: potential disruption. Channels 36-48, 149-165 are non-DFS (safer for critical apps)."
+    front: "What are DFS channels?",
+    back: "5 GHz channels (52-144) shared with radar. Must scan before use, vacate if radar detected. Less congested but potential disruption."
   },
   {
     id: 29,
-    front: "Why might you disable lower data rates on an AP?",
-    back: "Disabling low rates (1, 2, 5.5, 11 Mbps) forces distant/weak clients to disconnect and find a closer AP or forces them to higher rates. Benefits: better roaming behavior, improved overall network performance, reduced airtime used by slow clients. Common in dense deployments. BE CAREFUL - can create coverage gaps."
+    front: "Why disable lower data rates?",
+    back: "Forces weak clients to disconnect and find closer AP. Improves roaming, overall performance. Careful—can create coverage gaps."
   },
   {
     id: 30,
-    front: "Speed drill: Match WiFi generation to frequency and key feature - Wi-Fi 4, 5, 6, 6E",
-    back: "Wi-Fi 4 (11n): Dual-band 2.4/5, MIMO. Wi-Fi 5 (11ac): 5 GHz only, MU-MIMO, gigabit+. Wi-Fi 6 (11ax): 2.4/5 GHz, OFDMA, efficient. Wi-Fi 6E: adds 6 GHz band, no legacy interference. Know these for the exam!"
+    front: "Match: Wi-Fi 4, 5, 6, 6E to frequency and feature",
+    back: "Wi-Fi 4 (11n): 2.4/5 GHz, MIMO. Wi-Fi 5 (11ac): 5 GHz, MU-MIMO. Wi-Fi 6 (11ax): 2.4/5, OFDMA. Wi-Fi 6E: adds 6 GHz."
   }
 ];

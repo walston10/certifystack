@@ -5,7 +5,6 @@ import { networkPlusLessons } from '../courses/network-plus/data/lessons';
 import { allFlashcards } from '../courses/network-plus/flashcards';
 import { getDomainConfig } from '../courses/network-plus/data/domainConfig';
 import { supabase } from '../lib/supabase';
-import { createCheckoutSession } from '../lib/stripe';
 import './FlashcardSetup.css';
 
 function FlashcardSetup() {
@@ -49,16 +48,9 @@ function FlashcardSetup() {
     return lessonId > 3 && !isPremium;
   };
 
-  const handleUpgrade = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        await createCheckoutSession(user.id, user.email);
-      }
-    } catch (error) {
-      console.error('Error starting checkout:', error);
-      alert('Failed to start checkout. Please try again.');
-    }
+  const handleUpgrade = () => {
+    // Redirect to Stripe payment link with 7-day free trial
+    window.location.href = 'https://buy.stripe.com/3cI8wPewj6FWbwJ1UVcEw01';
   };
 
   const toggleLesson = (lessonId) => {

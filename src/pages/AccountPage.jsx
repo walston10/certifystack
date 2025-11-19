@@ -12,7 +12,7 @@ import {
   formatRelativeTime,
   getCourseName
 } from '../services/accountService';
-import { createCheckoutSession, createPortalSession } from '../lib/stripe';
+import { createPortalSession } from '../lib/stripe';
 import './AccountPage.css';
 
 function AccountPage() {
@@ -71,18 +71,9 @@ function AccountPage() {
     }
   };
 
-  const handleUpgradeToPremium = async () => {
-    setProcessingUpgrade(true);
-    try {
-      const { data: { user: currentUser } } = await supabase.auth.getUser();
-      if (currentUser) {
-        await createCheckoutSession(currentUser.id, currentUser.email);
-      }
-    } catch (error) {
-      console.error('Error creating checkout session:', error);
-      alert('Failed to start checkout. Please try again.');
-      setProcessingUpgrade(false);
-    }
+  const handleUpgradeToPremium = () => {
+    // Redirect to Stripe payment link with 7-day free trial
+    window.location.href = 'https://buy.stripe.com/3cI8wPewj6FWbwJ1UVcEw01';
   };
 
   const handleManageSubscription = async () => {

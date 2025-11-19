@@ -12,7 +12,6 @@ import PracticeZone from './components/PracticeZone';
 import LabsGallery from './components/LabsGallery';
 import LabViewer from './components/LabViewer';
 import ResourcesLibrary from './components/ResourcesLibrary';
-import UserProfile from './components/UserProfile';
 import AccountPage from './pages/AccountPage';
 import CoursesPage from './pages/CoursesPage';
 import PricingPage from './pages/PricingPage';
@@ -20,6 +19,8 @@ import CourseCatalog from './components/CourseCatalog';
 import CourseOverview from './components/CourseOverview';
 import FreeResources from './components/FreeResources';
 import Achievements from './components/Achievements';
+import GamesGallery from './components/GamesGallery';
+import MDRGame from './components/MDRGame';
 
 // Secondary Components
 import SolutionViewer from './components/SolutionViewer';
@@ -288,14 +289,30 @@ function AppRoutes() {
           }
         />
 
-        {/* User Profile */}
+        {/* Games Gallery */}
         <Route
-          path="/profile"
+          path="/games"
           element={
             <ProtectedRoute>
-              <UserProfile />
+              <GamesGallery />
             </ProtectedRoute>
           }
+        />
+
+        {/* MDR Game */}
+        <Route
+          path="/games/mdr"
+          element={
+            <ProtectedRoute>
+              <MDRGame />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* User Profile - Redirect to Account */}
+        <Route
+          path="/profile"
+          element={<Navigate to="/account" replace />}
         />
 
         {/* Account Page */}

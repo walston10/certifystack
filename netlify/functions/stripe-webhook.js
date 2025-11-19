@@ -85,12 +85,27 @@ exports.handler = async (event) => {
 };
 
 async function handleCheckoutCompleted(session) {
-  const userId = session.client_reference_id || session.metadata?.userId;
+  let userId = session.client_reference_id || session.metadata?.userId;
   const customerId = session.customer;
   const subscriptionId = session.subscription;
+  const customerEmail = session.customer_email || session.customer_details?.email;
+
+  // If no userId, try to find user by email from auth.users
+  if (!userId && customerEmail) {
+    console.log('No userId in session, attempting to find user by email:', customerEmail);
+    const { data: authUser, error } = await supabase.auth.admin.listUsers();
+
+    if (!error && authUser?.users) {
+      const matchedUser = authUser.users.find(u => u.email === customerEmail);
+      if (matchedUser) {
+        userId = matchedUser.id;
+        console.log('Found user by email:', userId);
+      }
+    }
+  }
 
   if (!userId) {
-    console.error('No userId found in checkout session');
+    console.error('No userId found in checkout session and could not match by email');
     return;
   }
 

@@ -3,14 +3,7 @@ import { Link } from 'react-router-dom';
 import './LandingPage.css';
 
 const LandingPage = () => {
-  const [email, setEmail] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const handleEmailSubmit = (e) => {
-    e.preventDefault();
-    // Handle email signup
-    window.location.href = `/signup?email=${email}`;
-  };
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -84,7 +77,7 @@ const LandingPage = () => {
           <div className="hero-content">
             <div className="hero-badge">
               <span className="badge-icon">⚡</span>
-              <span>AI-Powered Labs • Real Hands-On Practice • Pass Faster</span>
+              <span>Full Content • AI Tutor • Real Labs</span>
             </div>
 
             <h1 className="hero-headline">
@@ -97,19 +90,11 @@ const LandingPage = () => {
               Learn by doing—not watching.
             </p>
 
-            <form className="hero-cta-form" onSubmit={handleEmailSubmit}>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="email-input"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <button type="submit" className="btn-hero-cta">
-                Start Learning Free →
-              </button>
-            </form>
+            <div className="hero-cta-buttons">
+              <Link to="/signup" className="btn-hero-cta">
+                Get Started Free →
+              </Link>
+            </div>
 
             <div className="hero-trust-signals">
               <div className="trust-item">

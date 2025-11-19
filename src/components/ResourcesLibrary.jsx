@@ -3,15 +3,24 @@ import { FileText, Download } from 'lucide-react';
 import './ResourcesLibrary.css';
 
 const RESOURCES = [
-  { id: 1, title: 'Port Numbers Cheat Sheet', category: 'Reference', size: '2 MB' },
-  { id: 2, title: 'Subnet Mask Reference', category: 'Reference', size: '1 MB' },
-  { id: 3, title: 'VLSM Quick Guide', category: 'Guide', size: '3 MB' },
-  { id: 4, title: 'OSI Model Poster', category: 'Visual', size: '5 MB' },
-  { id: 5, title: 'Cable Types & Speeds', category: 'Reference', size: '2 MB' },
-  { id: 6, title: 'Troubleshooting Flowchart', category: 'Guide', size: '4 MB' }
+  { id: 1, title: 'Port Numbers Cheat Sheet', category: 'Reference', size: '2 MB', filename: 'port-numbers-cheat-sheet.pdf' },
+  { id: 2, title: 'Subnet Mask Reference', category: 'Reference', size: '1 MB', filename: 'subnet-mask-reference.pdf' },
+  { id: 3, title: 'VLSM Quick Guide', category: 'Guide', size: '3 MB', filename: 'vlsm-quick-guide.pdf' },
+  { id: 4, title: 'OSI Model Poster', category: 'Visual', size: '5 MB', filename: 'osi-model-poster.pdf' },
+  { id: 5, title: 'Cable Types & Speeds', category: 'Reference', size: '2 MB', filename: 'cable-types-speeds.pdf' },
+  { id: 6, title: 'Troubleshooting Flowchart', category: 'Guide', size: '4 MB', filename: 'troubleshooting-flowchart.pdf' }
 ];
 
 function ResourcesLibrary() {
+  const handleDownload = (filename) => {
+    const link = document.createElement('a');
+    link.href = `/resources/${filename}`;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="resources-library">
       <div className="resources-header">
@@ -33,7 +42,10 @@ function ResourcesLibrary() {
               <span className="resource-category">{resource.category}</span>
               <span className="resource-size">{resource.size}</span>
             </div>
-            <button className="resource-download-btn">
+            <button
+              className="resource-download-btn"
+              onClick={() => handleDownload(resource.filename)}
+            >
               <Download size={16} />
               <span>Download</span>
             </button>

@@ -4,151 +4,151 @@ export const lesson16Flashcards = [
   {
     id: 1,
     front: "Why is network documentation critical?",
-    back: "Documentation enables: faster troubleshooting (know what should be), easier onboarding (new staff understand network), change planning (impact analysis), disaster recovery (rebuild from docs), compliance (prove configuration), capacity planning. Outdated/missing docs = downtime, confusion, mistakes. Documentation is insurance."
+    back: "Faster troubleshooting, easier onboarding, change planning, disaster recovery, compliance. Outdated/missing docs = downtime and mistakes."
   },
   {
     id: 2,
     front: "What is a physical topology diagram?",
-    back: "Physical diagram shows the actual physical layout: device locations, cable runs, rack positions, building floors, data center rows. Includes: device models, serial numbers, port numbers, cable types, patch panel connections. Used for: physical troubleshooting, cable tracing, hardware planning, site surveys."
+    back: "Shows actual physical layout: device locations, cable runs, rack positions, building floors. Includes models, ports, cable types."
   },
   {
     id: 3,
     front: "What is a logical topology diagram?",
-    back: "Logical diagram shows how data flows: IP addresses, subnets, VLANs, routing protocols, logical connections. Ignores physical location. Shows: Layer 3 relationships, routing paths, security zones, administrative boundaries. Used for: troubleshooting connectivity, planning changes, understanding traffic flow."
+    back: "Shows how data flows: IP addresses, subnets, VLANs, routing protocols. Ignores physical location."
   },
   {
     id: 4,
-    front: "What's the difference between physical and logical diagrams?",
-    back: "Physical: WHERE devices are (locations, racks, cables). Shows actual hardware placement. Logical: HOW devices communicate (IP addressing, VLANs, routing). Shows data flow. Example: Physical shows switch in Rack 5. Logical shows switch has VLAN 10 (192.168.10.0/24) and VLAN 20 (192.168.20.0/24). Need both!"
+    front: "Physical vs logical diagrams?",
+    back: "Physical: WHERE devices are (locations, racks, cables). Logical: HOW they communicate (IPs, VLANs, routing). Need both."
   },
   {
     id: 5,
     front: "What is a rack diagram?",
-    back: "Rack diagram shows equipment layout within a server rack (front/rear view). Each rack unit (RU/U) is 1.75 inches. Shows: device placement by RU, power requirements, cable management, weight distribution, airflow considerations. Critical for: data center planning, power calculations, cooling design."
+    back: "Shows equipment layout in server rack. Each rack unit (RU) = 1.75 inches. Includes placement, power, airflow."
   },
   {
     id: 6,
     front: "What is a wiring diagram?",
-    back: "Wiring diagram shows detailed cable connections: patch panel to switch port mappings, cable IDs, connection endpoints, cable types/lengths. Documents: which cable goes where, labeling scheme, testing results. Essential for: cable tracing, troubleshooting, moves/adds/changes, avoiding disruption."
+    back: "Detailed cable connections: patch panel mappings, cable IDs, endpoints, types/lengths. Essential for cable tracing."
   },
   {
     id: 7,
-    front: "What should network policy documentation include?",
-    back: "Acceptable Use Policy (AUP), password policies, security policies, access control policies, backup policies, disaster recovery procedures, incident response plans, change management procedures. Defines: what's allowed, security requirements, user responsibilities, consequences of violations. Legal protection and standardization."
+    front: "What's in network policy documentation?",
+    back: "AUP, password policies, security policies, access control, backup/DR procedures, incident response, change management."
   },
   {
     id: 8,
     front: "What is configuration documentation?",
-    back: "Record of device configurations: IP addressing schemes, VLAN assignments, routing protocol settings, ACLs, firewall rules, QoS policies, SNMP community strings. Include: startup-config, running-config, firmware versions. Store: version control, secure location. Critical for: disaster recovery, consistency, troubleshooting."
+    back: "Device configs: IP schemes, VLANs, routing, ACLs, firewall rules. Include startup/running configs and firmware versions."
   },
   {
     id: 9,
-    front: "What is IPAM (IP Address Management) documentation?",
-    back: "Centralized tracking of IP address allocation. Documents: which IPs assigned to what devices/users, subnet allocations, DHCP scopes, DNS records, available/used addresses. Prevents: IP conflicts, subnet exhaustion, lost addresses. Tools: Excel (small), IPAM software (large). Essential for growing networks."
+    front: "What is IPAM documentation?",
+    back: "Centralized IP address tracking. Shows assignments, subnet allocations, DHCP scopes, DNS records. Prevents IP conflicts."
   },
   {
     id: 10,
     front: "What is a site survey report?",
-    back: "Site survey documents physical site assessment: existing infrastructure, cable paths, equipment locations, wireless coverage/interference, environmental conditions (temp, humidity), power availability, security requirements. Used before: deployments, upgrades, wireless installations. Includes: photos, measurements, recommendations."
+    back: "Physical site assessment: infrastructure, cable paths, wireless coverage, environmental conditions, power, security. Includes photos/measurements."
   },
   {
     id: 11,
-    front: "What is change management and why is it critical?",
-    back: "Change management is formal process for making network changes. Steps: request, approval, planning, testing, implementation, documentation, review. Prevents: unplanned outages, configuration errors, security holes. Requires: change windows, rollback plans, stakeholder notification. Most outages = poorly planned changes."
+    front: "What is change management?",
+    back: "Formal process for network changes. Steps: request, approval, planning, testing, implementation, documentation, review. Prevents outages."
   },
   {
     id: 12,
-    front: "What should a change request include?",
-    back: "Change description (what/why), risk assessment, impact analysis (affected systems/users), implementation plan (step-by-step), rollback plan (undo if fails), testing plan, maintenance window, required resources, approval signatures. Document BEFORE making change. Protects you and organization."
+    front: "What's in a change request?",
+    back: "Description, risk assessment, impact analysis, implementation plan, rollback plan, testing, maintenance window, approvals."
   },
   {
     id: 13,
     front: "What is a rollback plan?",
-    back: "Rollback plan documents how to undo a change if it fails. Includes: step-by-step reversal procedures, config backups, time required, validation steps. Create BEFORE implementation. Test if possible. Good rollback plan: specific (not 'restore backup'), tested, immediately available. Insurance policy for changes."
+    back: "Step-by-step procedures to undo a change if it fails. Include config backups, time required, validation. Create BEFORE implementation."
   },
   {
     id: 14,
-    front: "Why document network changes after implementation?",
-    back: "Post-change documentation ensures: diagrams updated, config backups current, procedures reflect reality, lessons learned captured, knowledge base updated. Prevents: outdated documentation, repeated mistakes, confusion. Documentation rot = network changes but docs don't = disaster waiting to happen."
+    front: "Why document changes after implementation?",
+    back: "Updates diagrams, keeps configs current, captures lessons learned. Prevents outdated docs. Documentation rot = disaster."
   },
   {
     id: 15,
-    front: "What are naming conventions and why use them?",
-    back: "Naming conventions are standardized rules for naming devices, interfaces, VLANs, files. Example: SW-BLDG1-FL2-IDF03 (Switch, Building 1, Floor 2, IDF 3). Benefits: instantly identify device purpose/location, easier management, consistency, professionalism. Document the convention. Enforce it. Critical for large networks."
+    front: "What are naming conventions?",
+    back: "Standardized rules for naming devices/interfaces/VLANs. Example: SW-BLDG1-FL2-IDF03. Provides consistency and instant identification."
   },
   {
     id: 16,
-    front: "What is a good device naming convention structure?",
-    back: "Include: device type, location, function, number. Example formats: <TYPE>-<LOCATION>-<NUMBER> (RTR-HQ-01), <BUILDING>-<FLOOR>-<TYPE><NUM> (NORTH-03-SW12). Be consistent! Document scheme. Examples: RTR=router, SW=switch, FW=firewall, AP=access point. Location codes: HQ, REMOTE1, BLDGA."
+    front: "Good device naming convention structure?",
+    back: "Include: type, location, function, number. Example: RTR-HQ-01 or NORTH-03-SW12. Be consistent and document it."
   },
   {
     id: 17,
-    front: "What should cable labeling include?",
-    back: "Both ends must be labeled with: source location, destination location, cable ID, date installed, installer initials. Example: 'BLDG1-IDF3-P12 to SW-CORE-01-G1/0/1 - CAB-1234'. Use: label maker, durable labels, clear text. Good labeling = faster troubleshooting, no guessing which cable is which."
+    front: "What should cable labels include?",
+    back: "Both ends: source, destination, cable ID, date, installer. Example: 'BLDG1-IDF3-P12 to SW-CORE-01-G1/0/1 - CAB-1234'."
   },
   {
     id: 18,
     front: "What is asset management documentation?",
-    back: "Tracking all network hardware: serial numbers, purchase dates, warranty info, location, assigned user, maintenance history, EOL dates. Includes: switches, routers, APs, servers, UPS. Benefits: warranty tracking, lifecycle planning, inventory control, theft prevention. Tools: spreadsheet, asset management software, barcodes/RFID."
+    back: "Tracks hardware: serial numbers, purchase dates, warranty, location, maintenance history, EOL dates. For inventory and lifecycle planning."
   },
   {
     id: 19,
     front: "What is a Standard Operating Procedure (SOP)?",
-    back: "SOP is step-by-step document for common tasks: adding users, configuring VLANs, backup procedures, password resets, switch replacements. Benefits: consistency, training tool, reduce errors, faster execution. Format: numbered steps, screenshots, expected results. Keep updated. Anyone should be able to follow."
+    back: "Step-by-step document for common tasks. Provides consistency, training, reduces errors. Anyone should be able to follow."
   },
   {
     id: 20,
-    front: "What should disaster recovery documentation include?",
-    back: "Contact lists (staff, vendors), recovery procedures (step-by-step), config backups (stored offsite), network diagrams, hardware inventory, vendor support info, RTO/RPO targets, alternate site info, communication plan. Test regularly. Store: secure, offsite, accessible during disaster. Lives or dies with documentation quality."
+    front: "What's in disaster recovery documentation?",
+    back: "Contact lists, recovery procedures, config backups (offsite), diagrams, inventory, vendor info, RTO/RPO, alternate sites."
   },
   {
     id: 21,
-    front: "What is a network baseline and why document it?",
-    back: "Baseline documents normal network performance: bandwidth utilization, latency, error rates, CPU/memory usage, connection counts. Captured during normal operations. Use to: identify anomalies, troubleshoot performance, capacity planning, prove 'it's not the network'. Without baseline, you're guessing what's normal vs abnormal."
+    front: "What is a network baseline?",
+    back: "Documents normal performance: bandwidth, latency, errors, CPU/memory. Used to identify anomalies and troubleshoot."
   },
   {
     id: 22,
-    front: "What information should be in a port documentation spreadsheet?",
-    back: "For each switch port: port number, VLAN assignment, connected device (name/MAC/IP), cable ID, user/department, PoE status, port speed/duplex, enabled/disabled, last change date. Helps: troubleshooting, planning, auditing, moves/adds/changes. Update after every change. Critical for large switch deployments."
+    front: "What's in port documentation?",
+    back: "Per port: number, VLAN, connected device (name/MAC/IP), cable ID, user/dept, PoE status, speed/duplex, last change."
   },
   {
     id: 23,
-    front: "What is version control for network configs?",
-    back: "Version control tracks configuration changes over time using tools like Git. Each change: timestamped, attributed to person, compared to previous version, can be rolled back. Benefits: audit trail, accountability, easy rollback, compare versions. Never overwrite old configs - save as versions. Professional networks use version control."
+    front: "What is version control for configs?",
+    back: "Tracks config changes over time (Git). Each change: timestamped, attributed, comparable, rollback-able. Provides audit trail."
   },
   {
     id: 24,
-    front: "Quick scenario: New employee asks 'where is the backup server?' How does good documentation help?",
-    back: "Check: 1) Physical diagram (shows rack/location), 2) Logical diagram (shows IP address), 3) Asset management (shows serial number, purchase date), 4) Rack diagram (shows exact RU position), 5) IPAM (confirms IP/hostname). Answer question in 30 seconds vs hours searching. This is why we document!"
+    front: "Scenario: Where's the backup server? How do docs help?",
+    back: "Check: physical diagram (location), logical diagram (IP), asset management (serial), rack diagram (RU), IPAM (hostname). Answer in 30 seconds."
   },
   {
     id: 25,
-    front: "What should a network diagram legend include?",
-    back: "Legend defines all symbols/colors used. Include: device icons (router, switch, firewall, server), connection types (fiber, copper, wireless, WAN), colors (production=green, test=yellow, offline=red), special notations. Make diagrams readable by anyone. Standard symbols: Cisco icons, cloud shapes, cylinder for databases."
+    front: "What's in a diagram legend?",
+    back: "Defines all symbols/colors: device icons, connection types, color codes. Makes diagrams readable by anyone."
   },
   {
     id: 26,
-    front: "What is the difference between as-built and design documentation?",
-    back: "Design documentation: planned network (before implementation) - proposed IPs, theoretical layout, estimated costs. As-built documentation: actual deployed network - real IPs, actual cable runs, real device locations. CRITICAL: update design to match as-built after implementation. Deployed network rarely matches design exactly."
+    front: "As-built vs design documentation?",
+    back: "Design: planned network (before). As-built: actual deployed network (after). MUST update design to match as-built."
   },
   {
     id: 27,
-    front: "How often should network documentation be reviewed/updated?",
-    back: "Update immediately after: any network change, device addition/removal, config change, cable runs. Review quarterly: audit for accuracy, check for undocumented changes, validate contacts. Annual: major review, update diagrams, verify all docs current. Stale documentation worse than no documentation - creates false confidence."
+    front: "How often to update documentation?",
+    back: "Immediately after changes. Quarterly audit. Annual major review. Stale docs worse than no docs."
   },
   {
     id: 28,
-    front: "What are common network documentation mistakes?",
-    back: "1) Not updating after changes (stale docs), 2) Too complex/detailed (unusable), 3) Stored in one place (lost if unavailable), 4) No access control (security risk), 5) No standard format (chaos), 6) Only one person knows (single point of failure), 7) Paper only (destroyed in disaster)."
+    front: "Common documentation mistakes?",
+    back: "Not updating, too complex, single storage location, no access control, no standard format, single person knows, paper only."
   },
   {
     id: 29,
-    front: "Where should network documentation be stored?",
-    back: "Multiple locations: 1) Network file share (encrypted, backed up), 2) Physical binder (emergency access), 3) Cloud/offsite (disaster recovery), 4) Version control system (Git for configs). Access control: need-to-know basis. NOT: unlocked filing cabinet, unsecured share, single laptop. Lose docs = disaster."
+    front: "Where to store documentation?",
+    back: "Multiple locations: encrypted network share, physical binder, cloud/offsite, version control. Need-to-know access only."
   },
   {
     id: 30,
-    front: "Speed drill: What docs do you need for these tasks? - Troubleshooting outage, planning VLAN, replacing switch, disaster recovery",
-    back: "Outage: logical diagram, baseline, configs, contact list. VLAN: logical diagram, IPAM, switch configs. Replace switch: physical diagram, rack diagram, config backup, wiring diagram. Disaster recovery: ALL documentation offsite! Know what docs serve which purpose."
+    front: "What docs for: outage, VLAN planning, switch replacement, DR?",
+    back: "Outage: logical diagram, baseline, configs. VLAN: logical, IPAM, configs. Replace: physical, rack, config backup, wiring. DR: ALL docs offsite."
   }
 ];
