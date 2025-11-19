@@ -81,36 +81,6 @@ export async function createPortalSession(userId) {
 }
 
 /**
- * Cancel a user's subscription (will cancel at period end)
- * @param {string} userId - The authenticated user's ID
- * @returns {Promise<{success: boolean, message: string}>}
- */
-export async function cancelSubscription(userId) {
-  try {
-    const response = await fetch('/.netlify/functions/stripe-cancel-subscription', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId,
-      }),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Failed to cancel subscription');
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Cancellation error:', error);
-    throw error;
-  }
-}
-
-/**
  * Test if environment variables are properly configured
  * @returns {Promise<{success: boolean, hasStripeKey: boolean, ...}>}
  */

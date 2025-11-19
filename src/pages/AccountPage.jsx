@@ -12,7 +12,7 @@ import {
   formatRelativeTime,
   getCourseName
 } from '../services/accountService';
-import { createPortalSession, cancelSubscription } from '../lib/stripe';
+import { createPortalSession } from '../lib/stripe';
 import './AccountPage.css';
 
 function AccountPage() {
@@ -104,35 +104,6 @@ function AccountPage() {
     }
   };
 
-  const handleCancelSubscription = async () => {
-    const isOnTrial = subscriptionDetails?.trial_end &&
-                      new Date(subscriptionDetails.trial_end) > new Date();
-
-    const confirmMessage = isOnTrial
-      ? 'Are you sure you want to cancel your trial? You will lose access when your trial ends and will not be charged.'
-      : 'Are you sure you want to cancel? You will retain access until the end of your current billing period.';
-
-    if (!window.confirm(confirmMessage)) {
-      return;
-    }
-
-    setProcessingUpgrade(true);
-    try {
-      const { data: { user: currentUser } } = await supabase.auth.getUser();
-      if (currentUser) {
-        await cancelSubscription(currentUser.id);
-        alert('Subscription canceled successfully. You will retain access until the end of your current period.');
-        // Reload account data to reflect cancellation
-        await loadAccountData();
-      }
-    } catch (error) {
-      console.error('Error canceling subscription:', error);
-      alert('Failed to cancel subscription. Please try again or contact support.');
-    } finally {
-      setProcessingUpgrade(false);
-    }
-  };
-
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate('/login');
@@ -219,11 +190,16 @@ function AccountPage() {
                     You will retain access until then.
                   </p>
                 ) : subscriptionDetails?.trial_end && new Date(subscriptionDetails.trial_end) > new Date() ? (
-                  <p className="subscription-description">
-                    🎉 You're on a free trial until{' '}
-                    {new Date(subscriptionDetails.trial_end).toLocaleDateString()}.
-                    You won't be charged until your trial ends.
-                  </p>
+                  <>
+                    <p className="subscription-description">
+                      🎉 You're on a free trial until{' '}
+                      {new Date(subscriptionDetails.trial_end).toLocaleDateString()}.
+                      You won't be charged until your trial ends.
+                    </p>
+                    <p className="subscription-description" style={{ marginTop: '12px', fontSize: '14px', color: '#666' }}>
+                      To cancel your trial, please email us at <a href="mailto:hello@certifystack.com" style={{ color: '#4f46e5', textDecoration: 'none' }}>hello@certifystack.com</a>
+                    </p>
+                  </>
                 ) : null}
                 <p className="subscription-description">
                   You have unlimited access to all premium features including:
@@ -236,25 +212,6 @@ function AccountPage() {
                 </ul>
               </div>
               <div style={{ display: 'flex', gap: '10px', flexDirection: 'column' }}>
-                {!subscriptionDetails?.cancel_at_period_end && (
-                  <button
-                    className="btn-cancel-subscription"
-                    onClick={handleCancelSubscription}
-                    disabled={processingUpgrade}
-                    style={{
-                      backgroundColor: '#dc3545',
-                      color: 'white',
-                      border: 'none',
-                      padding: '12px 24px',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      fontSize: '16px',
-                      fontWeight: '600'
-                    }}
-                  >
-                    {processingUpgrade ? 'Loading...' : 'Cancel Subscription'}
-                  </button>
-                )}
                 <button
                   className="btn-manage-subscription"
                   onClick={handleManageSubscription}
