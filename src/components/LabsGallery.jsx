@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FlaskConical, Lock } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { createCheckoutSession } from '../lib/stripe';
 import { networkPlusLabs } from '../courses/network-plus/data/labs';
 import './LabsGallery.css';
 
@@ -40,18 +39,10 @@ function LabsGallery() {
     return labIndex > 2 && !isPremium;
   };
 
-  const handleLabClick = async (lab, labIndex) => {
+  const handleLabClick = (lab, labIndex) => {
     if (isLabLocked(labIndex)) {
-      // Trigger upgrade flow
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-          await createCheckoutSession(user.id, user.email);
-        }
-      } catch (error) {
-        console.error('Error starting checkout:', error);
-        alert('Failed to start checkout. Please try again.');
-      }
+      // Redirect to Stripe payment link with 7-day free trial
+      window.location.href = 'https://buy.stripe.com/3cI8wPewj6FWbwJ1UVcEw01';
     } else {
       navigate(`/course/${actualCourseId}/lab/${lab.id}`);
     }

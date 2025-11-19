@@ -62,8 +62,8 @@ function Navigation() {
   };
 
   const handleUpgrade = () => {
-    navigate('/account');
-    closeMobileMenu();
+    // Redirect to Stripe payment link with 7-day free trial
+    window.location.href = 'https://buy.stripe.com/3cI8wPewj6FWbwJ1UVcEw01';
   };
 
   const handleRestartTour = () => {

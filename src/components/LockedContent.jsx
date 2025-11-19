@@ -1,24 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Lock, Crown, Sparkles } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { createCheckoutSession } from '../lib/stripe';
 import './LockedContent.css';
 
 function LockedContent({ type = 'content', itemNumber }) {
-  const [loading, setLoading] = useState(false);
-
-  const handleUpgrade = async () => {
-    setLoading(true);
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        await createCheckoutSession(user.id, user.email);
-      }
-    } catch (error) {
-      console.error('Error starting checkout:', error);
-      alert('Failed to start checkout. Please try again.');
-      setLoading(false);
-    }
+  const handleUpgrade = () => {
+    // Redirect to Stripe payment link with 7-day free trial
+    window.location.href = 'https://buy.stripe.com/3cI8wPewj6FWbwJ1UVcEw01';
   };
 
   const getContentLabel = () => {
@@ -77,10 +64,9 @@ function LockedContent({ type = 'content', itemNumber }) {
         <button
           className="btn-unlock-premium"
           onClick={handleUpgrade}
-          disabled={loading}
         >
           <Crown size={20} />
-          <span>{loading ? 'Loading...' : 'Upgrade to Premium'}</span>
+          <span>Upgrade to Premium</span>
         </button>
       </div>
     </div>
