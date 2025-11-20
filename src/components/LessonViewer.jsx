@@ -95,7 +95,7 @@ function LessonViewer() {
   // No need for manual switch statement anymore!
 
   const handleViewSolution = () => {
-    navigate(`/solution/${labInfo.id}`);
+    navigate(`/course/${actualCourseId}/solution/${labInfo.id}`);
   };
 
   return (
