@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getGlobalStats, getDueCardsCount } from '../services/flashcardService';
-import { getLessonsWithFlashcards } from '../courses/network-plus/flashcards/index';
 import '../styles/FlashcardStatsWidget.css';
 
-function FlashcardStatsWidget() {
+function FlashcardStatsWidget({ courseId = 'network-plus' }) {
   const [stats, setStats] = useState({
     currentStreak: 0,
     longestStreak: 0,
@@ -12,6 +11,7 @@ function FlashcardStatsWidget() {
     totalReviews: 0
   });
   const [dueToday, setDueToday] = useState(0);
+  const [totalCards, setTotalCards] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,22 +19,41 @@ function FlashcardStatsWidget() {
       try {
         setLoading(true);
 
+        // Dynamically load flashcard module based on courseId
+        let flashcardModule;
+        switch (courseId) {
+          case 'network-plus':
+            flashcardModule = await import('../courses/network-plus/flashcards/index');
+            break;
+          case 'a-plus-core1':
+            flashcardModule = await import('../courses/a-plus-core1/flashcards/index');
+            break;
+          case 'a-plus-core2':
+            flashcardModule = await import('../courses/a-plus-core2/flashcards/index');
+            break;
+          default:
+            flashcardModule = await import('../courses/network-plus/flashcards/index');
+        }
+
         // Load global stats
         const globalStats = await getGlobalStats();
         setStats(globalStats);
 
         // Calculate total due cards across all lessons
-        const lessonsWithFlashcards = getLessonsWithFlashcards();
-        const { getFlashcardsByLesson } = require('../courses/network-plus/flashcards/index');
+        const lessonsWithFlashcards = flashcardModule.getLessonsWithFlashcards();
 
         let totalDue = 0;
+        let totalCardCount = 0;
+
         for (const lesson of lessonsWithFlashcards) {
-          const cards = getFlashcardsByLesson(lesson.id);
+          const cards = flashcardModule.getFlashcardsByLesson(lesson.id);
           const dueCount = await getDueCardsCount(lesson.id, cards);
           totalDue += dueCount;
+          totalCardCount += lesson.cardCount;
         }
 
         setDueToday(totalDue);
+        setTotalCards(totalCardCount);
       } catch (error) {
         console.error('Error loading flashcard stats:', error);
       } finally {
@@ -43,18 +62,15 @@ function FlashcardStatsWidget() {
     }
 
     loadStats();
-  }, []);
+  }, [courseId]);
 
-  // Calculate total cards available
-  const lessonsWithFlashcards = getLessonsWithFlashcards();
-  const totalCards = lessonsWithFlashcards.reduce((sum, lesson) => sum + lesson.cardCount, 0);
   const progressPercentage = totalCards > 0 ? (stats.totalCardsStudied / totalCards) * 100 : 0;
 
   if (loading) {
     return (
       <div className="flashcard-stats-widget">
         <div className="widget-header">
-          <span style={{ fontSize: '1.5rem' }}>🃏</span>
+          <span style={{ fontSize: '1.5rem' }}>Flashcards</span>
           <h2>Flashcard Progress</h2>
         </div>
         <div className="widget-body">
@@ -69,21 +85,21 @@ function FlashcardStatsWidget() {
   return (
     <div className="flashcard-stats-widget">
       <div className="widget-header">
-        <span style={{ fontSize: '1.5rem' }}>🃏</span>
+        <span style={{ fontSize: '1.5rem' }}>Flashcards</span>
         <h2>Flashcard Progress</h2>
       </div>
 
       <div className="widget-body">
         <div className="stats-row">
           <div className="stat-badge streak">
-            <span className="badge-icon">🔥</span>
+            <span className="badge-icon">Streak</span>
             <div className="badge-content">
               <span className="badge-value">{stats.currentStreak}</span>
               <span className="badge-label">day streak</span>
             </div>
           </div>
           <div className="stat-badge due">
-            <span className="badge-icon">📌</span>
+            <span className="badge-icon">Due</span>
             <div className="badge-content">
               <span className="badge-value">{dueToday}</span>
               <span className="badge-label">cards due today</span>
@@ -109,7 +125,7 @@ function FlashcardStatsWidget() {
         </div>
 
         {dueToday > 0 && (
-          <Link to="/lesson/1?tab=flashcards" className="review-link">
+          <Link to={`/course/${courseId}/lesson/1?tab=flashcards`} className="review-link">
             <button className="btn-start-review">
               Start Review Session
             </button>
@@ -118,12 +134,12 @@ function FlashcardStatsWidget() {
 
         {dueToday === 0 && stats.totalCardsStudied > 0 && (
           <div className="all-caught-up">
-            ✨ You're all caught up! Check back tomorrow.
+            You're all caught up! Check back tomorrow.
           </div>
         )}
 
         {dueToday === 0 && stats.totalCardsStudied === 0 && (
-          <Link to="/lesson/1?tab=flashcards" className="review-link">
+          <Link to={`/course/${courseId}/lesson/1?tab=flashcards`} className="review-link">
             <button className="btn-start-review btn-get-started">
               Get Started with Flashcards
             </button>

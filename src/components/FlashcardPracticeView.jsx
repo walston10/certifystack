@@ -1,7 +1,6 @@
 import { useLocation, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import FlashcardPlayer from './FlashcardPlayer';
-import { allFlashcards } from '../courses/network-plus/flashcards';
 import '../styles/FlashcardPracticeView.css';
 
 function FlashcardPracticeView() {
@@ -9,36 +8,61 @@ function FlashcardPracticeView() {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Get courseId from state or default to network-plus
+  const courseId = location.state?.courseId || 'network-plus';
+
   useEffect(() => {
-    // If cards were passed via location.state, use those
-    if (location.state?.cards && location.state.cards.length > 0) {
-      console.log('📦 Loading cards from location.state:', location.state.cards.length, 'cards');
-      console.log('📦 First card from state:', location.state.cards[0]);
-      setCards(location.state.cards);
-      setLoading(false);
-    } else {
-      console.log('📦 No cards in location.state, loading all flashcards as fallback');
-      // Fallback: Load all flashcards if accessed directly
-      // (Users should normally come through /practice/flashcards/setup)
-      const allCards = [];
-      Object.keys(allFlashcards).forEach(lessonId => {
-        const lessonCards = allFlashcards[lessonId];
-        if (Array.isArray(lessonCards)) {
-          // Attach lessonId to each card so progress can be saved
-          const cardsWithLesson = lessonCards.map(card => ({
-            ...card,
-            lessonId: parseInt(lessonId)
-          }));
-          console.log(`📦 Lesson ${lessonId}: Added ${cardsWithLesson.length} cards with lessonId attached`);
-          allCards.push(...cardsWithLesson);
+    const loadCards = async () => {
+      // If cards were passed via location.state, use those
+      if (location.state?.cards && location.state.cards.length > 0) {
+        console.log('Loading cards from location.state:', location.state.cards.length, 'cards');
+        setCards(location.state.cards);
+        setLoading(false);
+      } else {
+        console.log('No cards in location.state, loading all flashcards as fallback');
+        // Fallback: Load all flashcards if accessed directly
+        // Dynamically load based on courseId
+        try {
+          let flashcardsModule;
+          switch (courseId) {
+            case 'network-plus':
+              flashcardsModule = await import('../courses/network-plus/flashcards');
+              break;
+            case 'a-plus-core1':
+              flashcardsModule = await import('../courses/a-plus-core1/flashcards');
+              break;
+            case 'a-plus-core2':
+              flashcardsModule = await import('../courses/a-plus-core2/flashcards');
+              break;
+            default:
+              flashcardsModule = await import('../courses/network-plus/flashcards');
+          }
+
+          const allFlashcards = flashcardsModule.allFlashcards || {};
+          const allCards = [];
+          Object.keys(allFlashcards).forEach(lessonId => {
+            const lessonCards = allFlashcards[lessonId];
+            if (Array.isArray(lessonCards)) {
+              const cardsWithLesson = lessonCards.map(card => ({
+                ...card,
+                lessonId: parseInt(lessonId)
+              }));
+              allCards.push(...cardsWithLesson);
+            }
+          });
+          console.log('Total fallback cards loaded:', allCards.length);
+          setCards(allCards);
+        } catch (err) {
+          console.error('Error loading flashcards:', err);
+          setCards([]);
+        } finally {
+          setLoading(false);
         }
-      });
-      console.log('📦 Total fallback cards loaded:', allCards.length);
-      console.log('📦 First fallback card:', allCards[0]);
-      setCards(allCards);
-      setLoading(false);
-    }
-  }, [location.state]);
+      }
+    };
+
+    loadCards();
+  }, [location.state, courseId]);
 
   if (loading) {
     return (
@@ -68,7 +92,11 @@ function FlashcardPracticeView() {
       <header className="practice-view-header">
         <Link to="/practice" className="back">← Exit Practice</Link>
       </header>
-      <FlashcardPlayer initialCards={cards} sessionTitle={location.state?.sessionTitle || "All Flashcards"} />
+      <FlashcardPlayer
+        initialCards={cards}
+        sessionTitle={location.state?.sessionTitle || "All Flashcards"}
+        courseId={courseId}
+      />
     </div>
   );
 }

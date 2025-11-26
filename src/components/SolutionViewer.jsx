@@ -3,20 +3,75 @@ import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
-import { networkPlusLabs } from '../courses/network-plus/data/labs';
-import { networkPlusLessons } from '../courses/network-plus/data/lessons';
 import './SolutionViewer.css';
 
 function SolutionViewer() {
   const { courseId, labId, id } = useParams();
   const [content, setContent] = useState('');
+  const [courseData, setCourseData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Support both old (id) and new (labId) param names for backward compatibility
   const actualLabId = labId || id;
   const actualCourseId = courseId || 'network-plus'; // Default to network-plus for old URLs
 
-  const lab = networkPlusLabs.find(l => l.id === parseInt(actualLabId));
-  const lesson = lab ? networkPlusLessons.find(l => l.id === lab.lessonId) : null;
+  // Dynamically load course data based on courseId
+  useEffect(() => {
+    const loadCourseData = async () => {
+      setLoading(true);
+      try {
+        let labsModule, lessonsModule;
+
+        switch (actualCourseId) {
+          case 'network-plus':
+            labsModule = await import('../courses/network-plus/data/labs');
+            lessonsModule = await import('../courses/network-plus/data/lessons');
+            break;
+          case 'a-plus-core1':
+            labsModule = await import('../courses/a-plus-core1/data/labs');
+            lessonsModule = await import('../courses/a-plus-core1/data/lessons');
+            break;
+          case 'a-plus-core2':
+            labsModule = await import('../courses/a-plus-core2/data/labs');
+            lessonsModule = await import('../courses/a-plus-core2/data/lessons');
+            break;
+          default:
+            labsModule = await import('../courses/network-plus/data/labs');
+            lessonsModule = await import('../courses/network-plus/data/lessons');
+        }
+
+        // Get labs array - handle different export names
+        const labs = labsModule.networkPlusLabs ||
+                    labsModule.aPlusCore1Labs ||
+                    labsModule.aPlusCore2Labs ||
+                    labsModule.default ||
+                    [];
+
+        // Get lessons array - handle different export names
+        const lessons = lessonsModule.networkPlusLessons ||
+                       lessonsModule.aPlusCore1Lessons ||
+                       lessonsModule.aPlusCore2Lessons ||
+                       lessonsModule.default ||
+                       [];
+
+        setCourseData({
+          labs,
+          lessons
+        });
+      } catch (err) {
+        console.error('Error loading course data:', err);
+        setCourseData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCourseData();
+  }, [actualCourseId]);
+
+  // Get lab and lesson info from loaded course data
+  const lab = courseData?.labs?.find(l => l.id === parseInt(actualLabId));
+  const lesson = lab && courseData?.lessons ? courseData.lessons.find(l => l.id === lab.lessonId) : null;
 
   useEffect(() => {
     if (lab) {
@@ -32,6 +87,20 @@ function SolutionViewer() {
         });
     }
   }, [actualLabId, lab, actualCourseId]);
+
+  // Show loading state while course data is being fetched
+  if (loading) {
+    return (
+      <div className="solution-viewer">
+        <header>
+          <Link to="/" className="back">← Dashboard</Link>
+        </header>
+        <div className="loading-state" style={{ padding: '2rem', textAlign: 'center' }}>
+          <h2>Loading solution...</h2>
+        </div>
+      </div>
+    );
+  }
 
   if (!lab) {
     return (
@@ -58,19 +127,19 @@ function SolutionViewer() {
 
       <div className="solution-header-info">
         <div className="solution-badge">
-          <span className="solution-icon">📝</span>
+          <span className="solution-icon">Answer Key</span>
           <span className="solution-label">Answer Key</span>
         </div>
         <h1>{lab.title} - Solution</h1>
         <div className="solution-meta">
-          <span className="difficulty difficulty-{lab.difficulty.toLowerCase()}">{lab.difficulty}</span>
+          <span className={`difficulty difficulty-${lab.difficulty.toLowerCase()}`}>{lab.difficulty}</span>
           {lesson && <span className="lesson-ref">Lesson {lesson.id}: {lesson.title}</span>}
         </div>
       </div>
 
       <div className="solution-notice">
         <div className="notice-card">
-          <div className="notice-icon">💡</div>
+          <div className="notice-icon">Tip</div>
           <div className="notice-content">
             <h3>How to Use This Solution</h3>
             <p>
@@ -114,7 +183,7 @@ function SolutionViewer() {
 
       <div className="solution-actions">
         <div className="next-steps-card">
-          <h3>🎯 Next Steps</h3>
+          <h3>Next Steps</h3>
           <p>Now that you've reviewed the solution, consider these next steps:</p>
           <ul>
             <li>Try the lab again from scratch without looking at the solution</li>

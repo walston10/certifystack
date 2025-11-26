@@ -1,19 +1,81 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Target, CheckCircle } from 'lucide-react';
-import { networkPlusLessons } from '../courses/network-plus/data/lessons';
-import { getAvailableQuizzes } from '../courses/network-plus/quizzes';
 import './QuizSelectionModal.css';
 
-function QuizSelectionModal({ isOpen, onClose }) {
+function QuizSelectionModal({ isOpen, onClose, courseId = 'network-plus' }) {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const availableQuizNumbers = getAvailableQuizzes();
+  const [lessons, setLessons] = useState([]);
+  const [availableQuizNumbers, setAvailableQuizNumbers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Dynamically load course data
+  useEffect(() => {
+    const loadCourseData = async () => {
+      if (!isOpen) return;
+
+      setLoading(true);
+      try {
+        let lessonsModule, quizzesModule;
+
+        switch (courseId) {
+          case 'network-plus':
+            lessonsModule = await import('../courses/network-plus/data/lessons');
+            quizzesModule = await import('../courses/network-plus/quizzes');
+            break;
+          case 'a-plus-core1':
+            lessonsModule = await import('../courses/a-plus-core1/data/lessons');
+            quizzesModule = await import('../courses/a-plus-core1/quizzes');
+            break;
+          case 'a-plus-core2':
+            lessonsModule = await import('../courses/a-plus-core2/data/lessons');
+            quizzesModule = await import('../courses/a-plus-core2/quizzes');
+            break;
+          default:
+            lessonsModule = await import('../courses/network-plus/data/lessons');
+            quizzesModule = await import('../courses/network-plus/quizzes');
+        }
+
+        const loadedLessons = lessonsModule.networkPlusLessons ||
+                            lessonsModule.aPlusCore1Lessons ||
+                            lessonsModule.aPlusCore2Lessons ||
+                            lessonsModule.default ||
+                            [];
+
+        setLessons(loadedLessons);
+        setAvailableQuizNumbers(quizzesModule.getAvailableQuizzes());
+      } catch (err) {
+        console.error('Error loading course data:', err);
+        setLessons([]);
+        setAvailableQuizNumbers([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCourseData();
+  }, [isOpen, courseId]);
 
   if (!isOpen) return null;
 
+  if (loading) {
+    return (
+      <div className="quiz-modal-backdrop" onClick={onClose}>
+        <div className="quiz-modal" onClick={(e) => e.stopPropagation()}>
+          <div className="quiz-modal-header">
+            <div className="modal-title">
+              <Target size={24} />
+              <h2>Loading...</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Filter lessons that have quizzes
-  const lessonsWithQuizzes = networkPlusLessons.filter(lesson =>
+  const lessonsWithQuizzes = lessons.filter(lesson =>
     availableQuizNumbers.includes(lesson.id)
   );
 
@@ -34,7 +96,7 @@ function QuizSelectionModal({ isOpen, onClose }) {
     return acc;
   }, {});
 
-  const handleQuizSelect = (lessonId, courseId = 'network-plus') => {
+  const handleQuizSelect = (lessonId) => {
     onClose();
     navigate(`/course/${courseId}/lesson/${lessonId}?tab=quiz`);
   };
@@ -80,11 +142,11 @@ function QuizSelectionModal({ isOpen, onClose }) {
         </div>
 
         <div className="quiz-modal-content">
-          {Object.entries(lessonsByModule).map(([module, lessons]) => (
+          {Object.entries(lessonsByModule).map(([module, moduleLessons]) => (
             <div key={module} className="quiz-module-group">
               <h3 className="module-header">{module}</h3>
               <div className="quiz-list">
-                {lessons.map(lesson => (
+                {moduleLessons.map(lesson => (
                   <button
                     key={lesson.id}
                     className="quiz-item"
