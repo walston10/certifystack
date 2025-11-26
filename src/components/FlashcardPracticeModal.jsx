@@ -68,12 +68,13 @@ function FlashcardPracticeModal({ isOpen, onClose, courseId = 'network-plus' }) 
     console.log('Starting flashcard session with selected lessons:', Array.from(selectedLessons));
     let bulkCards = [];
     selectedLessons.forEach(lessonId => {
-      // Get cards for this lesson and attach the lessonId to each card
+      // Get cards for this lesson and attach the lessonId and courseId to each card
       const lessonCards = flashcardModule.getFlashcardsByLesson(lessonId);
 
       const cardsWithLesson = lessonCards.map(card => ({
         ...card,
-        lessonId: lessonId  // Attach lessonId so we can save progress later
+        lessonId: lessonId,   // Attach lessonId so we can save progress later
+        courseId: courseId    // Attach courseId for course-aware progress tracking
       }));
 
       bulkCards = [...bulkCards, ...cardsWithLesson];

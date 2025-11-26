@@ -179,7 +179,8 @@ function FlashcardSetup() {
       if (Array.isArray(lessonCards)) {
         const cardsWithLesson = lessonCards.map(card => ({
           ...card,
-          lessonId: lessonId
+          lessonId: lessonId,
+          courseId: courseId  // Attach courseId for course-aware progress tracking
         }));
         cards.push(...cardsWithLesson);
       }
