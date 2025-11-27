@@ -11,7 +11,7 @@ import {
 import { updateCard as updateCardAlgorithm, selectCardsForSession, calculateSessionStats } from '../utils/flashcardAlgorithm';
 import '../styles/FlashcardActivity.css';
 
-function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lessonId = null }) {
+function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lessonId = null, courseId = 'network-plus' }) {
   // Session setup state
   const [sessionStarted, setSessionStarted] = useState(false);
 
@@ -31,14 +31,14 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
   useEffect(() => {
     async function loadStats() {
       if (lessonId && initialCards.length > 0) {
-        const due = await getDueCardsCount(lessonId, initialCards);
-        const newC = await getNewCardsCount(lessonId, initialCards);
+        const due = await getDueCardsCount(lessonId, initialCards, courseId);
+        const newC = await getNewCardsCount(lessonId, initialCards, courseId);
         setDueCount(due);
         setNewCount(newC);
       }
     }
     loadStats();
-  }, [lessonId, initialCards]);
+  }, [lessonId, initialCards, courseId]);
 
   // Start a session with selected size
   const startSession = (size) => {
@@ -46,7 +46,7 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
 
     if (lessonId) {
       // Single lesson mode: use spaced repetition algorithm
-      const cardStates = getLessonCardStates(lessonId);
+      const cardStates = getLessonCardStates(lessonId, courseId);
       selectedCards = selectCardsForSession(initialCards, cardStates, size);
     } else {
       // Multi-lesson practice mode: just take first N cards (already shuffled by modal)
@@ -82,7 +82,10 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
 
     // Determine which lessonId to use: card's own lessonId (practice mode) or prop lessonId (single-lesson mode)
     const cardLessonId = currentCard.lessonId || lessonId;
+    // Determine which courseId to use: card's own courseId (practice mode) or prop courseId (single-lesson mode)
+    const cardCourseId = currentCard.courseId || courseId;
     console.log('📚 cardLessonId:', cardLessonId, '(from card:', currentCard.lessonId, 'or prop:', lessonId, ')');
+    console.log('📚 cardCourseId:', cardCourseId, '(from card:', currentCard.courseId, 'or prop:', courseId, ')');
 
     // Save progress if we have a lessonId (either from card or prop)
     if (cardLessonId) {
@@ -107,8 +110,8 @@ function FlashcardPlayer({ initialCards = [], sessionTitle = "Flashcards", lesso
 
       // Save to Supabase (works for both single-lesson and multi-lesson practice)
       try {
-        console.log('💾 Calling updateCardState with:', { cardLessonId, cardId: currentCard.id, updatedState });
-        const result = await updateCardState(cardLessonId, currentCard.id, updatedState);
+        console.log('💾 Calling updateCardState with:', { cardLessonId, cardId: currentCard.id, updatedState, cardCourseId });
+        const result = await updateCardState(cardLessonId, currentCard.id, updatedState, cardCourseId);
         console.log('✅ Flashcard progress saved successfully! Result:', result);
       } catch (error) {
         console.error('❌ Error saving flashcard progress:', error);

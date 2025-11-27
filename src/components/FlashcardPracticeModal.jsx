@@ -1,18 +1,47 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getLessonsWithFlashcards, getFlashcardsByLesson } from '../courses/network-plus/flashcards';
 import '../styles/FlashcardPracticeModal.css';
 
-function FlashcardPracticeModal({ isOpen, onClose }) {
+function FlashcardPracticeModal({ isOpen, onClose, courseId = 'network-plus' }) {
   const navigate = useNavigate();
   const [lessons, setLessons] = useState([]);
   const [selectedLessons, setSelectedLessons] = useState(new Set());
+  const [flashcardModule, setFlashcardModule] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (isOpen) {
-      setLessons(getLessonsWithFlashcards());
-    }
-  }, [isOpen]);
+    const loadFlashcardModule = async () => {
+      if (!isOpen) return;
+
+      setLoading(true);
+      try {
+        let module;
+        switch (courseId) {
+          case 'network-plus':
+            module = await import('../courses/network-plus/flashcards');
+            break;
+          case 'a-plus-core1':
+            module = await import('../courses/a-plus-core1/flashcards');
+            break;
+          case 'a-plus-core2':
+            module = await import('../courses/a-plus-core2/flashcards');
+            break;
+          default:
+            module = await import('../courses/network-plus/flashcards');
+        }
+
+        setFlashcardModule(module);
+        setLessons(module.getLessonsWithFlashcards());
+      } catch (err) {
+        console.error('Error loading flashcard module:', err);
+        setLessons([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadFlashcardModule();
+  }, [isOpen, courseId]);
 
   const handleToggleLesson = (lessonId) => {
     const newSelection = new Set(selectedLessons);
@@ -34,25 +63,22 @@ function FlashcardPracticeModal({ isOpen, onClose }) {
   };
 
   const handleStartSession = () => {
-    console.log('🎲 Starting flashcard session with selected lessons:', Array.from(selectedLessons));
+    if (!flashcardModule) return;
+
+    console.log('Starting flashcard session with selected lessons:', Array.from(selectedLessons));
     let bulkCards = [];
     selectedLessons.forEach(lessonId => {
-      // Get cards for this lesson and attach the lessonId to each card
-      const lessonCards = getFlashcardsByLesson(lessonId);
-      console.log(`🎲 Lesson ${lessonId}: Got ${lessonCards.length} cards from getFlashcardsByLesson`);
-      console.log(`🎲 Lesson ${lessonId}: First card before lessonId attachment:`, lessonCards[0]);
+      // Get cards for this lesson and attach the lessonId and courseId to each card
+      const lessonCards = flashcardModule.getFlashcardsByLesson(lessonId);
 
       const cardsWithLesson = lessonCards.map(card => ({
         ...card,
-        lessonId: lessonId  // Attach lessonId so we can save progress later
+        lessonId: lessonId,   // Attach lessonId so we can save progress later
+        courseId: courseId    // Attach courseId for course-aware progress tracking
       }));
-      console.log(`🎲 Lesson ${lessonId}: First card AFTER lessonId attachment:`, cardsWithLesson[0]);
 
       bulkCards = [...bulkCards, ...cardsWithLesson];
     });
-
-    console.log(`🎲 Total cards before shuffle: ${bulkCards.length}`);
-    console.log(`🎲 First card in bulkCards before shuffle:`, bulkCards[0]);
 
     // Shuffle the combined deck
     for (let i = bulkCards.length - 1; i > 0; i--) {
@@ -60,15 +86,22 @@ function FlashcardPracticeModal({ isOpen, onClose }) {
       [bulkCards[i], bulkCards[j]] = [bulkCards[j], bulkCards[i]];
     }
 
-    console.log(`🎲 First card after shuffle:`, bulkCards[0]);
-    console.log(`🎲 Navigating to /practice/flashcards with ${bulkCards.length} cards`);
-
     onClose();
-    navigate('/practice/flashcards', { state: { cards: bulkCards } });
+    navigate('/practice/flashcards', { state: { cards: bulkCards, courseId } });
   };
 
   if (!isOpen) {
     return null;
+  }
+
+  if (loading) {
+    return (
+      <div className="modal-overlay" onClick={onClose}>
+        <div className="modal-content flashcard-modal" onClick={(e) => e.stopPropagation()}>
+          <h2>Loading...</h2>
+        </div>
+      </div>
+    );
   }
 
   const totalSelectedCards = lessons

@@ -148,8 +148,8 @@ export async function getQuizHistory(lessonId) {
 /**
  * Update flashcard progress (for Anki-style system)
  */
-export async function updateFlashcardProgress(lessonId, cardId, cardState) {
-  console.log('🗄️ progressService.updateFlashcardProgress called with:', { lessonId, cardId, cardState });
+export async function updateFlashcardProgress(lessonId, cardId, cardState, courseId = 'network-plus') {
+  console.log('🗄️ progressService.updateFlashcardProgress called with:', { lessonId, cardId, cardState, courseId });
 
   const { data: { user } } = await supabase.auth.getUser();
   console.log('🗄️ Current user:', user?.id);
@@ -161,6 +161,7 @@ export async function updateFlashcardProgress(lessonId, cardId, cardState) {
 
   const payload = {
     user_id: user.id,
+    course_id: courseId,
     card_id: cardId,
     state: cardState.state,
     ease: cardState.ease,
@@ -178,7 +179,7 @@ export async function updateFlashcardProgress(lessonId, cardId, cardState) {
   const { data, error } = await supabase
     .from('flashcard_progress')
     .upsert(payload, {
-      onConflict: 'user_id,card_id'
+      onConflict: 'user_id,course_id,card_id'
     })
     .select();
 
@@ -194,7 +195,7 @@ export async function updateFlashcardProgress(lessonId, cardId, cardState) {
 /**
  * Get flashcard progress for a lesson
  */
-export async function getFlashcardProgress(lessonId) {
+export async function getFlashcardProgress(lessonId, courseId = 'network-plus') {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return {};
 
@@ -203,6 +204,7 @@ export async function getFlashcardProgress(lessonId) {
     .from('flashcard_progress')
     .select('*')
     .eq('user_id', user.id)
+    .eq('course_id', courseId)
     .like('card_id', `${lessonId}-%`);
 
   if (error) throw error;
@@ -232,7 +234,7 @@ export async function getFlashcardProgress(lessonId) {
  * Get weak cards (cards in learning state or with high hard-rating count)
  * Returns card data with lessonId attached for practice
  */
-export async function getWeakCards() {
+export async function getWeakCards(courseId = 'network-plus') {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
 
@@ -243,6 +245,7 @@ export async function getWeakCards() {
     .from('flashcard_progress')
     .select('*')
     .eq('user_id', user.id)
+    .eq('course_id', courseId)
     .or('state.eq.learning,times_hard.gte.2');
 
   if (error) {
@@ -254,8 +257,22 @@ export async function getWeakCards() {
     return [];
   }
 
-  // Import allFlashcards dynamically to get card content
-  const { allFlashcards } = await import('../courses/network-plus/flashcards');
+  // Import allFlashcards dynamically based on courseId
+  let flashcardsModule;
+  switch (courseId) {
+    case 'network-plus':
+      flashcardsModule = await import('../courses/network-plus/flashcards');
+      break;
+    case 'a-plus-core1':
+      flashcardsModule = await import('../courses/a-plus-core1/flashcards');
+      break;
+    case 'a-plus-core2':
+      flashcardsModule = await import('../courses/a-plus-core2/flashcards');
+      break;
+    default:
+      flashcardsModule = await import('../courses/network-plus/flashcards');
+  }
+  const allFlashcards = flashcardsModule.allFlashcards || {};
 
   // Convert card_id format "lessonId-cardIndex" back to actual cards
   const weakCards = [];
@@ -267,6 +284,7 @@ export async function getWeakCards() {
       weakCards.push({
         ...lessonCards[cardIndex],
         lessonId: lessonId,
+        courseId: courseId,
         // Include progress data for potential future use
         progressData: {
           state: progressItem.state,
@@ -285,25 +303,40 @@ export async function getWeakCards() {
  * Get a smart study session from all cards (Anki-style)
  * Prioritizes due cards, mixes in new cards, limits to session size
  */
-export async function getSmartStudySession(sessionSize = 30) {
+export async function getSmartStudySession(sessionSize = 30, courseId = 'network-plus') {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
 
   const today = new Date().toISOString().split('T')[0];
 
-  // Get all card progress for user
+  // Get all card progress for user for this course
   const { data: progressData, error } = await supabase
     .from('flashcard_progress')
     .select('*')
-    .eq('user_id', user.id);
+    .eq('user_id', user.id)
+    .eq('course_id', courseId);
 
   if (error) {
     console.error('Error fetching card progress:', error);
     return [];
   }
 
-  // Import allFlashcards dynamically
-  const { allFlashcards } = await import('../courses/network-plus/flashcards');
+  // Import allFlashcards dynamically based on courseId
+  let flashcardsModule;
+  switch (courseId) {
+    case 'network-plus':
+      flashcardsModule = await import('../courses/network-plus/flashcards');
+      break;
+    case 'a-plus-core1':
+      flashcardsModule = await import('../courses/a-plus-core1/flashcards');
+      break;
+    case 'a-plus-core2':
+      flashcardsModule = await import('../courses/a-plus-core2/flashcards');
+      break;
+    default:
+      flashcardsModule = await import('../courses/network-plus/flashcards');
+  }
+  const allFlashcards = flashcardsModule.allFlashcards || {};
 
   // Build a map of existing progress by card_id
   const progressMap = {};
@@ -340,6 +373,7 @@ export async function getSmartStudySession(sessionSize = 30) {
           newCards.push({
             ...card,
             lessonId: parseInt(lessonId),
+            courseId: courseId,
             cardState: null
           });
         } else if (progress.dueDate <= today) {
@@ -347,6 +381,7 @@ export async function getSmartStudySession(sessionSize = 30) {
           dueCards.push({
             ...card,
             lessonId: parseInt(lessonId),
+            courseId: courseId,
             cardState: progress,
             dueDate: progress.dueDate // For sorting
           });

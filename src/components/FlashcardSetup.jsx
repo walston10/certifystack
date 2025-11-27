@@ -1,17 +1,76 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { CreditCard, CheckCircle, Circle, Lock } from 'lucide-react';
-import { networkPlusLessons } from '../courses/network-plus/data/lessons';
-import { allFlashcards } from '../courses/network-plus/flashcards';
-import { getDomainConfig } from '../courses/network-plus/data/domainConfig';
+import { useNavigate, useParams } from 'react-router-dom';
+import { CreditCard, CheckCircle, Circle, Lock, BookOpen } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import './FlashcardSetup.css';
 
+// Default domain config for courses without domainConfig
+const defaultDomainConfig = {
+  color: '#00d9ff',
+  icon: 'Book'
+};
+
 function FlashcardSetup() {
   const navigate = useNavigate();
+  const { courseId: urlCourseId } = useParams();
+  const courseId = urlCourseId || 'network-plus';
+
   const [selectedLessons, setSelectedLessons] = useState([]);
   const [isPremium, setIsPremium] = useState(false);
-  // const [studyMode, setStudyMode] = useState('all'); // 'all', 'new', 'review' - Future feature
+  const [lessons, setLessons] = useState([]);
+  const [allFlashcards, setAllFlashcards] = useState({});
+  const [domainConfigModule, setDomainConfigModule] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Load course data dynamically
+  useEffect(() => {
+    const loadCourseData = async () => {
+      setLoading(true);
+      try {
+        let lessonsModule, flashcardsModule, configModule;
+
+        switch (courseId) {
+          case 'network-plus':
+            lessonsModule = await import('../courses/network-plus/data/lessons');
+            flashcardsModule = await import('../courses/network-plus/flashcards');
+            configModule = await import('../courses/network-plus/data/domainConfig');
+            break;
+          case 'a-plus-core1':
+            lessonsModule = await import('../courses/a-plus-core1/data/lessons');
+            flashcardsModule = await import('../courses/a-plus-core1/flashcards');
+            configModule = null;
+            break;
+          case 'a-plus-core2':
+            lessonsModule = await import('../courses/a-plus-core2/data/lessons');
+            flashcardsModule = await import('../courses/a-plus-core2/flashcards');
+            configModule = null;
+            break;
+          default:
+            lessonsModule = await import('../courses/network-plus/data/lessons');
+            flashcardsModule = await import('../courses/network-plus/flashcards');
+            configModule = await import('../courses/network-plus/data/domainConfig');
+        }
+
+        const loadedLessons = lessonsModule.networkPlusLessons ||
+                            lessonsModule.aPlusCore1Lessons ||
+                            lessonsModule.aPlusCore2Lessons ||
+                            lessonsModule.default ||
+                            [];
+
+        setLessons(loadedLessons);
+        setAllFlashcards(flashcardsModule.allFlashcards || {});
+        setDomainConfigModule(configModule);
+      } catch (err) {
+        console.error('Error loading course data:', err);
+        setLessons([]);
+        setAllFlashcards({});
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCourseData();
+  }, [courseId]);
 
   // Load membership tier
   useEffect(() => {
@@ -36,7 +95,7 @@ function FlashcardSetup() {
   }, []);
 
   // Group lessons by domain
-  const lessonsByDomain = networkPlusLessons.reduce((acc, lesson) => {
+  const lessonsByDomain = lessons.reduce((acc, lesson) => {
     if (!acc[lesson.domain]) {
       acc[lesson.domain] = [];
     }
@@ -44,12 +103,18 @@ function FlashcardSetup() {
     return acc;
   }, {});
 
+  const getDomainConfig = (domain) => {
+    if (domainConfigModule && domainConfigModule.getDomainConfig) {
+      return domainConfigModule.getDomainConfig(domain);
+    }
+    return defaultDomainConfig;
+  };
+
   const isLessonLocked = (lessonId) => {
     return lessonId > 3 && !isPremium;
   };
 
   const handleUpgrade = () => {
-    // Redirect to Stripe payment link with 7-day free trial
     window.location.href = 'https://buy.stripe.com/3cI8wPewj6FWbwJ1UVcEw01';
   };
 
@@ -71,10 +136,8 @@ function FlashcardSetup() {
     const allSelected = domainLessonIds.every(id => selectedLessons.includes(id));
 
     if (allSelected) {
-      // Deselect all lessons in this domain
       setSelectedLessons(prev => prev.filter(id => !domainLessonIds.includes(id)));
     } else {
-      // Select all lessons in this domain
       setSelectedLessons(prev => {
         const newSelection = [...prev];
         domainLessonIds.forEach(id => {
@@ -88,7 +151,7 @@ function FlashcardSetup() {
   };
 
   const selectAll = () => {
-    setSelectedLessons(networkPlusLessons.map(l => l.id));
+    setSelectedLessons(lessons.map(l => l.id));
   };
 
   const deselectAll = () => {
@@ -110,15 +173,14 @@ function FlashcardSetup() {
       return;
     }
 
-    // Gather flashcards from selected lessons
     const cards = [];
     selectedLessons.forEach(lessonId => {
       const lessonCards = allFlashcards[lessonId];
       if (Array.isArray(lessonCards)) {
-        // Attach lessonId to each card so progress can be saved
         const cardsWithLesson = lessonCards.map(card => ({
           ...card,
-          lessonId: lessonId
+          lessonId: lessonId,
+          courseId: courseId  // Attach courseId for course-aware progress tracking
         }));
         cards.push(...cardsWithLesson);
       }
@@ -129,14 +191,13 @@ function FlashcardSetup() {
       return;
     }
 
-    // Shuffle cards to randomize across all selected lessons
     const shuffledCards = shuffleArray(cards);
 
-    // Navigate to flashcard practice with shuffled cards
     navigate('/practice/flashcards', {
       state: {
         cards: shuffledCards,
-        sessionTitle: `${selectedLessons.length} Lesson${selectedLessons.length > 1 ? 's' : ''} • ${cards.length} Cards`
+        sessionTitle: `${selectedLessons.length} Lesson${selectedLessons.length > 1 ? 's' : ''} - ${cards.length} Cards`,
+        courseId
       }
     });
   };
@@ -152,10 +213,24 @@ function FlashcardSetup() {
     return total;
   };
 
+  if (loading) {
+    return (
+      <div className="flashcard-setup">
+        <div className="setup-container">
+          <div className="setup-header">
+            <CreditCard size={48} className="header-icon" />
+            <div>
+              <h1>Loading...</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flashcard-setup">
       <div className="setup-container">
-        {/* Header */}
         <div className="setup-header">
           <CreditCard size={48} className="header-icon" />
           <div>
@@ -164,7 +239,6 @@ function FlashcardSetup() {
           </div>
         </div>
 
-        {/* Quick Actions */}
         <div className="quick-actions">
           <button className="quick-action-btn" onClick={selectAll}>
             Select All
@@ -174,36 +248,10 @@ function FlashcardSetup() {
           </button>
         </div>
 
-        {/* Study Mode Options (Future feature) */}
-        {/* <div className="study-mode-section">
-          <h3>Study Mode</h3>
-          <div className="mode-options">
-            <button
-              className={`mode-btn ${studyMode === 'all' ? 'active' : ''}`}
-              onClick={() => setStudyMode('all')}
-            >
-              All Cards
-            </button>
-            <button
-              className={`mode-btn ${studyMode === 'new' ? 'active' : ''}`}
-              onClick={() => setStudyMode('new')}
-            >
-              New Only
-            </button>
-            <button
-              className={`mode-btn ${studyMode === 'review' ? 'active' : ''}`}
-              onClick={() => setStudyMode('review')}
-            >
-              Review Due
-            </button>
-          </div>
-        </div> */}
-
-        {/* Lesson Selection by Domain */}
         <div className="lesson-selection">
-          {Object.entries(lessonsByDomain).map(([domain, lessons]) => {
+          {Object.entries(lessonsByDomain).map(([domain, domainLessons]) => {
             const domainConfig = getDomainConfig(domain);
-            const domainLessonIds = lessons.map(l => l.id);
+            const domainLessonIds = domainLessons.map(l => l.id);
             const allSelected = domainLessonIds.every(id => selectedLessons.includes(id));
             const someSelected = domainLessonIds.some(id => selectedLessons.includes(id));
 
@@ -215,9 +263,9 @@ function FlashcardSetup() {
                   style={{ borderColor: domainConfig.color }}
                 >
                   <div className="domain-info">
-                    <span className="domain-icon">{domainConfig.icon}</span>
+                    <span className="domain-icon">{domainConfig.icon || <BookOpen size={20} />}</span>
                     <h3>{domain}</h3>
-                    <span className="lesson-count">{lessons.length} lessons</span>
+                    <span className="lesson-count">{domainLessons.length} lessons</span>
                   </div>
                   <div className={`domain-checkbox ${allSelected ? 'checked' : someSelected ? 'partial' : ''}`}>
                     {allSelected ? <CheckCircle size={24} /> : <Circle size={24} />}
@@ -225,7 +273,7 @@ function FlashcardSetup() {
                 </div>
 
                 <div className="lessons-grid">
-                  {lessons.map(lesson => {
+                  {domainLessons.map(lesson => {
                     const isSelected = selectedLessons.includes(lesson.id);
                     const locked = isLessonLocked(lesson.id);
                     const cardCount = Array.isArray(allFlashcards[lesson.id]) ? allFlashcards[lesson.id].length : 0;
@@ -260,7 +308,6 @@ function FlashcardSetup() {
           })}
         </div>
 
-        {/* Footer Summary */}
         <div className="setup-footer">
           <div className="selection-summary">
             <div className="summary-item">

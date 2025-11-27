@@ -3,9 +3,6 @@ import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
-import { networkPlusLessons } from '../courses/network-plus/data/lessons';
-import { getLabByLessonId } from '../courses/network-plus/data/labs';
-import { getQuizByLesson } from '../courses/network-plus/quizzes';
 import { supabase } from '../lib/supabase';
 import FlashcardActivity from './FlashcardActivity';
 import QuizActivity from './QuizActivity';
@@ -20,6 +17,8 @@ function LessonViewer() {
   const [content, setContent] = useState('');
   const [labContent, setLabContent] = useState('');
   const [isPremium, setIsPremium] = useState(false);
+  const [courseData, setCourseData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Support both old (id) and new (lessonId) param names for backward compatibility
   const actualLessonId = lessonId || id;
@@ -30,9 +29,66 @@ function LessonViewer() {
     return params.get('tab') || 'content';
   });
   const [showSolutionWarning, setShowSolutionWarning] = useState(false);
-  const lesson = networkPlusLessons.find(l => l.id === parseInt(actualLessonId));
-  const labInfo = getLabByLessonId(parseInt(actualLessonId));
-  const quizInfo = getQuizByLesson(parseInt(actualLessonId));
+
+  // Dynamically load course data based on courseId
+  useEffect(() => {
+    const loadCourseData = async () => {
+      setLoading(true);
+      try {
+        let lessonsModule, labsModule, quizzesModule;
+
+        switch (actualCourseId) {
+          case 'network-plus':
+            lessonsModule = await import('../courses/network-plus/data/lessons');
+            labsModule = await import('../courses/network-plus/data/labs');
+            quizzesModule = await import('../courses/network-plus/quizzes');
+            break;
+          case 'a-plus-core1':
+            lessonsModule = await import('../courses/a-plus-core1/data/lessons');
+            labsModule = await import('../courses/a-plus-core1/data/labs');
+            quizzesModule = await import('../courses/a-plus-core1/quizzes');
+            break;
+          case 'a-plus-core2':
+            lessonsModule = await import('../courses/a-plus-core2/data/lessons');
+            labsModule = await import('../courses/a-plus-core2/data/labs');
+            quizzesModule = await import('../courses/a-plus-core2/quizzes');
+            break;
+          default:
+            // Default to network-plus
+            lessonsModule = await import('../courses/network-plus/data/lessons');
+            labsModule = await import('../courses/network-plus/data/labs');
+            quizzesModule = await import('../courses/network-plus/quizzes');
+        }
+
+        // Get lessons array - handle different export names
+        const lessons = lessonsModule.networkPlusLessons ||
+                       lessonsModule.aPlusCore1Lessons ||
+                       lessonsModule.aPlusCore2Lessons ||
+                       lessonsModule.default ||
+                       [];
+
+        setCourseData({
+          lessons,
+          getLabByLessonId: labsModule.getLabByLessonId,
+          getQuizByLesson: quizzesModule.getQuizByLesson,
+          hasQuiz: quizzesModule.hasQuiz
+        });
+      } catch (err) {
+        console.error('Error loading course data:', err);
+        setCourseData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCourseData();
+  }, [actualCourseId]);
+
+  // Get lesson and lab info from loaded course data
+  const lesson = courseData?.lessons?.find(l => l.id === parseInt(actualLessonId));
+  const labInfo = courseData?.getLabByLessonId ? courseData.getLabByLessonId(parseInt(actualLessonId)) : null;
+  const quizInfo = courseData?.getQuizByLesson ? courseData.getQuizByLesson(parseInt(actualLessonId)) : null;
+
   // Temporarily hiding Activities tab during development - will re-enable once all activities are complete
   // Original code: const hasActivity = [1, 2, 3].includes(parseInt(actualLessonId));
   const hasActivity = false;
@@ -89,7 +145,7 @@ function LessonViewer() {
       setActiveTab(tabFromQuery);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, labInfo, location.search]);
+  }, [actualLessonId, labInfo, location.search, actualCourseId]);
 
   // Activities are now dynamically loaded via ActivityLoader
   // No need for manual switch statement anymore!
@@ -97,6 +153,38 @@ function LessonViewer() {
   const handleViewSolution = () => {
     navigate(`/course/${actualCourseId}/solution/${labInfo.id}`);
   };
+
+  // Show loading state while course data is being fetched
+  if (loading) {
+    return (
+      <div className="lesson-viewer">
+        <header>
+          <Link to="/" className="back">← Dashboard</Link>
+        </header>
+        <div className="loading-state" style={{ padding: '2rem', textAlign: 'center' }}>
+          <h2>Loading lesson...</h2>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state if lesson not found
+  if (!lesson) {
+    return (
+      <div className="lesson-viewer">
+        <header>
+          <Link to="/" className="back">← Dashboard</Link>
+        </header>
+        <div className="error-state" style={{ padding: '2rem', textAlign: 'center' }}>
+          <h2>Lesson Not Found</h2>
+          <p>The lesson you're looking for doesn't exist or hasn't been created yet.</p>
+          <Link to={`/course/${actualCourseId}/lessons`}>
+            <button className="btn-back">Back to Course</button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="lesson-viewer">
@@ -114,7 +202,7 @@ function LessonViewer() {
           className={activeTab === 'content' ? 'active' : ''}
           onClick={() => setActiveTab('content')}
         >
-          📖 Content
+          Content
         </button>
 
         {labInfo && (
@@ -122,7 +210,7 @@ function LessonViewer() {
             className={activeTab === 'lab' ? 'active' : ''}
             onClick={() => setActiveTab('lab')}
           >
-            🧪 Lab
+            Lab
           </button>
         )}
 
@@ -131,7 +219,7 @@ function LessonViewer() {
             className={activeTab === 'activity' ? 'active' : ''}
             onClick={() => setActiveTab('activity')}
           >
-            🎮 Activity
+            Activity
           </button>
         )}
 
@@ -139,15 +227,15 @@ function LessonViewer() {
           className={activeTab === 'flashcards' ? 'active' : ''}
           onClick={() => setActiveTab('flashcards')}
         >
-          🃏 Flashcards
+          Flashcards
         </button>
-        
+
         {quizInfo && (
           <button
             className={activeTab === 'quiz' ? 'active' : ''}
             onClick={() => setActiveTab('quiz')}
           >
-            ✅ Quiz
+            Quiz
           </button>
         )}
       </div>
@@ -191,11 +279,11 @@ function LessonViewer() {
                   <span className={`difficulty difficulty-${labInfo.difficulty.toLowerCase()}`}>
                     {labInfo.difficulty}
                   </span>
-                  <span className="time">⏱️ {labInfo.estimatedTime}</span>
-                  <span className="xp">⭐ {labInfo.xpReward} XP</span>
+                  <span className="time">{labInfo.estimatedTime}</span>
+                  <span className="xp">{labInfo.xpReward} XP</span>
                 </div>
                 <button className="btn-solution" onClick={() => setShowSolutionWarning(true)}>
-                  📝 View Solution
+                  View Solution
                 </button>
               </div>
               <div className="markdown-content">
@@ -208,14 +296,14 @@ function LessonViewer() {
         )}
 
         {activeTab === 'activity' && (
-          <ActivityLoader courseId="network-plus" lessonId={parseInt(actualLessonId)} />
+          <ActivityLoader courseId={actualCourseId} lessonId={parseInt(actualLessonId)} />
         )}
 
         {activeTab === 'flashcards' && (
           isContentLocked(parseInt(actualLessonId)) ? (
             <LockedContent type="flashcards" itemNumber={parseInt(actualLessonId)} />
           ) : (
-            <FlashcardActivity lessonId={parseInt(actualLessonId)} />
+            <FlashcardActivity lessonId={parseInt(actualLessonId)} courseId={actualCourseId} />
           )
         )}
 
@@ -223,13 +311,13 @@ function LessonViewer() {
           isContentLocked(parseInt(actualLessonId)) ? (
             <LockedContent type="quiz" itemNumber={parseInt(actualLessonId)} />
           ) : (
-            <QuizActivity lessonId={parseInt(actualLessonId)} />
+            <QuizActivity lessonId={parseInt(actualLessonId)} courseId={actualCourseId} />
           )
         )}
       </div>
 
       <div className="footer">
-        {parseInt(actualLessonId) < networkPlusLessons.length && (
+        {courseData?.lessons && parseInt(actualLessonId) < courseData.lessons.length && (
           <Link to={`/course/${actualCourseId}/lesson/${parseInt(actualLessonId) + 1}`}>
             <button className="btn-next">Next Lesson →</button>
           </Link>
@@ -239,7 +327,7 @@ function LessonViewer() {
       {showSolutionWarning && (
         <div className="modal-overlay" onClick={() => setShowSolutionWarning(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h2>⚠️ Before You Continue...</h2>
+            <h2>Before You Continue...</h2>
             <p>
               Viewing the solution before attempting the lab yourself will significantly
               reduce the learning value. The best way to learn is by struggling through

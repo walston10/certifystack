@@ -1,17 +1,58 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { FlaskConical, Lock } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { networkPlusLabs } from '../courses/network-plus/data/labs';
 import './LabsGallery.css';
 
 function LabsGallery() {
   const navigate = useNavigate();
   const { courseId } = useParams();
   const [isPremium, setIsPremium] = useState(false);
+  const [labs, setLabs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Default to network-plus for backward compatibility
   const actualCourseId = courseId || 'network-plus';
+
+  // Dynamically load labs based on courseId
+  useEffect(() => {
+    const loadLabs = async () => {
+      setLoading(true);
+      try {
+        let labsModule;
+
+        switch (actualCourseId) {
+          case 'network-plus':
+            labsModule = await import('../courses/network-plus/data/labs');
+            break;
+          case 'a-plus-core1':
+            labsModule = await import('../courses/a-plus-core1/data/labs');
+            break;
+          case 'a-plus-core2':
+            labsModule = await import('../courses/a-plus-core2/data/labs');
+            break;
+          default:
+            labsModule = await import('../courses/network-plus/data/labs');
+        }
+
+        // Get labs array - handle different export names
+        const loadedLabs = labsModule.networkPlusLabs ||
+                         labsModule.aPlusCore1Labs ||
+                         labsModule.aPlusCore2Labs ||
+                         labsModule.default ||
+                         [];
+
+        setLabs(loadedLabs);
+      } catch (err) {
+        console.error('Error loading labs:', err);
+        setLabs([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadLabs();
+  }, [actualCourseId]);
 
   useEffect(() => {
     loadMembershipTier();
@@ -48,18 +89,69 @@ function LabsGallery() {
     }
   };
 
+  // Get course display name
+  const getCourseDisplayName = () => {
+    switch (actualCourseId) {
+      case 'network-plus':
+        return 'Network+';
+      case 'a-plus-core1':
+        return 'A+ Core 1';
+      case 'a-plus-core2':
+        return 'A+ Core 2';
+      default:
+        return 'Course';
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="labs-gallery">
+        <div className="labs-header">
+          <FlaskConical size={48} className="header-icon" />
+          <div>
+            <h1>Hands-On Labs</h1>
+            <p>Loading labs...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (labs.length === 0) {
+    return (
+      <div className="labs-gallery">
+        <div className="labs-header">
+          <FlaskConical size={48} className="header-icon" />
+          <div>
+            <h1>{getCourseDisplayName()} Labs</h1>
+            <p>Practice real-world scenarios and configurations</p>
+          </div>
+        </div>
+        <div className="no-labs-message" style={{ padding: '2rem', textAlign: 'center' }}>
+          <h2>Labs Coming Soon!</h2>
+          <p>Labs for this course are still being developed. Check back soon!</p>
+          <Link to={`/course/${actualCourseId}/lessons`}>
+            <button className="btn-back" style={{ marginTop: '1rem', padding: '0.75rem 1.5rem', cursor: 'pointer' }}>
+              Back to Course
+            </button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="labs-gallery">
       <div className="labs-header">
         <FlaskConical size={48} className="header-icon" />
         <div>
-          <h1>Hands-On Labs</h1>
-          <p>Practice real-world networking scenarios and configurations</p>
+          <h1>{getCourseDisplayName()} Hands-On Labs</h1>
+          <p>Practice real-world scenarios and configurations</p>
         </div>
       </div>
 
       <div className="labs-grid">
-        {networkPlusLabs.map((lab, index) => {
+        {labs.map((lab, index) => {
           const locked = isLabLocked(index);
           return (
             <div

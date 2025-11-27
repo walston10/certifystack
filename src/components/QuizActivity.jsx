@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { getQuizByLesson, hasQuiz } from '../courses/network-plus/quizzes';
 import { saveQuizScore } from '../services/progressService';
 import { randomizeQuizAnswers } from '../utils/quizUtils';
 import '../styles/QuizActivity.css';
 
-function QuizActivity({ lessonId }) {
+function QuizActivity({ lessonId, courseId = 'network-plus' }) {
   const [quiz, setQuiz] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -14,20 +13,55 @@ function QuizActivity({ lessonId }) {
   const [quizComplete, setQuizComplete] = useState(false);
   const [savingResults, setSavingResults] = useState(false);
   const [saveError, setSaveError] = useState(null);
+  const [quizModule, setQuizModule] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
 
   // Parse and validate lessonId
   const parsedLessonId = parseInt(lessonId);
   const isValidLessonId = !isNaN(parsedLessonId) && parsedLessonId > 0;
 
-  // Load quiz when component mounts or lessonId changes
+  // Dynamically load quiz module based on courseId
   useEffect(() => {
-    if (!isValidLessonId) {
-      console.error('Invalid lessonId:', lessonId);
-      setQuiz(null);
+    const loadQuizModule = async () => {
+      setLoading(true);
+      setLoadError(null);
+
+      try {
+        let module;
+        switch (courseId) {
+          case 'network-plus':
+            module = await import('../courses/network-plus/quizzes');
+            break;
+          case 'a-plus-core1':
+            module = await import('../courses/a-plus-core1/quizzes');
+            break;
+          case 'a-plus-core2':
+            module = await import('../courses/a-plus-core2/quizzes');
+            break;
+          default:
+            // Default to network-plus for backward compatibility
+            module = await import('../courses/network-plus/quizzes');
+        }
+        setQuizModule(module);
+      } catch (err) {
+        console.error('Error loading quiz module:', err);
+        setLoadError(`Failed to load quizzes for ${courseId}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadQuizModule();
+  }, [courseId]);
+
+  // Load quiz when module is ready and lessonId changes
+  useEffect(() => {
+    if (!quizModule || !isValidLessonId) {
       return;
     }
 
-    const loadedQuiz = getQuizByLesson(parsedLessonId);
+    const loadedQuiz = quizModule.getQuizByLesson(parsedLessonId);
 
     if (loadedQuiz) {
       // Randomize answer choices to prevent AI bias towards specific positions
@@ -43,7 +77,30 @@ function QuizActivity({ lessonId }) {
     } else {
       setQuiz(null);
     }
-  }, [lessonId, parsedLessonId, isValidLessonId]);
+  }, [lessonId, parsedLessonId, isValidLessonId, quizModule]);
+
+  // If still loading the module
+  if (loading) {
+    return (
+      <div className="quiz-activity">
+        <div className="quiz-header">
+          <h2>Loading Quiz...</h2>
+        </div>
+      </div>
+    );
+  }
+
+  // If there was an error loading the module
+  if (loadError) {
+    return (
+      <div className="quiz-activity">
+        <div className="quiz-header">
+          <h2>Error Loading Quiz</h2>
+          <p>{loadError}</p>
+        </div>
+      </div>
+    );
+  }
 
   // If lessonId is invalid
   if (!isValidLessonId) {
@@ -61,7 +118,7 @@ function QuizActivity({ lessonId }) {
   }
 
   // If quiz doesn't exist yet
-  if (!hasQuiz(parsedLessonId)) {
+  if (quizModule && !quizModule.hasQuiz(parsedLessonId)) {
     return (
       <div className="quiz-activity">
         <div className="quiz-header">
@@ -96,9 +153,9 @@ function QuizActivity({ lessonId }) {
 
   const handleSubmitAnswer = () => {
     if (selectedAnswer === null) return;
-    
+
     setShowExplanation(true);
-    
+
     // Record answer
     const isCorrect = selectedAnswer === currentQuestion.correct;
     setAnsweredQuestions([
@@ -110,7 +167,7 @@ function QuizActivity({ lessonId }) {
         isCorrect
       }
     ]);
-    
+
     // Update score if correct
     if (isCorrect) {
       setScore(score + 1);
@@ -130,12 +187,12 @@ function QuizActivity({ lessonId }) {
       setSaveError(null);
 
       try {
-        // Save quiz results to database
+        // Save quiz results to database with dynamic courseId
         await saveQuizScore(
           parsedLessonId,
           score,
           totalQuestions,
-          'network-plus', // courseId - hardcoded for now, could be passed as prop
+          courseId, // Use the courseId prop
           'lesson-quiz',
           answeredQuestions
         );
@@ -151,10 +208,12 @@ function QuizActivity({ lessonId }) {
 
   const handleRetryQuiz = () => {
     // Re-randomize answer choices for a fresh quiz attempt
-    const loadedQuiz = getQuizByLesson(parsedLessonId);
-    if (loadedQuiz) {
-      const randomizedQuiz = randomizeQuizAnswers(loadedQuiz);
-      setQuiz(randomizedQuiz);
+    if (quizModule) {
+      const loadedQuiz = quizModule.getQuizByLesson(parsedLessonId);
+      if (loadedQuiz) {
+        const randomizedQuiz = randomizeQuizAnswers(loadedQuiz);
+        setQuiz(randomizedQuiz);
+      }
     }
 
     setCurrentQuestionIndex(0);
@@ -183,13 +242,13 @@ function QuizActivity({ lessonId }) {
 
           {saveError && (
             <div style={{ padding: '10px', background: '#ff4444', color: '#fff', borderRadius: '4px', marginBottom: '15px' }}>
-              ⚠️ Error saving results: {saveError}
+              Warning: Error saving results: {saveError}
             </div>
           )}
 
           {!savingResults && !saveError && (
             <div style={{ padding: '10px', background: '#4ade80', color: '#000', borderRadius: '4px', marginBottom: '15px' }}>
-              ✓ Results saved to your profile!
+              Results saved to your profile!
             </div>
           )}
 
@@ -203,7 +262,7 @@ function QuizActivity({ lessonId }) {
           <div className="result-message">
             {passed ? (
               <>
-                <p>🎉 Congratulations! You passed!</p>
+                <p>Congratulations! You passed!</p>
                 <p>You've demonstrated a solid understanding of this lesson's concepts.</p>
               </>
             ) : (
@@ -219,13 +278,13 @@ function QuizActivity({ lessonId }) {
             {answeredQuestions.map((answer, index) => {
               const question = quiz[index];
               return (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className={`review-item ${answer.isCorrect ? 'correct' : 'incorrect'}`}
                 >
                   <div className="review-header">
                     <span className="review-icon">
-                      {answer.isCorrect ? '✓' : '✗'}
+                      {answer.isCorrect ? '\u2713' : '\u2717'}
                     </span>
                     <span className="review-number">Question {index + 1}</span>
                   </div>
@@ -286,8 +345,8 @@ function QuizActivity({ lessonId }) {
                   {String.fromCharCode(65 + index)}
                 </span>
                 <span className="option-text">{option}</span>
-                {showCorrect && <span className="option-icon">✓</span>}
-                {showIncorrect && <span className="option-icon">✗</span>}
+                {showCorrect && <span className="option-icon">{'\u2713'}</span>}
+                {showIncorrect && <span className="option-icon">{'\u2717'}</span>}
               </button>
             );
           })}
@@ -298,9 +357,9 @@ function QuizActivity({ lessonId }) {
             selectedAnswer === currentQuestion.correct ? 'correct' : 'incorrect'
           }`}>
             <div className="explanation-header">
-              {selectedAnswer === currentQuestion.correct 
-                ? '✓ Correct!' 
-                : '✗ Incorrect'}
+              {selectedAnswer === currentQuestion.correct
+                ? '\u2713 Correct!'
+                : '\u2717 Incorrect'}
             </div>
             <p className="explanation-text">{currentQuestion.explanation}</p>
           </div>
@@ -314,8 +373,8 @@ function QuizActivity({ lessonId }) {
 
         {showExplanation && (
           <button className="btn-next-question" onClick={handleNextQuestion}>
-            {currentQuestionIndex < totalQuestions - 1 
-              ? 'Next Question' 
+            {currentQuestionIndex < totalQuestions - 1
+              ? 'Next Question'
               : 'See Results'}
           </button>
         )}
