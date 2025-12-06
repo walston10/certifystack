@@ -53,6 +53,11 @@ function LessonViewer() {
             labsModule = await import('../courses/a-plus-core2/data/labs');
             quizzesModule = await import('../courses/a-plus-core2/quizzes');
             break;
+          case 'security-plus':
+            lessonsModule = await import('../courses/security-plus/data/lessons');
+            labsModule = await import('../courses/security-plus/data/labs');
+            quizzesModule = await import('../courses/security-plus/quizzes');
+            break;
           default:
             // Default to network-plus
             lessonsModule = await import('../courses/network-plus/data/lessons');
@@ -64,6 +69,7 @@ function LessonViewer() {
         const lessons = lessonsModule.networkPlusLessons ||
                        lessonsModule.aPlusCore1Lessons ||
                        lessonsModule.aPlusCore2Lessons ||
+                       lessonsModule.securityPlusLessons ||
                        lessonsModule.default ||
                        [];
 

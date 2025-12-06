@@ -24,6 +24,9 @@ function FlashcardActivity({ lessonId, courseId = 'network-plus' }) {
           case 'a-plus-core2':
             module = await import('../courses/a-plus-core2/flashcards/index.js');
             break;
+          case 'security-plus':
+            module = await import('../courses/security-plus/flashcards/index.js');
+            break;
           default:
             // Default to network-plus for backward compatibility
             module = await import('../courses/network-plus/flashcards/index.js');
