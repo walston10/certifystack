@@ -19,7 +19,7 @@ function AccountPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [membershipTier, setMembershipTier] = useState('free');
-  const [processingUpgrade, setProcessingUpgrade] = useState(false);
+  const [processingUpgrade] = useState(false);
   const [courseProgress, setCourseProgress] = useState([]);
   const [studyStats, setStudyStats] = useState(null);
   const [quizPerformance, setQuizPerformance] = useState(null);
