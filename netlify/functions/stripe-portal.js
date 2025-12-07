@@ -8,7 +8,19 @@ const supabase = createClient(
 );
 
 exports.handler = async (event) => {
-  // Only allow POST requests
+  // Handle CORS preflight
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      },
+      body: ''
+    };
+  }
+
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
@@ -26,27 +38,53 @@ exports.handler = async (event) => {
       };
     }
 
-    // Get the user's Stripe customer ID from database
-    const { data: subscription, error: dbError } = await supabase
-      .from('user_subscriptions')
-      .select('stripe_customer_id, stripe_subscription_id')
-      .eq('user_id', userId)
+    // Check profiles table first (primary source)
+    let stripeCustomerId = null;
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('stripe_customer_id')
+      .eq('id', userId)
       .single();
 
-    if (dbError || !subscription?.stripe_customer_id) {
+    if (profile?.stripe_customer_id) {
+      stripeCustomerId = profile.stripe_customer_id;
+      console.log('Found customer in profiles:', stripeCustomerId);
+    } else {
+      // Fallback: check user_subscriptions table
+      const { data: subscription } = await supabase
+        .from('user_subscriptions')
+        .select('stripe_customer_id')
+        .eq('user_id', userId)
+        .single();
+
+      if (subscription?.stripe_customer_id) {
+        stripeCustomerId = subscription.stripe_customer_id;
+        console.log('Found customer in user_subscriptions:', stripeCustomerId);
+
+        // Sync to profiles for future lookups
+        await supabase
+          .from('profiles')
+          .update({ stripe_customer_id: stripeCustomerId })
+          .eq('id', userId);
+      }
+    }
+
+    if (!stripeCustomerId) {
       return {
         statusCode: 404,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': 'Content-Type',
+        },
         body: JSON.stringify({ error: 'No subscription found for this user' })
       };
     }
 
     // Create billing portal session
-    // Note: The portal configuration must be set up in Stripe Dashboard
-    // to enable subscription cancellation. Go to:
-    // Stripe Dashboard > Settings > Billing > Customer Portal
-    // and enable "Subscription cancellation"
     const portalSession = await stripe.billingPortal.sessions.create({
-      customer: subscription.stripe_customer_id,
+      customer: stripeCustomerId,
       return_url: `${event.headers.origin || 'https://certifystack.com'}/account`,
     });
 
@@ -66,6 +104,11 @@ exports.handler = async (event) => {
     console.error('Stripe portal error:', error);
     return {
       statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
       body: JSON.stringify({
         error: 'Failed to create portal session',
         message: error.message

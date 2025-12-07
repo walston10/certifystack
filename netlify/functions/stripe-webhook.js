@@ -112,7 +112,7 @@ async function handleCheckoutCompleted(session) {
   // Get subscription details from Stripe
   const subscription = await stripe.subscriptions.retrieve(subscriptionId);
 
-  // Upsert subscription in database
+  // Upsert subscription in user_subscriptions table
   const { error } = await supabase
     .from('user_subscriptions')
     .upsert({
@@ -136,23 +136,39 @@ async function handleCheckoutCompleted(session) {
     throw error;
   }
 
-  // Update user profile to premium tier
-  await supabase
+  // Update user profile - include Stripe IDs for single source of truth
+  const { error: profileError } = await supabase
     .from('profiles')
     .update({
       membership_tier: 'premium',
+      stripe_customer_id: customerId,
+      stripe_subscription_id: subscriptionId,
+      subscription_status: subscription.status,
       updated_at: new Date().toISOString()
     })
     .eq('id', userId);
 
-  console.log(`Subscription created for user ${userId}`);
+  if (profileError) {
+    console.error('Error updating profile:', profileError);
+  }
+
+  console.log(`Subscription created for user ${userId}, customer ${customerId}`);
 }
 
 async function handleSubscriptionUpdated(subscription) {
-  const userId = subscription.metadata?.userId;
   const subscriptionId = subscription.id;
+  const customerId = subscription.customer;
 
-  // Update subscription status in database
+  // First, find the user by subscription ID
+  const { data: subData } = await supabase
+    .from('user_subscriptions')
+    .select('user_id')
+    .eq('stripe_subscription_id', subscriptionId)
+    .single();
+
+  const userId = subData?.user_id || subscription.metadata?.userId;
+
+  // Update subscription status in user_subscriptions table
   const { error } = await supabase
     .from('user_subscriptions')
     .update({
@@ -170,17 +186,19 @@ async function handleSubscriptionUpdated(subscription) {
     throw error;
   }
 
-  // If subscription is active, ensure user is premium
-  if (subscription.status === 'active') {
-    if (userId) {
-      await supabase
-        .from('profiles')
-        .update({
-          membership_tier: 'premium',
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', userId);
-    }
+  // Update profiles table to keep in sync
+  if (userId) {
+    const membershipTier = subscription.status === 'active' ? 'premium' : 
+                           subscription.status === 'past_due' ? 'premium' : 'free';
+    
+    await supabase
+      .from('profiles')
+      .update({
+        membership_tier: membershipTier,
+        subscription_status: subscription.status,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', userId);
   }
 
   console.log(`Subscription ${subscriptionId} updated to ${subscription.status}`);
@@ -211,12 +229,13 @@ async function handleSubscriptionDeleted(subscription) {
     throw error;
   }
 
-  // Downgrade user to free tier
+  // Downgrade user to free tier in profiles
   if (subData?.user_id) {
     await supabase
       .from('profiles')
       .update({
         membership_tier: 'free',
+        subscription_status: 'canceled',
         updated_at: new Date().toISOString()
       })
       .eq('id', subData.user_id);
@@ -227,7 +246,13 @@ async function handleSubscriptionDeleted(subscription) {
 
 async function handlePaymentFailed(invoice) {
   const subscriptionId = invoice.subscription;
-  const customerId = invoice.customer;
+
+  // Get user from subscription
+  const { data: subData } = await supabase
+    .from('user_subscriptions')
+    .select('user_id')
+    .eq('stripe_subscription_id', subscriptionId)
+    .single();
 
   // Update subscription status
   const { error } = await supabase
@@ -240,6 +265,17 @@ async function handlePaymentFailed(invoice) {
 
   if (error) {
     console.error('Error updating failed payment status:', error);
+  }
+
+  // Update profile status
+  if (subData?.user_id) {
+    await supabase
+      .from('profiles')
+      .update({
+        subscription_status: 'past_due',
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', subData.user_id);
   }
 
   console.log(`Payment failed for subscription ${subscriptionId}`);
