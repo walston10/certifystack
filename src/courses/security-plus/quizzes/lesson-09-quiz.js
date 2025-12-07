@@ -1,4 +1,4 @@
-export const lesson09Quiz = [
+export const lesson9Quiz = [
   {
     id: 1,
     question: "A company's web server becomes unavailable after receiving millions of requests from thousands of different IP addresses worldwide. Legitimate users cannot access the site. What type of attack is this?",

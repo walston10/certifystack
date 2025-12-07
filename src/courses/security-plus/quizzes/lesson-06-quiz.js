@@ -1,4 +1,4 @@
-export const lesson06Quiz = [
+export const lesson6Quiz = [
   {
     id: 1,
     question: "A user visits a banking website and sees a padlock icon in their browser. The browser verified the site's certificate against a trusted root CA. What infrastructure makes this trust chain possible?",

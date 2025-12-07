@@ -1,4 +1,4 @@
-export const lesson04Quiz = [
+export const lesson4Quiz = [
   {
     id: 1,
     question: "A company needs to encrypt large amounts of data quickly for backup storage. The same key will be used by authorized systems to encrypt and decrypt the data. Which type of encryption is BEST suited for this use case?",

@@ -1,4 +1,4 @@
-export const lesson01Quiz = [
+export const lesson1Quiz = [
   {
     id: 1,
     question: "A hospital's electronic health records system went offline for 6 hours due to a ransomware attack, preventing doctors from accessing patient information. Which element of the CIA triad was PRIMARILY compromised?",

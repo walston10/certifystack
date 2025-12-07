@@ -1,4 +1,4 @@
-export const lesson07Quiz = [
+export const lesson7Quiz = [
   {
     id: 1,
     question: "A user opens an email attachment and their files become encrypted with a ransom demand displayed. The malware threatens to delete files if payment isn't made within 72 hours. What type of malware is this?",

@@ -1,4 +1,4 @@
-export const lesson08Quiz = [
+export const lesson8Quiz = [
   {
     id: 1,
     question: "An employee receives an email appearing to be from their bank, requesting they click a link to verify their account due to 'suspicious activity.' The link leads to a fake website that captures their credentials. What type of attack is this?",

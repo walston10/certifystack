@@ -1,4 +1,4 @@
-export const lesson03Quiz = [
+export const lesson3Quiz = [
   {
     id: 1,
     question: "An organization requires all users, whether on the corporate network or remote, to authenticate and verify device compliance before accessing any resource. Users must re-authenticate when accessing different applications. What security model is this?",

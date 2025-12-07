@@ -1,4 +1,4 @@
-export const lesson02Quiz = [
+export const lesson2Quiz = [
   {
     id: 1,
     question: "A government contractor discovers their systems were compromised by attackers who maintained persistent access for 18 months, exfiltrating classified defense documents. The attack showed sophisticated custom malware and zero-day exploits. What type of threat actor is MOST likely responsible?",
