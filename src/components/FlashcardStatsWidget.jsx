@@ -31,6 +31,9 @@ function FlashcardStatsWidget({ courseId = 'network-plus' }) {
           case 'a-plus-core2':
             flashcardModule = await import('../courses/a-plus-core2/flashcards/index');
             break;
+          case 'security-plus':
+            flashcardModule = await import('../courses/security-plus/flashcards/index');
+            break;
           default:
             flashcardModule = await import('../courses/network-plus/flashcards/index');
         }

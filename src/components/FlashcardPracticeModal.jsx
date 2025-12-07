@@ -26,6 +26,9 @@ function FlashcardPracticeModal({ isOpen, onClose, courseId = 'network-plus' }) 
           case 'a-plus-core2':
             module = await import('../courses/a-plus-core2/flashcards');
             break;
+          case 'security-plus':
+            module = await import('../courses/security-plus/flashcards');
+            break;
           default:
             module = await import('../courses/network-plus/flashcards');
         }

@@ -44,6 +44,10 @@ function Dashboard() {
                         lessonsModule = await import('../courses/a-plus-core2/data/lessons');
                         configModule = null; // No domainConfig yet for A+ courses
                         break;
+                    case 'security-plus':
+                        lessonsModule = await import('../courses/security-plus/data/lessons');
+                        configModule = null; // No domainConfig yet for Security+ courses
+                        break;
                     default:
                         lessonsModule = await import('../courses/network-plus/data/lessons');
                         configModule = await import('../courses/network-plus/data/domainConfig');
@@ -53,6 +57,7 @@ function Dashboard() {
                 const loadedLessons = lessonsModule.networkPlusLessons ||
                                      lessonsModule.aPlusCore1Lessons ||
                                      lessonsModule.aPlusCore2Lessons ||
+                                     lessonsModule.securityPlusLessons ||
                                      lessonsModule.default ||
                                      [];
 
@@ -89,6 +94,11 @@ function Dashboard() {
                 return {
                     name: 'A+ Core 2 (220-1102)',
                     subtitle: `${lessons.length} lessons covering A+ Core 2 exam objectives`
+                };
+            case 'security-plus':
+                return {
+                    name: 'Security+ (SY0-701)',
+                    subtitle: `${lessons.length} lessons covering Security+ SY0-701 exam objectives`
                 };
             default:
                 return {

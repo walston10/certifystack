@@ -31,6 +31,9 @@ function LabsGallery() {
           case 'a-plus-core2':
             labsModule = await import('../courses/a-plus-core2/data/labs');
             break;
+          case 'security-plus':
+            labsModule = await import('../courses/security-plus/data/labs');
+            break;
           default:
             labsModule = await import('../courses/network-plus/data/labs');
         }
@@ -39,6 +42,7 @@ function LabsGallery() {
         const loadedLabs = labsModule.networkPlusLabs ||
                          labsModule.aPlusCore1Labs ||
                          labsModule.aPlusCore2Labs ||
+                         labsModule.securityPlusLabs ||
                          labsModule.default ||
                          [];
 
@@ -98,6 +102,8 @@ function LabsGallery() {
         return 'A+ Core 1';
       case 'a-plus-core2':
         return 'A+ Core 2';
+      case 'security-plus':
+        return 'Security+';
       default:
         return 'Course';
     }

@@ -39,6 +39,9 @@ function QuizActivity({ lessonId, courseId = 'network-plus' }) {
           case 'a-plus-core2':
             module = await import('../courses/a-plus-core2/quizzes');
             break;
+          case 'security-plus':
+            module = await import('../courses/security-plus/quizzes');
+            break;
           default:
             // Default to network-plus for backward compatibility
             module = await import('../courses/network-plus/quizzes');

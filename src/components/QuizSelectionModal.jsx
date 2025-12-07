@@ -32,6 +32,10 @@ function QuizSelectionModal({ isOpen, onClose, courseId = 'network-plus' }) {
             lessonsModule = await import('../courses/a-plus-core2/data/lessons');
             quizzesModule = await import('../courses/a-plus-core2/quizzes');
             break;
+          case 'security-plus':
+            lessonsModule = await import('../courses/security-plus/data/lessons');
+            quizzesModule = await import('../courses/security-plus/quizzes');
+            break;
           default:
             lessonsModule = await import('../courses/network-plus/data/lessons');
             quizzesModule = await import('../courses/network-plus/quizzes');
@@ -40,6 +44,7 @@ function QuizSelectionModal({ isOpen, onClose, courseId = 'network-plus' }) {
         const loadedLessons = lessonsModule.networkPlusLessons ||
                             lessonsModule.aPlusCore1Lessons ||
                             lessonsModule.aPlusCore2Lessons ||
+                            lessonsModule.securityPlusLessons ||
                             lessonsModule.default ||
                             [];
 

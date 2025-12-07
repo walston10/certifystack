@@ -35,6 +35,10 @@ function SolutionViewer() {
             labsModule = await import('../courses/a-plus-core2/data/labs');
             lessonsModule = await import('../courses/a-plus-core2/data/lessons');
             break;
+          case 'security-plus':
+            labsModule = await import('../courses/security-plus/data/labs');
+            lessonsModule = await import('../courses/security-plus/data/lessons');
+            break;
           default:
             labsModule = await import('../courses/network-plus/data/labs');
             lessonsModule = await import('../courses/network-plus/data/lessons');
@@ -44,6 +48,7 @@ function SolutionViewer() {
         const labs = labsModule.networkPlusLabs ||
                     labsModule.aPlusCore1Labs ||
                     labsModule.aPlusCore2Labs ||
+                    labsModule.securityPlusLabs ||
                     labsModule.default ||
                     [];
 
@@ -51,6 +56,7 @@ function SolutionViewer() {
         const lessons = lessonsModule.networkPlusLessons ||
                        lessonsModule.aPlusCore1Lessons ||
                        lessonsModule.aPlusCore2Lessons ||
+                       lessonsModule.securityPlusLessons ||
                        lessonsModule.default ||
                        [];
 

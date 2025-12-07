@@ -34,6 +34,9 @@ function FlashcardPracticeView() {
             case 'a-plus-core2':
               flashcardsModule = await import('../courses/a-plus-core2/flashcards');
               break;
+            case 'security-plus':
+              flashcardsModule = await import('../courses/security-plus/flashcards');
+              break;
             default:
               flashcardsModule = await import('../courses/network-plus/flashcards');
           }
