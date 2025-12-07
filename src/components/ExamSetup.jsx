@@ -1,12 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { validateQuestionPool, getQuestionCounts } from '../utils/examGenerator';
+import { validateQuestionPool, getQuestionCounts, getCourseDomainCount } from '../utils/examGenerator';
+import { getActiveCourse } from '../services/courseService';
 import './ExamSetup.css';
+
+// Domain names per course
+const courseDomainNames = {
+  'network-plus': {
+    '1': 'Networking Concepts',
+    '2': 'Network Infrastructure',
+    '3': 'Network Operations',
+    '4': 'Network Security',
+    '5': 'Network Troubleshooting'
+  },
+  'a-plus-core1': {
+    '1': 'Mobile Devices',
+    '2': 'Networking',
+    '3': 'Hardware',
+    '4': 'Virtualization & Cloud',
+    '5': 'Troubleshooting'
+  },
+  'a-plus-core2': {
+    '1': 'Operating Systems',
+    '2': 'Security',
+    '3': 'Software Troubleshooting',
+    '4': 'Operational Procedures'
+  },
+  'security-plus': {
+    '1': 'General Security Concepts',
+    '2': 'Threats, Vulnerabilities & Mitigations',
+    '3': 'Security Architecture',
+    '4': 'Security Operations',
+    '5': 'Security Program Management'
+  }
+};
+
+const courseDisplayNames = {
+  'network-plus': 'Network+',
+  'a-plus-core1': 'A+ Core 1',
+  'a-plus-core2': 'A+ Core 2',
+  'security-plus': 'Security+'
+};
 
 function ExamSetup() {
   const navigate = useNavigate();
   const [examMode, setExamMode] = useState('full');
   const [selectedDomain, setSelectedDomain] = useState('1');
+  const [activeCourseId, setActiveCourseId] = useState('network-plus');
   const [settings, setSettings] = useState({
     timed: true,
     duration: 5400, // 90 minutes in seconds
@@ -14,17 +54,27 @@ function ExamSetup() {
     showExplanations: false // Show immediately vs only after submit
   });
 
-  // Get question counts for display
-  const questionCounts = getQuestionCounts();
-  const validation = validateQuestionPool();
+  // Load active course
+  useEffect(() => {
+    const loadCourse = async () => {
+      try {
+        const course = await getActiveCourse();
+        if (course?.id) {
+          setActiveCourseId(course.id);
+        }
+      } catch (err) {
+        console.error('Error loading active course:', err);
+      }
+    };
+    loadCourse();
+  }, []);
 
-  const domainNames = {
-    '1': 'Networking Concepts',
-    '2': 'Network Infrastructure',
-    '3': 'Network Operations',
-    '4': 'Network Security',
-    '5': 'Network Troubleshooting'
-  };
+  // Get question counts for display
+  const questionCounts = getQuestionCounts(activeCourseId);
+  const validation = validateQuestionPool(activeCourseId);
+
+  const domainNames = courseDomainNames[activeCourseId] || courseDomainNames['network-plus'];
+  const courseDisplayName = courseDisplayNames[activeCourseId] || 'Network+';
 
   const startExam = () => {
     // Validate before starting
@@ -39,6 +89,7 @@ function ExamSetup() {
         mode: examMode,
         settings: {
           ...settings,
+          courseId: activeCourseId,
           selectedDomain: selectedDomain,
           domainName: examMode === 'domain' ? domainNames[selectedDomain] : null
         }
@@ -66,7 +117,7 @@ function ExamSetup() {
         {/* Header */}
         <div className="exam-setup-header">
           <h1>Practice Exam</h1>
-          <p className="subtitle">Test your Network+ knowledge with realistic practice exams</p>
+          <p className="subtitle">Test your {courseDisplayName} knowledge with realistic practice exams</p>
         </div>
 
         {/* Question Bank Status */}
@@ -86,26 +137,12 @@ function ExamSetup() {
             <span className="stat-value">{questionCounts.total}</span>
             <span className="stat-label">Total Questions</span>
           </div>
-          <div className="stat">
-            <span className="stat-value">{questionCounts.domain1}</span>
-            <span className="stat-label">Domain 1</span>
-          </div>
-          <div className="stat">
-            <span className="stat-value">{questionCounts.domain2}</span>
-            <span className="stat-label">Domain 2</span>
-          </div>
-          <div className="stat">
-            <span className="stat-value">{questionCounts.domain3}</span>
-            <span className="stat-label">Domain 3</span>
-          </div>
-          <div className="stat">
-            <span className="stat-value">{questionCounts.domain4}</span>
-            <span className="stat-label">Domain 4</span>
-          </div>
-          <div className="stat">
-            <span className="stat-value">{questionCounts.domain5}</span>
-            <span className="stat-label">Domain 5</span>
-          </div>
+          {Array.from({ length: getCourseDomainCount(activeCourseId) }, (_, i) => i + 1).map(num => (
+            <div className="stat" key={num}>
+              <span className="stat-value">{questionCounts[`domain${num}`] || 0}</span>
+              <span className="stat-label">Domain {num}</span>
+            </div>
+          ))}
         </div>
 
         {/* Exam Mode Selection */}
@@ -113,7 +150,7 @@ function ExamSetup() {
           <h2>Choose Your Practice Exam</h2>
           
           {/* Full Exam */}
-          <div 
+          <div
             className={`exam-mode-card ${examMode === 'full' ? 'selected' : ''}`}
             onClick={() => setExamMode('full')}
           >
@@ -122,15 +159,13 @@ function ExamSetup() {
               <h3>Full Practice Exam</h3>
               <p className="mode-stats">90 questions • 90 minutes</p>
               <p className="mode-description">
-                Complete exam simulation matching the real Network+ format. 
-                Tests all 5 domains with proper weighting.
+                Complete exam simulation matching the real {courseDisplayName} format.
+                Tests all {getCourseDomainCount(activeCourseId)} domains with proper weighting.
               </p>
               <div className="mode-breakdown">
-                <span>Domain 1: 21 questions</span>
-                <span>Domain 2: 18 questions</span>
-                <span>Domain 3: 18 questions</span>
-                <span>Domain 4: 24 questions</span>
-                <span>Domain 5: 20 questions</span>
+                {Array.from({ length: getCourseDomainCount(activeCourseId) }, (_, i) => i + 1).map(num => (
+                  <span key={num}>Domain {num}: {domainNames[num.toString()]}</span>
+                ))}
               </div>
             </div>
           </div>
@@ -151,17 +186,17 @@ function ExamSetup() {
               {examMode === 'domain' && (
                 <div className="domain-selector">
                   <label htmlFor="domain-select">Select Domain:</label>
-                  <select 
+                  <select
                     id="domain-select"
                     value={selectedDomain}
                     onChange={(e) => setSelectedDomain(e.target.value)}
                     className="domain-select"
                   >
-                    <option value="1">Domain 1: {domainNames['1']} ({questionCounts.domain1} questions)</option>
-                    <option value="2">Domain 2: {domainNames['2']} ({questionCounts.domain2} questions)</option>
-                    <option value="3">Domain 3: {domainNames['3']} ({questionCounts.domain3} questions)</option>
-                    <option value="4">Domain 4: {domainNames['4']} ({questionCounts.domain4} questions)</option>
-                    <option value="5">Domain 5: {domainNames['5']} ({questionCounts.domain5} questions)</option>
+                    {Array.from({ length: getCourseDomainCount(activeCourseId) }, (_, i) => i + 1).map(num => (
+                      <option key={num} value={num.toString()}>
+                        Domain {num}: {domainNames[num.toString()]} ({questionCounts[`domain${num}`] || 0} questions)
+                      </option>
+                    ))}
                   </select>
                 </div>
               )}

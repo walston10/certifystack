@@ -3,6 +3,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Clock, FileText, AlertCircle, CheckCircle, Target, ArrowRight } from 'lucide-react';
 import './ExamInstructions.css';
 
+const courseDisplayNames = {
+  'network-plus': 'CompTIA Network+ N10-009',
+  'a-plus-core1': 'CompTIA A+ Core 1 (220-1101)',
+  'a-plus-core2': 'CompTIA A+ Core 2 (220-1102)',
+  'security-plus': 'CompTIA Security+ SY0-701'
+};
+
 function ExamInstructions() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -14,6 +21,9 @@ function ExamInstructions() {
     return null;
   }
 
+  const courseId = settings.courseId || 'network-plus';
+  const courseName = courseDisplayNames[courseId] || courseDisplayNames['network-plus'];
+
   const getExamDetails = () => {
     switch (mode) {
       case 'full':
@@ -21,7 +31,7 @@ function ExamInstructions() {
           title: 'Full Practice Exam',
           questions: 90,
           timeLimit: 90,
-          description: 'Complete exam simulation matching the real CompTIA Network+ N10-009'
+          description: `Complete exam simulation matching the real ${courseName}`
         };
       case 'domain':
         return {

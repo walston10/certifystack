@@ -23,17 +23,20 @@ function PracticeExam() {
     }
   }, [mode, settings, navigate]);
 
+  // Get courseId from settings
+  const courseId = settings?.courseId || 'network-plus';
+
   // Generate questions based on mode
   const questions = React.useMemo(() => {
     if (!mode) return [];
-    
+
     try {
       if (mode === 'domain') {
-        return generateDomainExam(parseInt(domain));
+        return generateDomainExam(parseInt(settings?.selectedDomain || domain), courseId);
       } else if (mode === 'quick') {
-        return generateQuickQuiz();
+        return generateQuickQuiz(courseId);
       } else {
-        return generateFullExam();
+        return generateFullExam(courseId);
       }
     } catch (error) {
       console.error('Error generating exam:', error);
@@ -41,7 +44,7 @@ function PracticeExam() {
       navigate('/practice-exam-setup');
       return [];
     }
-  }, [mode, domain, navigate]);
+  }, [mode, domain, settings, courseId, navigate]);
 
   const {
     examState,

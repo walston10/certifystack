@@ -4,6 +4,7 @@ import { Target, FileCheck, CreditCard, TrendingUp, AlertTriangle } from 'lucide
 import { supabase } from '../lib/supabase';
 import { getExamAttempts } from '../services/examService';
 import { getWeakCards, getSmartStudySession } from '../services/progressService';
+import { getActiveCourse } from '../services/courseService';
 import QuizSelectionModal from './QuizSelectionModal';
 import './PracticeZone.css';
 
@@ -15,10 +16,23 @@ function PracticeZone() {
   const [weakAreas, setWeakAreas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isQuizModalOpen, setIsQuizModalOpen] = useState(false);
+  const [activeCourseId, setActiveCourseId] = useState('network-plus');
 
   useEffect(() => {
+    loadActiveCourse();
     loadAllStats();
   }, []);
+
+  const loadActiveCourse = async () => {
+    try {
+      const course = await getActiveCourse();
+      if (course?.id) {
+        setActiveCourseId(course.id);
+      }
+    } catch (err) {
+      console.error('Error loading active course:', err);
+    }
+  };
 
   const loadAllStats = async () => {
     try {
@@ -403,6 +417,7 @@ function PracticeZone() {
       <QuizSelectionModal
         isOpen={isQuizModalOpen}
         onClose={() => setIsQuizModalOpen(false)}
+        courseId={activeCourseId}
       />
     </div>
   );
