@@ -52,11 +52,11 @@ export const courseCatalog = {
     bundleStripePriceId: 'price_aplus_bundle',
     status: 'active',
     difficulty: 'Beginner',
-    duration: '35 days',
-    estimatedHours: 50,
-    totalLessons: 45,
-    totalLabs: 15,
-    totalQuizzes: 45,
+    duration: '30 days',
+    estimatedHours: 45,
+    totalLessons: 30,
+    totalLabs: 30,
+    totalQuizzes: 30,
     totalFlashcards: 1200,
     description: 'Hardware, mobile devices, networking, and troubleshooting fundamentals',
     longDescription: 'CompTIA A+ Core 1 covers mobile devices, networking technology, hardware, virtualization and cloud computing. This is the first part of the A+ certification.',
@@ -85,11 +85,11 @@ export const courseCatalog = {
     bundleStripePriceId: 'price_aplus_bundle',
     status: 'active',
     difficulty: 'Beginner',
-    duration: '35 days',
-    estimatedHours: 50,
-    totalLessons: 45,
-    totalLabs: 15,
-    totalQuizzes: 45,
+    duration: '30 days',
+    estimatedHours: 45,
+    totalLessons: 30,
+    totalLabs: 30,
+    totalQuizzes: 30,
     totalFlashcards: 1200,
     description: 'Operating systems, security, software troubleshooting, and operational procedures',
     longDescription: 'CompTIA A+ Core 2 covers installing and configuring operating systems, expanded security, software troubleshooting, and operational procedures. This is the second part of the A+ certification.',
@@ -103,6 +103,38 @@ export const courseCatalog = {
       'Security',
       'Software Troubleshooting',
       'Operational Procedures'
+    ]
+  },
+
+  'security-plus': {
+    id: 'security-plus',
+    title: 'CompTIA Security+',
+    fullTitle: 'CompTIA Security+ (SY0-701)',
+    exam: 'SY0-701',
+    price: 79,
+    stripeProductId: 'prod_security_plus',
+    stripePriceId: 'price_security_plus',
+    status: 'active',
+    difficulty: 'Intermediate',
+    duration: '30 days',
+    estimatedHours: 45,
+    totalLessons: 30,
+    totalLabs: 30,
+    totalQuizzes: 30,
+    totalFlashcards: 900,
+    description: 'Cybersecurity fundamentals, threats, cryptography, and security operations',
+    longDescription: 'CompTIA Security+ validates the baseline skills necessary to perform core security functions and pursue an IT security career. Covers threats, attacks, vulnerabilities, architecture, operations, and governance.',
+    thumbnail: '/images/security-plus.jpg',
+    color: '#ef4444', // Red - brand color for security
+    gradient: 'linear-gradient(135deg, #ef4444, #dc2626)',
+    prerequisites: ['network-plus'], // Recommended to take Network+ first
+    nextCert: 'cysa-plus',
+    domains: [
+      'General Security Concepts',
+      'Threats, Vulnerabilities, and Mitigations',
+      'Security Architecture',
+      'Security Operations',
+      'Security Program Management and Oversight'
     ]
   }
 };

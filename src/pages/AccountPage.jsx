@@ -12,7 +12,6 @@ import {
   formatRelativeTime,
   getCourseName
 } from '../services/accountService';
-import { createPortalSession } from '../lib/stripe';
 import './AccountPage.css';
 
 function AccountPage() {
@@ -90,18 +89,9 @@ function AccountPage() {
     window.location.href = 'https://buy.stripe.com/3cI8wPewj6FWbwJ1UVcEw01';
   };
 
-  const handleManageSubscription = async () => {
-    setProcessingUpgrade(true);
-    try {
-      const { data: { user: currentUser } } = await supabase.auth.getUser();
-      if (currentUser) {
-        await createPortalSession(currentUser.id);
-      }
-    } catch (error) {
-      console.error('Error opening billing portal:', error);
-      alert('Failed to open billing portal. Please try again.');
-      setProcessingUpgrade(false);
-    }
+  const handleManageSubscription = () => {
+    // Open Stripe customer billing portal directly
+    window.open('https://billing.stripe.com/p/login/00w9ATfAnggw8kx2YZcEw00', '_blank');
   };
 
   const handleLogout = async () => {
@@ -215,9 +205,8 @@ function AccountPage() {
                 <button
                   className="btn-manage-subscription"
                   onClick={handleManageSubscription}
-                  disabled={processingUpgrade}
                 >
-                  {processingUpgrade ? 'Loading...' : 'Manage Payment Method'}
+                  Manage Payment Method
                 </button>
               </div>
             </div>
