@@ -4,4 +4,4 @@
 // Central export file for all course data
 
 export { aPlusCore2Lessons, getLessonById, getLessonsByDomain, getDomains, getLessonCompletionStats } from './lessons';
-export { aPlusCore2Labs, getLabById, getLabByLessonId, getLabsByDifficulty, getLabCompletionStats, getTotalLabXP, getEarnedLabXP } from './labs';
+export { aPlusCore2Labs, getLabById, getLabByLessonId, getLabsByDifficulty, getLabCompletionStats } from './labs';

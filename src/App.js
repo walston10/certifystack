@@ -40,8 +40,6 @@ import ExamInstructions from './components/ExamInstructions';
 import PracticeExam from './components/PracticeExam';
 import ExamResults from './components/ExamResults';
 
-// Test Components (optional - for debugging)
-import TestExamState from './components/TestExamState';
 
 // Protected Route wrapper
 function ProtectedRoute({ children }) {
@@ -389,15 +387,6 @@ function AppRoutes() {
           }
         />
 
-        {/* Test Route - For debugging exam state */}
-        <Route
-          path="/test-exam-state"
-          element={
-            <ProtectedRoute>
-              <TestExamState />
-            </ProtectedRoute>
-          }
-        />
 
         {/* Fallback - Redirect unknown routes to dashboard */}
         <Route path="*" element={<Navigate to="/" />} />
