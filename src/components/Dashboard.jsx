@@ -15,14 +15,16 @@ const defaultDomainConfig = {
 function Dashboard() {
     const { courseId } = useParams();
     const { user, signOut } = useAuth();
-    const { progress, completeLesson } = useUserStats();
+
+    // Default to network-plus for backward compatibility
+    const actualCourseId = courseId || 'network-plus';
+
+    // Pass courseId to get course-specific progress
+    const { progress, completeLesson } = useUserStats(actualCourseId);
     const [error, setError] = useState(null);
     const [lessons, setLessons] = useState([]);
     const [courseConfig, setCourseConfig] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    // Default to network-plus for backward compatibility
-    const actualCourseId = courseId || 'network-plus';
 
     // Dynamically load course data based on courseId
     useEffect(() => {

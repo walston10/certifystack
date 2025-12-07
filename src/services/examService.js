@@ -18,6 +18,7 @@ export async function saveExamAttempt(examState, results, settings) {
     // Prepare exam attempt data
     const examAttemptData = {
       user_id: userId,
+      course_id: settings.courseId || 'network-plus',
       exam_mode: settings.mode || 'full',
       exam_domain: settings.selectedDomain || null,
       total_questions: results.totalQuestions,
@@ -81,15 +82,22 @@ export async function saveExamAttempt(examState, results, settings) {
 /**
  * Get all exam attempts for current user
  */
-export async function getExamAttempts(limit = 10) {
+export async function getExamAttempts(limit = 10, courseId = null) {
   try {
     const user = await supabase.auth.getUser();
     if (!user.data.user) return { data: [], error: null };
 
-    const { data, error } = await supabase
+    let query = supabase
       .from('exam_attempts')
       .select('*')
-      .eq('user_id', user.data.user.id)
+      .eq('user_id', user.data.user.id);
+
+    // Filter by courseId if provided
+    if (courseId) {
+      query = query.eq('course_id', courseId);
+    }
+
+    const { data, error } = await query
       .order('created_at', { ascending: false })
       .limit(limit);
 

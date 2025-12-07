@@ -578,8 +578,8 @@ export async function incrementTotalReviews() {
 /**
  * Get comprehensive user progress
  */
-export async function getUserProgress() {
-  const completedLessons = await getCompletedLessons();
+export async function getUserProgress(courseId = 'network-plus') {
+  const completedLessons = await getCompletedLessons(courseId);
   const flashcardStats = await getFlashcardStats();
 
   return {
@@ -591,20 +591,21 @@ export async function getUserProgress() {
 /**
  * Get computed user stats
  */
-export async function getUserStats() {
+export async function getUserStats(courseId = 'network-plus') {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  // Get completed lessons
-  const completedLessons = await getCompletedLessons();
-  const totalLessons = 30; // Network+ has 30 lessons
+  // Get completed lessons for this course
+  const completedLessons = await getCompletedLessons(courseId);
+  const totalLessons = 30; // All courses have 30 lessons
   const percentComplete = (completedLessons.length / totalLessons) * 100;
 
-  // Get quiz scores
+  // Get quiz scores for this course
   const { data: quizzes, error: quizError } = await supabase
     .from('quiz_attempts')
     .select('score, total_questions')
-    .eq('user_id', user.id);
+    .eq('user_id', user.id)
+    .eq('course_id', courseId);
 
   if (quizError) throw quizError;
 

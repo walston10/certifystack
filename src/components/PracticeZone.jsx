@@ -8,6 +8,20 @@ import { getActiveCourse } from '../services/courseService';
 import QuizSelectionModal from './QuizSelectionModal';
 import './PracticeZone.css';
 
+const courseDisplayNames = {
+  'network-plus': 'CompTIA Network+ N10-009',
+  'a-plus-core1': 'CompTIA A+ Core 1 (220-1101)',
+  'a-plus-core2': 'CompTIA A+ Core 2 (220-1102)',
+  'security-plus': 'CompTIA Security+ SY0-701'
+};
+
+const courseShortNames = {
+  'network-plus': 'Network+',
+  'a-plus-core1': 'A+ Core 1',
+  'a-plus-core2': 'A+ Core 2',
+  'security-plus': 'Security+'
+};
+
 function PracticeZone() {
   const navigate = useNavigate();
   const [examAttempts, setExamAttempts] = useState([]);
@@ -19,35 +33,47 @@ function PracticeZone() {
   const [activeCourseId, setActiveCourseId] = useState('network-plus');
 
   useEffect(() => {
-    loadActiveCourse();
-    loadAllStats();
+    loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const loadActiveCourse = async () => {
+  const loadData = async () => {
     try {
-      const course = await getActiveCourse();
-      if (course?.id) {
-        setActiveCourseId(course.id);
+      // First load the active course
+      let courseId = 'network-plus';
+      try {
+        const course = await getActiveCourse();
+        if (course?.id) {
+          courseId = course.id;
+          setActiveCourseId(course.id);
+        }
+      } catch (err) {
+        console.error('Error loading active course:', err);
       }
-    } catch (err) {
-      console.error('Error loading active course:', err);
+
+      // Then load stats for that course
+      await loadAllStats(courseId);
+    } catch (error) {
+      console.error('Error loading data:', error);
+      setLoading(false);
     }
   };
 
-  const loadAllStats = async () => {
+  const loadAllStats = async (courseId) => {
     try {
       const user = await supabase.auth.getUser();
       if (!user.data.user) return;
 
-      // Load exam attempts
-      const { data: exams } = await getExamAttempts(5);
+      // Load exam attempts for this course
+      const { data: exams } = await getExamAttempts(5, courseId);
       setExamAttempts(exams || []);
 
-      // Load quiz stats
+      // Load quiz stats for this course
       const { data: quizAttempts } = await supabase
         .from('quiz_attempts')
         .select('score, total_questions, lesson_id')
-        .eq('user_id', user.data.user.id);
+        .eq('user_id', user.data.user.id)
+        .eq('course_id', courseId);
 
       if (quizAttempts) {
         const avgScore = quizAttempts.length
@@ -70,11 +96,12 @@ function PracticeZone() {
         setWeakAreas(weakList.slice(0, 5));
       }
 
-      // Load flashcard stats
+      // Load flashcard stats for this course
       const { data: flashcards, error: flashcardError } = await supabase
         .from('flashcard_progress')
         .select('state')
-        .eq('user_id', user.data.user.id);
+        .eq('user_id', user.data.user.id)
+        .eq('course_id', courseId);
 
       if (flashcardError) {
         console.warn('Error loading flashcard stats:', flashcardError);
@@ -116,7 +143,7 @@ function PracticeZone() {
 
   const handleStudyAllCards = async () => {
     try {
-      const sessionCards = await getSmartStudySession(30);
+      const sessionCards = await getSmartStudySession(30, activeCourseId);
 
       if (sessionCards.length === 0) {
         alert('No cards available to study right now! All cards are scheduled for future review.');
@@ -127,7 +154,8 @@ function PracticeZone() {
       navigate('/practice/flashcards', {
         state: {
           cards: sessionCards,
-          sessionTitle: `Daily Study Session • ${sessionCards.length} Cards`
+          sessionTitle: `Daily Study Session • ${sessionCards.length} Cards`,
+          courseId: activeCourseId
         }
       });
     } catch (error) {
@@ -138,7 +166,7 @@ function PracticeZone() {
 
   const handleStudyWeakCards = async () => {
     try {
-      const weakCards = await getWeakCards();
+      const weakCards = await getWeakCards(activeCourseId);
 
       if (weakCards.length === 0) {
         alert('No weak cards found! Keep studying to build up your practice history.');
@@ -156,7 +184,8 @@ function PracticeZone() {
       navigate('/practice/flashcards', {
         state: {
           cards: shuffled,
-          sessionTitle: `Weak Cards Review • ${weakCards.length} Cards`
+          sessionTitle: `Weak Cards Review • ${weakCards.length} Cards`,
+          courseId: activeCourseId
         }
       });
     } catch (error) {
@@ -267,7 +296,7 @@ function PracticeZone() {
 
           <div className="section-content">
             <p className="section-description">
-              Full-length simulated exams (90 questions, 90 minutes) matching the real CompTIA Network+ N10-009 exam format.
+              Full-length simulated exams (90 questions, 90 minutes) matching the real {courseDisplayNames[activeCourseId] || 'CompTIA'} exam format.
             </p>
 
             {examAttempts.length === 0 ? (
@@ -371,7 +400,7 @@ function PracticeZone() {
 
           <div className="section-content">
             <p className="section-description">
-              900 flashcards covering all Network+ exam objectives with spaced repetition learning.
+              900 flashcards covering all {courseShortNames[activeCourseId] || 'exam'} objectives with spaced repetition learning.
             </p>
 
             <div className="flashcard-progress">
