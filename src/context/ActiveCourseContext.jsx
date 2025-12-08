@@ -69,9 +69,15 @@ export function ActiveCourseProvider({ children }) {
       if (profileError && profileError.code !== '42703' && profileError.code !== 'PGRST116') {
         console.error('Error loading active course from profile:', profileError);
         // Fall back to localStorage if DB fails
-        if (storedCourseId) {
-          await loadCourseData(storedCourseId);
-        }
+        const fallbackCourseId = storedCourseId || 'network-plus';
+        setActiveCourseState({
+          id: fallbackCourseId,
+          short_name: fallbackCourseId === 'network-plus' ? 'Network+' :
+                      fallbackCourseId === 'a-plus-core1' ? 'A+ Core 1' :
+                      fallbackCourseId === 'a-plus-core2' ? 'A+ Core 2' :
+                      fallbackCourseId === 'security-plus' ? 'Security+' : 'Course',
+          icon_emoji: '📚'
+        });
         setLoading(false);
         return;
       }
