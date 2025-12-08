@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { validateQuestionPool, getQuestionCounts, getCourseDomainCount } from '../utils/examGenerator';
-import { getActiveCourse } from '../services/courseService';
+import { useActiveCourse } from '../context/ActiveCourseContext';
 import './ExamSetup.css';
 
 // Domain names per course
@@ -46,7 +46,6 @@ function ExamSetup() {
   const navigate = useNavigate();
   const [examMode, setExamMode] = useState('full');
   const [selectedDomain, setSelectedDomain] = useState('1');
-  const [activeCourseId, setActiveCourseId] = useState('network-plus');
   const [settings, setSettings] = useState({
     timed: true,
     duration: 5400, // 90 minutes in seconds
@@ -54,20 +53,9 @@ function ExamSetup() {
     showExplanations: false // Show immediately vs only after submit
   });
 
-  // Load active course
-  useEffect(() => {
-    const loadCourse = async () => {
-      try {
-        const course = await getActiveCourse();
-        if (course?.id) {
-          setActiveCourseId(course.id);
-        }
-      } catch (err) {
-        console.error('Error loading active course:', err);
-      }
-    };
-    loadCourse();
-  }, []);
+  // Use ActiveCourseContext for course selection (syncs with navbar dropdown)
+  const { activeCourse, loading: courseLoading } = useActiveCourse();
+  const activeCourseId = activeCourse?.id || 'network-plus';
 
   // Get question counts for display
   const questionCounts = getQuestionCounts(activeCourseId);
@@ -110,6 +98,20 @@ function ExamSetup() {
     if (examMode === 'quick') return '15 questions';
     return 'Unknown';
   };
+
+  // Show loading while course is being fetched
+  if (courseLoading) {
+    return (
+      <div className="exam-setup">
+        <div className="exam-setup-container">
+          <div className="exam-setup-header">
+            <h1>Practice Exam</h1>
+            <p className="subtitle">Loading course information...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="exam-setup">
