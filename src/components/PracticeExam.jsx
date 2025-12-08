@@ -31,13 +31,16 @@ function PracticeExam() {
     if (!mode) return [];
 
     try {
+      let examResult;
       if (mode === 'domain') {
-        return generateDomainExam(parseInt(settings?.selectedDomain || domain), courseId);
+        examResult = generateDomainExam(parseInt(settings?.selectedDomain || domain), courseId);
       } else if (mode === 'quick') {
-        return generateQuickQuiz(courseId);
+        examResult = generateQuickQuiz(courseId);
       } else {
-        return generateFullExam(courseId);
+        examResult = generateFullExam(courseId);
       }
+      // Exam generators return an object with questions property
+      return examResult?.questions || examResult || [];
     } catch (error) {
       console.error('Error generating exam:', error);
       alert('Error generating exam. Returning to setup.');
