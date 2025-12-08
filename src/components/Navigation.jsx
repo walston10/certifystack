@@ -98,7 +98,7 @@ function Navigation() {
           </NavLink>
 
           <NavLink
-            to="/lessons"
+            to={activeCourse ? `/course/${activeCourse.id}/lessons` : '/lessons'}
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
             <BookOpen size={20} />
@@ -122,7 +122,7 @@ function Navigation() {
           </NavLink>
 
           <NavLink
-            to="/labs"
+            to={activeCourse ? `/course/${activeCourse.id}/labs` : '/labs'}
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
             <FlaskConical size={20} />
@@ -249,7 +249,7 @@ function Navigation() {
           )}
 
           <NavLink
-            to="/lessons"
+            to={activeCourse ? `/course/${activeCourse.id}/lessons` : '/lessons'}
             className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}
             onClick={closeMobileMenu}
           >
@@ -276,7 +276,7 @@ function Navigation() {
           </NavLink>
 
           <NavLink
-            to="/labs"
+            to={activeCourse ? `/course/${activeCourse.id}/labs` : '/labs'}
             className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}
             onClick={closeMobileMenu}
           >

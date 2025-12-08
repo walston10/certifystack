@@ -51,7 +51,27 @@ const motivationalQuotes = [
 
 function DashboardHome() {
   const navigate = useNavigate();
-  const { progress, stats } = useUserStats();
+  const [activeCourse, setActiveCourse] = useState(null);
+  const [courseLoaded, setCourseLoaded] = useState(false);
+
+  // Load active course first before fetching stats
+  useEffect(() => {
+    const loadCourse = async () => {
+      try {
+        const course = await getActiveCourse();
+        setActiveCourse(course);
+      } catch (error) {
+        console.error('Error loading active course:', error);
+      } finally {
+        setCourseLoaded(true);
+      }
+    };
+    loadCourse();
+  }, []);
+
+  // Pass active course ID to useUserStats (only after course is loaded)
+  const { progress, stats } = useUserStats(courseLoaded ? (activeCourse?.id || 'network-plus') : null);
+
   const [userStats, setUserStats] = useState({
     name: '',
     lessonsCompleted: 0,
@@ -63,7 +83,6 @@ function DashboardHome() {
     studyStreak: 0,
     completionPercentage: 0
   });
-  const [activeCourse, setActiveCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   // Pick a random quote on component mount
   const [dailyQuote] = useState(() => motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]);
@@ -73,9 +92,8 @@ function DashboardHome() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      // Get active course with progress
-      const course = await getActiveCourse();
-      setActiveCourse(course);
+      // Use already loaded activeCourse
+      const course = activeCourse;
 
       // Get user profile
       const { data: profile } = await supabase
@@ -121,13 +139,16 @@ function DashboardHome() {
       console.error('Error loading user stats:', error);
       setLoading(false);
     }
-  }, [progress, stats]);
+  }, [progress, stats, activeCourse]);
 
   useEffect(() => {
-    loadUserStats();
-  }, [loadUserStats]);
+    // Only load stats after course is loaded
+    if (courseLoaded) {
+      loadUserStats();
+    }
+  }, [loadUserStats, courseLoaded]);
 
-  if (loading) {
+  if (loading || !courseLoaded) {
     return (
       <div className="dashboard-home loading">
         <div className="loading-spinner"></div>
@@ -211,7 +232,7 @@ function DashboardHome() {
           description={activeCourse?.description || "Comprehensive lessons covering all exam objectives"}
           status={`${userStats.lessonsCompleted}/${userStats.totalLessons} completed`}
           ctaText="Continue Learning"
-          ctaLink="/lessons"
+          ctaLink={activeCourse ? `/course/${activeCourse.id}/lessons` : '/lessons'}
           gradient="cyan"
         />
 
@@ -237,11 +258,11 @@ function DashboardHome() {
 
         <FeatureCard
           icon={<FlaskConical size={32} />}
-          title="Labs"
-          description="Hands-on practice with real networking scenarios"
+          title={`Labs${activeCourse ? ` - ${activeCourse.short_name}` : ''}`}
+          description="Hands-on practice with real-world scenarios"
           status={`${userStats.labsCompleted}/${userStats.totalLabs} completed`}
           ctaText="Practice Labs"
-          ctaLink="/labs"
+          ctaLink={activeCourse ? `/course/${activeCourse.id}/labs` : '/labs'}
           gradient="orange"
         />
 
