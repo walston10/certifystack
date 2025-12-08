@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
-import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Menu, X, Zap, GraduationCap, Users, HelpCircle } from 'lucide-react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Menu, X, Zap, GraduationCap, Users, HelpCircle, ChevronDown, Check } from 'lucide-react';
 import { useTour } from '../context/TourContext';
 import { useActiveCourse } from '../context/ActiveCourseContext';
 import { supabase } from '../lib/supabase';
@@ -9,11 +9,13 @@ import './Navigation.css';
 function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [helpMenuOpen, setHelpMenuOpen] = useState(false);
+  const [courseMenuOpen, setCourseMenuOpen] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
   const { restartTour } = useTour();
+  const navigate = useNavigate();
 
   // Use shared context for active course (syncs across all components)
-  const { activeCourse } = useActiveCourse();
+  const { activeCourse, allCourses, setActiveCourse } = useActiveCourse();
 
   useEffect(() => {
     loadUserProfile();
@@ -62,6 +64,26 @@ function Navigation() {
     restartTour();
   };
 
+  const toggleCourseMenu = () => {
+    setCourseMenuOpen(!courseMenuOpen);
+    setHelpMenuOpen(false); // Close other menus
+  };
+
+  const closeCourseMenu = () => {
+    setCourseMenuOpen(false);
+  };
+
+  const handleCourseSelect = async (course) => {
+    if (course.status !== 'available') {
+      closeCourseMenu();
+      return;
+    }
+    await setActiveCourse(course.id);
+    closeCourseMenu();
+    // Navigate to the new course's lessons page
+    navigate(`/course/${course.id}/lessons`);
+  };
+
   return (
     <nav className="main-navigation">
       <div className="nav-container">
@@ -73,13 +95,46 @@ function Navigation() {
 
         {/* Desktop Navigation Links */}
         <div className="nav-links desktop-nav">
-          {/* Active Course Badge */}
-          {activeCourse && (
-            <div className="active-course-badge" title={activeCourse.title}>
-              <span className="course-emoji">{activeCourse.icon_emoji}</span>
-              <span className="course-name">{activeCourse.short_name}</span>
-            </div>
-          )}
+          {/* Course Selector Dropdown */}
+          <div className="course-selector-container">
+            <button
+              className="course-selector-btn"
+              onClick={toggleCourseMenu}
+              title="Switch Course"
+            >
+              <span className="course-emoji">{activeCourse?.icon_emoji || '📚'}</span>
+              <span className="course-name">{activeCourse?.short_name || 'Select Course'}</span>
+              <ChevronDown size={16} className={`chevron ${courseMenuOpen ? 'open' : ''}`} />
+            </button>
+
+            {courseMenuOpen && (
+              <>
+                <div className="course-menu-backdrop" onClick={closeCourseMenu} />
+                <div className="course-menu-dropdown">
+                  <div className="course-menu-header">Switch Course</div>
+                  {allCourses.map((course) => (
+                    <button
+                      key={course.id}
+                      className={`course-menu-item ${course.status !== 'available' ? 'disabled' : ''} ${activeCourse?.id === course.id ? 'active' : ''}`}
+                      onClick={() => handleCourseSelect(course)}
+                      disabled={course.status !== 'available'}
+                    >
+                      <span className="course-item-emoji">{course.icon_emoji}</span>
+                      <div className="course-item-info">
+                        <div className="course-item-name">{course.short_name}</div>
+                        {course.status !== 'available' && (
+                          <div className="course-item-status">Coming Soon</div>
+                        )}
+                      </div>
+                      {activeCourse?.id === course.id && (
+                        <Check size={16} className="course-check" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
 
           <NavLink
             to="/courses"
@@ -232,13 +287,31 @@ function Navigation() {
             <span>Courses</span>
           </NavLink>
 
-          {/* Active Course Badge - Mobile */}
-          {activeCourse && (
-            <div className="active-course-badge mobile-badge" title={activeCourse.title}>
-              <span className="course-emoji">{activeCourse.icon_emoji}</span>
-              <span className="course-name">Active: {activeCourse.short_name}</span>
+          {/* Course Selector - Mobile */}
+          <div className="mobile-course-selector">
+            <div className="mobile-course-label">Active Course:</div>
+            <div className="mobile-course-options">
+              {allCourses.map((course) => (
+                <button
+                  key={course.id}
+                  className={`mobile-course-option ${activeCourse?.id === course.id ? 'active' : ''} ${course.status !== 'available' ? 'disabled' : ''}`}
+                  onClick={() => {
+                    if (course.status === 'available') {
+                      setActiveCourse(course.id);
+                      closeMobileMenu();
+                      navigate(`/course/${course.id}/lessons`);
+                    }
+                  }}
+                  disabled={course.status !== 'available'}
+                >
+                  <span className="course-emoji">{course.icon_emoji}</span>
+                  <span className="course-name">{course.short_name}</span>
+                  {activeCourse?.id === course.id && <Check size={14} />}
+                  {course.status !== 'available' && <span className="coming-soon-tag">Soon</span>}
+                </button>
+              ))}
             </div>
-          )}
+          </div>
 
           <NavLink
             to={activeCourse ? `/course/${activeCourse.id}/lessons` : '/lessons'}
