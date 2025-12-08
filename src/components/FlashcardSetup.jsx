@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CreditCard, CheckCircle, Circle, Lock, BookOpen } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { useActiveCourse } from '../context/ActiveCourseContext';
 import './FlashcardSetup.css';
 
 // Default domain config for courses without domainConfig
@@ -13,7 +14,10 @@ const defaultDomainConfig = {
 function FlashcardSetup() {
   const navigate = useNavigate();
   const { courseId: urlCourseId } = useParams();
-  const courseId = urlCourseId || 'network-plus';
+
+  // Use ActiveCourseContext as fallback if no URL param
+  const { activeCourse } = useActiveCourse();
+  const courseId = urlCourseId || activeCourse?.id || 'network-plus';
 
   const [selectedLessons, setSelectedLessons] = useState([]);
   const [isPremium, setIsPremium] = useState(false);
