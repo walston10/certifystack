@@ -18,10 +18,11 @@ CREATE TABLE IF NOT EXISTS courses (
 );
 
 -- Insert initial course data
+-- Order: A+ Core 1, A+ Core 2, Network+, Security+
 INSERT INTO courses (id, title, short_name, description, total_lessons, total_flashcards, exam_code, status, order_index, icon_emoji, release_date) VALUES
-('network-plus', 'CompTIA Network+ (N10-009)', 'Network+', 'Master networking fundamentals, protocols, security, and troubleshooting for the CompTIA Network+ certification.', 30, 900, 'N10-009', 'available', 1, '🌐', '2024-11-01'),
-('a-plus-core-1', 'CompTIA A+ Core 1 (220-1101)', 'A+ Core 1', 'Hardware, networking, mobile devices, virtualization, and troubleshooting for CompTIA A+ certification.', 30, 800, '220-1101', 'coming-soon', 2, '💻', '2025-01-15'),
-('a-plus-core-2', 'CompTIA A+ Core 2 (220-1102)', 'A+ Core 2', 'Operating systems, security, software troubleshooting, and operational procedures for CompTIA A+ certification.', 30, 800, '220-1102', 'coming-soon', 3, '⚙️', '2025-02-15'),
+('a-plus-core1', 'CompTIA A+ Core 1 (220-1101)', 'A+ Core 1', 'Hardware, networking, mobile devices, virtualization, and troubleshooting for CompTIA A+ certification.', 30, 800, '220-1101', 'coming-soon', 1, '💻', '2025-01-15'),
+('a-plus-core2', 'CompTIA A+ Core 2 (220-1102)', 'A+ Core 2', 'Operating systems, security, software troubleshooting, and operational procedures for CompTIA A+ certification.', 30, 800, '220-1102', 'coming-soon', 2, '⚙️', '2025-02-15'),
+('network-plus', 'CompTIA Network+ (N10-009)', 'Network+', 'Master networking fundamentals, protocols, security, and troubleshooting for the CompTIA Network+ certification.', 30, 900, 'N10-009', 'available', 3, '🌐', '2024-11-01'),
 ('security-plus', 'CompTIA Security+ (SY0-701)', 'Security+', 'Cybersecurity threats, risk management, cryptography, and security operations for CompTIA Security+ certification.', 30, 900, 'SY0-701', 'coming-soon', 4, '🔒', '2025-03-01')
 ON CONFLICT (id) DO NOTHING;
 
