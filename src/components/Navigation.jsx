@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Menu, X, Zap, GraduationCap, Users, HelpCircle, ChevronDown, Check } from 'lucide-react';
+import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Menu, X, Zap, LayoutDashboard, Users, HelpCircle, ChevronDown, Check } from 'lucide-react';
 import { useTour } from '../context/TourContext';
 import { useActiveCourse } from '../context/ActiveCourseContext';
 import { supabase } from '../lib/supabase';
@@ -131,17 +131,30 @@ function Navigation() {
                       )}
                     </button>
                   ))}
+                  <div className="course-menu-divider" />
+                  <button
+                    className="course-menu-item view-all"
+                    onClick={() => {
+                      closeCourseMenu();
+                      navigate('/courses');
+                    }}
+                  >
+                    <span className="course-item-emoji">📋</span>
+                    <div className="course-item-info">
+                      <div className="course-item-name">View All Courses</div>
+                    </div>
+                  </button>
                 </div>
               </>
             )}
           </div>
 
           <NavLink
-            to="/courses"
+            to="/dashboard"
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
-            <GraduationCap size={20} />
-            <span>Courses</span>
+            <LayoutDashboard size={20} />
+            <span>MyStack</span>
           </NavLink>
 
           <NavLink
@@ -279,12 +292,12 @@ function Navigation() {
       {mobileMenuOpen && (
         <div className="mobile-menu">
           <NavLink
-            to="/courses"
+            to="/dashboard"
             className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}
             onClick={closeMobileMenu}
           >
-            <GraduationCap size={20} />
-            <span>Courses</span>
+            <LayoutDashboard size={20} />
+            <span>MyStack</span>
           </NavLink>
 
           {/* Course Selector - Mobile */}
@@ -311,6 +324,15 @@ function Navigation() {
                 </button>
               ))}
             </div>
+            <button
+              className="mobile-view-all-courses"
+              onClick={() => {
+                closeMobileMenu();
+                navigate('/courses');
+              }}
+            >
+              📋 View All Courses
+            </button>
           </div>
 
           <NavLink

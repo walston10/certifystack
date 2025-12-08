@@ -223,6 +223,21 @@
   flex-shrink: 0;
 }
 
+.course-menu-divider {
+  height: 1px;
+  background: rgba(0, 217, 255, 0.2);
+  margin: 8px 0;
+}
+
+.course-menu-item.view-all {
+  border-top: none;
+  color: var(--accent-cyan);
+}
+
+.course-menu-item.view-all:hover {
+  background: rgba(0, 217, 255, 0.1);
+}
+
 /* Mobile Course Selector */
 .mobile-course-selector {
   padding: 12px 16px;
@@ -288,6 +303,27 @@
   padding: 2px 6px;
   border-radius: 4px;
   margin-left: 4px;
+}
+
+.mobile-view-all-courses {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: transparent;
+  border: 1px solid rgba(0, 217, 255, 0.3);
+  border-radius: 8px;
+  color: var(--accent-cyan);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.mobile-view-all-courses:hover {
+  background: rgba(0, 217, 255, 0.1);
+  border-color: var(--accent-cyan);
 }
 
 /* Right Side Actions */
