@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { TourProvider } from './context/TourContext';
+import { ActiveCourseProvider } from './context/ActiveCourseContext';
 
 // Main Pages
 import LandingPage from './components/LandingPage';
@@ -401,11 +402,13 @@ function AppRoutes() {
 function App() {
   return (
     <AuthProvider>
-      <TourProvider>
-        <Router>
-          <AppRoutes />
-        </Router>
-      </TourProvider>
+      <ActiveCourseProvider>
+        <TourProvider>
+          <Router>
+            <AppRoutes />
+          </Router>
+        </TourProvider>
+      </ActiveCourseProvider>
     </AuthProvider>
   );
 }

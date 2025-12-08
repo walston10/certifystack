@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, Award, Clock, Bell, Play, ArrowRight } from 'lucide-react';
-import { getAllCourses, setActiveCourse, getActiveCourse } from '../services/courseService';
+import { getAllCourses } from '../services/courseService';
+import { useActiveCourse } from '../context/ActiveCourseContext';
 import './CoursesPage.css';
 
 function CoursesPage() {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
-  const [activeCourseId, setActiveCourseId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [switchingCourse, setSwitchingCourse] = useState(null);
+
+  // Use shared context for active course (syncs across all components)
+  const { activeCourse, setActiveCourse: setContextActiveCourse } = useActiveCourse();
+  const activeCourseId = activeCourse?.id;
 
   useEffect(() => {
     loadCourses();
@@ -22,10 +26,6 @@ function CoursesPage() {
       // Get all courses with progress
       const coursesData = await getAllCourses();
       setCourses(coursesData);
-
-      // Get user's active course
-      const activeCourse = await getActiveCourse();
-      setActiveCourseId(activeCourse?.id);
 
       setLoading(false);
     } catch (error) {
@@ -43,13 +43,12 @@ function CoursesPage() {
     try {
       setSwitchingCourse(course.id);
 
-      // Set as active course
-      await setActiveCourse(null, course.id);
-      setActiveCourseId(course.id);
+      // Set as active course using context (updates globally)
+      await setContextActiveCourse(course.id);
 
       // Navigate to lessons page for this course
       setTimeout(() => {
-        navigate(`/lessons/${course.id}`);
+        navigate(`/course/${course.id}/lessons`);
       }, 300);
     } catch (error) {
       console.error('Error switching course:', error);

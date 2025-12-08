@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Users, ExternalLink, Gamepad2 } from 'lucide-react';
 import FeatureCard from './FeatureCard';
 import { supabase } from '../lib/supabase';
-import { getActiveCourse } from '../services/courseService';
+import { useActiveCourse } from '../context/ActiveCourseContext';
 import { useUserStats } from '../hooks/useUserStats';
 import './DashboardHome.css';
 
@@ -51,26 +51,12 @@ const motivationalQuotes = [
 
 function DashboardHome() {
   const navigate = useNavigate();
-  const [activeCourse, setActiveCourse] = useState(null);
-  const [courseLoaded, setCourseLoaded] = useState(false);
 
-  // Load active course first before fetching stats
-  useEffect(() => {
-    const loadCourse = async () => {
-      try {
-        const course = await getActiveCourse();
-        setActiveCourse(course);
-      } catch (error) {
-        console.error('Error loading active course:', error);
-      } finally {
-        setCourseLoaded(true);
-      }
-    };
-    loadCourse();
-  }, []);
+  // Use shared context for active course (syncs across all components)
+  const { activeCourse, loading: courseLoading } = useActiveCourse();
 
-  // Pass active course ID to useUserStats (only after course is loaded)
-  const { progress, stats } = useUserStats(courseLoaded ? (activeCourse?.id || 'network-plus') : null);
+  // Pass active course ID to useUserStats
+  const { progress, stats } = useUserStats(activeCourse?.id || 'network-plus');
 
   const [userStats, setUserStats] = useState({
     name: '',
@@ -143,12 +129,12 @@ function DashboardHome() {
 
   useEffect(() => {
     // Only load stats after course is loaded
-    if (courseLoaded) {
+    if (!courseLoading) {
       loadUserStats();
     }
-  }, [loadUserStats, courseLoaded]);
+  }, [loadUserStats, courseLoading]);
 
-  if (loading || !courseLoaded) {
+  if (loading || courseLoading) {
     return (
       <div className="dashboard-home loading">
         <div className="loading-spinner"></div>

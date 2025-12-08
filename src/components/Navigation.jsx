@@ -2,30 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { BookOpen, MessageCircle, Target, FlaskConical, FileText, User, Menu, X, Zap, GraduationCap, Users, HelpCircle } from 'lucide-react';
 import { useTour } from '../context/TourContext';
-import { getActiveCourse } from '../services/courseService';
+import { useActiveCourse } from '../context/ActiveCourseContext';
 import { supabase } from '../lib/supabase';
 import './Navigation.css';
 
 function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [helpMenuOpen, setHelpMenuOpen] = useState(false);
-  const [activeCourse, setActiveCourse] = useState(null);
   const [isPremium, setIsPremium] = useState(false);
   const { restartTour } = useTour();
 
+  // Use shared context for active course (syncs across all components)
+  const { activeCourse } = useActiveCourse();
+
   useEffect(() => {
-    loadActiveCourse();
     loadUserProfile();
   }, []);
-
-  const loadActiveCourse = async () => {
-    try {
-      const course = await getActiveCourse();
-      setActiveCourse(course);
-    } catch (error) {
-      console.error('Error loading active course:', error);
-    }
-  };
 
   const loadUserProfile = async () => {
     try {

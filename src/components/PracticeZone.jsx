@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Target, FileCheck, CreditCard, TrendingUp, AlertTriangle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { getExamAttempts } from '../services/examService';
 import { getWeakCards, getSmartStudySession } from '../services/progressService';
-import { getActiveCourse } from '../services/courseService';
+import { useActiveCourse } from '../context/ActiveCourseContext';
 import QuizSelectionModal from './QuizSelectionModal';
 import './PracticeZone.css';
 
@@ -30,34 +30,21 @@ function PracticeZone() {
   const [weakAreas, setWeakAreas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isQuizModalOpen, setIsQuizModalOpen] = useState(false);
-  const [activeCourseId, setActiveCourseId] = useState('network-plus');
 
-  useEffect(() => {
-    loadData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // Use shared context for active course (syncs across all components)
+  const { activeCourse, loading: courseLoading } = useActiveCourse();
+  const activeCourseId = activeCourse?.id || 'network-plus';
+
+  // Load stats when course changes
+  const loadAllStatsCallback = useCallback(async (courseId) => {
+    await loadAllStats(courseId);
   }, []);
 
-  const loadData = async () => {
-    try {
-      // First load the active course
-      let courseId = 'network-plus';
-      try {
-        const course = await getActiveCourse();
-        if (course?.id) {
-          courseId = course.id;
-          setActiveCourseId(course.id);
-        }
-      } catch (err) {
-        console.error('Error loading active course:', err);
-      }
-
-      // Then load stats for that course
-      await loadAllStats(courseId);
-    } catch (error) {
-      console.error('Error loading data:', error);
-      setLoading(false);
+  useEffect(() => {
+    if (!courseLoading && activeCourseId) {
+      loadAllStatsCallback(activeCourseId);
     }
-  };
+  }, [activeCourseId, courseLoading, loadAllStatsCallback]);
 
   const loadAllStats = async (courseId) => {
     try {
@@ -194,7 +181,7 @@ function PracticeZone() {
     }
   };
 
-  if (loading) {
+  if (loading || courseLoading) {
     return (
       <div className="practice-zone loading">
         <div className="loading-spinner"></div>
