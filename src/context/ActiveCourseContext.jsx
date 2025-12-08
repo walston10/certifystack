@@ -4,12 +4,50 @@ import { useAuth } from './AuthContext';
 
 const ActiveCourseContext = createContext(null);
 
+// localStorage key for course persistence
+const STORAGE_KEY = 'certifystack_active_course';
+
+// Helper to get course from localStorage
+const getStoredCourse = () => {
+  try {
+    return localStorage.getItem(STORAGE_KEY);
+  } catch {
+    return null;
+  }
+};
+
+// Helper to save course to localStorage
+const setStoredCourse = (courseId) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, courseId);
+  } catch {
+    // localStorage not available
+  }
+};
+
 export function ActiveCourseProvider({ children }) {
   const { user } = useAuth();
   const [activeCourse, setActiveCourseState] = useState(null);
+  const [allCourses, setAllCourses] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Load active course from database
+  // Load all available courses for the dropdown
+  const loadAllCourses = useCallback(async () => {
+    try {
+      const { data: courses, error } = await supabase
+        .from('courses')
+        .select('*')
+        .order('order_index', { ascending: true });
+
+      if (!error && courses) {
+        setAllCourses(courses);
+      }
+    } catch (error) {
+      console.error('Error loading courses:', error);
+    }
+  }, []);
+
+  // Load active course from database (with localStorage fallback)
   const loadActiveCourse = useCallback(async () => {
     if (!user) {
       setActiveCourseState(null);
@@ -18,20 +56,31 @@ export function ActiveCourseProvider({ children }) {
     }
 
     try {
-      // Get the user's active course from profiles
+      // First, try localStorage for instant load
+      const storedCourseId = getStoredCourse();
+
+      // Get the user's active course from profiles (using correct column name: active_course)
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
-        .select('active_course_id')
+        .select('active_course')
         .eq('id', user.id)
         .single();
 
-      if (profileError) {
+      if (profileError && profileError.code !== '42703' && profileError.code !== 'PGRST116') {
         console.error('Error loading active course from profile:', profileError);
+        // Fall back to localStorage if DB fails
+        if (storedCourseId) {
+          await loadCourseData(storedCourseId);
+        }
         setLoading(false);
         return;
       }
 
-      const courseId = profile?.active_course_id || 'network-plus';
+      // Priority: DB value > localStorage > default
+      const courseId = profile?.active_course || storedCourseId || 'network-plus';
+
+      // Sync localStorage with DB value
+      setStoredCourse(courseId);
 
       // Get the full course data
       const { data: course, error: courseError } = await supabase
@@ -64,22 +113,26 @@ export function ActiveCourseProvider({ children }) {
   // Load on mount and when user changes
   useEffect(() => {
     loadActiveCourse();
-  }, [loadActiveCourse]);
+    loadAllCourses();
+  }, [loadActiveCourse, loadAllCourses]);
 
-  // Function to change the active course (updates DB and state)
+  // Function to change the active course (updates DB, localStorage, and state)
   const setActiveCourse = useCallback(async (courseId) => {
     if (!user) return;
 
     try {
-      // Update the database first
+      // Update localStorage immediately for instant feedback
+      setStoredCourse(courseId);
+
+      // Update the database (using correct column name: active_course)
       const { error: updateError } = await supabase
         .from('profiles')
-        .update({ active_course_id: courseId })
+        .update({ active_course: courseId })
         .eq('id', user.id);
 
       if (updateError) {
         console.error('Error updating active course:', updateError);
-        return;
+        // Don't return - localStorage is already updated, state will still work
       }
 
       // Get the full course data
@@ -116,6 +169,7 @@ export function ActiveCourseProvider({ children }) {
   return (
     <ActiveCourseContext.Provider value={{
       activeCourse,
+      allCourses,
       setActiveCourse,
       refreshActiveCourse,
       loading
