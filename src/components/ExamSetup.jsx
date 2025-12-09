@@ -122,8 +122,8 @@ function ExamSetup() {
           <p className="subtitle">Test your {courseDisplayName} knowledge with realistic practice exams</p>
         </div>
 
-        {/* Question Bank Status */}
-        {!validation.isValid && (
+        {/* Question Bank Status - only show if invalid (admin info) */}
+        {!validation.isValid && process.env.NODE_ENV === 'development' && (
           <div className="warning-banner">
             <strong>⚠️ Warning:</strong> Question bank is incomplete
             <ul>
@@ -133,19 +133,6 @@ function ExamSetup() {
             </ul>
           </div>
         )}
-
-        <div className="question-bank-stats">
-          <div className="stat">
-            <span className="stat-value">{questionCounts.total}</span>
-            <span className="stat-label">Total Questions</span>
-          </div>
-          {Array.from({ length: getCourseDomainCount(activeCourseId) }, (_, i) => i + 1).map(num => (
-            <div className="stat" key={num}>
-              <span className="stat-value">{questionCounts[`domain${num}`] || 0}</span>
-              <span className="stat-label">Domain {num}</span>
-            </div>
-          ))}
-        </div>
 
         {/* Exam Mode Selection */}
         <div className="exam-mode-selection">
@@ -196,7 +183,7 @@ function ExamSetup() {
                   >
                     {Array.from({ length: getCourseDomainCount(activeCourseId) }, (_, i) => i + 1).map(num => (
                       <option key={num} value={num.toString()}>
-                        Domain {num}: {domainNames[num.toString()]} ({questionCounts[`domain${num}`] || 0} questions)
+                        Domain {num}: {domainNames[num.toString()]}
                       </option>
                     ))}
                   </select>
