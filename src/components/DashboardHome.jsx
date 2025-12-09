@@ -46,7 +46,17 @@ const motivationalQuotes = [
   "Stay committed to your goals, not your excuses.",
   "A little progress each day adds up to big results.",
   "The certification exam doesn't care about your feelings, only your preparation.",
-  "Your career breakthrough is just one certification away."
+  "Your career breakthrough is just one certification away.",
+  "Skills pay the bills. Keep learning.",
+  "The tech industry rewards those who never stop learning.",
+  "Every protocol you understand is a door that opens.",
+  "Be the IT professional you'd want to hire.",
+  "Comfort zones don't grow careers. Push yourself.",
+  "The best investment you can make is in yourself.",
+  "Your knowledge compounds like interest. Keep adding to it.",
+  "In tech, staying still means falling behind. Keep moving forward.",
+  "Certifications don't just validate skills, they open opportunities.",
+  "The command line is your friend. Master it."
 ];
 
 function DashboardHome() {
@@ -146,26 +156,13 @@ function DashboardHome() {
     <div className="dashboard-home">
       {/* Hero Section */}
       <section className="hero-section">
-        <div className="hero-content" style={{ position: 'relative' }}>
+        <div className="hero-content">
           <h1 className="hero-greeting">
             Welcome back, {userStats.name}! <span style={{ filter: 'none', WebkitTextFillColor: 'initial' }}>👋</span>
           </h1>
 
-          {/* Motivational Quote - Floating on the right */}
-          <div style={{
-            position: 'absolute',
-            top: '0',
-            right: '0',
-            fontSize: '0.95rem',
-            fontStyle: 'italic',
-            color: 'rgba(255, 255, 255, 0.7)',
-            padding: '1rem 1.5rem',
-            borderLeft: '3px solid #00d9ff',
-            background: 'rgba(0, 217, 255, 0.05)',
-            borderRadius: '8px',
-            maxWidth: '350px',
-            lineHeight: '1.5'
-          }}>
+          {/* Motivational Quote - Below welcome, above course */}
+          <div className="motivational-quote">
             "{dailyQuote}"
           </div>
 
