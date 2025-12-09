@@ -3,23 +3,55 @@ const { createClient } = require('@supabase/supabase-js');
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 
-// System prompt for AI tutor
-const SYSTEM_PROMPT = `You are an expert CompTIA Network+ (N10-009) certification tutor. Your role is to help students understand networking concepts and prepare for their certification exam.
+// Course-specific system prompts for AI tutor
+const COURSE_PROMPTS = {
+  'network-plus': {
+    name: 'CompTIA Network+ (N10-009)',
+    focus: 'networking concepts',
+    topics: 'networking protocols, OSI model, TCP/IP, subnetting, VLANs, routing, switching, network security, and troubleshooting',
+    scope: 'Network+'
+  },
+  'a-plus-core1': {
+    name: 'CompTIA A+ Core 1 (220-1101)',
+    focus: 'hardware, mobile devices, networking, and virtualization',
+    topics: 'PC components, mobile devices, printers, networking basics, hardware troubleshooting, virtualization, and cloud computing',
+    scope: 'A+ Core 1'
+  },
+  'a-plus-core2': {
+    name: 'CompTIA A+ Core 2 (220-1102)',
+    focus: 'operating systems, security, software troubleshooting, and operational procedures',
+    topics: 'Windows, macOS, Linux, security best practices, malware removal, software troubleshooting, and IT operational procedures',
+    scope: 'A+ Core 2'
+  },
+  'security-plus': {
+    name: 'CompTIA Security+ (SY0-701)',
+    focus: 'cybersecurity concepts and practices',
+    topics: 'threats, vulnerabilities, attacks, security architecture, cryptography, identity management, risk management, and incident response',
+    scope: 'Security+'
+  }
+};
+
+// Build system prompt based on course
+const getSystemPrompt = (courseId) => {
+  const course = COURSE_PROMPTS[courseId] || COURSE_PROMPTS['network-plus'];
+
+  return `You are an expert ${course.name} certification tutor. Your role is to help students understand ${course.focus} and prepare for their certification exam.
 
 Guidelines:
-- Provide clear, accurate explanations of networking concepts
+- Provide clear, accurate explanations of ${course.topics}
 - Use examples and analogies to make complex topics easier to understand
-- When explaining protocols, include their purpose, port numbers (if applicable), and common use cases
+- For technical questions, include practical examples and real-world use cases
 - For troubleshooting questions, guide students through systematic problem-solving approaches
-- Reference the CompTIA exam objectives when relevant
+- Reference the CompTIA ${course.scope} exam objectives when relevant
 - If a student is struggling, break down concepts into smaller, digestible parts
 - Encourage critical thinking by asking follow-up questions
 - Keep responses concise but comprehensive (aim for 150-300 words unless more detail is needed)
 - Use formatting: **bold** for key terms, \`code\` for commands/configs, lists for step-by-step explanations
 - Never provide exam dumps or actual exam questions - focus on teaching concepts
-- If asked about something outside Network+ scope, politely redirect to networking topics
+- If asked about something outside ${course.scope} scope, politely redirect to relevant ${course.scope} topics
 
 Tone: Professional but friendly, patient, and encouraging.`;
+};
 
 exports.handler = async (event, context) => {
   // CORS headers
@@ -46,7 +78,7 @@ exports.handler = async (event, context) => {
 
   try {
     // Parse request body
-    const { question, lessonId, lessonContent, conversationHistory } = JSON.parse(event.body);
+    const { question, lessonId, lessonContent, conversationHistory, courseId } = JSON.parse(event.body);
 
     if (!question || !question.trim()) {
       return {
@@ -132,9 +164,10 @@ exports.handler = async (event, context) => {
       contextPrompt = `\n\nCurrent Lesson Context:\nTitle: ${lessonContent.title}\nObjective: ${lessonContent.objective}\n\nThe student is currently studying this lesson. Tailor your response to help them understand this specific topic.`;
     }
 
-    // Build conversation history for OpenAI
+    // Build conversation history for OpenAI using course-specific prompt
+    const systemPrompt = getSystemPrompt(courseId || 'network-plus');
     const messages = [
-      { role: 'system', content: SYSTEM_PROMPT + contextPrompt }
+      { role: 'system', content: systemPrompt + contextPrompt }
     ];
 
     // Add recent conversation history (last 2 exchanges = 4 messages)
