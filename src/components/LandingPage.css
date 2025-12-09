@@ -385,6 +385,10 @@
   color: var(--color-text-dimmed);
 }
 
+.hero-cta-buttons {
+  margin-bottom: var(--spacing-xl);
+}
+
 .btn-hero-cta {
   padding: var(--spacing-md) var(--spacing-xl);
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
