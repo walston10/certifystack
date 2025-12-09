@@ -156,13 +156,15 @@ header {
 }
 
 .markdown-content strong {
-  color: var(--accent-cyan);
-  font-weight: 600;
+  color: #50ff30;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
 }
 
 .markdown-content em {
-  color: var(--accent-cyan);
+  color: #50ff30;
   font-style: italic;
+  text-shadow: 0 0 6px rgba(57, 255, 20, 0.4);
 }
 
 .markdown-content code {
@@ -171,7 +173,7 @@ header {
   border-radius: 4px;
   font-family: 'Fira Code', monospace;
   font-size: 0.9em;
-  color: #00d9ff;
+  color: #39ff14;
 }
 
 .markdown-content pre {
