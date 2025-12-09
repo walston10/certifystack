@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { validateQuestionPool, getQuestionCounts, getCourseDomainCount } from '../utils/examGenerator';
+import { validateQuestionPool, getCourseDomainCount } from '../utils/examGenerator';
 import { useActiveCourse } from '../context/ActiveCourseContext';
 import './ExamSetup.css';
 
@@ -57,8 +57,7 @@ function ExamSetup() {
   const { activeCourse, loading: courseLoading } = useActiveCourse();
   const activeCourseId = activeCourse?.id || 'network-plus';
 
-  // Get question counts for display
-  const questionCounts = getQuestionCounts(activeCourseId);
+  // Validate question pool for this course
   const validation = validateQuestionPool(activeCourseId);
 
   const domainNames = courseDomainNames[activeCourseId] || courseDomainNames['network-plus'];
