@@ -14,7 +14,7 @@ import {
  */
 export function useUserStats(courseIdParam = null) {
   const { user } = useAuth();
-  const [courseId, setCourseId] = useState(courseIdParam || 'network-plus');
+  const [courseId, setCourseId] = useState(courseIdParam || null);
   const [progress, setProgress] = useState({
     completedLessons: [],
     flashcardStats: {
@@ -30,22 +30,32 @@ export function useUserStats(courseIdParam = null) {
   const [error, setError] = useState(null);
   const initialLoadDone = useRef(false);
 
+  // Update courseId when courseIdParam changes (e.g., when context loads)
+  useEffect(() => {
+    if (courseIdParam && courseIdParam !== courseId) {
+      setCourseId(courseIdParam);
+    }
+  }, [courseIdParam, courseId]);
+
   // Load active course if not provided
   useEffect(() => {
     const loadActiveCourse = async () => {
-      if (!courseIdParam) {
+      if (!courseIdParam && !courseId) {
         try {
           const course = await getActiveCourse();
           if (course?.id) {
             setCourseId(course.id);
+          } else {
+            setCourseId('network-plus'); // fallback
           }
         } catch (err) {
           console.error('Error loading active course:', err);
+          setCourseId('network-plus'); // fallback on error
         }
       }
     };
     loadActiveCourse();
-  }, [courseIdParam]);
+  }, [courseIdParam, courseId]);
 
   // Load user progress for the specific course
   const loadProgress = useCallback(async (cId) => {
