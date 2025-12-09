@@ -98,39 +98,26 @@ const LandingPage = () => {
 
             <div className="hero-trust-signals">
               <div className="trust-item">
+                <span className="trust-check">✓</span> Free 7-day trial
+              </div>
+              <div className="trust-item">
+                <span className="trust-check">✓</span> Free forever tier available
+              </div>
+              <div className="trust-item">
                 <span className="trust-check">✓</span> No credit card required
-              </div>
-              <div className="trust-item">
-                <span className="trust-check">✓</span> Free forever tier
-              </div>
-              <div className="trust-item">
-                <span className="trust-check">✓</span> 7-day money-back guarantee
               </div>
             </div>
           </div>
 
           <div className="hero-visual">
-            <div className="dashboard-mockup">
-              {/* This is where your dashboard screenshot goes */}
-              <div className="mockup-window">
-                <div className="mockup-header">
-                  <div className="mockup-dots">
-                    <span></span><span></span><span></span>
-                  </div>
-                  <div className="mockup-title">CertifyStack Dashboard</div>
-                </div>
-                <div className="mockup-content">
-                  <div className="mockup-progress-ring">
-                    <div className="progress-circle">45%</div>
-                    <div className="progress-label">Complete</div>
-                  </div>
-                  <div className="mockup-stats">
-                    <div className="stat-box">📚 15/30 Lessons</div>
-                    <div className="stat-box">🔥 5 Day Streak</div>
-                    <div className="stat-box">⏰ 12.5 Hours</div>
-                  </div>
-                </div>
-              </div>
+            <div className="video-embed-container">
+              <iframe
+                src="https://www.youtube.com/embed/8sRNPOVgH5A"
+                title="CertifyStack Demo"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
             </div>
           </div>
         </div>
