@@ -1429,6 +1429,20 @@ const domain5Questions = [
     ],
     correct: 3,
     explanation: "Jitter is variation in packet delay - packets arrive at irregular intervals instead of a steady stream. Highly disruptive to real-time applications like VoIP and video conferencing, causing choppy audio, frozen video, and out-of-order packets. Caused by network congestion or routing changes. Solved with QoS (Quality of Service) to prioritize real-time traffic and jitter buffers to smooth packet arrival."
+  },
+  {
+    id: "d5-q021",
+    domain: "5.0",
+    objective: "5.3",
+    question: "Users in a branch office report intermittent connectivity to the main data center. The network team discovers that during peak hours, the WAN link utilization reaches 95%. Which command would BEST help identify which applications or hosts are consuming the most bandwidth?",
+    options: [
+      "ping",
+      "traceroute",
+      "netflow/IPFIX analysis",
+      "arp -a"
+    ],
+    correct: 2,
+    explanation: "NetFlow (Cisco) or IPFIX (industry standard) provides detailed traffic analysis showing which applications, protocols, and hosts are using bandwidth. This visibility helps identify bandwidth hogs, unusual traffic patterns, and capacity planning needs. Ping and traceroute test connectivity but don't show bandwidth usage. ARP shows MAC-to-IP mappings. SNMP can show interface utilization but NetFlow provides the detailed breakdown needed here."
   }
 ];
 

@@ -1,7 +1,3 @@
-Perfect! I'll add SEO optimization, internal backlinks, and naturally weave in those Amazon affiliate links. Here's the updated Lesson 2:
-
----
-
 # Lesson 2: Network Topologies & Types - How Networks Are Structured
 
 **Meta Description:** Learn network topologies for CompTIA Network+ N10-009. Understand star, mesh, bus, ring, and hybrid topologies with real-world examples, diagrams, and exam tips.
