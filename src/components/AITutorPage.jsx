@@ -2,7 +2,52 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Sparkles, Send, Loader, AlertCircle, History, Plus } from 'lucide-react';
 import ChatMessage from './ChatMessage';
 import { supabase } from '../lib/supabase';
+import { useActiveCourse } from '../context/ActiveCourseContext';
 import './AITutorPage.css';
+
+// Course display names
+const COURSE_NAMES = {
+  'network-plus': 'Network+',
+  'a-plus-core1': 'A+ Core 1',
+  'a-plus-core2': 'A+ Core 2',
+  'security-plus': 'Security+'
+};
+
+// Course-specific suggested questions
+const SUGGESTED_QUESTIONS = {
+  'network-plus': [
+    "Explain the OSI model in simple terms",
+    "What's the difference between TCP and UDP?",
+    "Help me understand subnetting",
+    "How do VLANs work?",
+    "Explain DNS resolution process",
+    "What are the common networking ports?"
+  ],
+  'a-plus-core1': [
+    "What are the main components of a motherboard?",
+    "Explain the difference between RAM and storage",
+    "How do I troubleshoot a PC that won't POST?",
+    "What's the difference between SSD and HDD?",
+    "Explain virtualization and cloud computing basics",
+    "How do printers connect and what are common issues?"
+  ],
+  'a-plus-core2': [
+    "What's the difference between Windows, macOS, and Linux?",
+    "How do I remove malware from a system?",
+    "Explain the Windows boot process",
+    "What are common software troubleshooting steps?",
+    "How do I manage users and permissions in Windows?",
+    "What are IT best practices for change management?"
+  ],
+  'security-plus': [
+    "What are the main types of cyber attacks?",
+    "Explain encryption and how it protects data",
+    "What's the difference between authentication and authorization?",
+    "How does a firewall work?",
+    "Explain the CIA triad in cybersecurity",
+    "What is social engineering and how to prevent it?"
+  ]
+};
 
 function AITutorPage() {
   const [messages, setMessages] = useState([]);
@@ -14,6 +59,13 @@ function AITutorPage() {
   const [conversationHistory, setConversationHistory] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
   const messagesEndRef = useRef(null);
+
+  // Get active course from context
+  const { activeCourse } = useActiveCourse();
+  const courseId = activeCourse?.id || 'network-plus';
+
+  // Get course-specific suggested questions
+  const suggestedQuestions = SUGGESTED_QUESTIONS[courseId] || SUGGESTED_QUESTIONS['network-plus'];
 
   useEffect(() => {
     loadUserData();
@@ -161,7 +213,8 @@ function AITutorPage() {
           question: userMessage,
           lessonId: null,
           lessonContent: null,
-          conversationHistory: messages.slice(-4)
+          conversationHistory: messages.slice(-4),
+          courseId: courseId
         })
       });
 
@@ -208,14 +261,6 @@ function AITutorPage() {
     window.location.href = 'https://buy.stripe.com/3cI8wPewj6FWbwJ1UVcEw01';
   };
 
-  const suggestedQuestions = [
-    "Explain the OSI model in simple terms",
-    "What's the difference between TCP and UDP?",
-    "Help me understand subnetting",
-    "How do VLANs work?",
-    "Explain DNS resolution process",
-    "What are the common networking ports?"
-  ];
 
   return (
     <div className="ai-tutor-page">
@@ -225,7 +270,7 @@ function AITutorPage() {
           <Sparkles size={32} className="header-icon" />
           <div>
             <h1>AI Tutor</h1>
-            <p>Your 24/7 IT Certification Coach</p>
+            <p>Your {COURSE_NAMES[courseId] || 'IT'} Certification Coach</p>
           </div>
         </div>
 
@@ -300,7 +345,7 @@ function AITutorPage() {
               <div className="welcome-screen">
                 <Sparkles size={64} className="welcome-icon" />
                 <h2>Welcome to AI Tutor!</h2>
-                <p>Ask me anything about your IT certification topics. I'm here to help you understand concepts and prepare for your certification exam.</p>
+                <p>Ask me anything about {COURSE_NAMES[courseId] || 'IT certification'} topics. I'm here to help you understand concepts and prepare for your exam.</p>
 
                 <div className="suggested-questions">
                   <h3>Try asking:</h3>
