@@ -407,17 +407,18 @@ const LandingPage = () => {
               </p>
               <div className="story-author">
                 <div className="author-name">— CertifyStack Team</div>
-                <div className="author-creds">Network+ Certified • Built for Learners</div>
+                <div className="author-creds">CompTIA Certified • Built for Learners</div>
               </div>
             </div>
           </div>
 
           <div className="roadmap-box">
-            <h3 className="roadmap-title">Coming Soon</h3>
+            <h3 className="roadmap-title">Available Courses</h3>
             <div className="roadmap-items">
-              <div className="roadmap-item">🔜 CompTIA A+ Course</div>
-              <div className="roadmap-item">🔜 CompTIA Security+ Course</div>
-              <div className="roadmap-item">🔜 CCNA Preparation</div>
+              <div className="roadmap-item">✅ CompTIA A+ (Core 1 & Core 2)</div>
+              <div className="roadmap-item">✅ CompTIA Network+</div>
+              <div className="roadmap-item">✅ CompTIA Security+</div>
+              <div className="roadmap-item">🔜 CCNA (Coming Soon)</div>
             </div>
           </div>
         </div>
@@ -491,7 +492,7 @@ const LandingPage = () => {
               <ul className="pricing-features">
                 <li>✓ Everything in Pro</li>
                 <li>✓ Lifetime access</li>
-                <li>✓ Future Network+ updates included</li>
+                <li>✓ All future course updates included</li>
                 <li>✓ Early access to new courses</li>
                 <li>✓ Founding member benefits</li>
               </ul>
