@@ -5,16 +5,6 @@ import './GamesGallery.css';
 
 const GAMES = [
   {
-    id: 'mdr-network-plus',
-    title: 'MDR - Network+ Connections',
-    description: 'Connect related Network+ concepts in this Connections-style puzzle game',
-    difficulty: 'Intermediate',
-    estimatedTime: '10-15 min',
-    category: 'Puzzle',
-    course: 'Network+',
-    path: '/games/mdr/network-plus'
-  },
-  {
     id: 'mdr-a-plus-core1',
     title: 'MDR - A+ Core 1 Connections',
     description: 'Connect related A+ Core 1 concepts in this Connections-style puzzle game',
@@ -33,6 +23,16 @@ const GAMES = [
     category: 'Puzzle',
     course: 'A+ Core 2',
     path: '/games/mdr/a-plus-core2'
+  },
+  {
+    id: 'mdr-network-plus',
+    title: 'MDR - Network+ Connections',
+    description: 'Connect related Network+ concepts in this Connections-style puzzle game',
+    difficulty: 'Intermediate',
+    estimatedTime: '10-15 min',
+    category: 'Puzzle',
+    course: 'Network+',
+    path: '/games/mdr/network-plus'
   },
   {
     id: 'mdr-security-plus',
