@@ -298,14 +298,20 @@ function AppRoutes() {
           }
         />
 
-        {/* MDR Game */}
+        {/* MDR Game - Course-aware */}
         <Route
-          path="/games/mdr"
+          path="/games/mdr/:course"
           element={
             <ProtectedRoute>
               <MDRGame />
             </ProtectedRoute>
           }
+        />
+
+        {/* Legacy MDR route - redirect to network-plus */}
+        <Route
+          path="/games/mdr"
+          element={<Navigate to="/games/mdr/network-plus" replace />}
         />
 
         {/* User Profile - Redirect to Account */}

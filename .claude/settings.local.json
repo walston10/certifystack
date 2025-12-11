@@ -9,7 +9,8 @@
       "Bash(nul)",
       "Bash(mkdir:*)",
       "Bash(find:*)",
-      "Bash(powershell -Command \"((Get-Content ''c:\\Users\\Owner\\certifystack\\src\\courses\\a-plus-core1\\quizzes\\lesson-27-quiz.js'')[107]).Substring(990, 30)\")"
+      "Bash(powershell -Command \"((Get-Content ''c:\\Users\\Owner\\certifystack\\src\\courses\\a-plus-core1\\quizzes\\lesson-27-quiz.js'')[107]).Substring(990, 30)\")",
+      "Bash(npm start)"
     ],
     "deny": [],
     "ask": []

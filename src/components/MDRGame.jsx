@@ -1,10 +1,38 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 import './MDRGame.css';
 
+// Course configuration
+const COURSE_CONFIG = {
+  'network-plus': {
+    title: 'Network+ Connections',
+    description: 'Connect related Network+ concepts! Find groups of four items that share something in common.',
+    url: 'https://walston10.github.io/MDR/'
+  },
+  'a-plus-core1': {
+    title: 'A+ Core 1 Connections',
+    description: 'Connect related A+ Core 1 concepts! Find groups of four items that share something in common.',
+    url: 'https://walston10.github.io/MDR/?course=a-plus-core1'
+  },
+  'a-plus-core2': {
+    title: 'A+ Core 2 Connections',
+    description: 'Connect related A+ Core 2 concepts! Find groups of four items that share something in common.',
+    url: 'https://walston10.github.io/MDR/?course=a-plus-core2'
+  },
+  'security-plus': {
+    title: 'Security+ Connections',
+    description: 'Connect related Security+ concepts! Find groups of four items that share something in common.',
+    url: 'https://walston10.github.io/MDR/?course=security-plus'
+  }
+};
+
 function MDRGame() {
   const navigate = useNavigate();
+  const { course } = useParams();
+
+  // Get course config or default to network-plus
+  const config = COURSE_CONFIG[course] || COURSE_CONFIG['network-plus'];
 
   return (
     <div className="mdr-game-container">
@@ -13,9 +41,9 @@ function MDRGame() {
           <ArrowLeft size={20} />
           Back to Games
         </button>
-        <h1>MDR - Networking Connections</h1>
+        <h1>MDR - {config.title}</h1>
         <a
-          href="https://walston10.github.io/MDR/"
+          href={config.url}
           target="_blank"
           rel="noopener noreferrer"
           className="external-link-btn"
@@ -26,13 +54,13 @@ function MDRGame() {
       </div>
 
       <div className="game-instructions">
-        <p>Connect related networking concepts! Find groups of four items that share something in common.</p>
+        <p>{config.description}</p>
       </div>
 
       <div className="iframe-container">
         <iframe
-          src="https://walston10.github.io/MDR/"
-          title="MDR - Networking Connections Game"
+          src={config.url}
+          title={`MDR - ${config.title} Game`}
           className="game-iframe"
           allowFullScreen
         />
