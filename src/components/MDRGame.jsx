@@ -31,8 +31,13 @@ function MDRGame() {
   const navigate = useNavigate();
   const { course } = useParams();
 
+  // Debug logging
+  console.log('MDRGame - course param:', course);
+  console.log('MDRGame - available configs:', Object.keys(COURSE_CONFIG));
+
   // Get course config or default to network-plus
   const config = COURSE_CONFIG[course] || COURSE_CONFIG['network-plus'];
+  console.log('MDRGame - selected config:', config);
 
   return (
     <div className="mdr-game-container">

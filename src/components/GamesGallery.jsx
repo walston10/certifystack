@@ -51,6 +51,8 @@ function GamesGallery() {
   const navigate = useNavigate();
 
   const handleGameClick = (game) => {
+    console.log('GamesGallery - Clicking game:', game.title);
+    console.log('GamesGallery - Navigating to:', game.path);
     navigate(game.path);
   };
 
