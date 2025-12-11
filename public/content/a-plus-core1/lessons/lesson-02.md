@@ -25,17 +25,11 @@ By the end of this lesson, you will be able to:
 
 **Watch these videos for visual understanding of laptop display technology:**
 
-1. **Professor Messer - Laptop Display Components** (12:48)  
-   https://www.youtube.com/watch?v=lKdRZ3qcSpY
+📹 **Watch:** [Professor Messer: Laptop Display](https://www.youtube.com/watch?v=d86ws7mQYIg&t=19s)
    
-2. **PowerCert - LCD vs LED vs OLED Explained** (9:34)  
-   https://www.youtube.com/watch?v=1wzzF5DIAy4
+📹 **Watch:** [Powercert: Monitors Explained - LCD, LED, OLED, CRT, TN, IPS, VA](https://www.youtube.com/watch?v=yxygknX1AiE)
 
-3. **Carey Holzman - Laptop Screen Replacement Guide** (18:22)  
-   https://www.youtube.com/watch?v=qKM3RqWjH2Y
-
-4. **ITFreeTraining - Display Technologies** (14:15)  
-   https://www.youtube.com/watch?v=hN8FLqJ9Mk8
+📹 **Watch:** [Professor Messer: Monitor Best Practices](https://www.youtube.com/watch?v=FsmewISuK70)
 
 ---
 

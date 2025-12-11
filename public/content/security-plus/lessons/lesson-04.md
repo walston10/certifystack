@@ -22,9 +22,8 @@ By the end of this lesson, you will be able to:
 
 ## Video Resources
 
-- **Professor Messer:** "Security+ SY0-701 - Cryptographic Concepts" (15 min)
-- **PowerCert:** "Symmetric vs Asymmetric Encryption" (12 min)
-- **Computerphile:** "AES Explained" (10 min)
+- 📹 **Watch:** [Professor Messer - Encryption Technology](https://www.youtube.com/watch?v=zC_Pndpg8-c) 
+- 📹 **Watch:** [Practical Networking - Symmetric vs Asymmetric Encryption](https://www.youtube.com/watch?v=o_g-M7UBqI8) 
 
 ---
 

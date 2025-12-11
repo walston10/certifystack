@@ -24,17 +24,9 @@ By the end of this lesson, you will be able to:
 
 **Watch these videos for visual demonstrations of laptop hardware:**
 
-1. **Professor Messer - Laptop Hardware Overview** (14:32)  
-   https://www.youtube.com/watch?v=XBqvG5p0U6Q
+📹 **Watch:** [Professor Messer: Laptop Hardware](https://www.youtube.com/watch?v=y7oHZ1mi7e4)
    
-2. **PowerCert - Inside a Laptop: Components Explained** (11:18)  
-   https://www.youtube.com/watch?v=d86ws7mQYIg
-
-3. **Carey Holzman - Laptop vs Desktop: What's the Difference?** (16:45)  
-   https://www.youtube.com/watch?v=kZEYu7Wx0nM
-
-4. **ITFreeTraining - Laptop Hardware Components** (13:27)  
-   https://www.youtube.com/watch?v=hU5pW8qF7Yc
+📹 **Watch:** [Branch Education:Hardware](https://www.youtube.com/watch?v=d86ws7mQYIg&t=19s)
 
 ---
 

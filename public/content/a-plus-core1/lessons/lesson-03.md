@@ -26,17 +26,9 @@ By the end of this lesson, you will be able to:
 
 **Watch these videos for hands-on disassembly demonstrations:**
 
-1. **Professor Messer - Laptop Hardware Replacement** (16:24)  
-   https://www.youtube.com/watch?v=XKa4VGS1DrI
-   
-2. **Carey Holzman - How to Disassemble a Laptop Properly** (28:15)  
-   https://www.youtube.com/watch?v=Jz3GjJAu0rk
+📹 **Watch:** [Repair Basics: Learn how to disassemble Any Laptop easily](https://www.youtube.com/watch?v=FsmewISuK70)
 
-3. **JerryRigEverything - Laptop Teardown Guide** (19:47)  
-   https://www.youtube.com/watch?v=opLU__ZQVTA
-
-4. **Tech YES City - Laptop Upgrade Guide** (22:33)  
-   https://www.youtube.com/watch?v=svhq4N8cHM8
+📹 **Watch:** [Professor Messer: Laptop Disassembly](https://www.youtube.com/watch?v=FsmewISuK70&t=44s)
 
 ---
 

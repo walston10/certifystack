@@ -21,11 +21,8 @@ By the end of this lesson, you will be able to:
 
 ## Video Resources
 
-- **Professor Messer:** "Security+ SY0-701 - Threat Actors" (11 min)
-- **PowerCert:** "Types of Hackers Explained" (9 min)
-- **Sunny Classroom:** "Understanding Cyber Threat Actors" (13 min)
-
----
+- 📹 **Watch:** [Professor Messer - Threat Actors](https://www.youtube.com/watch?v=6xUH0t6ugIM) 
+- 📹 **Watch:** [Cert Bros - Intro to Threat Actors](https://youtu.be/c-hov4O6n5U?si=18Flujvkj8nEoSxD) 
 
 ## Introduction
 

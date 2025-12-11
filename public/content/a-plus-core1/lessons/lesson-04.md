@@ -25,17 +25,9 @@ By the end of this lesson, you will be able to:
 
 **Watch these videos for mobile device technology explanations:**
 
-1. **Professor Messer - Mobile Device Features** (11:52)  
-   https://www.youtube.com/watch?v=j3fRNPYJv2I
-   
-2. **Marques Brownlee (MKBHD) - Smartphone Display Technology** (13:28)  
-   https://www.youtube.com/watch?v=oNt4qf4weJU
+📹 **Watch:** [Professor Messer: Mobile Devices](https://www.youtube.com/watch?v=8MEP8uQ3ckU)
 
-3. **Linus Tech Tips - How Do Touchscreens Work?** (9:45)  
-   https://www.youtube.com/watch?v=FvyUHp8Sgpw
-
-4. **JerryRigEverything - Inside Your Smartphone** (15:33)  
-   https://www.youtube.com/watch?v=bKxQcm_ABpU
+📹 **Watch:** [Branch Education: How do touchscreens work](https://www.youtube.com/watch?v=cFvh7qM6LdA)
 
 ---
 

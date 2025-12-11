@@ -23,9 +23,8 @@ By the end of this lesson, you will be able to:
 
 ## Video Resources
 
-- **Professor Messer:** "Security+ SY0-701 - Zero Trust" (13 min)
-- **PowerCert:** "Defense in Depth Explained" (10 min)
-- **Sunny Classroom:** "Physical Security Controls" (11 min)
+- 📹 **Watch:** [Professor Messer - Zero Trust](https://www.youtube.com/watch?v=zC_Pndpg8-c) 
+- 📹 **Watch:** [Professor Messer - Defense in Depth](https://www.youtube.com/watch?v=1nUXQHr4l9g) 
 
 ---
 
